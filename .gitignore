@@ -250,3 +250,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/ProtoManager/dat2.exe
+/ProtoManager/frm2gif.exe
+/ProtoManager/Resources/zlib.dll

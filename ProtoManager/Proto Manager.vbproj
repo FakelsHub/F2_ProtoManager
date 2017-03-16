@@ -119,6 +119,12 @@
     <Compile Include="AboutBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AI_Form.Designer.vb">
+      <DependentUpon>AI_Form.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AI_Form.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TxtEdit_Form.Designer.vb">
       <DependentUpon>TxtEdit_Form.vb</DependentUpon>
     </Compile>
@@ -201,6 +207,9 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AI_Form.resx">
+      <DependentUpon>AI_Form.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TxtEdit_Form.resx">
       <DependentUpon>TxtEdit_Form.vb</DependentUpon>
     </EmbeddedResource>
@@ -240,7 +249,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="zlib.dll">
+    <None Include="Resources\LeftArrow.png" />
+    <None Include="Resources\RightArrow.png" />
+    <Content Include="Resources\zlib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />

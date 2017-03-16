@@ -39,8 +39,10 @@ Partial Class Main_Form
         Me.KeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TypeCrittersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.AboutToolStripButton7 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton4 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton11 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.AIPacketToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ItemsTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
@@ -55,7 +57,6 @@ Partial Class Main_Form
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
         Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.AboutToolStripButton7 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.fAllToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -149,7 +150,7 @@ Partial Class Main_Form
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.ToolStripButton4, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.AboutToolStripButton7, Me.ToolStripSeparator5, Me.ToolStripSplitButton1, Me.ToolStripSeparator7, Me.ToolStripButton9, Me.ToolStripButton10, Me.ToolStripTextBox1, Me.ToolStripButton1, Me.ToolStripSeparator3})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripButton4, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripSeparator5, Me.ToolStripSplitButton1, Me.ToolStripSeparator7, Me.ToolStripButton9, Me.ToolStripButton10, Me.ToolStripTextBox1, Me.ToolStripButton1, Me.ToolStripSeparator3})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(850, 25)
@@ -228,6 +229,16 @@ Partial Class Main_Form
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
+        'AboutToolStripButton7
+        '
+        Me.AboutToolStripButton7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.AboutToolStripButton7.Image = CType(resources.GetObject("AboutToolStripButton7.Image"), System.Drawing.Image)
+        Me.AboutToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.AboutToolStripButton7.Name = "AboutToolStripButton7"
+        Me.AboutToolStripButton7.Size = New System.Drawing.Size(47, 22)
+        Me.AboutToolStripButton7.Text = "Info"
+        Me.AboutToolStripButton7.ToolTipText = "About editor."
+        '
         'ToolStripButton4
         '
         Me.ToolStripButton4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -236,13 +247,19 @@ Partial Class Main_Form
         '
         'ToolStripButton11
         '
-        Me.ToolStripButton11.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ItemsTableToolStripMenuItem})
+        Me.ToolStripButton11.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AIPacketToolStripMenuItem, Me.ItemsTableToolStripMenuItem})
         Me.ToolStripButton11.Image = CType(resources.GetObject("ToolStripButton11.Image"), System.Drawing.Image)
         Me.ToolStripButton11.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton11.Name = "ToolStripButton11"
         Me.ToolStripButton11.Size = New System.Drawing.Size(61, 22)
         Me.ToolStripButton11.Text = "Tools"
         Me.ToolStripButton11.ToolTipText = "More tools."
+        '
+        'AIPacketToolStripMenuItem
+        '
+        Me.AIPacketToolStripMenuItem.Name = "AIPacketToolStripMenuItem"
+        Me.AIPacketToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AIPacketToolStripMenuItem.Text = "AI Packet Edit"
         '
         'ItemsTableToolStripMenuItem
         '
@@ -339,15 +356,6 @@ Partial Class Main_Form
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
-        '
-        'AboutToolStripButton7
-        '
-        Me.AboutToolStripButton7.Image = CType(resources.GetObject("AboutToolStripButton7.Image"), System.Drawing.Image)
-        Me.AboutToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.AboutToolStripButton7.Name = "AboutToolStripButton7"
-        Me.AboutToolStripButton7.Size = New System.Drawing.Size(47, 22)
-        Me.AboutToolStripButton7.Text = "Info"
-        Me.AboutToolStripButton7.ToolTipText = "About editor."
         '
         'ToolStripSeparator5
         '
@@ -558,7 +566,7 @@ Partial Class Main_Form
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.ShowToolTips = True
-        Me.TabControl1.Size = New System.Drawing.Size(242, 570)
+        Me.TabControl1.Size = New System.Drawing.Size(236, 570)
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
         Me.TabControl1.TabIndex = 5
         Me.TabControl1.Visible = False
@@ -570,10 +578,10 @@ Partial Class Main_Form
         Me.TabPage2.Location = New System.Drawing.Point(4, 26)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(234, 540)
+        Me.TabPage2.Size = New System.Drawing.Size(228, 540)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Items"
-        Me.TabPage2.ToolTipText = "Прототипы Предметов"
+        Me.TabPage2.ToolTipText = "Prototypes Items"
         '
         'ListView2
         '
@@ -594,7 +602,7 @@ Partial Class Main_Form
         Me.ListView2.MultiSelect = False
         Me.ListView2.Name = "ListView2"
         Me.ListView2.ShowItemToolTips = True
-        Me.ListView2.Size = New System.Drawing.Size(228, 534)
+        Me.ListView2.Size = New System.Drawing.Size(222, 534)
         Me.ListView2.TabIndex = 10
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Details
@@ -629,10 +637,10 @@ Partial Class Main_Form
         Me.TabPage1.Location = New System.Drawing.Point(4, 26)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(236, 540)
+        Me.TabPage1.Size = New System.Drawing.Size(228, 540)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Critters"
-        Me.TabPage1.ToolTipText = "Прототипы Криттеров"
+        Me.TabPage1.ToolTipText = "Prototypes Critter"
         '
         'ListView1
         '
@@ -653,7 +661,7 @@ Partial Class Main_Form
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(270, 534)
+        Me.ListView1.Size = New System.Drawing.Size(222, 534)
         Me.ListView1.TabIndex = 9
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -703,7 +711,7 @@ Partial Class Main_Form
         Me.SplitContainer1.Panel2.Controls.Add(Me.TabControl1)
         Me.SplitContainer1.Panel2MinSize = 240
         Me.SplitContainer1.Size = New System.Drawing.Size(850, 574)
-        Me.SplitContainer1.SplitterDistance = 602
+        Me.SplitContainer1.SplitterDistance = 608
         Me.SplitContainer1.SplitterWidth = 2
         Me.SplitContainer1.TabIndex = 7
         '
@@ -721,7 +729,7 @@ Partial Class Main_Form
         Me.TextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
         Me.TextBox1.ShortcutsEnabled = False
         Me.TextBox1.ShowSelectionMargin = True
-        Me.TextBox1.Size = New System.Drawing.Size(598, 100)
+        Me.TextBox1.Size = New System.Drawing.Size(604, 100)
         Me.TextBox1.TabIndex = 1
         Me.TextBox1.TabStop = False
         Me.TextBox1.Text = ""
@@ -737,7 +745,7 @@ Partial Class Main_Form
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(598, 62)
+        Me.GroupBox1.Size = New System.Drawing.Size(604, 62)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         '
@@ -883,5 +891,6 @@ Partial Class Main_Form
     Friend WithEvents TextEditProFileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator10 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ViewLogToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AIPacketToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

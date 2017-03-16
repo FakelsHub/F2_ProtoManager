@@ -324,6 +324,7 @@ Partial Class Critter_Form
         Me.Button3 = New System.Windows.Forms.Button()
         Me.TextBox33 = New System.Windows.Forms.TextBox()
         Me.GroupBox19 = New System.Windows.Forms.GroupBox()
+        Me.Button8 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.NumericUpDown7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -3276,7 +3277,7 @@ Partial Class Critter_Form
         Me.Button5.Enabled = False
         Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button5.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Button5.Location = New System.Drawing.Point(449, 48)
+        Me.Button5.Location = New System.Drawing.Point(449, 53)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(80, 24)
         Me.Button5.TabIndex = 7
@@ -3347,7 +3348,7 @@ Partial Class Critter_Form
         Me.CheckBox23.Size = New System.Drawing.Size(56, 18)
         Me.CheckBox23.TabIndex = 0
         Me.CheckBox23.Text = "Barter"
-        Me.ToolTip1.SetToolTip(Me.CheckBox23, "Возможно ли торговля криттером.")
+        Me.ToolTip1.SetToolTip(Me.CheckBox23, "Is it possible to barter with critter." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Возможна ли торговля c криттером.)")
         Me.CheckBox23.UseVisualStyleBackColor = True
         '
         'CheckBox22
@@ -3392,7 +3393,7 @@ Partial Class Critter_Form
         Me.CheckBox16.Size = New System.Drawing.Size(57, 18)
         Me.CheckBox16.TabIndex = 0
         Me.CheckBox16.Text = "Range"
-        Me.ToolTip1.SetToolTip(Me.CheckBox16, "Рукопашная атака на расстоянии.")
+        Me.ToolTip1.SetToolTip(Me.CheckBox16, "Hand-to-hand attack at a distance." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Рукопашная атака на расстоянии).")
         Me.CheckBox16.UseVisualStyleBackColor = True
         '
         'CheckBox20
@@ -3415,7 +3416,7 @@ Partial Class Critter_Form
         Me.CheckBox15.Size = New System.Drawing.Size(54, 18)
         Me.CheckBox15.TabIndex = 0
         Me.CheckBox15.Text = "Limbs"
-        Me.ToolTip1.SetToolTip(Me.CheckBox15, "Неможет терять конечности.")
+        Me.ToolTip1.SetToolTip(Me.CheckBox15, "Can not lose limbs." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Не может терять конечности).")
         Me.CheckBox15.UseVisualStyleBackColor = True
         '
         'CheckBox19
@@ -3427,7 +3428,7 @@ Partial Class Critter_Form
         Me.CheckBox19.Size = New System.Drawing.Size(74, 18)
         Me.CheckBox19.TabIndex = 0
         Me.CheckBox19.Text = "No Flatten"
-        Me.ToolTip1.SetToolTip(Me.CheckBox19, "Не помещать труп на задний план.")
+        Me.ToolTip1.SetToolTip(Me.CheckBox19, "Do not put the corpse in background." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Не помещать труп на задний план.)")
         Me.CheckBox19.UseVisualStyleBackColor = True
         '
         'CheckBox18
@@ -3439,7 +3440,8 @@ Partial Class Critter_Form
         Me.CheckBox18.Size = New System.Drawing.Size(52, 18)
         Me.CheckBox18.TabIndex = 0
         Me.CheckBox18.Text = "Ages"
-        Me.ToolTip1.SetToolTip(Me.CheckBox18, "Мертвое тело не исчезает со временем.")
+        Me.ToolTip1.SetToolTip(Me.CheckBox18, "The dead body does not disappear with time." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Мертвое тело не исчезает со времене" & _
+                "м.)")
         Me.CheckBox18.UseVisualStyleBackColor = True
         '
         'CheckBox14
@@ -4034,7 +4036,7 @@ Partial Class Critter_Form
         Me.Button6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button6.ForeColor = System.Drawing.Color.OrangeRed
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(569, 323)
+        Me.Button6.Location = New System.Drawing.Point(569, 296)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(90, 40)
         Me.Button6.TabIndex = 0
@@ -4048,7 +4050,7 @@ Partial Class Critter_Form
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.Button3.Location = New System.Drawing.Point(553, 388)
+        Me.Button3.Location = New System.Drawing.Point(553, 390)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(122, 41)
         Me.Button3.TabIndex = 1
@@ -4079,11 +4081,25 @@ Partial Class Critter_Form
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Proto ID"
         '
+        'Button8
+        '
+        Me.Button8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
+        Me.Button8.Location = New System.Drawing.Point(569, 351)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(90, 33)
+        Me.Button8.TabIndex = 2
+        Me.Button8.Text = "AI Packet"
+        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTip1.SetToolTip(Me.Button8, "Edit AI Packet this critter.")
+        Me.Button8.UseVisualStyleBackColor = True
+        '
         'Critter_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(684, 443)
+        Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.Button3)
@@ -4512,4 +4528,5 @@ Partial Class Critter_Form
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox9 As System.Windows.Forms.ComboBox
+    Friend WithEvents Button8 As System.Windows.Forms.Button
 End Class
