@@ -2,7 +2,7 @@
     Dim HexView As New System.ComponentModel.Design.ByteViewer
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        SetParent(Me.Handle.ToInt32, Main_Form.SplitContainer1.Panel1.Handle.ToInt32)
+        SetParent(Me.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
         HexView.Left = 10
         HexView.Top = 22
         HexView.Height = 490

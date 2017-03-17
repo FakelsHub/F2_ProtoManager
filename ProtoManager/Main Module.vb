@@ -44,7 +44,7 @@ Module Main_Module
 
     Friend MSG_DATATEXT() As String
 
-    Friend DmgType(6) As String
+    Friend DmgType() As String = {"Normal", "Laser", "Fire", "Plasma", "Electrical", "EMP", "Explode"}
 
     Friend SplitSize As Integer = 600 'default size
     Friend txtWin As Boolean
@@ -339,14 +339,6 @@ Module Main_Module
             Shell(Application.StartupPath & "\dat2.exe x -d cache """ & Game_Path & "\master.dat"" " & "@cProto.lst", AppWinStyle.Hide, True, timeout)
             IO.File.Create(Application.StartupPath & "\cache\cache.id")
         End If
-
-        DmgType(0) = "Normal"
-        DmgType(1) = "Laser"
-        DmgType(2) = "Fire"
-        DmgType(3) = "Plasma"
-        DmgType(4) = "Electrical"
-        DmgType(5) = "EMP"
-        DmgType(6) = "Explode"
 
         SplashScreen.ProgressBar1.Value = 60
         CreateItemsList()
@@ -719,7 +711,7 @@ SetDefConf:
     Friend Sub Create_CritterForm(ByVal Lw_Index As UShort)
         Dim CrttFrm As New Critter_Form
         'CrttFrm.MdiParent = Main_Form
-        SetParent(CrttFrm.Handle.ToInt32, Main_Form.SplitContainer1.Panel1.Handle.ToInt32)
+        SetParent(CrttFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
         CrttFrm.Ini_CritterForm(Lw_Index)
         On Error GoTo EndProc
         CrttFrm.ComboBox1.Items.AddRange(Critters_FRM)
@@ -735,7 +727,7 @@ EndProc:
         Dim n As UShort
         Dim ItmsFrm As New Items_Form
         'ItmsFrm.MdiParent = Main_Form
-        SetParent(ItmsFrm.Handle.ToInt32, Main_Form.SplitContainer1.Panel1.Handle.ToInt32)
+        SetParent(ItmsFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
         ItmsFrm.ComboBox10.Items.AddRange(Misc_NAME)
         ItmsFrm.ComboBox11.Items.AddRange(Perk_NAME)
         ItmsFrm.ComboBox12.Items.AddRange(CaliberNAME)
@@ -781,6 +773,22 @@ EndProc:
         '
         ItmsFrm.Ini_ItemsForm(LST_Index)
         ItmsFrm.Show()
+    End Sub
+
+    Friend Sub Create_TxtEditForm(ByRef Lw_Index As UShort, ByRef Type As Byte)
+        Dim TxtFrm As New TxtEdit_Form
+        SetParent(TxtFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
+        If Type = 0 Then TxtFrm.Text &= Critter_LST(Lw_Index) Else TxtFrm.Text &= Items_LST(Lw_Index, 0)
+        TxtFrm.Text &= "]"
+        TxtFrm.Ini_Form(Lw_Index, Type)
+    End Sub
+
+    Friend Sub Create_AIEditForm(ByRef AIPacket As UShort)
+        Dim AIFrm As New AI_Form
+        SetParent(AIFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
+        'AIFrm.Text &= "]"
+        'AIFrm.Ini_Form()
+        AIFrm.Show()
     End Sub
 
     ' Получает Description ID из про-файла криттера
@@ -1018,13 +1026,5 @@ erret:
     Friend Function c_Poison() As Integer
         Return (5 * ReverseBytes(CritterPro.Endurance))
     End Function
-
-    Friend Sub Create_TxtEditForm(ByRef Lw_Index As UShort, ByRef Type As Byte)
-        Dim TxtFrm As New TxtEdit_Form
-        SetParent(TxtFrm.Handle.ToInt32, Main_Form.SplitContainer1.Panel1.Handle.ToInt32)
-        If Type = 0 Then TxtFrm.Text &= Critter_LST(Lw_Index) Else TxtFrm.Text &= Items_LST(Lw_Index, 0)
-        TxtFrm.Text &= "]"
-        TxtFrm.Ini_Form(Lw_Index, Type)
-    End Sub
 
 End Module

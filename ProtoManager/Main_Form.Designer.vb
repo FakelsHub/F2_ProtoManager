@@ -566,7 +566,7 @@ Partial Class Main_Form
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.ShowToolTips = True
-        Me.TabControl1.Size = New System.Drawing.Size(236, 570)
+        Me.TabControl1.Size = New System.Drawing.Size(240, 570)
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
         Me.TabControl1.TabIndex = 5
         Me.TabControl1.Visible = False
@@ -578,7 +578,7 @@ Partial Class Main_Form
         Me.TabPage2.Location = New System.Drawing.Point(4, 26)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(228, 540)
+        Me.TabPage2.Size = New System.Drawing.Size(232, 540)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Items"
         Me.TabPage2.ToolTipText = "Prototypes Items"
@@ -602,7 +602,7 @@ Partial Class Main_Form
         Me.ListView2.MultiSelect = False
         Me.ListView2.Name = "ListView2"
         Me.ListView2.ShowItemToolTips = True
-        Me.ListView2.Size = New System.Drawing.Size(222, 534)
+        Me.ListView2.Size = New System.Drawing.Size(226, 534)
         Me.ListView2.TabIndex = 10
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Details
@@ -637,7 +637,7 @@ Partial Class Main_Form
         Me.TabPage1.Location = New System.Drawing.Point(4, 26)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(228, 540)
+        Me.TabPage1.Size = New System.Drawing.Size(234, 540)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Critters"
         Me.TabPage1.ToolTipText = "Prototypes Critter"
@@ -661,7 +661,7 @@ Partial Class Main_Form
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(222, 534)
+        Me.ListView1.Size = New System.Drawing.Size(230, 534)
         Me.ListView1.TabIndex = 9
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -711,7 +711,7 @@ Partial Class Main_Form
         Me.SplitContainer1.Panel2.Controls.Add(Me.TabControl1)
         Me.SplitContainer1.Panel2MinSize = 240
         Me.SplitContainer1.Size = New System.Drawing.Size(850, 574)
-        Me.SplitContainer1.SplitterDistance = 608
+        Me.SplitContainer1.SplitterDistance = 604
         Me.SplitContainer1.SplitterWidth = 2
         Me.SplitContainer1.TabIndex = 7
         '
@@ -729,7 +729,7 @@ Partial Class Main_Form
         Me.TextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
         Me.TextBox1.ShortcutsEnabled = False
         Me.TextBox1.ShowSelectionMargin = True
-        Me.TextBox1.Size = New System.Drawing.Size(604, 100)
+        Me.TextBox1.Size = New System.Drawing.Size(600, 100)
         Me.TextBox1.TabIndex = 1
         Me.TextBox1.TabStop = False
         Me.TextBox1.Text = ""
@@ -745,7 +745,7 @@ Partial Class Main_Form
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(604, 62)
+        Me.GroupBox1.Size = New System.Drawing.Size(600, 62)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         '

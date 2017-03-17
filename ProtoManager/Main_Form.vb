@@ -438,7 +438,7 @@ Public Class Main_Form
     End Sub
 
     Private Sub ExportToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportToolStripMenuItem.Click
-        SetParent(Table_Form.Handle.ToInt32, SplitContainer1.Panel1.Handle.ToInt32)
+        SetParent(Table_Form.Handle.ToInt32, SplitContainer1.Handle.ToInt32)
         Table_Form.Show()
     End Sub
 
@@ -515,6 +515,10 @@ Public Class Main_Form
 
     Private Sub ViewLogToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogToolStripMenuItem.Click
         TextBox1.Visible = ViewLogToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub AIPacketToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AIPacketToolStripMenuItem.Click
+        Create_AIEditForm(0)
     End Sub
 
 End Class
