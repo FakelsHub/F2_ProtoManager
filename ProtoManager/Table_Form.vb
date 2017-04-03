@@ -1,6 +1,9 @@
 ﻿Imports Prototypes
 
 Public Class Table_Form
+
+    Private Calc As CalcStats = New CalcStats
+
     Dim CheckedList() As String
     Dim Table() As String
 
@@ -416,17 +419,17 @@ SError:
                 Table(n) &= spr & ReverseBytes(CritterPro.ExpVal)
                 '
             Case "Small Guns [Skill]"
-                Table(n) &= spr & CStr(c_SmallGun_Skill() + ReverseBytes(CritterPro.SmallGuns))
+                Table(n) &= spr & CStr(Calc.SmallGun_Skill() + ReverseBytes(CritterPro.SmallGuns))
             Case "Big Guns [Skill]"
-                Table(n) &= spr & CStr(c_BigEnergyGun_Skill() + ReverseBytes(CritterPro.BigGuns))
+                Table(n) &= spr & CStr(Calc.BigEnergyGun_Skill() + ReverseBytes(CritterPro.BigGuns))
             Case "Energy Weapons [Skill]"
-                Table(n) &= spr & CStr(c_BigEnergyGun_Skill() + ReverseBytes(CritterPro.EnergyGun))
+                Table(n) &= spr & CStr(Calc.BigEnergyGun_Skill() + ReverseBytes(CritterPro.EnergyGun))
             Case "Unarmed [Skill]"
-                Table(n) &= spr & CStr(c_Unarmed_Skill() + ReverseBytes(CritterPro.Unarmed))
+                Table(n) &= spr & CStr(Calc.Unarmed_Skill() + ReverseBytes(CritterPro.Unarmed))
             Case "Melee [Skill]"
-                Table(n) &= spr & CStr(c_Melee_Skill() + ReverseBytes(CritterPro.Melee))
+                Table(n) &= spr & CStr(Calc.Melee_Skill() + ReverseBytes(CritterPro.Melee))
             Case "Throwing [Skill]"
-                Table(n) &= spr & CStr(c_Throwing_Skill() + ReverseBytes(CritterPro.Throwing))
+                Table(n) &= spr & CStr(Calc.Throwing_Skill() + ReverseBytes(CritterPro.Throwing))
                 '
             Case "Resistance Radiation"
                 Table(n) &= spr & (ReverseBytes(CritterPro.DRRadiation) + ReverseBytes(CritterPro.b_DRRadiation))
@@ -829,52 +832,52 @@ lNext:
             For m = 3 To UBound(Table_Param)
                 Select Case Table_Param(m)
                     Case "Action Point"
-                        z = c_Action_Point()
+                        z = Calc.Action_Point()
                         CritterPro.AP = ReverseBytes(z)
                         CritterPro.b_AP = ReverseBytes(Table_Value(n, m) - z)
                     Case "Armor Class"
                         CritterPro.AC = CritterPro.Agility
                         CritterPro.b_AC = ReverseBytes(Table_Value(n, m) - ReverseBytes(CritterPro.Agility))
                     Case "Health Point"
-                        z = c_Health_Point()
+                        z = Calc.Health_Point()
                         CritterPro.HP = ReverseBytes(z)
                         CritterPro.b_HP = ReverseBytes(Table_Value(n, m) - z)
                     Case "Healing Rate"
-                        z = c_Healing_Rate()
+                        z = Calc.Healing_Rate()
                         CritterPro.Healing = ReverseBytes(z)
                         CritterPro.b_Healing = ReverseBytes(Table_Value(n, m) - z)
                     Case "Melee Damage"
-                        z = c_Melee_Damage()
+                        z = Calc.Melee_Damage()
                         CritterPro.MeleeDmg = ReverseBytes(z)
                         CritterPro.b_MeleeDmg = ReverseBytes(Table_Value(n, m) - z)
                     Case "Critical Chance"
                         CritterPro.Critical = CritterPro.Luck
                         CritterPro.b_Critical = ReverseBytes(Table_Value(n, m) - ReverseBytes(CritterPro.Luck))
                     Case "Sequence"
-                        z = c_Sequence()
+                        z = Calc.Sequence()
                         CritterPro.Sequence = ReverseBytes(z)
                         CritterPro.b_Sequence = ReverseBytes(Table_Value(n, m) - z)
                     Case "Resistance Radiation"
-                        z = c_Radiation()
+                        z = Calc.Radiation()
                         CritterPro.DRRadiation = ReverseBytes(z)
                         CritterPro.b_DRRadiation = ReverseBytes(Table_Value(n, m) - z)
                     Case "Resistance Poison"
-                        z = c_Poison()
+                        z = Calc.Poison()
                         CritterPro.DRPoison = ReverseBytes(z)
                         CritterPro.b_DRPoison = ReverseBytes(Table_Value(n, m) - z)
                         'Skill
                     Case "Small Guns [Skill]"
-                        CritterPro.SmallGuns = ReverseBytes(Table_Value(n, m) - c_SmallGun_Skill())
+                        CritterPro.SmallGuns = ReverseBytes(Table_Value(n, m) - Calc.SmallGun_Skill())
                     Case "Big Guns [Skill]"
-                        CritterPro.BigGuns = ReverseBytes(Table_Value(n, m) - c_BigEnergyGun_Skill())
+                        CritterPro.BigGuns = ReverseBytes(Table_Value(n, m) - Calc.BigEnergyGun_Skill())
                     Case "Energy Weapons [Skill]"
-                        CritterPro.EnergyGun = ReverseBytes(Table_Value(n, m) - c_BigEnergyGun_Skill())
+                        CritterPro.EnergyGun = ReverseBytes(Table_Value(n, m) - Calc.BigEnergyGun_Skill())
                     Case "Unarmed [Skill]"
-                        CritterPro.Unarmed = ReverseBytes(Table_Value(n, m) - c_Unarmed_Skill())
+                        CritterPro.Unarmed = ReverseBytes(Table_Value(n, m) - Calc.Unarmed_Skill())
                     Case "Melee [Skill]"
-                        CritterPro.Melee = ReverseBytes(Table_Value(n, m) - c_Melee_Skill())
+                        CritterPro.Melee = ReverseBytes(Table_Value(n, m) - Calc.Melee_Skill())
                     Case "Throwing [Skill]"
-                        CritterPro.Throwing = ReverseBytes(Table_Value(n, m) - c_Throwing_Skill())
+                        CritterPro.Throwing = ReverseBytes(Table_Value(n, m) - Calc.Throwing_Skill())
                 End Select
             Next
             'сохранить профайл, и перейти к следующему профайлу
@@ -892,6 +895,5 @@ tError:
         If proRO Then IO.File.SetAttributes(SaveMOD_Path & "\proto\critters\" & ProFile, IO.FileAttributes.ReadOnly Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
         MsgBox("Param: " & UCase(Table_Param(m)) & " PRO Line: " & Table_Value(n, 0), MsgBoxStyle.Critical, "Error Import")
     End Sub
-
 
 End Class

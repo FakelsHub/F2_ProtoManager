@@ -762,44 +762,4 @@ erret:
         My.Computer.FileSystem.DeleteDirectory(Cache_Patch & "\art", FileIO.DeleteDirectoryOption.DeleteAllContents)
     End Sub
 
-    Friend Function c_SmallGun_Skill() As Integer
-        Return (5 + (4 * ReverseBytes(CritterPro.Agility)))
-    End Function
-    Friend Function c_BigEnergyGun_Skill() As Integer
-        Return (2 * ReverseBytes(CritterPro.Agility))
-    End Function
-    'Friend Function c_EnergyGun_Skill(ByRef Agility) As Integer
-    '    Return (2 * ReverseBytes(Agility))
-    'End Function
-    Friend Function c_Melee_Skill() As Integer
-        Return (20 + (ReverseBytes(CritterPro.Agility) + ReverseBytes(CritterPro.Strength)) * 2)
-    End Function
-    Friend Function c_Unarmed_Skill() As Integer
-        Return (30 + (ReverseBytes(CritterPro.Agility) + ReverseBytes(CritterPro.Strength)) * 2)
-    End Function
-    Friend Function c_Throwing_Skill() As Integer
-        Return (4 * ReverseBytes(CritterPro.Agility))
-    End Function
-    Friend Function c_Action_Point() As Integer
-        Return Fix(5 + (ReverseBytes(CritterPro.Agility) / 2))
-    End Function
-    Friend Function c_Health_Point() As Integer
-        Return (15 + ReverseBytes(CritterPro.Strength) + (ReverseBytes(CritterPro.Endurance) * 2))
-    End Function
-    Friend Function c_Healing_Rate() As Integer
-        Return Math.Max(1, Int((ReverseBytes(CritterPro.Endurance) / 3)))
-    End Function
-    Friend Function c_Melee_Damage() As Integer
-        Return Math.Max(1, (ReverseBytes(CritterPro.Strength) - 5))
-    End Function
-    Friend Function c_Sequence() As Integer
-        Return (2 * ReverseBytes(CritterPro.Perception))
-    End Function
-    Friend Function c_Radiation() As Integer
-        Return (2 * ReverseBytes(CritterPro.Endurance))
-    End Function
-    Friend Function c_Poison() As Integer
-        Return (5 * ReverseBytes(CritterPro.Endurance))
-    End Function
-
 End Module
