@@ -1,4 +1,6 @@
-﻿Public Class Table_Form
+﻿Imports Prototypes
+
+Public Class Table_Form
     Dim CheckedList() As String
     Dim Table() As String
 

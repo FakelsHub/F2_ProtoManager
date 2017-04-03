@@ -28,61 +28,22 @@ Partial Class Main_Form
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.ToolStripButton6 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.TypeItemsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.pWeaponToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.pAmmoToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.pArmorToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.pDrugToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ContainerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.pMiscToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.KeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TypeCrittersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.AboutToolStripButton7 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton11 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.AIPacketToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ItemsTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ImportCritterTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSplitButton2 = New System.Windows.Forms.ToolStripSplitButton()
-        Me.Cp886ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AttrReadOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ClearToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.fAllToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.fWeaponToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.fAmmoToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.fArmorToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.fDrugToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.fContainerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.fMiscToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton9 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton10 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.LinkLabel2 = New System.Windows.Forms.LinkLabel()
         Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.HToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TextEditProFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.CreateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.ListView2 = New System.Windows.Forms.ListView()
@@ -103,6 +64,45 @@ Partial Class Main_Form
         Me.Label1 = New System.Windows.Forms.Label()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.HToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CreateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripButton6 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.TypeItemsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pWeaponToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pAmmoToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pArmorToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pDrugToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ContainerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pMiscToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.KeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TypeCrittersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AboutToolStripButton7 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton11 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.AIPacketToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ItemsTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImportCritterTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSplitButton2 = New System.Windows.Forms.ToolStripSplitButton()
+        Me.Cp886ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AttrReadOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ClearToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.fAllToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.fWeaponToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.fAmmoToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.fArmorToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.fDrugToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.fContainerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.fMiscToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripButton9 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.StatusStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -156,6 +156,368 @@ Partial Class Main_Form
         Me.ToolStrip1.Size = New System.Drawing.Size(850, 25)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripButton4
+        '
+        Me.ToolStripButton4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripButton4.Name = "ToolStripButton4"
+        Me.ToolStripButton4.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripSeparator6
+        '
+        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripButton10
+        '
+        Me.ToolStripButton10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripButton10.Name = "ToolStripButton10"
+        Me.ToolStripButton10.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripTextBox1
+        '
+        Me.ToolStripTextBox1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripTextBox1.AutoSize = False
+        Me.ToolStripTextBox1.BackColor = System.Drawing.SystemColors.Window
+        Me.ToolStripTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
+        Me.ToolStripTextBox1.Size = New System.Drawing.Size(200, 21)
+        Me.ToolStripTextBox1.ToolTipText = "The search string."
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolTip1
+        '
+        Me.ToolTip1.IsBalloon = True
+        '
+        'LinkLabel2
+        '
+        Me.LinkLabel2.ActiveLinkColor = System.Drawing.SystemColors.HighlightText
+        Me.LinkLabel2.AutoSize = True
+        Me.LinkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
+        Me.LinkLabel2.LinkColor = System.Drawing.SystemColors.ControlLight
+        Me.LinkLabel2.Location = New System.Drawing.Point(109, 38)
+        Me.LinkLabel2.Name = "LinkLabel2"
+        Me.LinkLabel2.Size = New System.Drawing.Size(24, 13)
+        Me.LinkLabel2.TabIndex = 3
+        Me.LinkLabel2.TabStop = True
+        Me.LinkLabel2.Text = "n/a"
+        Me.ToolTip1.SetToolTip(Me.LinkLabel2, "Open folder in explorer.")
+        '
+        'LinkLabel1
+        '
+        Me.LinkLabel1.ActiveLinkColor = System.Drawing.SystemColors.HighlightText
+        Me.LinkLabel1.AutoSize = True
+        Me.LinkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
+        Me.LinkLabel1.LinkColor = System.Drawing.SystemColors.ControlLight
+        Me.LinkLabel1.Location = New System.Drawing.Point(109, 16)
+        Me.LinkLabel1.Name = "LinkLabel1"
+        Me.LinkLabel1.Size = New System.Drawing.Size(24, 13)
+        Me.LinkLabel1.TabIndex = 2
+        Me.LinkLabel1.TabStop = True
+        Me.LinkLabel1.Text = "n/a"
+        Me.ToolTip1.SetToolTip(Me.LinkLabel1, "Open folder in explorer.")
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.HToolStripMenuItem, Me.TextEditProFileToolStripMenuItem, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.CreateToolStripMenuItem, Me.DeleteToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(215, 120)
+        '
+        'TextEditProFileToolStripMenuItem
+        '
+        Me.TextEditProFileToolStripMenuItem.Name = "TextEditProFileToolStripMenuItem"
+        Me.TextEditProFileToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
+        Me.TextEditProFileToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.TextEditProFileToolStripMenuItem.Text = "Edit in Text Format"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.H), System.Windows.Forms.Keys)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(214, 22)
+        Me.ToolStripMenuItem2.Text = "View in Hex"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(211, 6)
+        '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControl1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.TabControl1.Location = New System.Drawing.Point(0, 0)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.ShowToolTips = True
+        Me.TabControl1.Size = New System.Drawing.Size(242, 574)
+        Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
+        Me.TabControl1.TabIndex = 5
+        Me.TabControl1.Visible = False
+        '
+        'TabPage2
+        '
+        Me.TabPage2.BackColor = System.Drawing.Color.Transparent
+        Me.TabPage2.Controls.Add(Me.ListView2)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 23)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(234, 547)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Items"
+        Me.TabPage2.ToolTipText = "Prototypes Items"
+        '
+        'ListView2
+        '
+        Me.ListView2.Activation = System.Windows.Forms.ItemActivation.OneClick
+        Me.ListView2.Alignment = System.Windows.Forms.ListViewAlignment.Left
+        Me.ListView2.AllowColumnReorder = True
+        Me.ListView2.AutoArrange = False
+        Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader7})
+        Me.ListView2.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.ListView2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.ListView2.FullRowSelect = True
+        Me.ListView2.GridLines = True
+        Me.ListView2.HideSelection = False
+        Me.ListView2.HoverSelection = True
+        Me.ListView2.LabelWrap = False
+        Me.ListView2.Location = New System.Drawing.Point(3, 3)
+        Me.ListView2.MultiSelect = False
+        Me.ListView2.Name = "ListView2"
+        Me.ListView2.ShowItemToolTips = True
+        Me.ListView2.Size = New System.Drawing.Size(228, 541)
+        Me.ListView2.TabIndex = 10
+        Me.ListView2.UseCompatibleStateImageBehavior = False
+        Me.ListView2.View = System.Windows.Forms.View.Details
+        Me.ListView2.Visible = False
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Tag = ""
+        Me.ColumnHeader3.Text = "Item Name"
+        Me.ColumnHeader3.Width = 125
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Tag = ""
+        Me.ColumnHeader4.Text = "Pro File"
+        Me.ColumnHeader4.Width = 78
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Type"
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Attr"
+        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.ColumnHeader7.Width = 30
+        '
+        'TabPage1
+        '
+        Me.TabPage1.BackColor = System.Drawing.Color.Transparent
+        Me.TabPage1.Controls.Add(Me.ListView1)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 23)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(234, 547)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Critters"
+        Me.TabPage1.ToolTipText = "Prototypes Critter"
+        '
+        'ListView1
+        '
+        Me.ListView1.Activation = System.Windows.Forms.ItemActivation.OneClick
+        Me.ListView1.Alignment = System.Windows.Forms.ListViewAlignment.Left
+        Me.ListView1.AllowColumnReorder = True
+        Me.ListView1.AutoArrange = False
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader8, Me.ColumnHeader6})
+        Me.ListView1.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView1.FullRowSelect = True
+        Me.ListView1.GridLines = True
+        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.ListView1.HideSelection = False
+        Me.ListView1.HoverSelection = True
+        Me.ListView1.LabelWrap = False
+        Me.ListView1.Location = New System.Drawing.Point(3, 3)
+        Me.ListView1.MultiSelect = False
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.ShowItemToolTips = True
+        Me.ListView1.Size = New System.Drawing.Size(228, 541)
+        Me.ListView1.TabIndex = 9
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
+        Me.ListView1.Visible = False
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Tag = ""
+        Me.ColumnHeader1.Text = "Critter Name"
+        Me.ColumnHeader1.Width = 130
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Tag = ""
+        Me.ColumnHeader2.Text = "Pro File"
+        Me.ColumnHeader2.Width = 78
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.Text = "Attr"
+        Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.ColumnHeader8.Width = 30
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Pid Number"
+        Me.ColumnHeader6.Width = 65
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.BackColor = System.Drawing.SystemColors.Control
+        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+        Me.SplitContainer1.Location = New System.Drawing.Point(0, 25)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SplitContainer1.Panel1.Controls.Add(Me.TextBox1)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox1)
+        Me.SplitContainer1.Panel1MinSize = 250
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.SplitContainer1.Panel2.Controls.Add(Me.TabControl1)
+        Me.SplitContainer1.Panel2MinSize = 240
+        Me.SplitContainer1.Size = New System.Drawing.Size(850, 574)
+        Me.SplitContainer1.SplitterDistance = 604
+        Me.SplitContainer1.TabIndex = 7
+        '
+        'TextBox1
+        '
+        Me.TextBox1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.TextBox1.DetectUrls = False
+        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.TextBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.TextBox1.Location = New System.Drawing.Point(0, 474)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
+        Me.TextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
+        Me.TextBox1.ShortcutsEnabled = False
+        Me.TextBox1.ShowSelectionMargin = True
+        Me.TextBox1.Size = New System.Drawing.Size(604, 100)
+        Me.TextBox1.TabIndex = 1
+        Me.TextBox1.TabStop = False
+        Me.TextBox1.Text = ""
+        Me.TextBox1.WordWrap = False
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox1.Controls.Add(Me.LinkLabel2)
+        Me.GroupBox1.Controls.Add(Me.LinkLabel1)
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(604, 62)
+        Me.GroupBox1.TabIndex = 0
+        Me.GroupBox1.TabStop = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.Label2.Location = New System.Drawing.Point(6, 38)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(97, 13)
+        Me.Label2.TabIndex = 1
+        Me.Label2.Text = "Current Save Path:"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.Label1.Location = New System.Drawing.Point(6, 16)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(92, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Fallout Data Path:"
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.AddExtension = False
+        Me.OpenFileDialog1.DefaultExt = "csv"
+        Me.OpenFileDialog1.Filter = "Excel (.csv)|*.csv|All Types|*.*"
+        Me.OpenFileDialog1.RestoreDirectory = True
+        Me.OpenFileDialog1.Title = "Import Table"
+        '
+        'Timer1
+        '
+        Me.Timer1.Interval = 1000
+        '
+        'HToolStripMenuItem
+        '
+        Me.HToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.HToolStripMenuItem.Image = CType(resources.GetObject("HToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.HToolStripMenuItem.Name = "HToolStripMenuItem"
+        Me.HToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
+        Me.HToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.HToolStripMenuItem.Text = "Edit Pro File"
+        '
+        'CreateToolStripMenuItem
+        '
+        Me.CreateToolStripMenuItem.Image = CType(resources.GetObject("CreateToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.CreateToolStripMenuItem.Name = "CreateToolStripMenuItem"
+        Me.CreateToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.CreateToolStripMenuItem.Text = "Create Duplicate Pro"
+        Me.CreateToolStripMenuItem.ToolTipText = "Create new prototype based on this Pro file."
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Enabled = False
+        Me.DeleteToolStripMenuItem.ForeColor = System.Drawing.Color.DarkRed
+        Me.DeleteToolStripMenuItem.Image = CType(resources.GetObject("DeleteToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete Pro File"
+        Me.DeleteToolStripMenuItem.ToolTipText = "Remove can only last prototype in the list, or edited Pro file in save folder."
         '
         'ToolStripButton6
         '
@@ -224,11 +586,6 @@ Partial Class Main_Form
         Me.TypeCrittersToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
         Me.TypeCrittersToolStripMenuItem.Text = "Type: Critter"
         '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
-        '
         'AboutToolStripButton7
         '
         Me.AboutToolStripButton7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -238,12 +595,6 @@ Partial Class Main_Form
         Me.AboutToolStripButton7.Size = New System.Drawing.Size(47, 22)
         Me.AboutToolStripButton7.Text = "Info"
         Me.AboutToolStripButton7.ToolTipText = "About editor."
-        '
-        'ToolStripButton4
-        '
-        Me.ToolStripButton4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripButton4.Name = "ToolStripButton4"
-        Me.ToolStripButton4.Size = New System.Drawing.Size(6, 25)
         '
         'ToolStripButton11
         '
@@ -290,11 +641,6 @@ Partial Class Main_Form
         Me.ImportCritterTableToolStripMenuItem.Name = "ImportCritterTableToolStripMenuItem"
         Me.ImportCritterTableToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.ImportCritterTableToolStripMenuItem.Text = "Import Critters Table"
-        '
-        'ToolStripSeparator6
-        '
-        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
         '
         'ToolStripSplitButton2
         '
@@ -351,16 +697,6 @@ Partial Class Main_Form
         Me.ViewLogToolStripMenuItem.Name = "ViewLogToolStripMenuItem"
         Me.ViewLogToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
         Me.ViewLogToolStripMenuItem.Text = "View Log"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
-        '
-        'ToolStripSeparator5
-        '
-        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
         '
         'ToolStripSplitButton1
         '
@@ -422,12 +758,6 @@ Partial Class Main_Form
         Me.fMiscToolStripMenuItem2.Size = New System.Drawing.Size(132, 22)
         Me.fMiscToolStripMenuItem2.Text = "Misc/Key"
         '
-        'ToolStripSeparator7
-        '
-        Me.ToolStripSeparator7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(6, 25)
-        '
         'ToolStripButton9
         '
         Me.ToolStripButton9.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -438,22 +768,6 @@ Partial Class Main_Form
         Me.ToolStripButton9.Text = "Refresh List"
         Me.ToolStripButton9.ToolTipText = "Update the list of prototypes."
         '
-        'ToolStripButton10
-        '
-        Me.ToolStripButton10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripButton10.Name = "ToolStripButton10"
-        Me.ToolStripButton10.Size = New System.Drawing.Size(6, 25)
-        '
-        'ToolStripTextBox1
-        '
-        Me.ToolStripTextBox1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripTextBox1.AutoSize = False
-        Me.ToolStripTextBox1.BackColor = System.Drawing.SystemColors.Window
-        Me.ToolStripTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
-        Me.ToolStripTextBox1.Size = New System.Drawing.Size(200, 21)
-        Me.ToolStripTextBox1.ToolTipText = "The search string."
-        '
         'ToolStripButton1
         '
         Me.ToolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -463,323 +777,6 @@ Partial Class Main_Form
         Me.ToolStripButton1.Size = New System.Drawing.Size(64, 22)
         Me.ToolStripButton1.Text = "Search:"
         Me.ToolStripButton1.ToolTipText = "Continue Search"
-        '
-        'ToolStripSeparator3
-        '
-        Me.ToolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
-        '
-        'ToolTip1
-        '
-        Me.ToolTip1.IsBalloon = True
-        '
-        'LinkLabel2
-        '
-        Me.LinkLabel2.ActiveLinkColor = System.Drawing.SystemColors.HighlightText
-        Me.LinkLabel2.AutoSize = True
-        Me.LinkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
-        Me.LinkLabel2.LinkColor = System.Drawing.SystemColors.ControlLight
-        Me.LinkLabel2.Location = New System.Drawing.Point(109, 38)
-        Me.LinkLabel2.Name = "LinkLabel2"
-        Me.LinkLabel2.Size = New System.Drawing.Size(24, 13)
-        Me.LinkLabel2.TabIndex = 3
-        Me.LinkLabel2.TabStop = True
-        Me.LinkLabel2.Text = "n/a"
-        Me.ToolTip1.SetToolTip(Me.LinkLabel2, "Open folder in explorer.")
-        '
-        'LinkLabel1
-        '
-        Me.LinkLabel1.ActiveLinkColor = System.Drawing.SystemColors.HighlightText
-        Me.LinkLabel1.AutoSize = True
-        Me.LinkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
-        Me.LinkLabel1.LinkColor = System.Drawing.SystemColors.ControlLight
-        Me.LinkLabel1.Location = New System.Drawing.Point(109, 16)
-        Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(24, 13)
-        Me.LinkLabel1.TabIndex = 2
-        Me.LinkLabel1.TabStop = True
-        Me.LinkLabel1.Text = "n/a"
-        Me.ToolTip1.SetToolTip(Me.LinkLabel1, "Open folder in explorer.")
-        '
-        'ContextMenuStrip1
-        '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.HToolStripMenuItem, Me.TextEditProFileToolStripMenuItem, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.CreateToolStripMenuItem, Me.DeleteToolStripMenuItem})
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(215, 120)
-        '
-        'HToolStripMenuItem
-        '
-        Me.HToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.HToolStripMenuItem.Image = CType(resources.GetObject("HToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.HToolStripMenuItem.Name = "HToolStripMenuItem"
-        Me.HToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.HToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
-        Me.HToolStripMenuItem.Text = "Edit Pro File"
-        '
-        'TextEditProFileToolStripMenuItem
-        '
-        Me.TextEditProFileToolStripMenuItem.Name = "TextEditProFileToolStripMenuItem"
-        Me.TextEditProFileToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
-        Me.TextEditProFileToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
-        Me.TextEditProFileToolStripMenuItem.Text = "Edit in Text Format"
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.H), System.Windows.Forms.Keys)
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(214, 22)
-        Me.ToolStripMenuItem2.Text = "View in Hex"
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(211, 6)
-        '
-        'CreateToolStripMenuItem
-        '
-        Me.CreateToolStripMenuItem.Image = CType(resources.GetObject("CreateToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.CreateToolStripMenuItem.Name = "CreateToolStripMenuItem"
-        Me.CreateToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
-        Me.CreateToolStripMenuItem.Text = "Create Duplicate Pro"
-        Me.CreateToolStripMenuItem.ToolTipText = "Create new prototype based on this Pro file."
-        '
-        'DeleteToolStripMenuItem
-        '
-        Me.DeleteToolStripMenuItem.Enabled = False
-        Me.DeleteToolStripMenuItem.ForeColor = System.Drawing.Color.DarkRed
-        Me.DeleteToolStripMenuItem.Image = CType(resources.GetObject("DeleteToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
-        Me.DeleteToolStripMenuItem.Text = "Delete Pro File"
-        Me.DeleteToolStripMenuItem.ToolTipText = "Remove can only last prototype in the list, or edited Pro file in save folder."
-        '
-        'TabControl1
-        '
-        Me.TabControl1.Appearance = System.Windows.Forms.TabAppearance.Buttons
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.TabControl1.Location = New System.Drawing.Point(0, 0)
-        Me.TabControl1.Multiline = True
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.ShowToolTips = True
-        Me.TabControl1.Size = New System.Drawing.Size(240, 570)
-        Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
-        Me.TabControl1.TabIndex = 5
-        Me.TabControl1.Visible = False
-        '
-        'TabPage2
-        '
-        Me.TabPage2.BackColor = System.Drawing.Color.Transparent
-        Me.TabPage2.Controls.Add(Me.ListView2)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 26)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(232, 540)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Items"
-        Me.TabPage2.ToolTipText = "Prototypes Items"
-        '
-        'ListView2
-        '
-        Me.ListView2.Activation = System.Windows.Forms.ItemActivation.OneClick
-        Me.ListView2.Alignment = System.Windows.Forms.ListViewAlignment.Left
-        Me.ListView2.AllowColumnReorder = True
-        Me.ListView2.AutoArrange = False
-        Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader7})
-        Me.ListView2.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.ListView2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListView2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.ListView2.FullRowSelect = True
-        Me.ListView2.GridLines = True
-        Me.ListView2.HideSelection = False
-        Me.ListView2.HoverSelection = True
-        Me.ListView2.LabelWrap = False
-        Me.ListView2.Location = New System.Drawing.Point(3, 3)
-        Me.ListView2.MultiSelect = False
-        Me.ListView2.Name = "ListView2"
-        Me.ListView2.ShowItemToolTips = True
-        Me.ListView2.Size = New System.Drawing.Size(226, 534)
-        Me.ListView2.TabIndex = 10
-        Me.ListView2.UseCompatibleStateImageBehavior = False
-        Me.ListView2.View = System.Windows.Forms.View.Details
-        Me.ListView2.Visible = False
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Tag = ""
-        Me.ColumnHeader3.Text = "Item Name"
-        Me.ColumnHeader3.Width = 125
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Tag = ""
-        Me.ColumnHeader4.Text = "Pro File"
-        Me.ColumnHeader4.Width = 78
-        '
-        'ColumnHeader5
-        '
-        Me.ColumnHeader5.Text = "Type"
-        '
-        'ColumnHeader7
-        '
-        Me.ColumnHeader7.Text = "Attr"
-        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader7.Width = 30
-        '
-        'TabPage1
-        '
-        Me.TabPage1.BackColor = System.Drawing.Color.Transparent
-        Me.TabPage1.Controls.Add(Me.ListView1)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 26)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(234, 540)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Critters"
-        Me.TabPage1.ToolTipText = "Prototypes Critter"
-        '
-        'ListView1
-        '
-        Me.ListView1.Activation = System.Windows.Forms.ItemActivation.OneClick
-        Me.ListView1.Alignment = System.Windows.Forms.ListViewAlignment.Left
-        Me.ListView1.AllowColumnReorder = True
-        Me.ListView1.AutoArrange = False
-        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader8, Me.ColumnHeader6})
-        Me.ListView1.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListView1.FullRowSelect = True
-        Me.ListView1.GridLines = True
-        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.ListView1.HideSelection = False
-        Me.ListView1.HoverSelection = True
-        Me.ListView1.LabelWrap = False
-        Me.ListView1.Location = New System.Drawing.Point(3, 3)
-        Me.ListView1.MultiSelect = False
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(230, 534)
-        Me.ListView1.TabIndex = 9
-        Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.Details
-        Me.ListView1.Visible = False
-        '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Tag = ""
-        Me.ColumnHeader1.Text = "Critter Name"
-        Me.ColumnHeader1.Width = 130
-        '
-        'ColumnHeader2
-        '
-        Me.ColumnHeader2.Tag = ""
-        Me.ColumnHeader2.Text = "Pro File"
-        Me.ColumnHeader2.Width = 78
-        '
-        'ColumnHeader8
-        '
-        Me.ColumnHeader8.Text = "Attr"
-        Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader8.Width = 30
-        '
-        'ColumnHeader6
-        '
-        Me.ColumnHeader6.Text = "Pid Number"
-        Me.ColumnHeader6.Width = 65
-        '
-        'SplitContainer1
-        '
-        Me.SplitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
-        Me.SplitContainer1.Location = New System.Drawing.Point(0, 25)
-        Me.SplitContainer1.Name = "SplitContainer1"
-        '
-        'SplitContainer1.Panel1
-        '
-        Me.SplitContainer1.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.SplitContainer1.Panel1.Controls.Add(Me.TextBox1)
-        Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox1)
-        Me.SplitContainer1.Panel1MinSize = 250
-        '
-        'SplitContainer1.Panel2
-        '
-        Me.SplitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control
-        Me.SplitContainer1.Panel2.Controls.Add(Me.TabControl1)
-        Me.SplitContainer1.Panel2MinSize = 240
-        Me.SplitContainer1.Size = New System.Drawing.Size(850, 574)
-        Me.SplitContainer1.SplitterDistance = 604
-        Me.SplitContainer1.SplitterWidth = 2
-        Me.SplitContainer1.TabIndex = 7
-        '
-        'TextBox1
-        '
-        Me.TextBox1.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.TextBox1.DetectUrls = False
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.TextBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.TextBox1.Location = New System.Drawing.Point(0, 470)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
-        Me.TextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.TextBox1.ShortcutsEnabled = False
-        Me.TextBox1.ShowSelectionMargin = True
-        Me.TextBox1.Size = New System.Drawing.Size(600, 100)
-        Me.TextBox1.TabIndex = 1
-        Me.TextBox1.TabStop = False
-        Me.TextBox1.Text = ""
-        Me.TextBox1.WordWrap = False
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox1.Controls.Add(Me.LinkLabel2)
-        Me.GroupBox1.Controls.Add(Me.LinkLabel1)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(600, 62)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.Label2.Location = New System.Drawing.Point(6, 38)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(97, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Current Save Path:"
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.Label1.Location = New System.Drawing.Point(6, 16)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(92, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Fallout Data Path:"
-        '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.AddExtension = False
-        Me.OpenFileDialog1.DefaultExt = "csv"
-        Me.OpenFileDialog1.Filter = "Excel (.csv)|*.csv|All Types|*.*"
-        Me.OpenFileDialog1.RestoreDirectory = True
-        Me.OpenFileDialog1.Title = "Import Table"
-        '
-        'Timer1
-        '
-        Me.Timer1.Interval = 1000
         '
         'Main_Form
         '

@@ -23,11 +23,9 @@ Partial Class AI_Form
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "qwe"}, -1)
-        Dim ListViewItem5 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"2", "dfgd"}, -1)
-        Dim ListViewItem6 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"3", "hgj"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AI_Form))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown9 = New System.Windows.Forms.NumericUpDown()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -42,6 +40,14 @@ Partial Class AI_Form
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToolStripComboBox1 = New System.Windows.Forms.ToolStripComboBox()
+        Me.AddDrugsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MoveUpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MoveDownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
@@ -124,11 +130,14 @@ Partial Class AI_Form
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.ToolTipEng = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Button6 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown8, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -163,6 +172,7 @@ Partial Class AI_Form
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button4)
         Me.GroupBox1.Controls.Add(Me.GroupBox3)
         Me.GroupBox1.Controls.Add(Me.ListView1)
         Me.GroupBox1.Controls.Add(Me.Label6)
@@ -193,6 +203,18 @@ Partial Class AI_Form
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "AI Parametrs"
         '
+        'Button4
+        '
+        Me.Button4.Enabled = False
+        Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button4.Location = New System.Drawing.Point(225, 108)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(56, 36)
+        Me.Button4.TabIndex = 7
+        Me.Button4.Text = "Add AI Packet"
+        Me.ToolTipEng.SetToolTip(Me.Button4, "Add new AI packet.")
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.NumericUpDown9)
@@ -220,6 +242,7 @@ Partial Class AI_Form
         Me.NumericUpDown9.Name = "NumericUpDown9"
         Me.NumericUpDown9.Size = New System.Drawing.Size(46, 20)
         Me.NumericUpDown9.TabIndex = 3
+        Me.NumericUpDown9.Tag = "min_to_hit"
         Me.NumericUpDown9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label16
@@ -260,6 +283,7 @@ Partial Class AI_Form
         Me.NumericUpDown7.Name = "NumericUpDown7"
         Me.NumericUpDown7.Size = New System.Drawing.Size(46, 20)
         Me.NumericUpDown7.TabIndex = 3
+        Me.NumericUpDown7.Tag = "max_dist"
         Me.NumericUpDown7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'NumericUpDown8
@@ -270,6 +294,7 @@ Partial Class AI_Form
         Me.NumericUpDown8.Name = "NumericUpDown8"
         Me.NumericUpDown8.Size = New System.Drawing.Size(46, 20)
         Me.NumericUpDown8.TabIndex = 3
+        Me.NumericUpDown8.Tag = "min_hp"
         Me.NumericUpDown8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label15
@@ -294,45 +319,103 @@ Partial Class AI_Form
         '
         'ComboBox10
         '
+        Me.ComboBox10.BackColor = System.Drawing.SystemColors.Window
         Me.ComboBox10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox10.FormattingEnabled = True
-        Me.ComboBox10.Items.AddRange(New Object() {"none", "coward", "finger_hurts", "bleeding", "not_feeling_good", "tourniquet", "never"})
+        Me.ComboBox10.Items.AddRange(New Object() {"<Unknown>", "none", "coward", "finger_hurts", "bleeding", "not_feeling_good", "tourniquet", "never"})
         Me.ComboBox10.Location = New System.Drawing.Point(9, 32)
         Me.ComboBox10.Name = "ComboBox10"
         Me.ComboBox10.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox10.TabIndex = 1
+        Me.ComboBox10.Tag = "run_away_mode"
         '
         'ComboBox9
         '
-        Me.ComboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox9.FormattingEnabled = True
-        Me.ComboBox9.Items.AddRange(New Object() {"crippled", "blind", "crippled_arms"})
+        Me.ComboBox9.Items.AddRange(New Object() {"<Unknown>", "crippled", "blind", "crippled_arms"})
         Me.ComboBox9.Location = New System.Drawing.Point(9, 72)
         Me.ComboBox9.Name = "ComboBox9"
         Me.ComboBox9.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox9.TabIndex = 1
+        Me.ComboBox9.Tag = "hurt_too_much"
         '
         'ListView1
         '
         Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.ListView1.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.ListView1.FullRowSelect = True
+        Me.ListView1.GridLines = True
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4, ListViewItem5, ListViewItem6})
+        Me.ListView1.LabelEdit = True
         Me.ListView1.Location = New System.Drawing.Point(296, 72)
+        Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
+        Me.ListView1.ShowGroups = False
         Me.ListView1.Size = New System.Drawing.Size(143, 260)
         Me.ListView1.TabIndex = 7
+        Me.ListView1.Tag = ""
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader1
         '
-        Me.ColumnHeader1.Text = "#"
-        Me.ColumnHeader1.Width = 24
+        Me.ColumnHeader1.Text = "PID"
+        Me.ColumnHeader1.Width = 33
         '
         'ColumnHeader2
         '
-        Me.ColumnHeader2.Text = "Drugs PID"
-        Me.ColumnHeader2.Width = 98
+        Me.ColumnHeader2.Text = "Drugs Name"
+        Me.ColumnHeader2.Width = 105
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripComboBox1, Me.AddDrugsToolStripMenuItem, Me.ToolStripSeparator1, Me.MoveUpToolStripMenuItem, Me.MoveDownToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(182, 129)
+        '
+        'ToolStripComboBox1
+        '
+        Me.ToolStripComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ToolStripComboBox1.DropDownWidth = 150
+        Me.ToolStripComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+        Me.ToolStripComboBox1.MaxDropDownItems = 16
+        Me.ToolStripComboBox1.Name = "ToolStripComboBox1"
+        Me.ToolStripComboBox1.Size = New System.Drawing.Size(121, 21)
+        '
+        'AddDrugsToolStripMenuItem
+        '
+        Me.AddDrugsToolStripMenuItem.Enabled = False
+        Me.AddDrugsToolStripMenuItem.Name = "AddDrugsToolStripMenuItem"
+        Me.AddDrugsToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.AddDrugsToolStripMenuItem.Text = "Add Drugs"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(178, 6)
+        '
+        'MoveUpToolStripMenuItem
+        '
+        Me.MoveUpToolStripMenuItem.Name = "MoveUpToolStripMenuItem"
+        Me.MoveUpToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.MoveUpToolStripMenuItem.Text = "Move Up"
+        '
+        'MoveDownToolStripMenuItem
+        '
+        Me.MoveDownToolStripMenuItem.Name = "MoveDownToolStripMenuItem"
+        Me.MoveDownToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.MoveDownToolStripMenuItem.Text = "Move Down"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(178, 6)
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'Label6
         '
@@ -357,7 +440,7 @@ Partial Class AI_Form
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(197, 108)
+        Me.Label20.Location = New System.Drawing.Point(157, 108)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(69, 13)
         Me.Label20.TabIndex = 5
@@ -366,22 +449,26 @@ Partial Class AI_Form
         '
         'NumericUpDown10
         '
-        Me.NumericUpDown10.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.NumericUpDown10.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.NumericUpDown10.Increment = New Decimal(New Integer() {0, 0, 0, 0})
         Me.NumericUpDown10.InterceptArrowKeys = False
-        Me.NumericUpDown10.Location = New System.Drawing.Point(215, 124)
+        Me.NumericUpDown10.Location = New System.Drawing.Point(160, 124)
         Me.NumericUpDown10.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
-        Me.NumericUpDown10.Size = New System.Drawing.Size(66, 20)
+        Me.NumericUpDown10.ReadOnly = True
+        Me.NumericUpDown10.Size = New System.Drawing.Size(59, 20)
         Me.NumericUpDown10.TabIndex = 3
-        Me.NumericUpDown10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NumericUpDown10.Tag = "packet_num"
+        Me.NumericUpDown10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown11
         '
         Me.NumericUpDown11.Location = New System.Drawing.Point(93, 124)
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
-        Me.NumericUpDown11.Size = New System.Drawing.Size(46, 20)
+        Me.NumericUpDown11.Size = New System.Drawing.Size(58, 20)
         Me.NumericUpDown11.TabIndex = 3
+        Me.NumericUpDown11.Tag = "secondary_freq"
         Me.NumericUpDown11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'NumericUpDown4
@@ -390,8 +477,9 @@ Partial Class AI_Form
         Me.NumericUpDown4.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown4.Name = "NumericUpDown4"
-        Me.NumericUpDown4.Size = New System.Drawing.Size(46, 20)
+        Me.NumericUpDown4.Size = New System.Drawing.Size(58, 20)
         Me.NumericUpDown4.TabIndex = 3
+        Me.NumericUpDown4.Tag = "called_freq"
         Me.NumericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown4.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
@@ -400,8 +488,9 @@ Partial Class AI_Form
         Me.NumericUpDown1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.NumericUpDown1.Location = New System.Drawing.Point(93, 72)
         Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(46, 20)
+        Me.NumericUpDown1.Size = New System.Drawing.Size(58, 20)
         Me.NumericUpDown1.TabIndex = 3
+        Me.NumericUpDown1.Tag = "aggression"
         Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label11
@@ -479,61 +568,67 @@ Partial Class AI_Form
         '
         Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Items.AddRange(New Object() {"no_pref", "never", "random", "unarmed", "ranged_over_melee", "melee_over_ranged", "unarmed_over_thrown"})
+        Me.ComboBox3.Items.AddRange(New Object() {"<Unknown>", "no_pref", "never", "random", "unarmed", "ranged_over_melee", "melee_over_ranged", "unarmed_over_thrown"})
         Me.ComboBox3.Location = New System.Drawing.Point(160, 72)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox3.TabIndex = 1
+        Me.ComboBox3.Tag = "best_weapon"
         '
         'ComboBox2
         '
         Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Items.AddRange(New Object() {"whomever_attacking_me ", "strongest ", "weakest ", "whomever ", "closest"})
+        Me.ComboBox2.Items.AddRange(New Object() {"<Unknown>", "whomever_attacking_me", "strongest", "weakest", "whomever", "closest"})
         Me.ComboBox2.Location = New System.Drawing.Point(160, 32)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox2.TabIndex = 1
+        Me.ComboBox2.Tag = "attack_who"
         '
         'ComboBox7
         '
         Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox7.FormattingEnabled = True
-        Me.ComboBox7.Items.AddRange(New Object() {"random", "charge", "on_your_own", "stay", "stay_close", "snipe"})
+        Me.ComboBox7.Items.AddRange(New Object() {"<Unknown>", "random", "charge", "on_your_own", "stay", "stay_close", "snipe"})
         Me.ComboBox7.Location = New System.Drawing.Point(160, 277)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox7.TabIndex = 1
+        Me.ComboBox7.Tag = "distance"
         '
         'ComboBox6
         '
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Items.AddRange(New Object() {"-1", "none", "сoward", "defensive", "aggressive", "berserk"})
+        Me.ComboBox6.Items.AddRange(New Object() {"<Unknown>", "-1", "none", "coward", "defensive", "aggressive", "berserk"})
         Me.ComboBox6.Location = New System.Drawing.Point(9, 277)
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox6.TabIndex = 1
+        Me.ComboBox6.Tag = "disposition"
         '
         'ComboBox5
         '
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Items.AddRange(New Object() {"clean", "sometimes", "stims_when_hurt_little", "stims_when_hurt_lots", "anytime", "always"})
+        Me.ComboBox5.Items.AddRange(New Object() {"<Unknown>", "clean", "sometimes", "stims_when_hurt_little", "stims_when_hurt_lots", "anytime", "always"})
         Me.ComboBox5.Location = New System.Drawing.Point(296, 32)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(143, 21)
         Me.ComboBox5.TabIndex = 1
+        Me.ComboBox5.Tag = "chem_use"
         '
         'ComboBox1
         '
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"no_pref ", "always ", "sometimes ", "be_sure ", "be_careful ", "be_absolutely_sure"})
+        Me.ComboBox1.Items.AddRange(New Object() {"<Unknown>", "no_pref", "always", "sometimes", "be_sure", "be_careful", "be_absolutely_sure"})
         Me.ComboBox1.Location = New System.Drawing.Point(18, 32)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox1.TabIndex = 1
+        Me.ComboBox1.Tag = "area_attack_mode"
         '
         'Label1
         '
@@ -569,17 +664,18 @@ Partial Class AI_Form
         '
         'NumericUpDown5
         '
-        Me.NumericUpDown5.Location = New System.Drawing.Point(615, 6)
+        Me.NumericUpDown5.Location = New System.Drawing.Point(547, 6)
         Me.NumericUpDown5.Name = "NumericUpDown5"
         Me.NumericUpDown5.Size = New System.Drawing.Size(46, 20)
         Me.NumericUpDown5.TabIndex = 3
+        Me.NumericUpDown5.Tag = "chance"
         Me.NumericUpDown5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTipEng.SetToolTip(Me.NumericUpDown5, "The probability of any message, in percent.")
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(526, 9)
+        Me.Label9.Location = New System.Drawing.Point(462, 9)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(83, 13)
         Me.Label9.TabIndex = 2
@@ -587,19 +683,25 @@ Partial Class AI_Form
         '
         'ComboBox8
         '
+        Me.ComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox8.FormattingEnabled = True
         Me.ComboBox8.Location = New System.Drawing.Point(472, 42)
+        Me.ComboBox8.MaxDropDownItems = 20
         Me.ComboBox8.Name = "ComboBox8"
         Me.ComboBox8.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox8.TabIndex = 1
+        Me.ComboBox8.Tag = "general_type"
         '
         'ComboBox4
         '
+        Me.ComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox4.FormattingEnabled = True
         Me.ComboBox4.Location = New System.Drawing.Point(615, 42)
+        Me.ComboBox4.MaxDropDownItems = 20
         Me.ComboBox4.Name = "ComboBox4"
         Me.ComboBox4.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox4.TabIndex = 1
+        Me.ComboBox4.Tag = "body_type"
         '
         'Label4
         '
@@ -627,6 +729,7 @@ Partial Class AI_Form
         Me.NumericUpDown3.Name = "NumericUpDown3"
         Me.NumericUpDown3.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown3.TabIndex = 3
+        Me.NumericUpDown3.Tag = "attack_end"
         Me.NumericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown3.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -638,6 +741,7 @@ Partial Class AI_Form
         Me.NumericUpDown2.Name = "NumericUpDown2"
         Me.NumericUpDown2.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown2.TabIndex = 3
+        Me.NumericUpDown2.Tag = "attack_start"
         Me.NumericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown2.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -751,6 +855,7 @@ Partial Class AI_Form
         Me.NumericUpDown25.Name = "NumericUpDown25"
         Me.NumericUpDown25.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown25.TabIndex = 3
+        Me.NumericUpDown25.Tag = "hit_right_leg_start"
         Me.NumericUpDown25.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown25.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -762,6 +867,7 @@ Partial Class AI_Form
         Me.NumericUpDown23.Name = "NumericUpDown23"
         Me.NumericUpDown23.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown23.TabIndex = 3
+        Me.NumericUpDown23.Tag = "hit_right_arm_start"
         Me.NumericUpDown23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown23.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -773,6 +879,7 @@ Partial Class AI_Form
         Me.NumericUpDown21.Name = "NumericUpDown21"
         Me.NumericUpDown21.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown21.TabIndex = 3
+        Me.NumericUpDown21.Tag = "hit_left_leg_start"
         Me.NumericUpDown21.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown21.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -784,6 +891,7 @@ Partial Class AI_Form
         Me.NumericUpDown19.Name = "NumericUpDown19"
         Me.NumericUpDown19.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown19.TabIndex = 3
+        Me.NumericUpDown19.Tag = "hit_left_arm_start"
         Me.NumericUpDown19.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown19.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -795,6 +903,7 @@ Partial Class AI_Form
         Me.NumericUpDown17.Name = "NumericUpDown17"
         Me.NumericUpDown17.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown17.TabIndex = 3
+        Me.NumericUpDown17.Tag = "hit_head_start"
         Me.NumericUpDown17.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown17.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -806,6 +915,7 @@ Partial Class AI_Form
         Me.NumericUpDown15.Name = "NumericUpDown15"
         Me.NumericUpDown15.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown15.TabIndex = 3
+        Me.NumericUpDown15.Tag = "hit_groin_start"
         Me.NumericUpDown15.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown15.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -817,6 +927,7 @@ Partial Class AI_Form
         Me.NumericUpDown27.Name = "NumericUpDown27"
         Me.NumericUpDown27.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown27.TabIndex = 3
+        Me.NumericUpDown27.Tag = "hit_torso_start"
         Me.NumericUpDown27.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown27.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -828,6 +939,7 @@ Partial Class AI_Form
         Me.NumericUpDown13.Name = "NumericUpDown13"
         Me.NumericUpDown13.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown13.TabIndex = 3
+        Me.NumericUpDown13.Tag = "hit_eyes_start"
         Me.NumericUpDown13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown13.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -839,6 +951,7 @@ Partial Class AI_Form
         Me.NumericUpDown33.Name = "NumericUpDown33"
         Me.NumericUpDown33.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown33.TabIndex = 3
+        Me.NumericUpDown33.Tag = "run_start"
         Me.NumericUpDown33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown33.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -850,6 +963,7 @@ Partial Class AI_Form
         Me.NumericUpDown31.Name = "NumericUpDown31"
         Me.NumericUpDown31.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown31.TabIndex = 3
+        Me.NumericUpDown31.Tag = "move_start"
         Me.NumericUpDown31.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown31.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -861,6 +975,7 @@ Partial Class AI_Form
         Me.NumericUpDown29.Name = "NumericUpDown29"
         Me.NumericUpDown29.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown29.TabIndex = 3
+        Me.NumericUpDown29.Tag = "miss_start"
         Me.NumericUpDown29.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown29.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -872,6 +987,7 @@ Partial Class AI_Form
         Me.NumericUpDown24.Name = "NumericUpDown24"
         Me.NumericUpDown24.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown24.TabIndex = 3
+        Me.NumericUpDown24.Tag = "hit_right_leg_end"
         Me.NumericUpDown24.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown24.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -883,6 +999,7 @@ Partial Class AI_Form
         Me.NumericUpDown22.Name = "NumericUpDown22"
         Me.NumericUpDown22.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown22.TabIndex = 3
+        Me.NumericUpDown22.Tag = "hit_right_arm_end"
         Me.NumericUpDown22.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown22.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -894,6 +1011,7 @@ Partial Class AI_Form
         Me.NumericUpDown20.Name = "NumericUpDown20"
         Me.NumericUpDown20.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown20.TabIndex = 3
+        Me.NumericUpDown20.Tag = "hit_left_leg_end"
         Me.NumericUpDown20.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown20.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -905,6 +1023,7 @@ Partial Class AI_Form
         Me.NumericUpDown18.Name = "NumericUpDown18"
         Me.NumericUpDown18.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown18.TabIndex = 3
+        Me.NumericUpDown18.Tag = "hit_left_arm_end"
         Me.NumericUpDown18.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown18.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -916,6 +1035,7 @@ Partial Class AI_Form
         Me.NumericUpDown16.Name = "NumericUpDown16"
         Me.NumericUpDown16.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown16.TabIndex = 3
+        Me.NumericUpDown16.Tag = "hit_head_end"
         Me.NumericUpDown16.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown16.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -927,6 +1047,7 @@ Partial Class AI_Form
         Me.NumericUpDown14.Name = "NumericUpDown14"
         Me.NumericUpDown14.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown14.TabIndex = 3
+        Me.NumericUpDown14.Tag = "hit_groin_end"
         Me.NumericUpDown14.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown14.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -938,6 +1059,7 @@ Partial Class AI_Form
         Me.NumericUpDown32.Name = "NumericUpDown32"
         Me.NumericUpDown32.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown32.TabIndex = 3
+        Me.NumericUpDown32.Tag = "run_end"
         Me.NumericUpDown32.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown32.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -949,6 +1071,7 @@ Partial Class AI_Form
         Me.NumericUpDown26.Name = "NumericUpDown26"
         Me.NumericUpDown26.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown26.TabIndex = 3
+        Me.NumericUpDown26.Tag = "hit_torso_end"
         Me.NumericUpDown26.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown26.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -960,6 +1083,7 @@ Partial Class AI_Form
         Me.NumericUpDown30.Name = "NumericUpDown30"
         Me.NumericUpDown30.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown30.TabIndex = 3
+        Me.NumericUpDown30.Tag = "move_end"
         Me.NumericUpDown30.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown30.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -971,6 +1095,7 @@ Partial Class AI_Form
         Me.NumericUpDown12.Name = "NumericUpDown12"
         Me.NumericUpDown12.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown12.TabIndex = 3
+        Me.NumericUpDown12.Tag = "hit_eyes_end"
         Me.NumericUpDown12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown12.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -982,6 +1107,7 @@ Partial Class AI_Form
         Me.NumericUpDown28.Name = "NumericUpDown28"
         Me.NumericUpDown28.Size = New System.Drawing.Size(46, 18)
         Me.NumericUpDown28.TabIndex = 3
+        Me.NumericUpDown28.Tag = "miss_end"
         Me.NumericUpDown28.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown28.Value = New Decimal(New Integer() {99999, 0, 0, 0})
         '
@@ -1140,16 +1266,19 @@ Partial Class AI_Form
         '
         'ComboBox0
         '
+        Me.ComboBox0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox0.FormattingEnabled = True
-        Me.ComboBox0.Location = New System.Drawing.Point(151, 6)
+        Me.ComboBox0.Location = New System.Drawing.Point(111, 6)
+        Me.ComboBox0.MaxDropDownItems = 25
         Me.ComboBox0.Name = "ComboBox0"
-        Me.ComboBox0.Size = New System.Drawing.Size(213, 21)
+        Me.ComboBox0.Size = New System.Drawing.Size(212, 21)
+        Me.ComboBox0.Sorted = True
         Me.ComboBox0.TabIndex = 3
         '
         'Label44
         '
         Me.Label44.AutoSize = True
-        Me.Label44.Location = New System.Drawing.Point(88, 10)
+        Me.Label44.Location = New System.Drawing.Point(48, 10)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(57, 13)
         Me.Label44.TabIndex = 4
@@ -1173,33 +1302,54 @@ Partial Class AI_Form
         Me.Button2.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(370, 3)
+        Me.Button2.Location = New System.Drawing.Point(365, 3)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(57, 25)
         Me.Button2.TabIndex = 6
         Me.Button2.Text = "Save"
         Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTipEng.SetToolTip(Me.Button2, "Save AI File")
+        Me.ToolTipEng.SetToolTip(Me.Button2, "Save AI file.")
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(10, 3)
+        Me.Button3.Location = New System.Drawing.Point(12, 3)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(70, 25)
+        Me.Button3.Size = New System.Drawing.Size(30, 25)
         Me.Button3.TabIndex = 6
-        Me.Button3.Text = "Reload"
-        Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTipEng.SetToolTip(Me.Button3, "Reload data from AI file.")
         Me.Button3.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Enabled = False
+        Me.Button5.Location = New System.Drawing.Point(667, 5)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(48, 23)
+        Me.Button5.TabIndex = 7
+        Me.Button5.Text = "Delete"
+        Me.ToolTipEng.SetToolTip(Me.Button5, "Delete this AI packet.")
+        Me.Button5.UseVisualStyleBackColor = True
+        '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.Location = New System.Drawing.Point(329, 3)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(30, 25)
+        Me.Button6.TabIndex = 6
+        Me.ToolTipEng.SetToolTip(Me.Button6, "View/Edit this Packet in text.")
+        Me.Button6.UseVisualStyleBackColor = True
         '
         'AI_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(749, 375)
+        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.NumericUpDown5)
@@ -1213,10 +1363,11 @@ Partial Class AI_Form
         Me.Controls.Add(Me.ComboBox8)
         Me.Controls.Add(Me.ComboBox4)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "AI_Form"
         Me.ShowInTaskbar = False
-        Me.Text = "AI Packet: "
+        Me.Text = "Form"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -1224,6 +1375,7 @@ Partial Class AI_Form
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown8, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1354,6 +1506,17 @@ Partial Class AI_Form
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents ListView1 As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ToolTipEng As System.Windows.Forms.ToolTip
+    Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents AddDrugsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripComboBox1 As System.Windows.Forms.ToolStripComboBox
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents MoveUpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MoveDownToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

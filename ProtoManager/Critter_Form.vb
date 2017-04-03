@@ -1,6 +1,7 @@
 ﻿'Imports System.Drawing.Imaging
 Imports System.Drawing
 Imports System.Reflection
+Imports Prototypes
 
 Friend Class Critter_Form
     Private fCritterPro As CritPro
@@ -537,8 +538,8 @@ MsgError:
             Else
                 PictureBox2.Image = Nothing
             End If
-                Button7.Enabled = True
-            End If
+            Button7.Enabled = True
+        End If
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
@@ -672,6 +673,10 @@ BadFrm:
 
     Private Sub Button6_EnabledChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.EnabledChanged
         If Button6.Enabled Then Button2.Enabled = True
+    End Sub
+
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
+        Create_AIEditForm(fCritterPro.AIPacket)
     End Sub
 
 End Class

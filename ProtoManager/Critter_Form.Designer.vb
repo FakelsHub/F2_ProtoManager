@@ -23,7 +23,7 @@ Partial Class Critter_Form
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("None")
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("None")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Critter_Form))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown7 = New System.Windows.Forms.NumericUpDown()
@@ -321,10 +321,10 @@ Partial Class Critter_Form
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.TextBox33 = New System.Windows.Forms.TextBox()
         Me.GroupBox19 = New System.Windows.Forms.GroupBox()
-        Me.Button8 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.NumericUpDown7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -2128,7 +2128,7 @@ Partial Class Critter_Form
         Me.ListView1.FullRowSelect = True
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.ListView1.HideSelection = False
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListView1.Location = New System.Drawing.Point(6, 135)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
@@ -4045,6 +4045,19 @@ Partial Class Critter_Form
         Me.ToolTip1.SetToolTip(Me.Button6, "Save data in Pro file.")
         Me.Button6.UseVisualStyleBackColor = True
         '
+        'Button8
+        '
+        Me.Button8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
+        Me.Button8.Location = New System.Drawing.Point(569, 351)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(90, 33)
+        Me.Button8.TabIndex = 2
+        Me.Button8.Text = "AI Packet"
+        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTip1.SetToolTip(Me.Button8, "Edit AI Packet this critter.")
+        Me.Button8.UseVisualStyleBackColor = True
+        '
         'Button3
         '
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
@@ -4080,19 +4093,6 @@ Partial Class Critter_Form
         Me.GroupBox19.TabIndex = 9
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Proto ID"
-        '
-        'Button8
-        '
-        Me.Button8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.Location = New System.Drawing.Point(569, 351)
-        Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(90, 33)
-        Me.Button8.TabIndex = 2
-        Me.Button8.Text = "AI Packet"
-        Me.Button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button8, "Edit AI Packet this critter.")
-        Me.Button8.UseVisualStyleBackColor = True
         '
         'Critter_Form
         '

@@ -518,7 +518,7 @@ Public Class Main_Form
     End Sub
 
     Private Sub AIPacketToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AIPacketToolStripMenuItem.Click
-        Create_AIEditForm(0)
+        Create_AIEditForm()
     End Sub
 
 End Class
