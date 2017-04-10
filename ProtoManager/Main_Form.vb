@@ -83,8 +83,6 @@ Public Class Main_Form
 
     Private Sub ToolStripButton9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton9.Click
         If TabControl1.SelectedIndex = 1 Then
-            ListView1.Items.Clear()
-            ListView1.Visible = False
             ReDim Critter_LST(0)
             CreateCritterList()
         Else
@@ -119,8 +117,6 @@ Public Class Main_Form
         fMiscToolStripMenuItem2.Checked = False
         fContainerToolStripMenuItem.Checked = False
         ListView2.ListViewItemSorter = Nothing
-        ListView2.Items.Clear()
-        ListView2.Visible = False
     End Sub
 
     Private Sub fAllToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles fAllToolStripMenuItem1.Click
@@ -519,6 +515,13 @@ Public Class Main_Form
 
     Private Sub AIPacketToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AIPacketToolStripMenuItem.Click
         Create_AIEditForm()
+    End Sub
+
+    Private Sub DontHoverSelectToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DontHoverSelectToolStripMenuItem.Click
+        ListView1.HoverSelection = Not DontHoverSelectToolStripMenuItem.Checked
+        ListView2.HoverSelection = Not DontHoverSelectToolStripMenuItem.Checked
+        ListView1.Activation = Not DontHoverSelectToolStripMenuItem.Checked
+        ListView2.Activation = Not DontHoverSelectToolStripMenuItem.Checked
     End Sub
 
 End Class

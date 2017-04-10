@@ -162,6 +162,9 @@ ExitProg:
         n = UBound(Critter_LST)
         Progress_Form.ProgressBar1.Maximum = n
 
+        Main_Form.ListView1.BeginUpdate()
+        Main_Form.ListView1.Items.Clear()
+
         GetMsgData("pro_crit.msg")
         ReDim Critter_NAME(n)
         For n = 0 To UBound(Critter_LST)
@@ -180,15 +183,14 @@ ExitProg:
             End If
             Main_Form.ListView1.Items(n).SubItems.Add(&H1000001 + n)
             Progress_Form.ProgressBar1.Value = n
-            Application.DoEvents()
         Next
+        Main_Form.ListView1.EndUpdate()
 
         Current_Path = Check_File("art\critters\critters.lst", True)
         Critters_FRM = IO.File.ReadAllLines(Current_Path & "\art\critters\critters.lst")
         ClearTrimLine(Critters_FRM)
         ClearEmptyLine(Critters_FRM)
 
-        Main_Form.ListView1.Visible = True
         Progress_Form.Close()
     End Sub
 
@@ -242,6 +244,9 @@ ExitProg:
             Items_LST(n, 0) = crtfile(n)
         Next
         '
+        Application.DoEvents()
+        Main_Form.ListView2.BeginUpdate()
+        Main_Form.ListView2.Items.Clear()
         x = 0
         Progress_Form.ProgressBar1.Maximum = n
         ReDim Items_NAME(n - 1)
@@ -261,8 +266,10 @@ ExitProg:
                 x += 1
             End If
             Progress_Form.ProgressBar1.Value = n
-            Application.DoEvents()
         Next
+        Main_Form.ListView2.Visible = True
+        Main_Form.ListView2.EndUpdate()
+        Application.DoEvents()
         '
         Current_Path = Check_File("proto\misc\misc.lst")
         Misc_LST = IO.File.ReadAllLines(Current_Path & "\proto\misc\misc.lst")
@@ -286,7 +293,6 @@ ExitProg:
             End If
         Next
         '
-        Main_Form.ListView2.Visible = True
         Progress_Form.Close()
         Exit Sub
 
@@ -301,6 +307,9 @@ CrtLstBadFile:
         Dim n As Integer = 0
         Dim filter As String = Nothing
         Dim x As UShort = 0
+
+        Main_Form.ListView2.BeginUpdate()
+        Main_Form.ListView2.Items.Clear()
 
         If Main_Form.fWeaponToolStripMenuItem3.Checked = True Then filter = "Weapon"
         If Main_Form.fAmmoToolStripMenuItem2.Checked = True Then filter = "Ammo"
@@ -337,7 +346,7 @@ CrtLstBadFile:
                 Main_Form.ListView2.Items(n).Tag = n 'запись индекса(pid) итема в item.lst
             End If
         Next
-        Main_Form.ListView2.Visible = True
+        Main_Form.ListView2.EndUpdate()
     End Sub
 
     Friend Sub ClearTrimLine(ByRef Massive() As String)

@@ -58,7 +58,7 @@ Partial Class Progress_Form
         Me.Name = "Progress_Form"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.TopMost = True
         Me.UseWaitCursor = True
         Me.ResumeLayout(False)
