@@ -88,6 +88,43 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Ищет локализованную строку, похожую на packet_num=
+        '''aggression=0
+        '''max_dist=0
+        '''min_hp=0
+        '''min_to_hit=0
+        '''called_freq=1
+        '''secondary_freq=0
+        '''chance=0
+        '''outline_color=55
+        '''color=58
+        '''font=101
+        '''general_type=None
+        '''body_type=None
+        '''attack_end=2059
+        '''attack_start=2040
+        '''hit_eyes_end=1089
+        '''hit_eyes_start=1080
+        '''hit_groin_end=1099
+        '''hit_groin_start=1090
+        '''hit_head_end=1009
+        '''hit_head_start=1000
+        '''hit_left_arm_end=1019
+        '''hit_left_arm_start=1010
+        '''hit_left_leg_end=1079
+        '''hit_left_leg_start=1070
+        '''hit_right_arm_end=1029
+        '''hit_right_arm_start=1020
+        '''hit_right_leg_end=1069
+        '''hit_r [остаток строки не уместился]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property defaultAI() As String
+            Get
+                Return ResourceManager.GetString("defaultAI", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property drugs() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("drugs", resourceCulture)

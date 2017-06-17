@@ -1,168 +1,376 @@
 ﻿Imports System.Drawing
+Imports System.IO
+Imports Microsoft.VisualBasic.FileIO
+Imports System.Windows.Forms
 
 Public Class AI_Form
 
-    Private Const AIfile As String = "data\AI.txt"
-    Private AIpath As String        'текущий путь до AI.txt
+    Private Enum MoveDir As SByte
+        Up = -1
+        Down = 1
+    End Enum
 
-    Private AI_Packet(,) As String   'Список всех имен
+    Private aiPath As String                            'текущий путь к AI.txt
+    Private AIPacket As Dictionary(Of String, Integer)  'Список всех имен, и их номера строк в файле 
 
     Private fReady As Boolean
 
     Private Const _width As Integer = 287
     Private Const _capform As String = "] AI Packet Editor"
 
-    Friend Sub Initialize(ByVal AIPacket As Integer)
-        ToolStripComboBox1.Items.AddRange(Items_NAME)
-        AIpath = Check_File("data\aigenmsg.txt") & "\data\aigenmsg.txt"
-        ComboBox8.Items.AddRange((From t In AI.GetAll_AIPacket(AIpath)).ToArray)
-        ClearItem(ComboBox8)
-        AIpath = Check_File("data\aibdymsg.txt") & "\data\aibdymsg.txt"
-        ComboBox4.Items.AddRange((From t In AI.GetAll_AIPacket(AIpath)).ToArray)
-        ClearItem(ComboBox4)
-        '
-        AIpath = Check_File(AIfile) & "\" & AIfile
-        AI_Packet = AI.GetAll_AIPacket(AIpath)
-        ComboBox0.Items.AddRange((From t In AI_Packet Take (AI_Packet.GetLength(1))).ToArray)
-        '
-        If AIPacket <> -1 Then
-            For i As Int32 = 0 To AI_Packet.GetLength(1) - 1
-                If AI.GetIniParam(AI_Packet(0, i), "packet_num", AIpath) = AIPacket Then
-                    ComboBox0.SelectedIndex = i
+    Private Const AIGENMSG As String = "\data\aigenmsg.txt"
+    Private Const AIBODYMSG As String = "\data\aibdymsg.txt"
+
+
+    Friend Sub New()
+        InitializeComponent()
+
+        ShowPacketIDMenuItem.Checked = ShowAIPacket
+        SortedListMenuItem.Checked = SortedAIPacket
+        ComboBox0.Sorted = SortedAIPacket
+
+        aiPath = DatFiles.CheckFile(AI.AIFILE) & AI.AIFILE
+        AIPacket = AI.GetAll_AIPacket(aiPath)
+    End Sub
+
+    Friend Sub Initialize(ByVal numPacket As Integer)
+        For Each i As ItemsLst In Items_LST
+            If i.itemType = Prototypes.ItemType.Drugs Then
+                ToolStripComboBox1.Items.Add(String.Format("{0}| {1}", Strings.RSet(CInt(i.proFile.Remove(8, 4)), 3), i.itemName))
+            End If
+        Next
+
+        Dim tmpPath As String = DatFiles.CheckFile(AIGENMSG) & AIGENMSG
+        ComboBox8.Items.AddRange(AI.GetAll_AIPacket(tmpPath).Keys.ToArray)
+
+        tmpPath = DatFiles.CheckFile(AIBODYMSG) & AIBODYMSG
+        ComboBox4.Items.AddRange(AI.GetAll_AIPacket(tmpPath).Keys.ToArray)
+
+        PacketList(Me) 'ComboBox0.Items.AddRange((From t In AI_Packet Take (AI_Packet.GetLength(1))).ToArray)
+
+        If numPacket <> -1 Then
+            For Each packet As String In AIPacket.Keys
+                If AI.GetIniParam(packet, "packet_num", aiPath) = numPacket Then
+                    ComboBox0.SelectedItem = IIf(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket, 3), packet), packet)
                     Exit For
                 End If
             Next
         Else
             ComboBox0.SelectedIndex = 0
         End If
-        '
-        Me.Text = "[" & ComboBox0.Text & _capform
+
+        Dim packetName As String = AI.GetPacketName(ComboBox0.SelectedItem.ToString)
+        Me.Text = "[" & packetName & _capform
         Me.Width -= _width
+        SetControlValue(packetName)
         Me.Show()
     End Sub
 
-    ' Рекурсивный перебор контролов класса формы
-    Private Sub FormControl(ByRef сntr As Control, ByRef Section As String)
-        Dim KeyValue As String
-        For Each _control As Control In сntr.Controls
-            If TypeOf _control Is NumericUpDown Then
-                _control.Text = AI.GetIniParam(Section, _control.Tag, AIpath)
-            ElseIf (TypeOf _control Is ComboBox) And _control.Tag <> Nothing Then
-                KeyValue = AI.GetIniStringParam(Section, _control.Tag, AIpath)
-                If KeyValue = "<Unknown>" Then _control.BackColor = Color.Linen Else _control.BackColor = Color.White
-                _control.Text = KeyValue
-            ElseIf TypeOf _control Is GroupBox Then
-                FormControl(_control, Section)
-            End If
-        Next
-    End Sub
-
-    Private Sub ClearItem(ByVal cntrl As ComboBox)
-        Dim c As Integer = cntrl.Items.Count - 1
-        For i = c To (c / 2) Step -1
-            cntrl.Items.RemoveAt(i)
-        Next
-    End Sub
-
-    Private Sub Taunts_Show(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        If sender.tag = 0 Then
+    Private Sub Taunts_Show(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
+        If CInt(CType(sender, Button).Tag) = 0 Then
             Me.Width += _width
-            sender.tag = 1
-            sender.Image = My.Resources.LeftArrow
+            CType(sender, Button).Tag = 1
+            CType(sender, Button).Image = My.Resources.LeftArrow
         Else
             Me.Width -= _width
-            sender.tag = 0
-            sender.Image = My.Resources.RightArrow
+            CType(sender, Button).Tag = 0
+            CType(sender, Button).Image = My.Resources.RightArrow
         End If
     End Sub
 
-    Private Sub Select_AI_Packet(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox0.SelectedIndexChanged
-        fReady = False
-        Dim Section As String = ComboBox0.Text
+    Private Sub Select_AI_Packet(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox0.SelectedIndexChanged
+        Dim Section As String = AI.GetPacketName(ComboBox0.Text)
+        If Not (fReady) OrElse Section = String.Empty Then Exit Sub
         Me.Text = "[" & Section & _capform
         SetControlValue(Section)
-        fReady = True
     End Sub
 
     Private Sub SetControlValue(ByRef Section As String)
+        fReady = False
         FormControl(Me, Section)
+
         'chem_primary_desire
         ListView1.Items.Clear()
-        Dim drug_lst() As String = Split(AI.GetIniStringParam(Section, "chem_primary_desire", AIpath), ",")
-        If drug_lst(0) <> "<Unknown>" And drug_lst(0) <> "-1" Then
+        Dim drug_lst() As String = Split(AI.GetIniStringParam(Section, "chem_primary_desire", aiPath), ",")
+        If drug_lst(0) <> AI.Unknown And drug_lst(0) <> "-1" Then
             For i = 0 To drug_lst.GetLength(0) - 1
-                ListView1.Items.Add(drug_lst(i))
-                ListView1.Items(i).SubItems.Add(Items_NAME(drug_lst(i) - 1))
+                ListView1.Items.Add(New ListViewItem({drug_lst(i), Items_LST(drug_lst(i) - 1).itemName}))
             Next
         Else
-            ListView1.Items.Add("-1")
-            ListView1.Items(0).SubItems.Add(drug_lst(0)) '"<Unknown>"
+            ListView1.Items.Add(New ListViewItem({"-1", drug_lst(0)})) 'Unknown
         End If
+
+        SaveButton.Enabled = False
+        fReady = True
     End Sub
 
-    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
-        Dim AITxtfrm As New AI_TextForm
+    Private Sub TextView(ByVal sender As Object, ByVal e As EventArgs) Handles Button6.Click
+        Dim sKey As String = AI.GetPacketName(ComboBox0.SelectedItem.ToString)
+        Dim eKey As String = String.Empty
+        If SortedListMenuItem.Checked Then
+            Dim keys() As String = AIPacket.Keys.ToArray
+            For n = 0 To keys.Length - 1
+                If sKey = keys(n) Then
+                    eKey = keys(n + 1)
+                    Exit For
+                End If
+            Next
+        Else
+            Dim sIndx As Integer = ComboBox0.SelectedIndex + 1
+            If sIndx >= ComboBox0.Items.Count Then
+                eKey = AI.endPackedID
+            Else
+                eKey = AI.GetPacketName(ComboBox0.Items(sIndx).ToString)
+            End If
+        End If
+        Dim AITxtfrm As New AI_TextForm(AIPacket.Item(sKey), AIPacket.Item(eKey), aiPath, SaveButton.Enabled)
+
         AITxtfrm.Owner = Me
-        AITxtfrm.Text &= ComboBox0.Text
-        AITxtfrm.Initialize(CInt(AI_Packet(1, ComboBox0.SelectedIndex)), CInt(AI_Packet(1, ComboBox0.SelectedIndex + 1)), AIpath)
+        AITxtfrm.Text &= sKey
         AITxtfrm.Show()
         Button1.Enabled = True
     End Sub
 
-    Private Sub ToolStripComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripComboBox1.SelectedIndexChanged
+    Private Sub ToolStripComboBox1_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripComboBox1.SelectedIndexChanged
         AddDrugsToolStripMenuItem.Enabled = True
         ContextMenuStrip1.Focus()
     End Sub
 
-    Private Sub AddDrugsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddDrugsToolStripMenuItem.Click
-        ListView1.Items.Add(ToolStripComboBox1.SelectedIndex + 1)
-        ListView1.Items(ListView1.Items.Count - 1).SubItems.Add(Items_NAME(ToolStripComboBox1.SelectedIndex))
+    Private Sub AddDrugs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddDrugsToolStripMenuItem.Click
+        For n As Integer = 0 To ListView1.Items.Count - 1
+            If ListView1.Items(n).Text = "-1" Then
+                ListView1.Items.RemoveAt(n)
+                Exit For
+            End If
+        Next
+        Dim pid As Integer = ToolStripComboBox1.Text.Remove(3)
+        ListView1.Items.Add(New ListViewItem({pid, Items_LST(pid - 1).itemName}))
+        SaveButton.Enabled = True
     End Sub
 
-    Private Sub ListView1_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles ListView1.AfterLabelEdit
+    Private Sub ListView1_AfterLabelEdit(ByVal sender As Object, ByVal e As LabelEditEventArgs) Handles ListView1.AfterLabelEdit
         If e.Label = Nothing Or e.CancelEdit Then Exit Sub
         Try
-            ListView1.Items(e.Item).SubItems(1).Text = Items_NAME(CInt(e.Label) - 1)
+            ListView1.Items(e.Item).SubItems(1).Text = Items_LST(CInt(e.Label) - 1).itemName
         Catch
             ListView1.Items(e.Item).SubItems(1).Text = "<Error PID>"
         End Try
     End Sub
 
-    Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
+    Private Sub Delete(ByVal sender As Object, ByVal e As EventArgs) Handles DeleteToolStripMenuItem.Click
         On Error Resume Next
         ListView1.Items.RemoveAt(ListView1.FocusedItem.Index)
+        SaveButton.Enabled = True
     End Sub
 
-    Private Sub MoveUpToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveUpToolStripMenuItem.Click
+    Private Sub MoveUp(ByVal sender As Object, ByVal e As EventArgs) Handles MoveUpToolStripMenuItem.Click
+        MoveItem(MoveDir.Up)
+    End Sub
+
+    Private Sub MoveDown(ByVal sender As Object, ByVal e As EventArgs) Handles MoveDownToolStripMenuItem.Click
+        MoveItem(MoveDir.Down)
+    End Sub
+
+    Private Sub OpenFile(ByVal sender As Object, ByVal e As EventArgs) Handles Button3.Click
+        OpenFileDialog1.InitialDirectory = Game_Path
+        If OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If OpenFileDialog1.FileName.Length = 0 Then OpenFile(Nothing, Nothing)
+            aiPath = OpenFileDialog1.FileName
+        Else
+            Exit Sub
+        End If
+        '
         Try
-            Dim sel_index As Integer = ListView1.FocusedItem.Index
-            Dim l_sel As ListViewItem = ListView1.Items(sel_index).Clone
-            Dim l_up As ListViewItem = ListView1.Items(sel_index - 1).Clone
-            ListView1.Items(sel_index - 1).Text = l_sel.Text
-            ListView1.Items(sel_index - 1).SubItems(1).Text = l_sel.SubItems(1).Text
-            ListView1.Items(sel_index).Text = l_up.Text
-            ListView1.Items(sel_index).SubItems(1).Text = l_up.SubItems(1).Text
-            ListView1.Items(sel_index - 1).Selected = True
-        Catch
+            AIPacket = AI.GetAll_AIPacket(aiPath)
+            PacketList(Me)
+            ComboBox0.SelectedIndex = 0
+        Catch ex As Exception
+            MsgBox("This file does not contain PacketAI information, or has an incorrect format.", MsgBoxStyle.Critical, "Wrong file format")
+            Exit Sub
         End Try
-    End Sub
-
-    Private Sub MoveDownToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MoveDownToolStripMenuItem.Click
-        Try
-            Dim sel_index As Integer = ListView1.FocusedItem.Index
-            Dim l_sel As ListViewItem = ListView1.Items(sel_index).Clone
-            Dim l_down As ListViewItem = ListView1.Items(sel_index + 1).Clone
-            ListView1.Items(sel_index + 1).Text = l_sel.Text
-            ListView1.Items(sel_index + 1).SubItems(1).Text = l_sel.SubItems(1).Text
-            ListView1.Items(sel_index).Text = l_down.Text
-            ListView1.Items(sel_index).SubItems(1).Text = l_down.SubItems(1).Text
-            ListView1.Items(sel_index + 1).Selected = True
-        Catch
-        End Try
-    End Sub
-
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Select_AI_Packet(Nothing, Nothing)
+        SaveButton.Enabled = False
     End Sub
 
+    Private Sub AI_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If SaveButton.Enabled Then
+            Dim btn As MsgBoxResult = MsgBox("Save changes to AI file?", MsgBoxStyle.YesNoCancel, "Attention!")
+            If btn = MsgBoxResult.Yes Then
+                SaveAI(Nothing, Nothing)
+            ElseIf btn = MsgBoxResult.Cancel Then
+                e.Cancel = True
+                Exit Sub
+            End If
+        End If
+        '
+        ShowAIPacket = ShowPacketIDMenuItem.Checked
+        SortedAIPacket = SortedListMenuItem.Checked
+        Main_Form.ToolStripStatusLabel1.Text = String.Empty
+        Main_Form.Focus()
+    End Sub
+
+    Private Sub SaveAI(ByVal sender As Object, ByVal e As EventArgs) Handles SaveButton.Click
+        If Not (File.Exists(SaveMOD_Path & AI.AIFILE)) Then FileSystem.CopyFile(aiPath, SaveMOD_Path & AI.AIFILE)
+        Dim Section As String = AI.GetPacketName(ComboBox0.Text)
+        aiPath = SaveMOD_Path & AI.AIFILE
+        'chem_primary_desire
+        Dim List As String = String.Empty
+        For Each ic As ListViewItem In ListView1.Items 'ListView.ListViewItemCollection
+            If ic.Text = "-1" Then Exit For
+            If List.Length > 0 Then List &= ","
+            List &= ic.Text
+        Next
+        If List.Length > 0 Then AI.PutIniParam(Section, "chem_primary_desire", List, aiPath)
+        SubSaveControl(Me, Section)
+
+        SaveButton.Enabled = False
+    End Sub
+
+    ' Рекурсивный перебор контролов класса формы
+    Private Sub FormControl(ByRef сntr As Control, ByRef Section As String)
+        Dim KeyValue As String
+
+        Try
+            For Each _control As Control In сntr.Controls
+                If TypeOf _control Is NumericUpDown Then
+                    _control.Text = AI.GetIniParam(Section, _control.Tag.ToString, aiPath)
+                ElseIf (TypeOf _control Is ComboBox) And _control.Tag IsNot Nothing Then
+                    KeyValue = AI.GetIniStringParam(Section, _control.Tag.ToString, aiPath)
+                    If KeyValue = AI.Unknown Then _control.BackColor = Color.Linen Else _control.BackColor = SystemColors.Window
+                    _control.Text = KeyValue
+                ElseIf TypeOf _control Is GroupBox Then
+                    FormControl(_control, Section)
+                End If
+            Next
+        Catch ex As Exception
+            MsgBox("An error occurred while reading of AI block parameters.")
+            ReloadFile(Me, False)
+            fReady = True
+            ComboBox0.SelectedIndex = 0
+        End Try
+
+    End Sub
+
+    Private Sub SubSaveControl(ByRef сntr As Control, ByRef Section As String)
+        Dim result As Long
+
+        For Each _control As Control In сntr.Controls
+            If TypeOf _control Is NumericUpDown Then
+                result = AI.PutIniParam(Section, _control.Tag.ToString, _control.Text, aiPath)
+
+            ElseIf (TypeOf _control Is ComboBox) And _control.Tag IsNot Nothing Then
+                If _control.Text = AI.Unknown Then Continue For
+                result = AI.PutIniParam(Section, _control.Tag.ToString, _control.Text, aiPath)
+
+            ElseIf TypeOf _control Is GroupBox Then
+                SubSaveControl(_control, Section)
+            End If
+        Next
+    End Sub
+
+    Private Sub NumericValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown2.ValueChanged, NumericUpDown9.ValueChanged, NumericUpDown8.ValueChanged, NumericUpDown7.ValueChanged, NumericUpDown5.ValueChanged, NumericUpDown4.ValueChanged, NumericUpDown33.ValueChanged, NumericUpDown32.ValueChanged, NumericUpDown31.ValueChanged, NumericUpDown30.ValueChanged, NumericUpDown3.ValueChanged, NumericUpDown29.ValueChanged, NumericUpDown28.ValueChanged, NumericUpDown27.ValueChanged, NumericUpDown26.ValueChanged, NumericUpDown25.ValueChanged, NumericUpDown24.ValueChanged, NumericUpDown23.ValueChanged, NumericUpDown22.ValueChanged, NumericUpDown21.ValueChanged, NumericUpDown20.ValueChanged, NumericUpDown19.ValueChanged, NumericUpDown18.ValueChanged, NumericUpDown17.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown15.ValueChanged, NumericUpDown14.ValueChanged, NumericUpDown13.ValueChanged, NumericUpDown12.ValueChanged, NumericUpDown11.ValueChanged, NumericUpDown1.ValueChanged
+        If fReady Then SaveButton.Enabled = True
+    End Sub
+
+    Private Sub SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged, ComboBox9.SelectedIndexChanged, ComboBox8.SelectedIndexChanged, ComboBox7.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, ComboBox5.SelectedIndexChanged, ComboBox4.SelectedIndexChanged, ComboBox3.SelectedIndexChanged, ComboBox2.SelectedIndexChanged, ComboBox10.SelectedIndexChanged
+        If fReady Then SaveButton.Enabled = True
+    End Sub
+
+    Private Sub AI_Form_Activated(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Activated
+        Main_Form.ToolStripStatusLabel1.Text = aiPath
+    End Sub
+
+    Friend Shared Sub ReloadFile(ByVal owner As AI_Form, Optional ByVal ready As Boolean = True)
+        owner.aiPath = SaveMOD_Path & AI.AIFILE
+        owner.AIPacket.Clear()
+        owner.AIPacket = AI.GetAll_AIPacket(owner.aiPath)
+
+        Dim indx = owner.ComboBox0.SelectedIndex
+        PacketList(owner)
+        If ready Then owner.ComboBox0.SelectedIndex = indx
+    End Sub
+
+    Private Sub Sorted_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SortedListMenuItem.Click
+        Dim key As String = ComboBox0.SelectedItem.ToString
+        fReady = False
+        If SortedListMenuItem.Checked Then
+            ComboBox0.Sorted = True
+        Else
+            ComboBox0.Sorted = False
+            PacketList(Me)
+        End If
+        ComboBox0.SelectedItem = key
+        fReady = True
+    End Sub
+
+    Private Sub ShowPacketID(ByVal sender As Object, ByVal e As EventArgs) Handles ShowPacketIDMenuItem.Click
+        Dim packet As String = AI.GetPacketName(ComboBox0.SelectedItem.ToString)
+        fReady = False
+        PacketList(Me)
+        If ShowPacketIDMenuItem.Checked Then
+            For n = 0 To ComboBox0.Items.Count
+                If AI.GetPacketName(ComboBox0.Items.Item(n).ToString) = packet Then
+                    ComboBox0.SelectedIndex = n
+                    Exit For
+                End If
+            Next
+        Else
+            ComboBox0.SelectedItem = packet
+        End If
+        fReady = True
+    End Sub
+
+    Private Shared Sub PacketList(ByVal frm As AI_Form)
+        If frm.ComboBox0.Items.Count > 0 Then frm.ComboBox0.Items.Clear()
+        Dim keys() As String = frm.AIPacket.Keys.ToArray
+        Array.Resize(keys, keys.Count - 1)
+        If frm.ShowPacketIDMenuItem.Checked Then
+            For n = 0 To keys.Length - 1
+                keys(n) = String.Format("{0}| {1}", Strings.RSet(AI.GetIniParam(keys(n), "packet_num", frm.aiPath).ToString, 3), keys(n).ToString)
+            Next
+        End If
+        frm.ComboBox0.Items.AddRange(keys)
+    End Sub
+
+    Private Sub MoveItem(ByVal Direction As MoveDir)
+        Try
+            Dim selIndex As Integer = ListView1.FocusedItem.Index
+            Dim source As ListViewItem = ListView1.Items(selIndex).Clone
+            Dim dest As ListViewItem = ListView1.Items(selIndex + Direction).Clone
+            ListView1.Items(selIndex + Direction).Text = source.Text
+            ListView1.Items(selIndex + Direction).SubItems(1).Text = source.SubItems(1).Text
+            ListView1.Items(selIndex).Text = dest.Text
+            ListView1.Items(selIndex).SubItems(1).Text = dest.SubItems(1).Text
+            ListView1.Items(selIndex + Direction).Selected = True
+            ListView1.Items(selIndex + Direction).Focused = True
+        Catch
+        End Try
+        SaveButton.Enabled = True
+    End Sub
+
+    Private Sub AddPacket_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button4.Click
+        Dim keys() As String = AIPacket.Keys.ToArray
+        Dim maxNumPacket As Integer = 0
+        For Each k As String In keys
+            If k = AI.endPackedID Then Continue For
+            Dim num As Integer = AI.GetIniParam(k, "packet_num", aiPath)
+            If num > maxNumPacket Then maxNumPacket = num
+        Next
+        maxNumPacket += 1
+        Dim name As String = InputBox("Enter the name for new AI Packet", "Create AI Packet number: " & maxNumPacket)
+        If name.Length = 0 Then Exit Sub
+
+        Dim pathAI As String = SaveMOD_Path & AI.AIFILE
+        If Not (File.Exists(pathAI)) Then FileSystem.CopyFile(aiPath, pathAI)
+        File.AppendAllText(pathAI, vbCrLf & "[" & name & "]" & vbCrLf)
+        File.AppendAllText(pathAI, My.Resources.defaultAI, System.Text.Encoding.Default)
+        AI.PutIniParam(name, "packet_num", maxNumPacket, pathAI)
+        ReloadFile(Me, False)
+
+        If ShowPacketIDMenuItem.Checked Then
+            ComboBox0.SelectedItem = String.Format("{0}| {1}", Strings.RSet(maxNumPacket.ToString, 3), name)
+        Else
+            ComboBox0.SelectedItem = name
+        End If
+    End Sub
 End Class

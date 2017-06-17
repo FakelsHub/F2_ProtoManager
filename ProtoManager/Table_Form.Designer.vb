@@ -56,12 +56,13 @@ Partial Class Table_Form
         '
         Me.CheckedListBox1.CheckOnClick = True
         Me.CheckedListBox1.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.CheckedListBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CheckedListBox1.FormattingEnabled = True
         Me.CheckedListBox1.Items.AddRange(New Object() {"Damage Type", "Min Damage", "Max Damage", "Range Primary Attack", "Range Secondary Attack", "AP Cost Primary Attack", "AP Cost Secondary Attack", "Max Ammo", "Rounds Brust", "Caliber", "Ammo PID", "Min Strength", "Critical Fail", "Cost", "Weight", "Size", "Perk", "Shoot Thru [Flag]", "Light Thru [Flag]"})
-        Me.CheckedListBox1.Location = New System.Drawing.Point(6, 6)
+        Me.CheckedListBox1.Location = New System.Drawing.Point(3, 3)
         Me.CheckedListBox1.Name = "CheckedListBox1"
         Me.CheckedListBox1.ScrollAlwaysVisible = True
-        Me.CheckedListBox1.Size = New System.Drawing.Size(211, 289)
+        Me.CheckedListBox1.Size = New System.Drawing.Size(256, 306)
         Me.CheckedListBox1.TabIndex = 0
         '
         'ContextMenuStrip1
@@ -93,7 +94,7 @@ Partial Class Table_Form
         Me.TabControl1.Location = New System.Drawing.Point(3, 2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(231, 330)
+        Me.TabControl1.Size = New System.Drawing.Size(270, 339)
         Me.TabControl1.TabIndex = 1
         '
         'TabPage6
@@ -103,7 +104,7 @@ Partial Class Table_Form
         Me.TabPage6.Location = New System.Drawing.Point(4, 23)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(223, 303)
+        Me.TabPage6.Size = New System.Drawing.Size(262, 312)
         Me.TabPage6.TabIndex = 5
         Me.TabPage6.Text = "Critter"
         '
@@ -111,12 +112,13 @@ Partial Class Table_Form
         '
         Me.CheckedListBox6.CheckOnClick = True
         Me.CheckedListBox6.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.CheckedListBox6.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CheckedListBox6.FormattingEnabled = True
         Me.CheckedListBox6.Items.AddRange(New Object() {"Strength", "Perception", "Endurance", "Charisma", "Intelligence", "Agility", "Luck", "Action Point", "Armor Class", "Health Point", "Healing Rate", "Melee Damage", "Critical Chance", "Sequence", "Exp Value", "Damage Type", "Small Guns [Skill]", "Big Guns [Skill]", "Energy Weapons [Skill]", "Unarmed [Skill]", "Melee [Skill]", "Throwing [Skill]", "Resistance Radiation", "Resistance Poison", "Normal DT|DR", "Laser DT|DR", "Fire DT|DR", "Plasma DT|DR", "Electrical DT|DR", "Explosion DT|DR", "EMP DT|DR", "Base Normal DT|DR", "Base Laser DT|DR", "Base Fire DT|DR", "Base Plasma DT|DR", "Base Electrical DT|DR", "Base Explosion DT|DR", "Base EMP DT|DR"})
-        Me.CheckedListBox6.Location = New System.Drawing.Point(6, 6)
+        Me.CheckedListBox6.Location = New System.Drawing.Point(3, 3)
         Me.CheckedListBox6.Name = "CheckedListBox6"
         Me.CheckedListBox6.ScrollAlwaysVisible = True
-        Me.CheckedListBox6.Size = New System.Drawing.Size(211, 289)
+        Me.CheckedListBox6.Size = New System.Drawing.Size(256, 306)
         Me.CheckedListBox6.TabIndex = 3
         '
         'TabPage1
@@ -126,7 +128,7 @@ Partial Class Table_Form
         Me.TabPage1.Location = New System.Drawing.Point(4, 23)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(223, 303)
+        Me.TabPage1.Size = New System.Drawing.Size(262, 312)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Weapon"
         '
@@ -137,7 +139,7 @@ Partial Class Table_Form
         Me.TabPage2.Location = New System.Drawing.Point(4, 23)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(223, 303)
+        Me.TabPage2.Size = New System.Drawing.Size(262, 312)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Ammo"
         '
@@ -145,12 +147,13 @@ Partial Class Table_Form
         '
         Me.CheckedListBox2.CheckOnClick = True
         Me.CheckedListBox2.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.CheckedListBox2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CheckedListBox2.FormattingEnabled = True
         Me.CheckedListBox2.Items.AddRange(New Object() {"Cost", "Weight", "Caliber", "Quantity", "AC Adjust", "DR Adjust", "Dam Mult", "Dam Div", "Size", "Shoot Thru [Flag]", "Light Thru [Flag]"})
-        Me.CheckedListBox2.Location = New System.Drawing.Point(6, 6)
+        Me.CheckedListBox2.Location = New System.Drawing.Point(3, 3)
         Me.CheckedListBox2.Name = "CheckedListBox2"
         Me.CheckedListBox2.ScrollAlwaysVisible = True
-        Me.CheckedListBox2.Size = New System.Drawing.Size(211, 289)
+        Me.CheckedListBox2.Size = New System.Drawing.Size(256, 306)
         Me.CheckedListBox2.TabIndex = 1
         '
         'TabPage3
@@ -160,7 +163,7 @@ Partial Class Table_Form
         Me.TabPage3.Location = New System.Drawing.Point(4, 23)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(223, 303)
+        Me.TabPage3.Size = New System.Drawing.Size(262, 312)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Armor"
         '
@@ -168,12 +171,13 @@ Partial Class Table_Form
         '
         Me.CheckedListBox3.CheckOnClick = True
         Me.CheckedListBox3.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.CheckedListBox3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CheckedListBox3.FormattingEnabled = True
         Me.CheckedListBox3.Items.AddRange(New Object() {"Cost", "Weight", "Armor Class", "Normal DT|DR", "Laser DT|DR", "Fire DT|DR", "Plasma DT|DR", "Electrical DT|DR", "Explosion DT|DR", "EMP DT|DR", "Perk", "Size", "Shoot Thru [Flag]", "Light Thru [Flag]"})
-        Me.CheckedListBox3.Location = New System.Drawing.Point(6, 6)
+        Me.CheckedListBox3.Location = New System.Drawing.Point(3, 3)
         Me.CheckedListBox3.Name = "CheckedListBox3"
         Me.CheckedListBox3.ScrollAlwaysVisible = True
-        Me.CheckedListBox3.Size = New System.Drawing.Size(211, 289)
+        Me.CheckedListBox3.Size = New System.Drawing.Size(256, 306)
         Me.CheckedListBox3.TabIndex = 2
         '
         'TabPage4
@@ -183,7 +187,7 @@ Partial Class Table_Form
         Me.TabPage4.Location = New System.Drawing.Point(4, 23)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(223, 303)
+        Me.TabPage4.Size = New System.Drawing.Size(262, 312)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Drugs"
         '
@@ -191,12 +195,13 @@ Partial Class Table_Form
         '
         Me.CheckedListBox4.CheckOnClick = True
         Me.CheckedListBox4.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.CheckedListBox4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CheckedListBox4.FormattingEnabled = True
         Me.CheckedListBox4.Items.AddRange(New Object() {"Cost", "Weight", "Modify Stat 0", "Modify Stat 1", "Modify Stat 2", "Instant Amount 0", "Instant Amount 1", "Instant Amount 2", "First Amount 0", "First Amount 1", "First Amount 2", "First Duration Time", "Second Amount 0", "Second Amount 1", "Second Amount 2", "Second Duration Time", "Addiction Effect", "Addiction Onset Time", "Addiction Rate", "Size", "Shoot Thru [Flag]", "Light Thru [Flag]"})
-        Me.CheckedListBox4.Location = New System.Drawing.Point(6, 6)
+        Me.CheckedListBox4.Location = New System.Drawing.Point(3, 3)
         Me.CheckedListBox4.Name = "CheckedListBox4"
         Me.CheckedListBox4.ScrollAlwaysVisible = True
-        Me.CheckedListBox4.Size = New System.Drawing.Size(211, 289)
+        Me.CheckedListBox4.Size = New System.Drawing.Size(256, 306)
         Me.CheckedListBox4.TabIndex = 3
         '
         'TabPage5
@@ -206,7 +211,7 @@ Partial Class Table_Form
         Me.TabPage5.Location = New System.Drawing.Point(4, 23)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(223, 303)
+        Me.TabPage5.Size = New System.Drawing.Size(262, 312)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Misc"
         '
@@ -214,12 +219,13 @@ Partial Class Table_Form
         '
         Me.CheckedListBox5.CheckOnClick = True
         Me.CheckedListBox5.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.CheckedListBox5.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CheckedListBox5.FormattingEnabled = True
         Me.CheckedListBox5.Items.AddRange(New Object() {"Cost", "Weight", "Size", "Power PID", "Power Type", "Charges", "Shoot Thru [Flag]", "Light Thru [Flag]"})
-        Me.CheckedListBox5.Location = New System.Drawing.Point(6, 6)
+        Me.CheckedListBox5.Location = New System.Drawing.Point(3, 3)
         Me.CheckedListBox5.Name = "CheckedListBox5"
         Me.CheckedListBox5.ScrollAlwaysVisible = True
-        Me.CheckedListBox5.Size = New System.Drawing.Size(211, 289)
+        Me.CheckedListBox5.Size = New System.Drawing.Size(256, 306)
         Me.CheckedListBox5.TabIndex = 2
         '
         'Button1
@@ -227,9 +233,9 @@ Partial Class Table_Form
         Me.Button1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.Location = New System.Drawing.Point(49, 338)
+        Me.Button1.Location = New System.Drawing.Point(65, 345)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(149, 44)
+        Me.Button1.Size = New System.Drawing.Size(149, 39)
         Me.Button1.TabIndex = 2
         Me.Button1.Text = "Create Table"
         Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -246,7 +252,7 @@ Partial Class Table_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(238, 389)
+        Me.ClientSize = New System.Drawing.Size(275, 389)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Button1)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))

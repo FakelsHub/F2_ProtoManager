@@ -56,6 +56,7 @@ Partial Class Main_Form
         Me.ClearToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
         Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DontHoverSelectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.fAllToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -72,6 +73,8 @@ Partial Class Main_Form
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.FindToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.LinkLabel2 = New System.Windows.Forms.LinkLabel()
         Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
@@ -96,13 +99,13 @@ Partial Class Main_Form
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.RichTextBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.DontHoverSelectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -150,9 +153,10 @@ Partial Class Main_Form
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripButton4, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripSplitButton1, Me.ToolStripSeparator7, Me.ToolStripButton9, Me.ToolStripButton10, Me.ToolStripTextBox1, Me.ToolStripButton1, Me.ToolStripSeparator3})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripButton4, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripSplitButton1, Me.ToolStripSeparator7, Me.ToolStripButton9, Me.ToolStripButton10, Me.ToolStripTextBox1, Me.ToolStripButton1, Me.ToolStripSeparator3, Me.ToolStripDropDownButton1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
+        Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.ToolStrip1.Size = New System.Drawing.Size(850, 25)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
@@ -298,7 +302,7 @@ Partial Class Main_Form
         '
         'ToolStripSplitButton2
         '
-        Me.ToolStripSplitButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Cp886ToolStripMenuItem, Me.AttrReadOnlyToolStripMenuItem, Me.ToolStripSeparator9, Me.ClearToolStripMenuItem2, Me.ToolStripSeparator10, Me.ViewLogToolStripMenuItem, Me.DontHoverSelectToolStripMenuItem})
+        Me.ToolStripSplitButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Cp886ToolStripMenuItem, Me.AttrReadOnlyToolStripMenuItem, Me.ToolStripSeparator9, Me.ClearToolStripMenuItem2, Me.ToolStripSeparator10, Me.DontHoverSelectToolStripMenuItem, Me.ViewLogToolStripMenuItem})
         Me.ToolStripSplitButton2.Image = CType(resources.GetObject("ToolStripSplitButton2.Image"), System.Drawing.Image)
         Me.ToolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripSplitButton2.Name = "ToolStripSplitButton2"
@@ -311,37 +315,37 @@ Partial Class Main_Form
         Me.Cp886ToolStripMenuItem.CheckOnClick = True
         Me.Cp886ToolStripMenuItem.Name = "Cp886ToolStripMenuItem"
         Me.Cp886ToolStripMenuItem.ShowShortcutKeys = False
-        Me.Cp886ToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.Cp886ToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.Cp886ToolStripMenuItem.Text = "Encoding Msg CP886"
-        Me.Cp886ToolStripMenuItem.ToolTipText = "Read Msg and save files in a DOS encoding."
+        Me.Cp886ToolStripMenuItem.ToolTipText = "Read and save Msg files in a DOS encoding."
         '
         'AttrReadOnlyToolStripMenuItem
         '
         Me.AttrReadOnlyToolStripMenuItem.CheckOnClick = True
         Me.AttrReadOnlyToolStripMenuItem.Name = "AttrReadOnlyToolStripMenuItem"
         Me.AttrReadOnlyToolStripMenuItem.ShowShortcutKeys = False
-        Me.AttrReadOnlyToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.AttrReadOnlyToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.AttrReadOnlyToolStripMenuItem.Text = "Set Pro 'ReadOnly'"
-        Me.AttrReadOnlyToolStripMenuItem.ToolTipText = "When you save Pro file to set the attribute read-only."
+        Me.AttrReadOnlyToolStripMenuItem.ToolTipText = "Set read-only attribute on file when you save pro-file."
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(169, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(184, 6)
         '
         'ClearToolStripMenuItem2
         '
         Me.ClearToolStripMenuItem2.CheckOnClick = True
         Me.ClearToolStripMenuItem2.Name = "ClearToolStripMenuItem2"
         Me.ClearToolStripMenuItem2.ShowShortcutKeys = False
-        Me.ClearToolStripMenuItem2.Size = New System.Drawing.Size(172, 22)
+        Me.ClearToolStripMenuItem2.Size = New System.Drawing.Size(187, 22)
         Me.ClearToolStripMenuItem2.Text = "Clear Art Cache"
-        Me.ClearToolStripMenuItem2.ToolTipText = "Clear cache files the art when the program exits."
+        Me.ClearToolStripMenuItem2.ToolTipText = "Clear art files in cache when program is closed."
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(169, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(184, 6)
         '
         'ViewLogToolStripMenuItem
         '
@@ -349,8 +353,16 @@ Partial Class Main_Form
         Me.ViewLogToolStripMenuItem.CheckOnClick = True
         Me.ViewLogToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ViewLogToolStripMenuItem.Name = "ViewLogToolStripMenuItem"
-        Me.ViewLogToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.ViewLogToolStripMenuItem.Text = "View Log"
+        Me.ViewLogToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.ViewLogToolStripMenuItem.Text = "Show Log"
+        '
+        'DontHoverSelectToolStripMenuItem
+        '
+        Me.DontHoverSelectToolStripMenuItem.CheckOnClick = True
+        Me.DontHoverSelectToolStripMenuItem.Name = "DontHoverSelectToolStripMenuItem"
+        Me.DontHoverSelectToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.DontHoverSelectToolStripMenuItem.Text = "Don't select on hover"
+        Me.DontHoverSelectToolStripMenuItem.ToolTipText = "Don't select element in prototypes list when mouse hover."
         '
         'ToolStripSeparator2
         '
@@ -373,48 +385,48 @@ Partial Class Main_Form
         Me.fAllToolStripMenuItem1.Checked = True
         Me.fAllToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked
         Me.fAllToolStripMenuItem1.Name = "fAllToolStripMenuItem1"
-        Me.fAllToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.fAllToolStripMenuItem1.Size = New System.Drawing.Size(132, 22)
         Me.fAllToolStripMenuItem1.Text = "All"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(129, 6)
         '
         'fWeaponToolStripMenuItem3
         '
         Me.fWeaponToolStripMenuItem3.Name = "fWeaponToolStripMenuItem3"
-        Me.fWeaponToolStripMenuItem3.Size = New System.Drawing.Size(152, 22)
+        Me.fWeaponToolStripMenuItem3.Size = New System.Drawing.Size(132, 22)
         Me.fWeaponToolStripMenuItem3.Text = "Weapon"
         '
         'fAmmoToolStripMenuItem2
         '
         Me.fAmmoToolStripMenuItem2.Name = "fAmmoToolStripMenuItem2"
-        Me.fAmmoToolStripMenuItem2.Size = New System.Drawing.Size(152, 22)
+        Me.fAmmoToolStripMenuItem2.Size = New System.Drawing.Size(132, 22)
         Me.fAmmoToolStripMenuItem2.Text = "Ammo"
         '
         'fArmorToolStripMenuItem2
         '
         Me.fArmorToolStripMenuItem2.Name = "fArmorToolStripMenuItem2"
-        Me.fArmorToolStripMenuItem2.Size = New System.Drawing.Size(152, 22)
+        Me.fArmorToolStripMenuItem2.Size = New System.Drawing.Size(132, 22)
         Me.fArmorToolStripMenuItem2.Text = "Armor"
         '
         'fDrugToolStripMenuItem3
         '
         Me.fDrugToolStripMenuItem3.Name = "fDrugToolStripMenuItem3"
-        Me.fDrugToolStripMenuItem3.Size = New System.Drawing.Size(152, 22)
+        Me.fDrugToolStripMenuItem3.Size = New System.Drawing.Size(132, 22)
         Me.fDrugToolStripMenuItem3.Text = "Drugs"
         '
         'fContainerToolStripMenuItem
         '
         Me.fContainerToolStripMenuItem.Name = "fContainerToolStripMenuItem"
-        Me.fContainerToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.fContainerToolStripMenuItem.Size = New System.Drawing.Size(132, 22)
         Me.fContainerToolStripMenuItem.Text = "Container"
         '
         'fMiscToolStripMenuItem2
         '
         Me.fMiscToolStripMenuItem2.Name = "fMiscToolStripMenuItem2"
-        Me.fMiscToolStripMenuItem2.Size = New System.Drawing.Size(152, 22)
+        Me.fMiscToolStripMenuItem2.Size = New System.Drawing.Size(132, 22)
         Me.fMiscToolStripMenuItem2.Text = "Misc/Key"
         '
         'ToolStripSeparator7
@@ -447,7 +459,7 @@ Partial Class Main_Form
         Me.ToolStripTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
         Me.ToolStripTextBox1.Size = New System.Drawing.Size(200, 21)
-        Me.ToolStripTextBox1.ToolTipText = "The search string."
+        Me.ToolStripTextBox1.ToolTipText = "Search text"
         '
         'ToolStripButton1
         '
@@ -457,13 +469,31 @@ Partial Class Main_Form
         Me.ToolStripButton1.Name = "ToolStripButton1"
         Me.ToolStripButton1.Size = New System.Drawing.Size(64, 22)
         Me.ToolStripButton1.Text = "Search:"
-        Me.ToolStripButton1.ToolTipText = "Continue Search"
+        Me.ToolStripButton1.ToolTipText = "Continue Search [F3]"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripDropDownButton1
+        '
+        Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FindToolStripMenuItem})
+        Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
+        Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
+        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 22)
+        Me.ToolStripDropDownButton1.Text = "ToolStripDropDownButton1"
+        Me.ToolStripDropDownButton1.Visible = False
+        '
+        'FindToolStripMenuItem
+        '
+        Me.FindToolStripMenuItem.Name = "FindToolStripMenuItem"
+        Me.FindToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3
+        Me.FindToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+        Me.FindToolStripMenuItem.Text = "find"
         '
         'ToolTip1
         '
@@ -501,41 +531,41 @@ Partial Class Main_Form
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.HToolStripMenuItem, Me.TextEditProFileToolStripMenuItem, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.CreateToolStripMenuItem, Me.DeleteToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(215, 120)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(211, 120)
         '
         'HToolStripMenuItem
         '
         Me.HToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.HToolStripMenuItem.Image = CType(resources.GetObject("HToolStripMenuItem.Image"), System.Drawing.Image)
         Me.HToolStripMenuItem.Name = "HToolStripMenuItem"
-        Me.HToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.HToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.HToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
+        Me.HToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.HToolStripMenuItem.Text = "Edit Pro File"
         '
         'TextEditProFileToolStripMenuItem
         '
         Me.TextEditProFileToolStripMenuItem.Name = "TextEditProFileToolStripMenuItem"
-        Me.TextEditProFileToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
-        Me.TextEditProFileToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.TextEditProFileToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
+        Me.TextEditProFileToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.TextEditProFileToolStripMenuItem.Text = "Edit in Text Format"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.H), System.Windows.Forms.Keys)
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(214, 22)
+        Me.ToolStripMenuItem2.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.H), System.Windows.Forms.Keys)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(210, 22)
         Me.ToolStripMenuItem2.Text = "View in Hex"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(211, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(207, 6)
         '
         'CreateToolStripMenuItem
         '
         Me.CreateToolStripMenuItem.Image = CType(resources.GetObject("CreateToolStripMenuItem.Image"), System.Drawing.Image)
         Me.CreateToolStripMenuItem.Name = "CreateToolStripMenuItem"
-        Me.CreateToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.CreateToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.CreateToolStripMenuItem.Text = "Create Duplicate Pro"
         Me.CreateToolStripMenuItem.ToolTipText = "Create new prototype based on this Pro file."
         '
@@ -545,9 +575,10 @@ Partial Class Main_Form
         Me.DeleteToolStripMenuItem.ForeColor = System.Drawing.Color.DarkRed
         Me.DeleteToolStripMenuItem.Image = CType(resources.GetObject("DeleteToolStripMenuItem.Image"), System.Drawing.Image)
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(214, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete Pro File"
-        Me.DeleteToolStripMenuItem.ToolTipText = "Remove can only last prototype in the list, or edited Pro file in save folder."
+        Me.DeleteToolStripMenuItem.ToolTipText = "Can remove only last prototype in list, or prototype file located in save folder." & _
+            ""
         '
         'TabControl1
         '
@@ -570,7 +601,7 @@ Partial Class Main_Form
         Me.TabPage2.Controls.Add(Me.ListView2)
         Me.TabPage2.Location = New System.Drawing.Point(4, 23)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(0, 2, 4, 2)
         Me.TabPage2.Size = New System.Drawing.Size(234, 547)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Items"
@@ -592,11 +623,11 @@ Partial Class Main_Form
         Me.ListView2.HideSelection = False
         Me.ListView2.HoverSelection = True
         Me.ListView2.LabelWrap = False
-        Me.ListView2.Location = New System.Drawing.Point(3, 3)
+        Me.ListView2.Location = New System.Drawing.Point(0, 2)
         Me.ListView2.MultiSelect = False
         Me.ListView2.Name = "ListView2"
         Me.ListView2.ShowItemToolTips = True
-        Me.ListView2.Size = New System.Drawing.Size(228, 541)
+        Me.ListView2.Size = New System.Drawing.Size(230, 543)
         Me.ListView2.TabIndex = 10
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Details
@@ -630,7 +661,7 @@ Partial Class Main_Form
         Me.TabPage1.Controls.Add(Me.ListView1)
         Me.TabPage1.Location = New System.Drawing.Point(4, 23)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(0, 2, 4, 2)
         Me.TabPage1.Size = New System.Drawing.Size(234, 547)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Critters"
@@ -652,11 +683,11 @@ Partial Class Main_Form
         Me.ListView1.HideSelection = False
         Me.ListView1.HoverSelection = True
         Me.ListView1.LabelWrap = False
-        Me.ListView1.Location = New System.Drawing.Point(3, 3)
+        Me.ListView1.Location = New System.Drawing.Point(0, 2)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(228, 541)
+        Me.ListView1.Size = New System.Drawing.Size(230, 543)
         Me.ListView1.TabIndex = 9
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -695,6 +726,7 @@ Partial Class Main_Form
         'SplitContainer1.Panel1
         '
         Me.SplitContainer1.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label3)
         Me.SplitContainer1.Panel1.Controls.Add(Me.TextBox1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox1)
         Me.SplitContainer1.Panel1MinSize = 250
@@ -707,6 +739,19 @@ Partial Class Main_Form
         Me.SplitContainer1.Size = New System.Drawing.Size(850, 574)
         Me.SplitContainer1.SplitterDistance = 604
         Me.SplitContainer1.TabIndex = 7
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.BackColor = System.Drawing.Color.Transparent
+        Me.Label3.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Label3.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.Label3.Location = New System.Drawing.Point(0, 461)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(59, 13)
+        Me.Label3.TabIndex = 2
+        Me.Label3.Text = "Log Stack:"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'TextBox1
         '
@@ -774,14 +819,6 @@ Partial Class Main_Form
         '
         Me.Timer1.Interval = 1000
         '
-        'DontHoverSelectToolStripMenuItem
-        '
-        Me.DontHoverSelectToolStripMenuItem.CheckOnClick = True
-        Me.DontHoverSelectToolStripMenuItem.Name = "DontHoverSelectToolStripMenuItem"
-        Me.DontHoverSelectToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.DontHoverSelectToolStripMenuItem.Text = "Don't hover select"
-        Me.DontHoverSelectToolStripMenuItem.ToolTipText = "Don't select element when hover in prototype list."
-        '
         'Main_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -805,6 +842,7 @@ Partial Class Main_Form
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
@@ -893,5 +931,8 @@ Partial Class Main_Form
     Friend WithEvents ViewLogToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AIPacketToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents DontHoverSelectToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents ToolStripDropDownButton1 As System.Windows.Forms.ToolStripDropDownButton
+    Friend WithEvents FindToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

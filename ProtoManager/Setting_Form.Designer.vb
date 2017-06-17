@@ -100,6 +100,7 @@ Partial Class Setting_Form
         '
         'TextBox3
         '
+        Me.TextBox3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.TextBox3.Enabled = False
         Me.TextBox3.Location = New System.Drawing.Point(6, 162)
         Me.TextBox3.Name = "TextBox3"
@@ -109,6 +110,7 @@ Partial Class Setting_Form
         '
         'TextBox2
         '
+        Me.TextBox2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.TextBox2.Location = New System.Drawing.Point(6, 79)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(369, 20)
@@ -154,8 +156,10 @@ Partial Class Setting_Form
         '
         'TextBox1
         '
+        Me.TextBox1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.TextBox1.Location = New System.Drawing.Point(6, 32)
         Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(369, 20)
         Me.TextBox1.TabIndex = 1
         '
@@ -200,18 +204,18 @@ Partial Class Setting_Form
         Me.Label6.Size = New System.Drawing.Size(78, 13)
         Me.Label6.TabIndex = 4
         Me.Label6.Text = "Msg Encoding:"
-        Me.ToolTip1.SetToolTip(Me.Label6, "Кодировка текста Msg файлах.")
+        Me.ToolTip1.SetToolTip(Me.Label6, "Text encoding for Msg files.")
         '
         'CheckBox1
         '
         Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(203, 42)
+        Me.CheckBox1.Location = New System.Drawing.Point(183, 42)
         Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(120, 17)
+        Me.CheckBox1.Size = New System.Drawing.Size(133, 17)
         Me.CheckBox1.TabIndex = 3
-        Me.CheckBox1.Text = "Background Extract"
-        Me.ToolTip1.SetToolTip(Me.CheckBox1, "Speeds up program launch and extracts of the resources in the background process " & _
-                "(recommended if you have the option to clear the cache folder).")
+        Me.CheckBox1.Text = "Background extraction"
+        Me.ToolTip1.SetToolTip(Me.CheckBox1, "Extracts some resources in background, this speeds up launch of program. (It is r" & _
+                "ecommended to set, if option ""clear the cache folder"" is set)")
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'RadioButton4
@@ -257,7 +261,7 @@ Partial Class Setting_Form
         Me.RadioButton1.TabIndex = 2
         Me.RadioButton1.TabStop = True
         Me.RadioButton1.Text = "Win (Default)"
-        Me.ToolTip1.SetToolTip(Me.RadioButton1, "Use Windows character set.")
+        Me.ToolTip1.SetToolTip(Me.RadioButton1, "Use default windows encoding character set.")
         Me.RadioButton1.UseVisualStyleBackColor = True
         '
         'Button3
@@ -267,7 +271,7 @@ Partial Class Setting_Form
         Me.Button3.Size = New System.Drawing.Size(89, 23)
         Me.Button3.TabIndex = 1
         Me.Button3.Text = "Clear Art Cache"
-        Me.ToolTip1.SetToolTip(Me.Button3, "Clear the cache folder of images.")
+        Me.ToolTip1.SetToolTip(Me.Button3, "Clear cache folder of images files.")
         Me.Button3.UseVisualStyleBackColor = True
         '
         'CheckBox3
@@ -275,11 +279,11 @@ Partial Class Setting_Form
         Me.CheckBox3.AutoSize = True
         Me.CheckBox3.Location = New System.Drawing.Point(9, 65)
         Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(252, 17)
+        Me.CheckBox3.Size = New System.Drawing.Size(117, 17)
         Me.CheckBox3.TabIndex = 0
-        Me.CheckBox3.Text = "Automatically clear Cache folder on exit program"
-        Me.ToolTip1.SetToolTip(Me.CheckBox3, "To clean the internal folder from the extracted files (for quick start the progra" & _
-                "m, it is recommended to disable this option).")
+        Me.CheckBox3.Text = "Clear cache on exit"
+        Me.ToolTip1.SetToolTip(Me.CheckBox3, "Automatically clear cache folder with extracted files. (for fast start of the pro" & _
+                "gram it is recommended to disable this option)")
         Me.CheckBox3.UseVisualStyleBackColor = True
         '
         'CheckBox2
@@ -287,10 +291,10 @@ Partial Class Setting_Form
         Me.CheckBox2.AutoSize = True
         Me.CheckBox2.Location = New System.Drawing.Point(9, 42)
         Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(188, 17)
+        Me.CheckBox2.Size = New System.Drawing.Size(146, 17)
         Me.CheckBox2.TabIndex = 0
-        Me.CheckBox2.Text = "Set Attribute 'ReadOnly' on Pro-file"
-        Me.ToolTip1.SetToolTip(Me.CheckBox2, "To set the read-only attribute after editing Pro file.")
+        Me.CheckBox2.Text = "Set 'ReadOnly' on Pro-file"
+        Me.ToolTip1.SetToolTip(Me.CheckBox2, "Set read-only attribute on file when you save pro-file.")
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
         'Label5

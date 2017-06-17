@@ -2186,7 +2186,7 @@ Partial Class Items_Form
         Me.Button5.Size = New System.Drawing.Size(80, 26)
         Me.Button5.TabIndex = 7
         Me.Button5.Text = "Save Desc"
-        Me.ToolTip1.SetToolTip(Me.Button5, "Сохранить описание в MSG файле.")
+        Me.ToolTip1.SetToolTip(Me.Button5, "Save description to MSG file.")
         Me.Button5.UseVisualStyleBackColor = True
         '
         'Button4
@@ -2199,7 +2199,7 @@ Partial Class Items_Form
         Me.Button4.Size = New System.Drawing.Size(80, 26)
         Me.Button4.TabIndex = 7
         Me.Button4.Text = "Save Name"
-        Me.ToolTip1.SetToolTip(Me.Button4, "Сохранить имя в MSG файле.")
+        Me.ToolTip1.SetToolTip(Me.Button4, "Save name to MSG.")
         Me.Button4.UseVisualStyleBackColor = True
         '
         'TextBox30
@@ -2327,13 +2327,13 @@ Partial Class Items_Form
         'ComboBox9
         '
         Me.ComboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox9.DropDownWidth = 350
-        Me.ComboBox9.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.ComboBox9.DropDownWidth = 500
+        Me.ComboBox9.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ComboBox9.Items.AddRange(New Object() {"None"})
         Me.ComboBox9.Location = New System.Drawing.Point(6, 20)
         Me.ComboBox9.MaxDropDownItems = 20
         Me.ComboBox9.Name = "ComboBox9"
-        Me.ComboBox9.Size = New System.Drawing.Size(183, 21)
+        Me.ComboBox9.Size = New System.Drawing.Size(183, 23)
         Me.ComboBox9.TabIndex = 0
         '
         'Label66
@@ -2684,7 +2684,7 @@ Partial Class Items_Form
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(110, 22)
         Me.ComboBox7.TabIndex = 22
-        Me.ToolTip1.SetToolTip(Me.ComboBox7, "Изменить тип предмета.")
+        Me.ToolTip1.SetToolTip(Me.ComboBox7, "Change type of item.")
         '
         'Label57
         '
@@ -2776,7 +2776,7 @@ Partial Class Items_Form
         Me.Button2.Size = New System.Drawing.Size(60, 34)
         Me.Button2.TabIndex = 13
         Me.Button2.Text = "Reload"
-        Me.ToolTip1.SetToolTip(Me.Button2, "Загрузить данные прототипа из текущего Pro файла.")
+        Me.ToolTip1.SetToolTip(Me.Button2, "Reload prototype data from the current Pro file.")
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button1
@@ -2788,7 +2788,7 @@ Partial Class Items_Form
         Me.Button1.Size = New System.Drawing.Size(60, 34)
         Me.Button1.TabIndex = 12
         Me.Button1.Text = "Restore"
-        Me.ToolTip1.SetToolTip(Me.Button1, "Восстановить данные прототипа из DAT файла.")
+        Me.ToolTip1.SetToolTip(Me.Button1, "Restore prototype data from DAT file.")
         Me.Button1.UseVisualStyleBackColor = True
         '
         'GroupBox19
@@ -2825,7 +2825,7 @@ Partial Class Items_Form
         Me.Button6.TabIndex = 10
         Me.Button6.Text = "Save Pro"
         Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button6, "Сохранить данные в Pro Файл.")
+        Me.ToolTip1.SetToolTip(Me.Button6, "Save change data to Pro file.")
         Me.Button6.UseVisualStyleBackColor = True
         '
         'Button3
@@ -3149,7 +3149,6 @@ Partial Class Items_Form
     Friend WithEvents ComboBox20 As System.Windows.Forms.ComboBox
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents Label29 As System.Windows.Forms.Label
-    Friend WithEvents ComboBox19 As System.Windows.Forms.ComboBox
     Friend WithEvents GroupBox20 As System.Windows.Forms.GroupBox
     Friend WithEvents NumericUpDown23 As System.Windows.Forms.NumericUpDown
     Friend WithEvents NumericUpDown19 As System.Windows.Forms.NumericUpDown
@@ -3209,4 +3208,5 @@ Partial Class Items_Form
     Friend WithEvents Label52 As System.Windows.Forms.Label
     Friend WithEvents Label53 As System.Windows.Forms.Label
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Friend WithEvents ComboBox19 As System.Windows.Forms.ComboBox
 End Class

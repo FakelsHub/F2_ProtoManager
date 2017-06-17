@@ -56,7 +56,7 @@ Partial Class SplashScreen
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.Font = New System.Drawing.Font("Times New Roman", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.LightGreen
+        Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(190, Byte), Integer), CType(CType(110, Byte), Integer))
         Me.Label2.Location = New System.Drawing.Point(12, 9)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(192, 31)
@@ -65,42 +65,51 @@ Partial Class SplashScreen
         '
         'Button1
         '
+        Me.Button1.BackColor = System.Drawing.Color.Transparent
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button1.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.Location = New System.Drawing.Point(18, 72)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(186, 23)
+        Me.Button1.Size = New System.Drawing.Size(175, 23)
         Me.Button1.TabIndex = 5
-        Me.Button1.Text = "Change Setting"
+        Me.Button1.Text = "  Settings"
         Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.UseVisualStyleBackColor = False
+        Me.Button1.Visible = False
         '
         'Button2
         '
+        Me.Button2.BackColor = System.Drawing.Color.Transparent
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button2.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.Location = New System.Drawing.Point(18, 43)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(186, 23)
+        Me.Button2.Size = New System.Drawing.Size(175, 23)
         Me.Button2.TabIndex = 4
-        Me.Button2.Text = "Run Editor"
+        Me.Button2.Text = " Run     "
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Button2.UseVisualStyleBackColor = False
+        Me.Button2.Visible = False
         '
         'Button3
         '
+        Me.Button3.BackColor = System.Drawing.Color.Transparent
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button3.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.Location = New System.Drawing.Point(18, 101)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(186, 23)
+        Me.Button3.Size = New System.Drawing.Size(175, 23)
         Me.Button3.TabIndex = 6
-        Me.Button3.Text = "Quit Editor"
+        Me.Button3.Text = "  Close   "
         Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.Button3.UseVisualStyleBackColor = False
+        Me.Button3.Visible = False
         '
         'Label3
         '
@@ -120,7 +129,7 @@ Partial Class SplashScreen
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.My.Resources.Resources.splash
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ClientSize = New System.Drawing.Size(549, 347)
+        Me.ClientSize = New System.Drawing.Size(545, 343)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Button3)
@@ -130,12 +139,13 @@ Partial Class SplashScreen
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label1)
         Me.DoubleBuffered = True
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "SplashScreen"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "ProtoManager Launcher"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

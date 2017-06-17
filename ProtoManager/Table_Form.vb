@@ -1,14 +1,42 @@
-﻿Imports Prototypes
+﻿Imports System.Text
+Imports System.IO
+Imports Microsoft.VisualBasic.FileIO
+Imports Prototypes
 
 Public Class Table_Form
 
-    Private Calc As CalcStats = New CalcStats
+    Private Enum TabType As Integer
+        Critter
+        Weapon
+        Ammo
+        Armor
+        Drugs
+        Misc
+    End Enum
 
-    Dim CheckedList() As String
-    Dim Table() As String
+    Private CheckedList As CheckedListBox.CheckedItemCollection
+    Private Table As List(Of String) = New List(Of String)()
 
     Private Const spr As String = ";"
+    Private Const splt As Char = "|"c
 
+    Private ReadOnly DmgType() As String = {"Normal", "Laser", "Fire", "Plasma", "Electrical", "EMP", "Explode"}
+
+    Private ReadOnly DrugEffect() As String = {"Drug Stat (Special)", "None", "Strength", "Perception", "Endurance",
+                                               "Charisma", "Intelligence", "Agility", "Luck", "Max.Healing Point",
+                                               "Max.Action Point", "Calss Armor", "Unarmed Damage", "Melee Damage",
+                                               "Max.Weight", "Sequence", "Healing Rate", "Critical Chance",
+                                               "Better Critical", "Normal Tresholds Damage", "Laser Tresholds Damage",
+                                               "Fire Tresholds Damage", "Plasma Tresholds Damage",
+                                               "Electrical Tresholds Damage", "EMP Tresholds Damage",
+                                               "Explode Tresholds Damage", "Normal Damage Resistance",
+                                               "Laser Damage Resistance", "Fire Damage Resistance",
+                                               "Plasma Damage Resistance", "Electrical Damage Resistance",
+                                               "EMP Damage Resistance", "Explode Damage Resistance",
+                                               "Radiation Resistance", "Poison Resistance", "Age", "Gender", "Current HP",
+                                               "Current Poison Level", "Current Radiation Level"}
+
+    Private CritterPro As CritPro
     Private CommonItem As CmItemPro
     Private WeaponItem As WpItemPro
     Private ArmorItem As ArItemPro
@@ -16,884 +44,901 @@ Public Class Table_Form
     Private DrugItem As DgItemPro
     Private MiscItem As McItemPro
 
-    Private Sub CheckAllToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckAllToolStripMenuItem.Click
-        DeSelItemsAll(True)
-    End Sub
+    Private Sub CreateTable()
+        Dim fFile As Integer, iType As Integer = TabControl1.SelectedIndex
 
-    Private Sub DeselecAllToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeselecAllToolStripMenuItem.Click
-        DeSelItemsAll(False)
-    End Sub
-
-    Private Sub DeSelItemsAll(ByVal value As Boolean)
-        Select Case TabControl1.SelectedIndex
-            Case 0 'Critter
-                For n = 0 To CheckedListBox6.Items.Count - 1
-                    CheckedListBox6.SetItemChecked(n, value)
-                Next
-            Case 1 'Weapon
-                For n = 0 To CheckedListBox1.Items.Count - 1
-                    CheckedListBox1.SetItemChecked(n, value)
-                Next
-            Case 2 'Ammo
-                For n = 0 To CheckedListBox2.Items.Count - 1
-                    CheckedListBox2.SetItemChecked(n, value)
-                Next
-            Case 3 'Armor
-                For n = 0 To CheckedListBox3.Items.Count - 1
-                    CheckedListBox3.SetItemChecked(n, value)
-                Next
-            Case 4 'Drugs
-                For n = 0 To CheckedListBox4.Items.Count - 1
-                    CheckedListBox4.SetItemChecked(n, value)
-                Next
-            Case Else
-                For n = 0 To CheckedListBox5.Items.Count - 1
-                    CheckedListBox5.SetItemChecked(n, value)
-                Next
-        End Select
-    End Sub
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Select Case TabControl1.SelectedIndex
-            Case 0 'Critter
-                Dim count As Byte = CheckedListBox6.CheckedIndices.Count - 1
-                ReDim CheckedList(count)
-                For n = 0 To count
-                    CheckedList(n) = CheckedListBox6.CheckedItems(n).ToString
-                Next
-            Case 1 'Weapon
-                Dim count As Byte = CheckedListBox1.CheckedIndices.Count - 1
-                ReDim CheckedList(count)
-                For n = 0 To count
-                    CheckedList(n) = CheckedListBox1.CheckedItems(n).ToString
-                Next
-            Case 2 'Ammo
-                Dim count As Byte = CheckedListBox2.CheckedIndices.Count - 1
-                ReDim CheckedList(count)
-                For n = 0 To count
-                    CheckedList(n) = CheckedListBox2.CheckedItems(n).ToString
-                Next
-            Case 3 'Armor
-                Dim count As Byte = CheckedListBox3.CheckedIndices.Count - 1
-                ReDim CheckedList(count)
-                For n = 0 To count
-                    CheckedList(n) = CheckedListBox3.CheckedItems(n).ToString
-                Next
-            Case 4 'Drugs
-                Dim count As Byte = CheckedListBox4.CheckedIndices.Count - 1
-                ReDim CheckedList(count)
-                For n = 0 To count
-                    CheckedList(n) = CheckedListBox4.CheckedItems(n).ToString
-                Next
-            Case Else
-                Dim count As Byte = CheckedListBox5.CheckedIndices.Count - 1
-                ReDim CheckedList(count)
-                For n = 0 To count
-                    CheckedList(n) = CheckedListBox5.CheckedItems(n).ToString
-                Next
-        End Select
-        CreateTable(TabControl1.SelectedTab.Text)
-    End Sub
-
-    Private Sub CreateTable(ByVal iType As String)
-        Dim x As UShort, n As Integer, m As Byte
-        ReDim Table(0)
-        Table(x) = "Import" & spr & "ProFILE" & spr & "NAME"
-        If iType <> "Critter" Then
+        Table.Add("Import" & spr & "ProFILE" & spr & "NAME")
+        If iType > TabType.Critter Then
             For n = 0 To UBound(Items_LST)
-                If Items_LST(n, 1) = iType Then
-                    x += 1
-                    ReDim Preserve Table(x)
-                    Table(x) = Items_LST(n, 0)
+                If Items_LST(n).itemType = Array.IndexOf(ItemTypesName, TabControl1.SelectedTab.Text) Then
+                    Table.Add(Items_LST(n).proFile)
                 End If
             Next
             '
             Dim Read As Boolean = False
             GetMsgData("pro_item.msg")
-            Dim fFile As Byte
-            For n = 1 To UBound(Table)
-                Current_Path = Check_File("proto\items\" & Table(n))
+            For n = 1 To Table.Count - 1
+                Current_Path = DatFiles.CheckFile(PROTO_ITEMS & Table(n))
+                Dim cmProDataBuf(Prototypes.ItemCommonLen - 1) As Integer
                 fFile = FreeFile()
-                FileOpen(fFile, Current_Path & "\proto\items\" & Table(n), OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-                FileGet(fFile, CommonItem)
+                FileOpen(fFile, Current_Path & PROTO_ITEMS & Table(n), OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
+                FileGet(fFile, cmProDataBuf)
+                ProFiles.ReverseLoadData(cmProDataBuf, CommonItem)
+                FileGet(fFile, CommonItem.SoundID)
                 If Current_Path = SaveMOD_Path Then
                     Table(n) = spr & Table(n)
                 Else
-                    Table(n) = "#" & spr & Table(n)
+                    Table(n) = "#" & spr & Table(n) ' # - ignore mark
                 End If
-                Table(n) &= spr & GetNameCritter(ReverseBytes(CommonItem.DescID))
-                For m = 0 To UBound(CheckedList)
-                    If n = 1 Then Table(0) &= spr & CheckedList(m)
+                Table(n) &= spr & Messages.GetNameObject(CommonItem.DescID) ' get name
+                For m = 0 To CheckedList.Count - 1
+                    If n = 1 Then Table(0) &= spr & CheckedList.Item(m).ToString
                     Select Case iType
-                        Case "Weapon"
-                            If Not Read Then FileGet(fFile, WeaponItem) : FileClose(fFile) : Read = True
+                        Case TabType.Weapon
+                            If Not Read Then
+                                Dim wnProDataBuf(Prototypes.ItemWeaponLen - 1) As Integer
+                                FileGet(fFile, wnProDataBuf)
+                                ProFiles.ReverseLoadData(wnProDataBuf, WeaponItem)
+                                FileGet(fFile, WeaponItem.wSoundID)
+                                FileClose(fFile)
+                                Read = True
+                            End If
                             CreateTable_Weapon(n, m)
-                        Case "Ammo"
-                            If Not Read Then FileGet(fFile, AmmoItem) : FileClose(fFile) : Read = True
+                        Case TabType.Ammo
+                            If Not Read Then
+                                Dim amProDataBuf(Prototypes.ItemAmmoLen - 1) As Integer
+                                FileGet(fFile, amProDataBuf)
+                                FileClose(fFile)
+                                ProFiles.ReverseLoadData(amProDataBuf, AmmoItem)
+                                Read = True
+                            End If
                             CreateTable_Ammo(n, m)
-                        Case "Armor"
-                            If Not Read Then FileGet(fFile, ArmorItem) : FileClose(fFile) : Read = True
+                        Case TabType.Armor
+                            If Not Read Then
+                                Dim arProDataBuf(Prototypes.ItemArmorLen - 1) As Integer
+                                FileGet(fFile, arProDataBuf)
+                                FileClose(fFile)
+                                ProFiles.ReverseLoadData(arProDataBuf, ArmorItem)
+                                Read = True
+                            End If
                             CreateTable_Armor(n, m)
-                        Case "Drugs"
-                            If Not Read Then FileGet(fFile, DrugItem) : FileClose(fFile) : Read = True
+                        Case TabType.Drugs
+                            If Not Read Then
+                                Dim drProDataBuf(Prototypes.ItemDrugsLen - 1) As Integer
+                                FileGet(fFile, drProDataBuf)
+                                FileClose(fFile)
+                                ProFiles.ReverseLoadData(drProDataBuf, DrugItem)
+                                Read = True
+                            End If
                             CreateTable_Drugs(n, m)
-                        Case Else
-                            If Not Read Then FileGet(fFile, MiscItem) : FileClose(fFile) : Read = True
+                        Case Else ' misc
+                            If Not Read Then
+                                Dim msProDataBuf(Prototypes.ItemMiscLen - 1) As Integer
+                                FileGet(fFile, msProDataBuf)
+                                FileClose(fFile)
+                                ProFiles.ReverseLoadData(msProDataBuf, MiscItem)
+                                Read = True
+                            End If
                             CreateTable_Misc(n, m)
                     End Select
                 Next
                 Read = False
             Next
-        Else ' "Critter table"
-            If Critter_LST Is Nothing Then CreateCritterList()
-            ReDim Preserve Table(UBound(Critter_LST) + 1)
+        Else
+            ' Critter table
+            If Critter_LST Is Nothing Then Main.CreateCritterList()
+            Progress_Form.ProgressBar1.Value = 0
+            Progress_Form.ProgressBar1.Maximum = UBound(Critter_LST) + 1
+            SetParent(Progress_Form.Handle.ToInt32, Main_Form.Handle.ToInt32)
+            Progress_Form.SetDesktopLocation(Main_Form.Width / 4, Main_Form.Height / 2.25)
+            Progress_Form.Show()
+            Application.DoEvents()
+
             GetMsgData("pro_crit.msg")
-            Dim fFile As Byte
-            For n = 1 To UBound(Table)
-                Current_Path = Check_File("proto\critters\" & Critter_LST(n - 1))
-                If My.Computer.FileSystem.GetFileInfo(Current_Path & "\proto\critters\" & Critter_LST(n - 1)).Length < 416 Then GoTo FNext
-                If Current_Path = SaveMOD_Path Then
-                    Table(n) = spr & Critter_LST(n - 1)
-                Else
-                    Table(n) = "#" & spr & Critter_LST(n - 1)
+            For n = 1 To UBound(Critter_LST) + 1
+                Dim proFile As String = Critter_LST(n - 1).proFile
+                Current_Path = DatFiles.CheckFile(PROTO_CRITTERS & proFile)
+                Dim pathFile As String = Current_Path & PROTO_CRITTERS & proFile
+                If FileSystem.GetFileInfo(pathFile).Length < 416 Then
+                    Table.Add("#" & spr & proFile & spr & "<BadFormat>")
+                    'Log 
+                    Main_Form.TextBox1.Text = "Bad Format: " & pathFile & vbLf & Main_Form.TextBox1.Text
+                    Application.DoEvents()
+                    Continue For
                 End If
-                fFile = FreeFile()
-                FileOpen(fFile, Current_Path & "\proto\critters\" & Critter_LST(n - 1), OpenMode.Binary, OpenAccess.Read, OpenShare.LockWrite)
-                FileGet(fFile, CritterPro)
-                FileClose(fFile)
-                Table(n) &= spr & GetNameCritter(ReverseBytes(CritterPro.DescID))
-                For m = 0 To UBound(CheckedList)
+                ProFiles.LoadCritterProData(pathFile, CritterPro)
+
+                If Current_Path.ToLower = SaveMOD_Path.ToLower Then
+                    Table.Add(spr & proFile)
+                Else
+                    Table.Add("#" & spr & proFile) ' # - ignore mark
+                End If
+
+                Table(n) &= spr & Messages.GetNameObject(CritterPro.DescID)
+                For m = 0 To CheckedList.Count - 1
                     'создаем строку с параметрами
-                    If n = 1 Then Table(0) &= spr & CheckedList(m)
+                    If n = 1 Then Table(0) &= spr & CheckedList.Item(m).ToString
                     CreateTable_Critter(n, m)
                 Next
-FNext:
+                Progress_Form.ProgressBar1.Value = n
             Next
-            FileClose()
         End If
-        '
-        SaveFileDialog1.FileName = iType
-SaveCancel:
+        SaveTable(TabControl1.SelectedTab.Text)
+        Progress_Form.Close()
+        Table.Clear()
+    End Sub
+
+    Private Sub SaveTable(ByVal fileName As String)
+        SaveFileDialog1.FileName = fileName
         If SaveFileDialog1.ShowDialog = DialogResult.Cancel Then Exit Sub
-        iType = SaveFileDialog1.FileName
+        fileName = SaveFileDialog1.FileName
 SaveRetry:
-        On Error GoTo SError
-        IO.File.WriteAllLines(iType, Table, System.Text.ASCIIEncoding.Default) '& ".csv"
+        Try
+            File.WriteAllLines(fileName, Table, ASCIIEncoding.Default) '& ".csv"   
+        Catch
+            If MsgBox("Error save table file!", MsgBoxStyle.RetryCancel) = MsgBoxResult.Retry Then GoTo SaveRetry
+            SaveTable(fileName)
+        End Try
         If MsgBox("Open saved table file?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then Process.Start(SaveFileDialog1.FileName)
-        Exit Sub
-SError:
-        On Error GoTo -1
-        If MsgBox("Error save table file!", MsgBoxStyle.RetryCancel) = MsgBoxResult.Retry Then GoTo SaveRetry
-        GoTo SaveCancel
     End Sub
 
     Private Sub CreateTable_Weapon(ByRef n As Integer, ByRef m As Byte)
-        Select Case CheckedList(m)
+        Select Case CheckedList.Item(m).ToString
             Case "Cost"
-                Table(n) &= spr & ReverseBytes(CommonItem.Cost)
+                Table(n) &= spr & CommonItem.Cost
             Case "Weight"
-                Table(n) &= spr & ReverseBytes(CommonItem.Weight)
+                Table(n) &= spr & CommonItem.Weight
             Case "Min Strength"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MinST)
+                Table(n) &= spr & WeaponItem.MinST
             Case "Damage Type"
-                Table(n) &= spr & DmgType(ReverseBytes(WeaponItem.DmgType))
+                Table(n) &= spr & DmgType(WeaponItem.DmgType)
             Case "Min Damage"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MinDmg)
+                Table(n) &= spr & WeaponItem.MinDmg
             Case "Max Damage"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MaxDmg)
+                Table(n) &= spr & WeaponItem.MaxDmg
             Case "Range Primary Attack"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MaxRangeP)
+                Table(n) &= spr & WeaponItem.MaxRangeP
             Case "Range Secondary Attack"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MaxRangeS)
+                Table(n) &= spr & WeaponItem.MaxRangeS
             Case "AP Cost Primary Attack"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MPCostP)
+                Table(n) &= spr & WeaponItem.MPCostP
             Case "AP Cost Secondary Attack"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MPCostS)
+                Table(n) &= spr & WeaponItem.MPCostS
             Case "Max Ammo"
-                Table(n) &= spr & ReverseBytes(WeaponItem.MaxAmmo)
+                Table(n) &= spr & WeaponItem.MaxAmmo
             Case "Rounds Brust"
-                Table(n) &= spr & ReverseBytes(WeaponItem.Rounds)
+                Table(n) &= spr & WeaponItem.Rounds
             Case "Caliber"
                 If WeaponItem.Caliber <> &HFFFFFFFF Then
-                    Table(n) &= spr & CaliberNAME(ReverseBytes(WeaponItem.Caliber))
+                    Table(n) &= spr & CaliberNAME(WeaponItem.Caliber)
                 Else : Table(n) &= spr : End If
             Case "Ammo PID"
                 If WeaponItem.AmmoPID <> &HFFFFFFFF Then
-                    Table(n) &= spr & Items_NAME(ReverseBytes(WeaponItem.AmmoPID) - 1) & " [" & ReverseBytes(WeaponItem.AmmoPID) & "]"
+                    Table(n) &= spr & Items_LST(WeaponItem.AmmoPID - 1).itemName & " [" & WeaponItem.AmmoPID & "]"
                 Else : Table(n) &= spr : End If
             Case "Critical Fail"
-                Table(n) &= spr & ReverseBytes(WeaponItem.CritFail)
+                Table(n) &= spr & WeaponItem.CritFail
             Case "Perk"
                 If WeaponItem.Perk <> &HFFFFFFFF Then
-                    Table(n) &= spr & Perk_NAME(ReverseBytes(WeaponItem.Perk)) & " [" & ReverseBytes(WeaponItem.Perk) & "]"
+                    Table(n) &= spr & Perk_NAME(WeaponItem.Perk) & " [" & WeaponItem.Perk & "]"
                 Else : Table(n) &= spr : End If
             Case "Size"
-                Table(n) &= spr & ReverseBytes(CommonItem.Size)
+                Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
         End Select
     End Sub
 
     Private Sub CreateTable_Ammo(ByRef n As Integer, ByRef m As Byte)
-        Select Case CheckedList(m)
+        Select Case CheckedList.Item(m).ToString
             Case "Dam Div"
-                Table(n) &= spr & ReverseBytes(AmmoItem.DamDiv)
+                Table(n) &= spr & AmmoItem.DamDiv
             Case "Dam Mult"
-                Table(n) &= spr & ReverseBytes(AmmoItem.DamMult)
+                Table(n) &= spr & AmmoItem.DamMult
             Case "AC Adjust"
-                Table(n) &= spr & ReverseBytes(AmmoItem.ACAdjust)
+                Table(n) &= spr & AmmoItem.ACAdjust
             Case "DR Adjust"
-                Table(n) &= spr & ReverseBytes(AmmoItem.DRAdjust)
+                Table(n) &= spr & AmmoItem.DRAdjust
             Case "Quantity"
-                Table(n) &= spr & ReverseBytes(AmmoItem.Quantity)
+                Table(n) &= spr & AmmoItem.Quantity
             Case "Caliber"
                 If AmmoItem.Caliber <> &HFFFFFFFF Then
-                    Table(n) &= spr & CaliberNAME(ReverseBytes(AmmoItem.Caliber))
+                    Table(n) &= spr & CaliberNAME(AmmoItem.Caliber)
                 Else : Table(n) &= spr : End If
             Case "Cost"
-                Table(n) &= spr & ReverseBytes(CommonItem.Cost)
+                Table(n) &= spr & CommonItem.Cost
             Case "Weight"
-                Table(n) &= spr & ReverseBytes(CommonItem.Weight)
+                Table(n) &= spr & CommonItem.Weight
             Case "Size"
-                Table(n) &= spr & ReverseBytes(CommonItem.Size)
+                Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
         End Select
     End Sub
 
     Private Sub CreateTable_Armor(ByRef n As Integer, ByRef m As Byte)
-        Select Case CheckedList(m)
+        Select Case CheckedList.Item(m).ToString
             Case "Cost"
-                Table(n) &= spr & ReverseBytes(CommonItem.Cost)
+                Table(n) &= spr & CommonItem.Cost
             Case "Weight"
-                Table(n) &= spr & ReverseBytes(CommonItem.Weight)
+                Table(n) &= spr & CommonItem.Weight
             Case "Armor Class"
-                Table(n) &= spr & ReverseBytes(ArmorItem.AC)
+                Table(n) &= spr & ArmorItem.AC
             Case "Normal DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTNormal) & "|" & ReverseBytes(ArmorItem.DRNormal)
+                Table(n) &= spr & ArmorItem.DTNormal & "|" & ArmorItem.DRNormal
             Case "Laser DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTLaser) & "|" & ReverseBytes(ArmorItem.DRLaser)
+                Table(n) &= spr & ArmorItem.DTLaser & "|" & ArmorItem.DRLaser
             Case "Fire DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTFire) & "|" & ReverseBytes(ArmorItem.DRFire)
+                Table(n) &= spr & ArmorItem.DTFire & "|" & ArmorItem.DRFire
             Case "Plasma DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTPlasma) & "|" & ReverseBytes(ArmorItem.DRPlasma)
+                Table(n) &= spr & ArmorItem.DTPlasma & "|" & ArmorItem.DRPlasma
             Case "Electrical DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTElectrical) & "|" & ReverseBytes(ArmorItem.DRElectrical)
+                Table(n) &= spr & ArmorItem.DTElectrical & "|" & ArmorItem.DRElectrical
             Case "EMP DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTEMP) & "|" & ReverseBytes(ArmorItem.DREMP)
+                Table(n) &= spr & ArmorItem.DTEMP & "|" & ArmorItem.DREMP
             Case "Explosion DT|DR"
-                Table(n) &= spr & ReverseBytes(ArmorItem.DTExplode) & "|" & ReverseBytes(ArmorItem.DRExplode)
+                Table(n) &= spr & ArmorItem.DTExplode & "|" & ArmorItem.DRExplode
             Case "Perk"
                 If ArmorItem.Perk <> &HFFFFFFFF Then
-                    Table(n) &= spr & Perk_NAME(ReverseBytes(ArmorItem.Perk)) & " [" & ReverseBytes(ArmorItem.Perk) & "]"
+                    Table(n) &= spr & Perk_NAME(ArmorItem.Perk) & " [" & ArmorItem.Perk & "]"
                 Else : Table(n) &= spr : End If
             Case "Size"
-                Table(n) &= spr & ReverseBytes(CommonItem.Size)
+                Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
         End Select
     End Sub
 
     Private Sub CreateTable_Drugs(ByRef n As Integer, ByRef m As Byte)
-        Select Case CheckedList(m)
+        Select Case CheckedList.Item(m).ToString
             Case "Cost"
-                Table(n) &= spr & ReverseBytes(CommonItem.Cost)
+                Table(n) &= spr & CommonItem.Cost
             Case "Weight"
-                Table(n) &= spr & ReverseBytes(CommonItem.Weight)
+                Table(n) &= spr & CommonItem.Weight
             Case "Modify Stat 0"
                 If DrugItem.Stat0 <> &HFFFFFFFF Then
-                    Table(n) &= spr & Items_Form.ComboBox19.Items(2 + (ReverseBytes(DrugItem.Stat0))).ToString & " [" & ReverseBytes(DrugItem.Stat0) & "]"
+                    Table(n) &= spr & DrugEffect(2 + (DrugItem.Stat0)).ToString & " [" & DrugItem.Stat0 & "]"
                 Else : Table(n) &= spr : End If
             Case "Modify Stat 1"
                 If DrugItem.Stat1 <> &HFFFFFFFF Then
-                    Table(n) &= spr & Items_Form.ComboBox19.Items(2 + (ReverseBytes(DrugItem.Stat1))).ToString & " [" & ReverseBytes(DrugItem.Stat1) & "]"
+                    Table(n) &= spr & DrugEffect(2 + (DrugItem.Stat1)).ToString & " [" & DrugItem.Stat1 & "]"
                 Else : Table(n) &= spr : End If
             Case "Modify Stat 2"
                 If DrugItem.Stat2 <> &HFFFFFFFF Then
-                    Table(n) &= spr & Items_Form.ComboBox19.Items(2 + (ReverseBytes(DrugItem.Stat2))).ToString & " [" & ReverseBytes(DrugItem.Stat2) & "]"
+                    Table(n) &= spr & DrugEffect(2 + (DrugItem.Stat2)).ToString & " [" & DrugItem.Stat2 & "]"
                 Else : Table(n) &= spr : End If
             Case "Instant Amount 0"
-                Table(n) &= spr & ReverseBytes(DrugItem.iAmount0)
+                Table(n) &= spr & DrugItem.iAmount0
             Case "Instant Amount 1"
-                Table(n) &= spr & ReverseBytes(DrugItem.iAmount1)
+                Table(n) &= spr & DrugItem.iAmount1
             Case "Instant Amount 2"
-                Table(n) &= spr & ReverseBytes(DrugItem.iAmount2)
+                Table(n) &= spr & DrugItem.iAmount2
             Case "First Amount 0"
-                Table(n) &= spr & ReverseBytes(DrugItem.fAmount0)
+                Table(n) &= spr & DrugItem.fAmount0
             Case "First Amount 1"
-                Table(n) &= spr & ReverseBytes(DrugItem.fAmount1)
+                Table(n) &= spr & DrugItem.fAmount1
             Case "First Amount 2"
-                Table(n) &= spr & ReverseBytes(DrugItem.fAmount2)
+                Table(n) &= spr & DrugItem.fAmount2
             Case "First Duration Time"
-                Table(n) &= spr & ReverseBytes(DrugItem.Duration1)
+                Table(n) &= spr & DrugItem.Duration1
             Case "Second Amount 0"
-                Table(n) &= spr & ReverseBytes(DrugItem.fAmount0)
+                Table(n) &= spr & DrugItem.fAmount0
             Case "Second Amount 1"
-                Table(n) &= spr & ReverseBytes(DrugItem.fAmount1)
+                Table(n) &= spr & DrugItem.fAmount1
             Case "Second Amount 2"
-                Table(n) &= spr & ReverseBytes(DrugItem.fAmount2)
+                Table(n) &= spr & DrugItem.fAmount2
             Case "Second Duration Time"
-                Table(n) &= spr & ReverseBytes(DrugItem.Duration2)
+                Table(n) &= spr & DrugItem.Duration2
             Case "Addiction Effect"
                 If DrugItem.W_Effect <> &HFFFFFFFF Then
-                    Table(n) &= spr & Perk_NAME(ReverseBytes(DrugItem.W_Effect)) & " [" & ReverseBytes(DrugItem.W_Effect) & "]"
+                    Table(n) &= spr & Perk_NAME(DrugItem.W_Effect) & " [" & DrugItem.W_Effect & "]"
                 Else : Table(n) &= spr : End If
             Case "Addiction Onset Time"
-                Table(n) &= spr & ReverseBytes(DrugItem.W_Onset)
+                Table(n) &= spr & DrugItem.W_Onset
             Case "Addiction Rate"
-                Table(n) &= spr & ReverseBytes(DrugItem.AddictionRate)
+                Table(n) &= spr & DrugItem.AddictionRate
             Case "Size"
-                Table(n) &= spr & ReverseBytes(CommonItem.Size)
+                Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
         End Select
     End Sub
 
     Private Sub CreateTable_Misc(ByRef n As Integer, ByRef m As Byte)
-        Select Case CheckedList(m)
+        Select Case CheckedList.Item(m).ToString
             Case "Power PID"
                 If MiscItem.PowerPID <> &HFFFFFFFF Then
-                    Table(n) &= spr & Items_NAME(ReverseBytes(MiscItem.PowerPID) - 1) & " [" & ReverseBytes(MiscItem.PowerPID) & "]"
+                    Table(n) &= spr & Items_LST(MiscItem.PowerPID - 1).itemName & " [" & MiscItem.PowerPID & "]"
                 Else : Table(n) &= spr : End If
             Case "Power Type"
-                If ReverseBytes(MiscItem.PowerType) < UBound(CaliberNAME) Then
-                    Table(n) &= spr & CaliberNAME(ReverseBytes(MiscItem.PowerType))
+                If MiscItem.PowerType < UBound(CaliberNAME) Then
+                    Table(n) &= spr & CaliberNAME(MiscItem.PowerType)
                 Else : Table(n) &= spr : End If
             Case "Charges"
-                Table(n) &= spr & ReverseBytes(MiscItem.Charges)
+                Table(n) &= spr & MiscItem.Charges
             Case "Cost"
-                Table(n) &= spr & ReverseBytes(CommonItem.Cost)
+                Table(n) &= spr & CommonItem.Cost
             Case "Weight"
-                Table(n) &= spr & ReverseBytes(CommonItem.Weight)
+                Table(n) &= spr & CommonItem.Weight
             Case "Size"
-                Table(n) &= spr & ReverseBytes(CommonItem.Size)
+                Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(ReverseBytes(CommonItem.Falgs) And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
         End Select
     End Sub
 
     Private Sub CreateTable_Critter(ByRef n As Integer, ByRef m As Byte)
-        Select Case CheckedList(m)
+        Select Case CheckedList.Item(m).ToString
             Case "Strength"
-                Table(n) &= spr & ReverseBytes(CritterPro.Strength)
+                Table(n) &= spr & CritterPro.Strength
             Case "Perception"
-                Table(n) &= spr & ReverseBytes(CritterPro.Perception)
+                Table(n) &= spr & CritterPro.Perception
             Case "Endurance"
-                Table(n) &= spr & ReverseBytes(CritterPro.Endurance)
+                Table(n) &= spr & CritterPro.Endurance
             Case "Charisma"
-                Table(n) &= spr & ReverseBytes(CritterPro.Charisma)
+                Table(n) &= spr & CritterPro.Charisma
             Case "Intelligence"
-                Table(n) &= spr & ReverseBytes(CritterPro.Intelligence)
+                Table(n) &= spr & CritterPro.Intelligence
             Case "Agility"
-                Table(n) &= spr & ReverseBytes(CritterPro.Agility)
+                Table(n) &= spr & CritterPro.Agility
             Case "Luck"
-                Table(n) &= spr & ReverseBytes(CritterPro.Luck)
+                Table(n) &= spr & CritterPro.Luck
                 '
             Case "Health Point"
-                Table(n) &= spr & (ReverseBytes(CritterPro.HP) + ReverseBytes(CritterPro.b_HP))
+                Table(n) &= spr & (CritterPro.HP + CritterPro.b_HP)
             Case "Action Point"
-                Table(n) &= spr & (ReverseBytes(CritterPro.AP) + ReverseBytes(CritterPro.b_AP))
+                Table(n) &= spr & (CritterPro.AP + CritterPro.b_AP)
             Case "Armor Class"
-                Table(n) &= spr & (ReverseBytes(CritterPro.AC) + ReverseBytes(CritterPro.b_AC))
+                Table(n) &= spr & (CritterPro.AC + CritterPro.b_AC)
             Case "Melee Damage"
-                Table(n) &= spr & (ReverseBytes(CritterPro.MeleeDmg) + ReverseBytes(CritterPro.b_MeleeDmg))
+                Table(n) &= spr & (CritterPro.MeleeDmg + CritterPro.b_MeleeDmg)
             Case "Damage Type"
-                Table(n) &= spr & DmgType(ReverseBytes(CritterPro.DamageType))
+                Table(n) &= spr & DmgType(CritterPro.DamageType)
             Case "Critical Chance"
-                Table(n) &= spr & (ReverseBytes(CritterPro.Critical) + ReverseBytes(CritterPro.b_Critical))
+                Table(n) &= spr & (CritterPro.Critical + CritterPro.b_Critical)
             Case "Sequence"
-                Table(n) &= spr & (ReverseBytes(CritterPro.Sequence) + ReverseBytes(CritterPro.b_Sequence))
+                Table(n) &= spr & (CritterPro.Sequence + CritterPro.b_Sequence)
             Case "Healing Rate"
-                Table(n) &= spr & (ReverseBytes(CritterPro.Healing) + ReverseBytes(CritterPro.b_Healing))
+                Table(n) &= spr & (CritterPro.Healing + CritterPro.b_Healing)
             Case "Exp Value"
-                Table(n) &= spr & ReverseBytes(CritterPro.ExpVal)
+                Table(n) &= spr & CritterPro.ExpVal
                 '
             Case "Small Guns [Skill]"
-                Table(n) &= spr & CStr(Calc.SmallGun_Skill() + ReverseBytes(CritterPro.SmallGuns))
+                Table(n) &= spr & CStr(CalcStats.SmallGun_Skill(CritterPro.Agility) + CritterPro.SmallGuns)
             Case "Big Guns [Skill]"
-                Table(n) &= spr & CStr(Calc.BigEnergyGun_Skill() + ReverseBytes(CritterPro.BigGuns))
+                Table(n) &= spr & CStr(CalcStats.BigEnergyGun_Skill(CritterPro.Agility) + CritterPro.BigGuns)
             Case "Energy Weapons [Skill]"
-                Table(n) &= spr & CStr(Calc.BigEnergyGun_Skill() + ReverseBytes(CritterPro.EnergyGun))
+                Table(n) &= spr & CStr(CalcStats.BigEnergyGun_Skill(CritterPro.Agility) + CritterPro.EnergyGun)
             Case "Unarmed [Skill]"
-                Table(n) &= spr & CStr(Calc.Unarmed_Skill() + ReverseBytes(CritterPro.Unarmed))
+                Table(n) &= spr & CStr(CalcStats.Unarmed_Skill(CritterPro.Agility, CritterPro.Strength) + CritterPro.Unarmed)
             Case "Melee [Skill]"
-                Table(n) &= spr & CStr(Calc.Melee_Skill() + ReverseBytes(CritterPro.Melee))
+                Table(n) &= spr & CStr(CalcStats.Melee_Skill(CritterPro.Agility, CritterPro.Strength) + CritterPro.Melee)
             Case "Throwing [Skill]"
-                Table(n) &= spr & CStr(Calc.Throwing_Skill() + ReverseBytes(CritterPro.Throwing))
+                Table(n) &= spr & CStr(CalcStats.Throwing_Skill(CritterPro.Agility) + CritterPro.Throwing)
                 '
             Case "Resistance Radiation"
-                Table(n) &= spr & (ReverseBytes(CritterPro.DRRadiation) + ReverseBytes(CritterPro.b_DRRadiation))
+                Table(n) &= spr & (CritterPro.DRRadiation + CritterPro.b_DRRadiation)
             Case "Resistance Poison"
-                Table(n) &= spr & (ReverseBytes(CritterPro.DRPoison) + ReverseBytes(CritterPro.b_DRPoison))
+                Table(n) &= spr & (CritterPro.DRPoison + CritterPro.b_DRPoison)
                 '
             Case "Normal DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTNormal) & "|" & ReverseBytes(CritterPro.b_DRNormal)
+                Table(n) &= spr & CritterPro.b_DTNormal & "|" & CritterPro.b_DRNormal
             Case "Laser DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTLaser) & "|" & ReverseBytes(CritterPro.b_DRLaser)
+                Table(n) &= spr & CritterPro.b_DTLaser & "|" & CritterPro.b_DRLaser
             Case "Fire DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTFire) & "|" & ReverseBytes(CritterPro.b_DRFire)
+                Table(n) &= spr & CritterPro.b_DTFire & "|" & CritterPro.b_DRFire
             Case "Plasma DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTPlasma) & "|" & ReverseBytes(CritterPro.b_DRPlasma)
+                Table(n) &= spr & CritterPro.b_DTPlasma & "|" & CritterPro.b_DRPlasma
             Case "Electrical DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTElectrical) & "|" & ReverseBytes(CritterPro.b_DRElectrical)
+                Table(n) &= spr & CritterPro.b_DTElectrical & "|" & CritterPro.b_DRElectrical
             Case "EMP DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTEMP) & "|" & ReverseBytes(CritterPro.b_DREMP)
+                Table(n) &= spr & CritterPro.b_DTEMP & "|" & CritterPro.b_DREMP
             Case "Explosion DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.b_DTExplode) & "|" & ReverseBytes(CritterPro.b_DRExplode)
+                Table(n) &= spr & CritterPro.b_DTExplode & "|" & CritterPro.b_DRExplode
                 '
             Case "Base Normal DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTNormal) & "|" & ReverseBytes(CritterPro.DRNormal)
+                Table(n) &= spr & CritterPro.DTNormal & "|" & CritterPro.DRNormal
             Case "Base Laser DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTLaser) & "|" & ReverseBytes(CritterPro.DRLaser)
+                Table(n) &= spr & CritterPro.DTLaser & "|" & CritterPro.DRLaser
             Case "Base Fire DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTFire) & "|" & ReverseBytes(CritterPro.DRFire)
+                Table(n) &= spr & CritterPro.DTFire & "|" & CritterPro.DRFire
             Case "Base Plasma DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTPlasma) & "|" & ReverseBytes(CritterPro.DRPlasma)
+                Table(n) &= spr & CritterPro.DTPlasma & "|" & CritterPro.DRPlasma
             Case "Base Electrical DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTElectrical) & "|" & ReverseBytes(CritterPro.DRElectrical)
+                Table(n) &= spr & CritterPro.DTElectrical & "|" & CritterPro.DRElectrical
             Case "Base EMP DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTEMP) & "|" & ReverseBytes(CritterPro.DREMP)
+                Table(n) &= spr & CritterPro.DTEMP & "|" & CritterPro.DREMP
             Case "Base Explosion DT|DR"
-                Table(n) &= spr & ReverseBytes(CritterPro.DTExplode) & "|" & ReverseBytes(CritterPro.DRExplode)
+                Table(n) &= spr & CritterPro.DTExplode & "|" & CritterPro.DRExplode
         End Select
-    End Sub
-
-    Friend Sub Import_Table(ByVal file As String)
-        Dim n As Integer, m As Byte, z As UShort, t_Path As String, ProFile As String
-        Dim CommonItem As CmItemPro, WeaponItem As WpItemPro, ArmorItem As ArItemPro
-        Dim AmmoItem As AmItemPro, DrugItem As DgItemPro, MiscItem As McItemPro
-        Dim Table_File() As String = IO.File.ReadAllLines(file, System.Text.Encoding.Default)
-        Dim Table_Param() As String = Split(Table_File(0), ";", -1, CompareMethod.Binary)
-        Dim Table_Value(UBound(Table_File) - 1, UBound(Table_Param)) As String
-        Dim strSplit() As String
-        'разделить
-        For n = 1 To UBound(Table_File)
-            Dim tLine() As String = Split(Table_File(n), ";", -1, CompareMethod.Binary)
-            If tLine(0) <> Nothing OrElse tLine.Length < Table_Param.Length Then
-                If tLine(0) <> Nothing Then
-                    TableLog_Form.ListBox1.Items.Add("Skip: Table Line " & (n + 1) & " - Used ""#"" symbol in begin line.")
-                Else
-                    TableLog_Form.ListBox1.Items.Add("Warning: Table Line " & (n + 1) & " - Error count value param.")
-                End If
-                GoTo lNext
-            End If
-            For m = 0 To UBound(Table_Param)
-                Table_Value(n - 1, m) = tLine(m)
-            Next
-lNext:
-        Next
-        'открыть профайл
-        If My.Computer.FileSystem.DirectoryExists(SaveMOD_Path & "\proto\items") = False Then My.Computer.FileSystem.CreateDirectory(SaveMOD_Path & "\proto\items")
-        Dim fFile As Byte = FreeFile()
-        On Error GoTo tError
-        For n = 0 To UBound(Table_Value)
-            ProFile = Table_Value(n, 1)
-            If ProFile = Nothing Then GoTo pNext
-            If My.Computer.FileSystem.FileExists(SaveMOD_Path & "\proto\items\" & ProFile) = False Then
-                t_Path = Check_File("proto\items\" & ProFile)
-                My.Computer.FileSystem.CopyFile(t_Path & "\proto\items\" & ProFile, SaveMOD_Path & "\proto\items\" & ProFile, FileIO.UIOption.AllDialogs)
-            End If
-            IO.File.SetAttributes(SaveMOD_Path & "\proto\items\" & ProFile, IO.FileAttributes.Normal Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
-            FileOpen(fFile, SaveMOD_Path & "\proto\items\" & ProFile, OpenMode.Binary, OpenAccess.ReadWrite, OpenShare.Shared)
-            FileGet(fFile, CommonItem)
-            Dim fInfo As IO.FileInfo = New IO.FileInfo(SaveMOD_Path & "\proto\items\" & ProFile)
-            Select Case fInfo.Length
-                Case 69 'Misc
-                    FileGet(fFile, MiscItem)
-                Case 122 'Оружие 
-                    FileGet(fFile, WeaponItem)
-                Case 125 'Наркотик
-                    FileGet(fFile, DrugItem)
-                Case 81 'Патрон
-                    FileGet(fFile, AmmoItem)
-                Case 129 'Броня
-                    FileGet(fFile, ArmorItem)
-            End Select
-            'изменить значения 
-            For m = 3 To UBound(Table_Param)
-                Select Case Table_Param(m)
-                    'Common
-                    Case "Cost"
-                        CommonItem.Cost = ReverseBytes(Table_Value(n, m))
-                    Case "Weight"
-                        CommonItem.Weight = ReverseBytes(Table_Value(n, m))
-                    Case "Size"
-                        CommonItem.Size = ReverseBytes(Table_Value(n, m))
-                    Case "Shoot Thru [Flag]"
-                        If Table_Value(n, m) = "True" Then CommonItem.Falgs = CommonItem.Falgs Or ReverseBytes(&H80000000) Else CommonItem.Falgs = CommonItem.Falgs And ReverseBytes(Not (&H80000000))
-                    Case "Light Thru [Flag]"
-                        If Table_Value(n, m) = "True" Then CommonItem.Falgs = CommonItem.Falgs Or ReverseBytes(&H20000000) Else CommonItem.Falgs = CommonItem.Falgs And ReverseBytes(Not (&H20000000))
-                        'weapon
-                    Case "Min Strength"
-                        WeaponItem.MinST = ReverseBytes(Table_Value(n, m))
-                    Case "Damage Type"
-                        For z = 0 To UBound(DmgType)
-                            If Table_Value(n, m) = DmgType(z) Then WeaponItem.DmgType = ReverseBytes(z) : Exit For
-                        Next
-                    Case "Min Damage"
-                        WeaponItem.MinDmg = ReverseBytes(Table_Value(n, m))
-                    Case "Max Damage"
-                        WeaponItem.MaxDmg = ReverseBytes(Table_Value(n, m))
-                    Case "Range Primary Attack"
-                        WeaponItem.MaxRangeP = ReverseBytes(Table_Value(n, m))
-                    Case "Range Secondary Attack"
-                        WeaponItem.MaxRangeS = ReverseBytes(Table_Value(n, m))
-                    Case "AP Cost Primary Attack"
-                        WeaponItem.MPCostP = ReverseBytes(Table_Value(n, m))
-                    Case "AP Cost Secondary Attack"
-                        WeaponItem.MPCostS = ReverseBytes(Table_Value(n, m))
-                    Case "Max Ammo"
-                        WeaponItem.MaxAmmo = ReverseBytes(Table_Value(n, m))
-                    Case "Rounds Brust"
-                        WeaponItem.Rounds = ReverseBytes(Table_Value(n, m))
-                    Case "Caliber"
-                        If fInfo.Length = 122 Then 'weapon
-                            If Table_Value(n, m) <> Nothing Then
-                                For z = 0 To UBound(CaliberNAME)
-                                    If Table_Value(n, m) = CaliberNAME(z) Then WeaponItem.Caliber = ReverseBytes(z) : Exit For
-                                Next
-                            End If
-                        Else 'ammo
-                            If Table_Value(n, m) <> Nothing Then
-                                For z = 0 To UBound(CaliberNAME)
-                                    If Table_Value(n, m) = CaliberNAME(z) Then AmmoItem.Caliber = ReverseBytes(z) : Exit For
-                                Next
-                            End If
-                        End If
-                    Case "Ammo PID"
-                        WeaponItem.AmmoPID = GetTable_Param(Table_Value(n, m))
-                    Case "Critical Fail"
-                        WeaponItem.CritFail = ReverseBytes(Table_Value(n, m))
-                    Case "Perk"
-                        If fInfo.Length = 122 Then 'weapon
-                            WeaponItem.Perk = GetTable_Param(Table_Value(n, m))
-                        Else 'armor
-                            ArmorItem.Perk = GetTable_Param(Table_Value(n, m))
-                        End If
-                        'Ammo
-                    Case "Dam Div"
-                        AmmoItem.DamDiv = ReverseBytes(Table_Value(n, m))
-                    Case "Dam Mult"
-                        AmmoItem.DamMult = ReverseBytes(Table_Value(n, m))
-                    Case "AC Adjust"
-                        AmmoItem.ACAdjust = ReverseBytes(Table_Value(n, m))
-                    Case "DR Adjust"
-                        AmmoItem.DRAdjust = ReverseBytes(Table_Value(n, m))
-                    Case "Quantity"
-                        AmmoItem.Quantity = ReverseBytes(Table_Value(n, m))
-                        'Armor
-                    Case "Armor Class"
-                        ArmorItem.AC = ReverseBytes(Table_Value(n, m))
-                    Case "Normal DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTNormal = ReverseBytes(strSplit(0))
-                        ArmorItem.DRNormal = ReverseBytes(strSplit(1))
-                    Case "Laser DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTLaser = ReverseBytes(strSplit(0))
-                        ArmorItem.DRLaser = ReverseBytes(strSplit(1))
-                    Case "Fire DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTFire = ReverseBytes(strSplit(0))
-                        ArmorItem.DRFire = ReverseBytes(strSplit(1))
-                    Case "Plasma DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTPlasma = ReverseBytes(strSplit(0))
-                        ArmorItem.DRPlasma = ReverseBytes(strSplit(1))
-                    Case "Electrical DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTElectrical = ReverseBytes(strSplit(0))
-                        ArmorItem.DRElectrical = ReverseBytes(strSplit(1))
-                    Case "EMP DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTEMP = ReverseBytes(strSplit(0))
-                        ArmorItem.DREMP = ReverseBytes(strSplit(1))
-                    Case "Explosion DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        ArmorItem.DTExplode = ReverseBytes(strSplit(0))
-                        ArmorItem.DRExplode = ReverseBytes(strSplit(1))
-                        'Drug
-                    Case "Modify Stat 0"
-                        DrugItem.Stat0 = GetTable_Param(Table_Value(n, m))
-                    Case "Modify Stat 1"
-                        DrugItem.Stat1 = GetTable_Param(Table_Value(n, m))
-                    Case "Modify Stat 2"
-                        DrugItem.Stat2 = GetTable_Param(Table_Value(n, m))
-                    Case "Instant Amount 0"
-                        DrugItem.iAmount0 = ReverseBytes(Table_Value(n, m))
-                    Case "Instant Amount 1"
-                        DrugItem.iAmount1 = ReverseBytes(Table_Value(n, m))
-                    Case "Instant Amount 2"
-                        DrugItem.iAmount2 = ReverseBytes(Table_Value(n, m))
-                    Case "First Amount 0"
-                        DrugItem.fAmount0 = ReverseBytes(Table_Value(n, m))
-                    Case "First Amount 1"
-                        DrugItem.fAmount1 = ReverseBytes(Table_Value(n, m))
-                    Case "First Amount 2"
-                        DrugItem.fAmount2 = ReverseBytes(Table_Value(n, m))
-                    Case "First Duration Time"
-                        DrugItem.Duration1 = ReverseBytes(Table_Value(n, m))
-                    Case "Second Amount 0"
-                        DrugItem.fAmount0 = ReverseBytes(Table_Value(n, m))
-                    Case "Second Amount 1"
-                        DrugItem.fAmount1 = ReverseBytes(Table_Value(n, m))
-                    Case "Second Amount 2"
-                        DrugItem.fAmount2 = ReverseBytes(Table_Value(n, m))
-                    Case "Second Duration Time"
-                        DrugItem.Duration2 = ReverseBytes(Table_Value(n, m))
-                    Case "Addiction Effect"
-                        DrugItem.W_Effect = GetTable_Param(Table_Value(n, m))
-                    Case "Addiction Onset Time"
-                        DrugItem.W_Onset = ReverseBytes(Table_Value(n, m))
-                    Case "Addiction Rate"
-                        DrugItem.AddictionRate = ReverseBytes(Table_Value(n, m))
-                        'Misc
-                    Case "Power PID"
-                        MiscItem.PowerPID = GetTable_Param(Table_Value(n, m))
-                    Case "Power Type"
-                        If Table_Value(n, m) <> Nothing Then
-                            For z = 0 To UBound(CaliberNAME)
-                                If Table_Value(n, m) = CaliberNAME(z) Then MiscItem.PowerType = ReverseBytes(z) : Exit For
-                            Next
-                        End If
-                    Case "Charges"
-                        If Table_Value(n, m) <> Nothing Then MiscItem.Charges = ReverseBytes(Table_Value(n, m))
-                End Select
-            Next
-            'сохранить профайл, и перейти к следующему профайлу
-            FilePut(fFile, CommonItem, 1)
-            Select Case fInfo.Length
-                Case 69 'Misc
-                    FilePut(fFile, MiscItem)
-                Case 122 'Оружие 
-                    FilePut(fFile, WeaponItem)
-                Case 125 'Наркотик
-                    FilePut(fFile, DrugItem)
-                Case 81 'Патрон
-                    FilePut(fFile, AmmoItem)
-                Case 129 'Броня
-                    FilePut(fFile, ArmorItem)
-            End Select
-            FileClose(fFile)
-            If proRO Then IO.File.SetAttributes(SaveMOD_Path & "\proto\items\" & ProFile, IO.FileAttributes.ReadOnly Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
-pNext:
-        Next
-        On Error GoTo 0
-        If TableLog_Form.ListBox1.Items.Count > 0 Then TableLog_Form.Show()
-        MsgBox("Done!")
-        Exit Sub
-tError:
-        FileClose(fFile)
-        If proRO Then IO.File.SetAttributes(SaveMOD_Path & "\proto\items\" & ProFile, IO.FileAttributes.ReadOnly Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
-        MsgBox("Param: " & UCase(Table_Param(m)) & " PRO Line: " & Table_Value(n, 0), MsgBoxStyle.Critical, "Error Import")
     End Sub
 
     Private Function GetTable_Param(ByRef tParam As String) As Integer
         If tParam <> Nothing Then
             Dim y As Byte = InStr(tParam, "[", CompareMethod.Binary)
-            Return ReverseBytes(tParam.Substring(y, tParam.Length - (y + 1)))
+            Return tParam.Substring(y, tParam.Length - (y + 1))
         End If
+
         Return &HFFFFFFFF
     End Function
 
-    Friend Sub Import_CR_Table(ByVal file As String)
-        Dim z As UShort, n As Integer, m As Integer
-        Dim ProFile, t_Path As String 'CritterPro As CritPro,
-        Dim strSplit() As String
-
-        Dim Table_File() As String = IO.File.ReadAllLines(file, System.Text.Encoding.Default)
-        Dim Table_Param() As String = Split(Table_File(0), ";", -1, CompareMethod.Binary)
+    Friend Sub Items_ImportTable(ByVal tableFile As String)
+        Dim CommonItem As CmItemPro, WeaponItem As WpItemPro, ArmorItem As ArItemPro
+        Dim AmmoItem As AmItemPro, DrugItem As DgItemPro, MiscItem As McItemPro
+        Dim n, m As Integer
+        '
+        Dim Table_File() As String
+        Try
+            Table_File = File.ReadAllLines(tableFile, Encoding.Default)
+        Catch ex As Exception
+            MsgBox("Can not open this table file!", MsgBoxStyle.Critical, "Open error")
+            Exit Sub
+        End Try
+        Dim Table_Param() As String = Split(Table_File(0), spr)
         Dim Table_Value(UBound(Table_File) - 1, UBound(Table_Param)) As String
+
         'разделить
         For n = 1 To UBound(Table_File)
-            Dim tLine() As String = Split(Table_File(n), ";", -1, CompareMethod.Binary)
+            Dim tLine() As String = Split(Table_File(n), spr)
             If tLine(0) <> Nothing OrElse tLine.Length < Table_Param.Length Then
                 If tLine(0) <> Nothing Then
-                    TableLog_Form.ListBox1.Items.Add("Skip: Table Line " & (n + 1) & " - Used ""#"" symbol in begin line.")
+                    TableLog_Form.ListBox1.Items.Add("Skip Line: Table Line " & (n + 1) & " - Used '#' symbol in begin line.")
                 Else
-                    TableLog_Form.ListBox1.Items.Add("Warning: Table Line " & (n + 1) & " - Error count value param.")
+                    TableLog_Form.ListBox1.Items.Add("Warning: Table Line " & (n + 1) & " - Error count value parametr.")
                 End If
-                GoTo lNext
+                Continue For
             End If
             For m = 0 To UBound(Table_Param)
                 Table_Value(n - 1, m) = tLine(m)
             Next
-lNext:
         Next
+
         'открыть профайл
-        If My.Computer.FileSystem.DirectoryExists(SaveMOD_Path & "\proto\critters") = False Then My.Computer.FileSystem.CreateDirectory(SaveMOD_Path & "\proto\critters")
-        Dim fFile As Byte = FreeFile()
-        On Error GoTo tError
+        If Not Directory.Exists(SaveMOD_Path & PROTO_ITEMS) Then Directory.CreateDirectory(SaveMOD_Path & PROTO_ITEMS)
+        Dim strSplit() As String
         For n = 0 To UBound(Table_Value)
-            ProFile = Table_Value(n, 1)
-            If ProFile = Nothing Then GoTo pNext
-            If My.Computer.FileSystem.FileExists(SaveMOD_Path & "\proto\critters\" & ProFile) = False Then
-                t_Path = Check_File("proto\critters\" & ProFile)
-                My.Computer.FileSystem.CopyFile(t_Path & "\proto\critters\" & ProFile, SaveMOD_Path & "\proto\critters\" & ProFile, FileIO.UIOption.AllDialogs)
+            Dim ProFile As String = Table_Value(n, 1)
+            If ProFile = Nothing Then Continue For
+            Dim pPath = SaveMOD_Path & PROTO_ITEMS & ProFile
+            If Not File.Exists(pPath) Then
+                Dim source As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile) & PROTO_ITEMS & ProFile
+                FileSystem.CopyFile(source, pPath, FileIO.UIOption.AllDialogs)
             End If
-            IO.File.SetAttributes(SaveMOD_Path & "\proto\critters\" & ProFile, IO.FileAttributes.Normal Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
-            FileOpen(fFile, SaveMOD_Path & "\proto\critters\" & ProFile, OpenMode.Binary, OpenAccess.ReadWrite, OpenShare.Shared)
-            FileGet(fFile, CritterPro)
-            'изменить значения
-            'Common pass 1
-            For m = 3 To UBound(Table_Param)
-                Select Case Table_Param(m)
-                    Case "Strength"
-                        CritterPro.Strength = ReverseBytes(Table_Value(n, m))
-                    Case "Perception"
-                        CritterPro.Perception = ReverseBytes(Table_Value(n, m))
-                    Case "Endurance"
-                        CritterPro.Endurance = ReverseBytes(Table_Value(n, m))
-                    Case "Charisma"
-                        CritterPro.Charisma = ReverseBytes(Table_Value(n, m))
-                    Case "Intelligence"
-                        CritterPro.Intelligence = ReverseBytes(Table_Value(n, m))
-                    Case "Agility"
-                        CritterPro.Agility = ReverseBytes(Table_Value(n, m))
-                    Case "Luck"
-                        CritterPro.Luck = ReverseBytes(Table_Value(n, m))
-                    Case "Exp Value"
-                        CritterPro.ExpVal = ReverseBytes(Table_Value(n, m))
-                    Case "Damage Type"
-                        For z = 0 To UBound(DmgType)
-                            If Table_Value(n, m) = DmgType(z) Then CritterPro.DamageType = ReverseBytes(z) : Exit For
-                        Next
-                        'Armor
-                    Case "Normal DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTNormal = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DRNormal = ReverseBytes(CInt(strSplit(1)))
-                    Case "Laser DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTLaser = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DRLaser = ReverseBytes(CInt(strSplit(1)))
-                    Case "Fire DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTFire = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DRFire = ReverseBytes(CInt(strSplit(1)))
-                    Case "Plasma DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTPlasma = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DRPlasma = ReverseBytes(CInt(strSplit(1)))
-                    Case "Electrical DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTElectrical = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DRElectrical = ReverseBytes(CInt(strSplit(1)))
-                    Case "EMP DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTEMP = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DREMP = ReverseBytes(CInt(strSplit(1)))
-                    Case "Explosion DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.b_DTExplode = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.b_DRExplode = ReverseBytes(CInt(strSplit(1)))
-                        '
-                    Case "Base Normal DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTNormal = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DRNormal = ReverseBytes(CInt(strSplit(1)))
-                    Case "Base Laser DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTLaser = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DRLaser = ReverseBytes(CInt(strSplit(1)))
-                    Case "Base Fire DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTFire = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DRFire = ReverseBytes(CInt(strSplit(1)))
-                    Case "Base Plasma DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTPlasma = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DRPlasma = ReverseBytes(CInt(strSplit(1)))
-                    Case "Base Electrical DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTElectrical = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DRElectrical = ReverseBytes(CInt(strSplit(1)))
-                    Case "Base EMP DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTEMP = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DREMP = ReverseBytes(CInt(strSplit(1)))
-                    Case "Base Explosion DT|DR"
-                        strSplit = Table_Value(n, m).Split("|")
-                        CritterPro.DTExplode = ReverseBytes(CInt(strSplit(0)))
-                        CritterPro.DRExplode = ReverseBytes(CInt(strSplit(1)))
-                End Select
-            Next
-            'Calculate pass 2
-            For m = 3 To UBound(Table_Param)
-                Select Case Table_Param(m)
-                    Case "Action Point"
-                        z = Calc.Action_Point()
-                        CritterPro.AP = ReverseBytes(z)
-                        CritterPro.b_AP = ReverseBytes(Table_Value(n, m) - z)
-                    Case "Armor Class"
-                        CritterPro.AC = CritterPro.Agility
-                        CritterPro.b_AC = ReverseBytes(Table_Value(n, m) - ReverseBytes(CritterPro.Agility))
-                    Case "Health Point"
-                        z = Calc.Health_Point()
-                        CritterPro.HP = ReverseBytes(z)
-                        CritterPro.b_HP = ReverseBytes(Table_Value(n, m) - z)
-                    Case "Healing Rate"
-                        z = Calc.Healing_Rate()
-                        CritterPro.Healing = ReverseBytes(z)
-                        CritterPro.b_Healing = ReverseBytes(Table_Value(n, m) - z)
-                    Case "Melee Damage"
-                        z = Calc.Melee_Damage()
-                        CritterPro.MeleeDmg = ReverseBytes(z)
-                        CritterPro.b_MeleeDmg = ReverseBytes(Table_Value(n, m) - z)
-                    Case "Critical Chance"
-                        CritterPro.Critical = CritterPro.Luck
-                        CritterPro.b_Critical = ReverseBytes(Table_Value(n, m) - ReverseBytes(CritterPro.Luck))
-                    Case "Sequence"
-                        z = Calc.Sequence()
-                        CritterPro.Sequence = ReverseBytes(z)
-                        CritterPro.b_Sequence = ReverseBytes(Table_Value(n, m) - z)
-                    Case "Resistance Radiation"
-                        z = Calc.Radiation()
-                        CritterPro.DRRadiation = ReverseBytes(z)
-                        CritterPro.b_DRRadiation = ReverseBytes(Table_Value(n, m) - z)
-                    Case "Resistance Poison"
-                        z = Calc.Poison()
-                        CritterPro.DRPoison = ReverseBytes(z)
-                        CritterPro.b_DRPoison = ReverseBytes(Table_Value(n, m) - z)
-                        'Skill
-                    Case "Small Guns [Skill]"
-                        CritterPro.SmallGuns = ReverseBytes(Table_Value(n, m) - Calc.SmallGun_Skill())
-                    Case "Big Guns [Skill]"
-                        CritterPro.BigGuns = ReverseBytes(Table_Value(n, m) - Calc.BigEnergyGun_Skill())
-                    Case "Energy Weapons [Skill]"
-                        CritterPro.EnergyGun = ReverseBytes(Table_Value(n, m) - Calc.BigEnergyGun_Skill())
-                    Case "Unarmed [Skill]"
-                        CritterPro.Unarmed = ReverseBytes(Table_Value(n, m) - Calc.Unarmed_Skill())
-                    Case "Melee [Skill]"
-                        CritterPro.Melee = ReverseBytes(Table_Value(n, m) - Calc.Melee_Skill())
-                    Case "Throwing [Skill]"
-                        CritterPro.Throwing = ReverseBytes(Table_Value(n, m) - Calc.Throwing_Skill())
-                End Select
-            Next
-            'сохранить профайл, и перейти к следующему профайлу
-            FilePut(fFile, CritterPro, 1)
-            FileClose(fFile)
-            If proRO Then IO.File.SetAttributes(SaveMOD_Path & "\proto\critters\" & ProFile, IO.FileAttributes.ReadOnly Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
-pNext:
+
+            Dim iType As Integer
+            Select Case FileSystem.GetFileInfo(pPath).Length
+                Case 69 'Misc
+                    iType = ItemType.Misc
+                Case 122 'Оружие 
+                    iType = ItemType.Weapon
+                Case 125 'Наркотик
+                    iType = ItemType.Drugs
+                Case 81 'Патрон
+                    iType = ItemType.Ammo
+                Case 129 'Броня
+                    iType = ItemType.Armor
+                Case Else
+                    TableLog_Form.ListBox1.Items.Add("Error: Pro file '" & ProFile & "' item type does not match the file size.")
+                    Continue For
+            End Select
+            ProFiles.LoadItemProData(pPath, iType, CommonItem, WeaponItem, ArmorItem, AmmoItem, DrugItem, MiscItem)
+
+            Try
+                'изменить значения 
+                For m = 3 To UBound(Table_Param)
+                    Select Case Table_Param(m)
+                        'Common
+                        Case "Cost"
+                            CommonItem.Cost = CInt(Table_Value(n, m))
+                        Case "Weight"
+                            CommonItem.Weight = CInt(Table_Value(n, m))
+                        Case "Size"
+                            CommonItem.Size = CInt(Table_Value(n, m))
+                        Case "Shoot Thru [Flag]"
+                            If Table_Value(n, m) = "True" Then
+                                CommonItem.Falgs = CommonItem.Falgs Or &H80000000
+                            Else
+                                CommonItem.Falgs = CommonItem.Falgs And (Not (&H80000000))
+                            End If
+                        Case "Light Thru [Flag]"
+                            If Table_Value(n, m) = "True" Then
+                                CommonItem.Falgs = CommonItem.Falgs Or &H20000000
+                            Else
+                                CommonItem.Falgs = CommonItem.Falgs And (Not (&H20000000))
+                            End If
+                            'weapon
+                        Case "Min Strength"
+                            WeaponItem.MinST = CInt(Table_Value(n, m))
+                        Case "Damage Type"
+                            For z = 0 To UBound(DmgType)
+                                If Table_Value(n, m) = DmgType(z) Then
+                                    WeaponItem.DmgType = z
+                                    Exit For
+                                End If
+                            Next
+                        Case "Min Damage"
+                            WeaponItem.MinDmg = CInt(Table_Value(n, m))
+                        Case "Max Damage"
+                            WeaponItem.MaxDmg = CInt(Table_Value(n, m))
+                        Case "Range Primary Attack"
+                            WeaponItem.MaxRangeP = CInt(Table_Value(n, m))
+                        Case "Range Secondary Attack"
+                            WeaponItem.MaxRangeS = CInt(Table_Value(n, m))
+                        Case "AP Cost Primary Attack"
+                            WeaponItem.MPCostP = CInt(Table_Value(n, m))
+                        Case "AP Cost Secondary Attack"
+                            WeaponItem.MPCostS = CInt(Table_Value(n, m))
+                        Case "Max Ammo"
+                            WeaponItem.MaxAmmo = CInt(Table_Value(n, m))
+                        Case "Rounds Brust"
+                            WeaponItem.Rounds = CInt(Table_Value(n, m))
+                        Case "Caliber"
+                            If iType = ItemType.Weapon Then 'weapon
+                                If Table_Value(n, m) <> Nothing Then
+                                    For z = 0 To UBound(CaliberNAME)
+                                        If Table_Value(n, m) = CaliberNAME(z) Then
+                                            WeaponItem.Caliber = z
+                                            Exit For
+                                        End If
+                                    Next
+                                End If
+                            Else 'ammo
+                                If Table_Value(n, m) <> Nothing Then
+                                    For z = 0 To UBound(CaliberNAME)
+                                        If Table_Value(n, m) = CaliberNAME(z) Then
+                                            AmmoItem.Caliber = z
+                                            Exit For
+                                        End If
+                                    Next
+                                End If
+                            End If
+                        Case "Ammo PID"
+                            WeaponItem.AmmoPID = GetTable_Param(Table_Value(n, m))
+                        Case "Critical Fail"
+                            WeaponItem.CritFail = CInt(Table_Value(n, m))
+                        Case "Perk"
+                            If iType = ItemType.Weapon Then 'weapon
+                                WeaponItem.Perk = GetTable_Param(Table_Value(n, m))
+                            Else 'armor
+                                ArmorItem.Perk = GetTable_Param(Table_Value(n, m))
+                            End If
+                            'Ammo
+                        Case "Dam Div"
+                            AmmoItem.DamDiv = CInt(Table_Value(n, m))
+                        Case "Dam Mult"
+                            AmmoItem.DamMult = CInt(Table_Value(n, m))
+                        Case "AC Adjust"
+                            AmmoItem.ACAdjust = CInt(Table_Value(n, m))
+                        Case "DR Adjust"
+                            AmmoItem.DRAdjust = CInt(Table_Value(n, m))
+                        Case "Quantity"
+                            AmmoItem.Quantity = CInt(Table_Value(n, m))
+                            'Armor
+                        Case "Armor Class"
+                            ArmorItem.AC = CInt(Table_Value(n, m))
+                        Case "Normal DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTNormal = CInt(strSplit(0))
+                            ArmorItem.DRNormal = CInt(strSplit(1))
+                        Case "Laser DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTLaser = CInt(strSplit(0))
+                            ArmorItem.DRLaser = CInt(strSplit(1))
+                        Case "Fire DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTFire = CInt(strSplit(0))
+                            ArmorItem.DRFire = CInt(strSplit(1))
+                        Case "Plasma DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTPlasma = CInt(strSplit(0))
+                            ArmorItem.DRPlasma = CInt(strSplit(1))
+                        Case "Electrical DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTElectrical = CInt(strSplit(0))
+                            ArmorItem.DRElectrical = CInt(strSplit(1))
+                        Case "EMP DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTEMP = CInt(strSplit(0))
+                            ArmorItem.DREMP = CInt(strSplit(1))
+                        Case "Explosion DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            ArmorItem.DTExplode = CInt(strSplit(0))
+                            ArmorItem.DRExplode = CInt(strSplit(1))
+                            'Drug
+                        Case "Modify Stat 0"
+                            DrugItem.Stat0 = GetTable_Param(Table_Value(n, m))
+                        Case "Modify Stat 1"
+                            DrugItem.Stat1 = GetTable_Param(Table_Value(n, m))
+                        Case "Modify Stat 2"
+                            DrugItem.Stat2 = GetTable_Param(Table_Value(n, m))
+                        Case "Instant Amount 0"
+                            DrugItem.iAmount0 = CInt(Table_Value(n, m))
+                        Case "Instant Amount 1"
+                            DrugItem.iAmount1 = CInt(Table_Value(n, m))
+                        Case "Instant Amount 2"
+                            DrugItem.iAmount2 = CInt(Table_Value(n, m))
+                        Case "First Amount 0"
+                            DrugItem.fAmount0 = CInt(Table_Value(n, m))
+                        Case "First Amount 1"
+                            DrugItem.fAmount1 = CInt(Table_Value(n, m))
+                        Case "First Amount 2"
+                            DrugItem.fAmount2 = CInt(Table_Value(n, m))
+                        Case "First Duration Time"
+                            DrugItem.Duration1 = CInt(Table_Value(n, m))
+                        Case "Second Amount 0"
+                            DrugItem.fAmount0 = CInt(Table_Value(n, m))
+                        Case "Second Amount 1"
+                            DrugItem.fAmount1 = CInt(Table_Value(n, m))
+                        Case "Second Amount 2"
+                            DrugItem.fAmount2 = CInt(Table_Value(n, m))
+                        Case "Second Duration Time"
+                            DrugItem.Duration2 = CInt(Table_Value(n, m))
+                        Case "Addiction Effect"
+                            DrugItem.W_Effect = GetTable_Param(Table_Value(n, m))
+                        Case "Addiction Onset Time"
+                            DrugItem.W_Onset = CInt(Table_Value(n, m))
+                        Case "Addiction Rate"
+                            DrugItem.AddictionRate = CInt(Table_Value(n, m))
+                            'Misc
+                        Case "Power PID"
+                            MiscItem.PowerPID = GetTable_Param(Table_Value(n, m))
+                        Case "Power Type"
+                            If Table_Value(n, m) <> Nothing Then
+                                For z = 0 To UBound(CaliberNAME)
+                                    If Table_Value(n, m) = CaliberNAME(z) Then
+                                        MiscItem.PowerType = z
+                                        Exit For
+                                    End If
+                                Next
+                            End If
+                        Case "Charges"
+                            If Table_Value(n, m) <> Nothing Then MiscItem.Charges = CInt(Table_Value(n, m))
+                    End Select
+                Next
+            Catch
+                MsgBox("Error: Param " & Table_Param(m).ToUpper & " PRO Line: " & Table_Value(n, 0), MsgBoxStyle.Critical, "Error table import")
+                Continue For
+            End Try
+            'save profile and goto next profile
+            ProFiles.SaveItemProData(pPath, iType, CommonItem, WeaponItem, ArmorItem, AmmoItem, DrugItem, MiscItem)
         Next
-        On Error GoTo 0
         If TableLog_Form.ListBox1.Items.Count > 0 Then TableLog_Form.Show()
-        MsgBox("Done!")
-        Exit Sub
-tError:
-        FileClose(fFile)
-        If proRO Then IO.File.SetAttributes(SaveMOD_Path & "\proto\critters\" & ProFile, IO.FileAttributes.ReadOnly Or IO.FileAttributes.Archive Or IO.FileAttributes.NotContentIndexed)
-        MsgBox("Param: " & UCase(Table_Param(m)) & " PRO Line: " & Table_Value(n, 0), MsgBoxStyle.Critical, "Error Import")
+        MsgBox("Successfully!", MsgBoxStyle.Information, "Import table")
     End Sub
 
+    Friend Sub Critters_ImportTable(ByVal tableFile As String)
+        Dim n As Integer, m As Integer
+        Dim ProFile As String
+        Dim strSplit() As String
+
+        Dim Table_File() As String
+        Try
+            Table_File = File.ReadAllLines(tableFile, Encoding.Default)
+        Catch ex As Exception
+            MsgBox("Can not open this table file!", MsgBoxStyle.Critical, "Open error")
+            Exit Sub
+        End Try
+        Dim Table_Param() As String = Split(Table_File(0), spr)
+        Dim Table_Value(UBound(Table_File) - 1, UBound(Table_Param)) As String
+
+        'разделить
+        For n = 1 To UBound(Table_File)
+            Dim tLine() As String = Split(Table_File(n), spr)
+            If tLine(0) <> String.Empty OrElse tLine.Length < Table_Param.Length Then
+                If tLine(0) <> String.Empty Then
+                    TableLog_Form.ListBox1.Items.Add("Skip Line #" & (n + 1) & " : Used ignore symbol '#' in table line.")
+                Else
+                    TableLog_Form.ListBox1.Items.Add("Warning Line #" & (n + 1) & " : Error count value param.")
+                End If
+                Continue For
+            End If
+            For m = 0 To UBound(Table_Param)
+                Table_Value(n - 1, m) = tLine(m)
+            Next
+        Next
+
+        'Open profile
+        If Not Directory.Exists(SaveMOD_Path & PROTO_CRITTERS) Then Directory.CreateDirectory(SaveMOD_Path & PROTO_CRITTERS)
+        For n = 0 To UBound(Table_Value)
+            ProFile = Table_Value(n, 1)
+            If ProFile = Nothing Then Continue For
+            Dim filePath = SaveMOD_Path & PROTO_CRITTERS & ProFile
+            If Not File.Exists(filePath) Then
+                Dim source = DatFiles.CheckFile(PROTO_CRITTERS & ProFile) & PROTO_CRITTERS & ProFile
+                FileSystem.CopyFile(source, filePath, FileIO.UIOption.AllDialogs)
+            End If
+            ProFiles.LoadCritterProData(filePath, CritterPro)
+
+            'Changed values
+            Try
+                'Common pass 1
+                For m = 3 To UBound(Table_Param)
+                    Select Case Table_Param(m)
+                        Case "Strength"
+                            CritterPro.Strength = CInt(Table_Value(n, m))
+                        Case "Perception"
+                            CritterPro.Perception = CInt(Table_Value(n, m))
+                        Case "Endurance"
+                            CritterPro.Endurance = CInt(Table_Value(n, m))
+                        Case "Charisma"
+                            CritterPro.Charisma = CInt(Table_Value(n, m))
+                        Case "Intelligence"
+                            CritterPro.Intelligence = CInt(Table_Value(n, m))
+                        Case "Agility"
+                            CritterPro.Agility = CInt(Table_Value(n, m))
+                        Case "Luck"
+                            CritterPro.Luck = CInt(Table_Value(n, m))
+                        Case "Exp Value"
+                            CritterPro.ExpVal = CInt(Table_Value(n, m))
+                        Case "Damage Type"
+                            For z = 0 To UBound(DmgType)
+                                If Table_Value(n, m) = DmgType(z) Then
+                                    CritterPro.DamageType = z
+                                    Exit For
+                                End If
+                            Next
+                            'Armor
+                        Case "Normal DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTNormal = CInt(strSplit(0))
+                            CritterPro.b_DRNormal = CInt(strSplit(1))
+                        Case "Laser DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTLaser = CInt(strSplit(0))
+                            CritterPro.b_DRLaser = CInt(strSplit(1))
+                        Case "Fire DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTFire = CInt(strSplit(0))
+                            CritterPro.b_DRFire = CInt(strSplit(1))
+                        Case "Plasma DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTPlasma = CInt(strSplit(0))
+                            CritterPro.b_DRPlasma = CInt(strSplit(1))
+                        Case "Electrical DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTElectrical = CInt(strSplit(0))
+                            CritterPro.b_DRElectrical = CInt(strSplit(1))
+                        Case "EMP DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTEMP = CInt(strSplit(0))
+                            CritterPro.b_DREMP = CInt(strSplit(1))
+                        Case "Explosion DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.b_DTExplode = CInt(strSplit(0))
+                            CritterPro.b_DRExplode = CInt(strSplit(1))
+                            '
+                        Case "Base Normal DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTNormal = CInt(strSplit(0))
+                            CritterPro.DRNormal = CInt(strSplit(1))
+                        Case "Base Laser DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTLaser = CInt(strSplit(0))
+                            CritterPro.DRLaser = CInt(strSplit(1))
+                        Case "Base Fire DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTFire = CInt(strSplit(0))
+                            CritterPro.DRFire = CInt(strSplit(1))
+                        Case "Base Plasma DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTPlasma = CInt(strSplit(0))
+                            CritterPro.DRPlasma = CInt(strSplit(1))
+                        Case "Base Electrical DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTElectrical = CInt(strSplit(0))
+                            CritterPro.DRElectrical = CInt(strSplit(1))
+                        Case "Base EMP DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTEMP = CInt(strSplit(0))
+                            CritterPro.DREMP = CInt(strSplit(1))
+                        Case "Base Explosion DT|DR"
+                            strSplit = Table_Value(n, m).Split(splt)
+                            CritterPro.DTExplode = CInt(strSplit(0))
+                            CritterPro.DRExplode = CInt(strSplit(1))
+                    End Select
+                Next
+                'Calculate pass 2
+                For m = 3 To UBound(Table_Param)
+                    Select Case Table_Param(m)
+                        Case "Action Point"
+                            CritterPro.AP = CalcStats.Action_Point(CritterPro.Agility)
+                            CritterPro.b_AP = CInt(Table_Value(n, m)) - CritterPro.AP
+                        Case "Armor Class"
+                            CritterPro.AC = CritterPro.Agility
+                            CritterPro.b_AC = CInt(Table_Value(n, m)) - CritterPro.Agility
+                        Case "Health Point"
+                            CritterPro.HP = CalcStats.Health_Point(CritterPro.Strength, CritterPro.Endurance)
+                            CritterPro.b_HP = CInt(Table_Value(n, m)) - CritterPro.HP
+                        Case "Healing Rate"
+                            CritterPro.Healing = CalcStats.Healing_Rate(CritterPro.Endurance)
+                            CritterPro.b_Healing = CInt(Table_Value(n, m)) - CritterPro.Healing
+                        Case "Melee Damage"
+                            CritterPro.MeleeDmg = CalcStats.Melee_Damage(CritterPro.Strength)
+                            CritterPro.b_MeleeDmg = CInt(Table_Value(n, m)) - CritterPro.MeleeDmg
+                        Case "Critical Chance"
+                            CritterPro.Critical = CritterPro.Luck
+                            CritterPro.b_Critical = CInt(Table_Value(n, m)) - CritterPro.Luck
+                        Case "Sequence"
+                            CritterPro.Sequence = CalcStats.Sequence(CritterPro.Perception)
+                            CritterPro.b_Sequence = CInt(Table_Value(n, m)) - CritterPro.Sequence
+                        Case "Resistance Radiation"
+                            CritterPro.DRRadiation = CalcStats.Radiation(CritterPro.Endurance)
+                            CritterPro.b_DRRadiation = CInt(Table_Value(n, m)) - CritterPro.DRRadiation
+                        Case "Resistance Poison"
+                            CritterPro.DRPoison = CalcStats.Poison(CritterPro.Endurance)
+                            CritterPro.b_DRPoison = CInt(Table_Value(n, m)) - CritterPro.DRPoison
+                            'Skill
+                        Case "Small Guns [Skill]"
+                            CritterPro.SmallGuns = CInt(Table_Value(n, m)) - CalcStats.SmallGun_Skill(CritterPro.Agility)
+                        Case "Big Guns [Skill]"
+                            CritterPro.BigGuns = CInt(Table_Value(n, m)) - CalcStats.BigEnergyGun_Skill(CritterPro.Agility)
+                        Case "Energy Weapons [Skill]"
+                            CritterPro.EnergyGun = CInt(Table_Value(n, m)) - CalcStats.BigEnergyGun_Skill(CritterPro.Agility)
+                        Case "Unarmed [Skill]"
+                            CritterPro.Unarmed = CInt(Table_Value(n, m)) - CalcStats.Unarmed_Skill(CritterPro.Agility, CritterPro.Strength)
+                        Case "Melee [Skill]"
+                            CritterPro.Melee = CInt(Table_Value(n, m)) - CalcStats.Melee_Skill(CritterPro.Agility, CritterPro.Strength)
+                        Case "Throwing [Skill]"
+                            CritterPro.Throwing = CInt(Table_Value(n, m)) - CalcStats.Throwing_Skill(CritterPro.Agility)
+                    End Select
+                Next
+            Catch
+                MsgBox("Error: Param " & Table_Param(m).ToUpper & " PRO Line: " & Table_Value(n, 0), MsgBoxStyle.Critical, "Error Import")
+                TableLog_Form.ListBox1.Items.Add("Error Line #" & (n + 1) & " : Error in value param (" & Table_Param(m) & ")")
+                Continue For
+            End Try
+            'Save the profile and goto next profile
+            ProFiles.SaveCritterProData(filePath, CritterPro)
+        Next
+        If TableLog_Form.ListBox1.Items.Count > 0 Then TableLog_Form.Show()
+        MsgBox("Successfully!", MsgBoxStyle.Information, "Import table")
+    End Sub
+
+    Private Sub CheckAllToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CheckAllToolStripMenuItem.Click
+        CheckedItemsAll(True)
+    End Sub
+
+    Private Sub DeselecAllToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles DeselecAllToolStripMenuItem.Click
+        CheckedItemsAll(False)
+    End Sub
+
+    Private Sub CheckedItemsAll(ByVal value As Boolean)
+        Dim control As CheckedListBox = GetCheckList()
+
+        For n = 0 To control.Items.Count - 1
+            control.SetItemChecked(n, value)
+        Next
+    End Sub
+
+    Private Sub Create_Button(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
+        CheckedList = GetCheckList.CheckedItems
+        CreateTable()
+    End Sub
+
+    Private Function GetCheckList() As CheckedListBox
+        Select Case TabControl1.SelectedIndex
+            Case TabType.Critter
+                Return CheckedListBox6
+            Case TabType.Weapon
+                Return CheckedListBox1
+            Case TabType.Ammo
+                Return CheckedListBox2
+            Case TabType.Armor
+                Return CheckedListBox3
+            Case TabType.Drugs
+                Return CheckedListBox4
+            Case Else 'misc
+                Return CheckedListBox5
+        End Select
+    End Function
 End Class

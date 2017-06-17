@@ -125,13 +125,18 @@ Partial Class AI_Form
         Me.Label26 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.ComboBox0 = New System.Windows.Forms.ComboBox()
+        Me.ContextMenuStrip2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SortedListMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ShowPacketIDMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.SaveButton = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.ToolTipEng = New System.Windows.Forms.ToolTip(Me.components)
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -168,6 +173,7 @@ Partial Class AI_Form
         CType(Me.NumericUpDown30, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown12, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown28, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip2.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -205,7 +211,6 @@ Partial Class AI_Form
         '
         'Button4
         '
-        Me.Button4.Enabled = False
         Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button4.Location = New System.Drawing.Point(225, 108)
         Me.Button4.Name = "Button4"
@@ -305,7 +310,8 @@ Partial Class AI_Form
         Me.Label15.Size = New System.Drawing.Size(82, 13)
         Me.Label15.TabIndex = 2
         Me.Label15.Text = "Hurt Too Much:"
-        Me.ToolTipEng.SetToolTip(Me.Label15, "The state in which the NPC starts running away in combat.")
+        Me.ToolTipEng.SetToolTip(Me.Label15, "The state in which the NPC starts running away in combat (conditions can be enume" & _
+                "rated separated by commas).")
         '
         'Label19
         '
@@ -322,7 +328,7 @@ Partial Class AI_Form
         Me.ComboBox10.BackColor = System.Drawing.SystemColors.Window
         Me.ComboBox10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox10.FormattingEnabled = True
-        Me.ComboBox10.Items.AddRange(New Object() {"<Unknown>", "none", "coward", "finger_hurts", "bleeding", "not_feeling_good", "tourniquet", "never"})
+        Me.ComboBox10.Items.AddRange(New Object() {"<NotSpecified>", "none", "coward", "finger_hurts", "bleeding", "not_feeling_good", "tourniquet", "never"})
         Me.ComboBox10.Location = New System.Drawing.Point(9, 32)
         Me.ComboBox10.Name = "ComboBox10"
         Me.ComboBox10.Size = New System.Drawing.Size(121, 21)
@@ -332,7 +338,7 @@ Partial Class AI_Form
         'ComboBox9
         '
         Me.ComboBox9.FormattingEnabled = True
-        Me.ComboBox9.Items.AddRange(New Object() {"<Unknown>", "crippled", "blind", "crippled_arms"})
+        Me.ComboBox9.Items.AddRange(New Object() {"<NotSpecified>", "crippled", "blind", "crippled_arms", "crippled_legs"})
         Me.ComboBox9.Location = New System.Drawing.Point(9, 72)
         Me.ComboBox9.Name = "ComboBox9"
         Me.ComboBox9.Size = New System.Drawing.Size(121, 21)
@@ -369,52 +375,61 @@ Partial Class AI_Form
         '
         'ContextMenuStrip1
         '
+        Me.ContextMenuStrip1.AutoSize = False
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripComboBox1, Me.AddDrugsToolStripMenuItem, Me.ToolStripSeparator1, Me.MoveUpToolStripMenuItem, Me.MoveDownToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(182, 129)
+        Me.ContextMenuStrip1.ShowImageMargin = False
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(160, 130)
         '
         'ToolStripComboBox1
         '
         Me.ToolStripComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ToolStripComboBox1.DropDownWidth = 150
+        Me.ToolStripComboBox1.DropDownWidth = 160
         Me.ToolStripComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+        Me.ToolStripComboBox1.IntegralHeight = False
         Me.ToolStripComboBox1.MaxDropDownItems = 16
         Me.ToolStripComboBox1.Name = "ToolStripComboBox1"
-        Me.ToolStripComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ToolStripComboBox1.Size = New System.Drawing.Size(140, 21)
         '
         'AddDrugsToolStripMenuItem
         '
         Me.AddDrugsToolStripMenuItem.Enabled = False
+        Me.AddDrugsToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.AddDrugsToolStripMenuItem.Name = "AddDrugsToolStripMenuItem"
-        Me.AddDrugsToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.AddDrugsToolStripMenuItem.ShortcutKeyDisplayString = ""
+        Me.AddDrugsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Insert
+        Me.AddDrugsToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
         Me.AddDrugsToolStripMenuItem.Text = "Add Drugs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(178, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(156, 6)
         '
         'MoveUpToolStripMenuItem
         '
         Me.MoveUpToolStripMenuItem.Name = "MoveUpToolStripMenuItem"
-        Me.MoveUpToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.MoveUpToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Up), System.Windows.Forms.Keys)
+        Me.MoveUpToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
         Me.MoveUpToolStripMenuItem.Text = "Move Up"
         '
         'MoveDownToolStripMenuItem
         '
         Me.MoveDownToolStripMenuItem.Name = "MoveDownToolStripMenuItem"
-        Me.MoveDownToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.MoveDownToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Down), System.Windows.Forms.Keys)
+        Me.MoveDownToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
         Me.MoveDownToolStripMenuItem.Text = "Move Down"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(178, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(156, 6)
         '
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.DeleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'Label6
@@ -464,7 +479,7 @@ Partial Class AI_Form
         'NumericUpDown11
         '
         Me.NumericUpDown11.Location = New System.Drawing.Point(93, 124)
-        Me.NumericUpDown11.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.NumericUpDown11.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
         Me.NumericUpDown11.Size = New System.Drawing.Size(58, 20)
         Me.NumericUpDown11.TabIndex = 3
@@ -474,7 +489,7 @@ Partial Class AI_Form
         'NumericUpDown4
         '
         Me.NumericUpDown4.Location = New System.Drawing.Point(93, 98)
-        Me.NumericUpDown4.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+        Me.NumericUpDown4.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown4.Name = "NumericUpDown4"
         Me.NumericUpDown4.Size = New System.Drawing.Size(58, 20)
@@ -568,7 +583,7 @@ Partial Class AI_Form
         '
         Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Items.AddRange(New Object() {"<Unknown>", "no_pref", "never", "random", "unarmed", "ranged_over_melee", "melee_over_ranged", "unarmed_over_thrown"})
+        Me.ComboBox3.Items.AddRange(New Object() {"<NotSpecified>", "no_pref", "never", "unarmed", "unarmed_over_thrown", "melee", "melee_over_ranged", "ranged", "ranged_over_melee", "random"})
         Me.ComboBox3.Location = New System.Drawing.Point(160, 72)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(121, 21)
@@ -579,7 +594,7 @@ Partial Class AI_Form
         '
         Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Items.AddRange(New Object() {"<Unknown>", "whomever_attacking_me", "strongest", "weakest", "whomever", "closest"})
+        Me.ComboBox2.Items.AddRange(New Object() {"<NotSpecified>", "whomever_attacking_me", "strongest", "weakest", "whomever", "closest"})
         Me.ComboBox2.Location = New System.Drawing.Point(160, 32)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
@@ -590,7 +605,7 @@ Partial Class AI_Form
         '
         Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox7.FormattingEnabled = True
-        Me.ComboBox7.Items.AddRange(New Object() {"<Unknown>", "random", "charge", "on_your_own", "stay", "stay_close", "snipe"})
+        Me.ComboBox7.Items.AddRange(New Object() {"<NotSpecified>", "random", "charge", "on_your_own", "stay", "stay_close", "snipe"})
         Me.ComboBox7.Location = New System.Drawing.Point(160, 277)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(121, 21)
@@ -601,7 +616,7 @@ Partial Class AI_Form
         '
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Items.AddRange(New Object() {"<Unknown>", "-1", "none", "coward", "defensive", "aggressive", "berserk"})
+        Me.ComboBox6.Items.AddRange(New Object() {"<NotSpecified>", "-1", "none", "coward", "defensive", "aggressive", "berserk", "custom"})
         Me.ComboBox6.Location = New System.Drawing.Point(9, 277)
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(121, 21)
@@ -612,7 +627,7 @@ Partial Class AI_Form
         '
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Items.AddRange(New Object() {"<Unknown>", "clean", "sometimes", "stims_when_hurt_little", "stims_when_hurt_lots", "anytime", "always"})
+        Me.ComboBox5.Items.AddRange(New Object() {"<NotSpecified>", "clean", "sometimes", "stims_when_hurt_little", "stims_when_hurt_lots", "anytime", "always"})
         Me.ComboBox5.Location = New System.Drawing.Point(296, 32)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(143, 21)
@@ -623,7 +638,7 @@ Partial Class AI_Form
         '
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"<Unknown>", "no_pref", "always", "sometimes", "be_sure", "be_careful", "be_absolutely_sure"})
+        Me.ComboBox1.Items.AddRange(New Object() {"<NotSpecified>", "no_pref", "always", "sometimes", "be_sure", "be_careful", "be_absolutely_sure"})
         Me.ComboBox1.Location = New System.Drawing.Point(18, 32)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
@@ -1266,14 +1281,47 @@ Partial Class AI_Form
         '
         'ComboBox0
         '
+        Me.ComboBox0.ContextMenuStrip = Me.ContextMenuStrip2
         Me.ComboBox0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox0.DropDownWidth = 250
+        Me.ComboBox0.Font = New System.Drawing.Font("Courier New", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ComboBox0.FormattingEnabled = True
-        Me.ComboBox0.Location = New System.Drawing.Point(111, 6)
-        Me.ComboBox0.MaxDropDownItems = 25
+        Me.ComboBox0.Location = New System.Drawing.Point(103, 4)
+        Me.ComboBox0.MaxDropDownItems = 30
         Me.ComboBox0.Name = "ComboBox0"
-        Me.ComboBox0.Size = New System.Drawing.Size(212, 21)
-        Me.ComboBox0.Sorted = True
+        Me.ComboBox0.Size = New System.Drawing.Size(220, 24)
         Me.ComboBox0.TabIndex = 3
+        '
+        'ContextMenuStrip2
+        '
+        Me.ContextMenuStrip2.AutoSize = False
+        Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SortedListMenuItem, Me.ToolStripSeparator3, Me.ShowPacketIDMenuItem})
+        Me.ContextMenuStrip2.Name = "ContextMenuStrip2"
+        Me.ContextMenuStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.ContextMenuStrip2.ShowCheckMargin = True
+        Me.ContextMenuStrip2.ShowImageMargin = False
+        Me.ContextMenuStrip2.Size = New System.Drawing.Size(130, 55)
+        '
+        'SortedListMenuItem
+        '
+        Me.SortedListMenuItem.CheckOnClick = True
+        Me.SortedListMenuItem.Name = "SortedListMenuItem"
+        Me.SortedListMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.SortedListMenuItem.Text = "Sorted List"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(126, 6)
+        '
+        'ShowPacketIDMenuItem
+        '
+        Me.ShowPacketIDMenuItem.Checked = True
+        Me.ShowPacketIDMenuItem.CheckOnClick = True
+        Me.ShowPacketIDMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ShowPacketIDMenuItem.Name = "ShowPacketIDMenuItem"
+        Me.ShowPacketIDMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.ShowPacketIDMenuItem.Text = "Show Packet ID"
         '
         'Label44
         '
@@ -1296,20 +1344,20 @@ Partial Class AI_Form
         Me.ToolTipEng.SetToolTip(Me.Button1, "Show Taunts")
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'Button2
+        'SaveButton
         '
-        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(365, 3)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(57, 25)
-        Me.Button2.TabIndex = 6
-        Me.Button2.Text = "Save"
-        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTipEng.SetToolTip(Me.Button2, "Save AI file.")
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.SaveButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.SaveButton.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.SaveButton.Image = CType(resources.GetObject("SaveButton.Image"), System.Drawing.Image)
+        Me.SaveButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.SaveButton.Location = New System.Drawing.Point(365, 3)
+        Me.SaveButton.Name = "SaveButton"
+        Me.SaveButton.Size = New System.Drawing.Size(57, 25)
+        Me.SaveButton.TabIndex = 6
+        Me.SaveButton.Text = "Save"
+        Me.SaveButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTipEng.SetToolTip(Me.SaveButton, "Save current changes to AI file.")
+        Me.SaveButton.UseVisualStyleBackColor = True
         '
         'Button3
         '
@@ -1318,7 +1366,7 @@ Partial Class AI_Form
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(30, 25)
         Me.Button3.TabIndex = 6
-        Me.ToolTipEng.SetToolTip(Me.Button3, "Reload data from AI file.")
+        Me.ToolTipEng.SetToolTip(Me.Button3, "Open custom AI file.")
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Button5
@@ -1329,7 +1377,7 @@ Partial Class AI_Form
         Me.Button5.Size = New System.Drawing.Size(48, 23)
         Me.Button5.TabIndex = 7
         Me.Button5.Text = "Delete"
-        Me.ToolTipEng.SetToolTip(Me.Button5, "Delete this AI packet.")
+        Me.ToolTipEng.SetToolTip(Me.Button5, "Delete last number AI packet.")
         Me.Button5.UseVisualStyleBackColor = True
         '
         'Button6
@@ -1347,16 +1395,16 @@ Partial Class AI_Form
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(749, 375)
+        Me.Controls.Add(Me.ComboBox0)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.NumericUpDown5)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.SaveButton)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label44)
-        Me.Controls.Add(Me.ComboBox0)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label9)
@@ -1367,6 +1415,7 @@ Partial Class AI_Form
         Me.MaximizeBox = False
         Me.Name = "AI_Form"
         Me.ShowInTaskbar = False
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -1407,6 +1456,7 @@ Partial Class AI_Form
         CType(Me.NumericUpDown30, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown12, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown28, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip2.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1501,7 +1551,7 @@ Partial Class AI_Form
     Friend WithEvents ComboBox0 As System.Windows.Forms.ComboBox
     Friend WithEvents Label44 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents SaveButton As System.Windows.Forms.Button
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents ListView1 As System.Windows.Forms.ListView
@@ -1519,4 +1569,9 @@ Partial Class AI_Form
     Friend WithEvents MoveDownToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ContextMenuStrip2 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents SortedListMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ShowPacketIDMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
 End Class

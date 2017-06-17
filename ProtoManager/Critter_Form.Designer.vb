@@ -23,7 +23,7 @@ Partial Class Critter_Form
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("None")
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("[Restore Bonus]")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Critter_Form))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown7 = New System.Windows.Forms.NumericUpDown()
@@ -105,7 +105,7 @@ Partial Class Critter_Form
         Me.TextBox10 = New System.Windows.Forms.TextBox()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.Label37 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.tbSmallGun = New System.Windows.Forms.TextBox()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.Label28 = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
@@ -687,7 +687,7 @@ Partial Class Critter_Form
         Me.GroupBox2.Controls.Add(Me.TextBox10)
         Me.GroupBox2.Controls.Add(Me.Label29)
         Me.GroupBox2.Controls.Add(Me.Label37)
-        Me.GroupBox2.Controls.Add(Me.TextBox1)
+        Me.GroupBox2.Controls.Add(Me.tbSmallGun)
         Me.GroupBox2.Controls.Add(Me.Label36)
         Me.GroupBox2.Controls.Add(Me.Label28)
         Me.GroupBox2.Controls.Add(Me.Label35)
@@ -1425,20 +1425,20 @@ Partial Class Critter_Form
         Me.Label37.TabIndex = 0
         Me.Label37.Text = "%"
         '
-        'TextBox1
+        'tbSmallGun
         '
-        Me.TextBox1.BackColor = System.Drawing.Color.Black
-        Me.TextBox1.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.TextBox1.ForeColor = System.Drawing.Color.Chartreuse
-        Me.TextBox1.Location = New System.Drawing.Point(93, 14)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
-        Me.TextBox1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.TextBox1.Size = New System.Drawing.Size(31, 20)
-        Me.TextBox1.TabIndex = 1
-        Me.TextBox1.TabStop = False
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.tbSmallGun.BackColor = System.Drawing.Color.Black
+        Me.tbSmallGun.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.tbSmallGun.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.tbSmallGun.ForeColor = System.Drawing.Color.Chartreuse
+        Me.tbSmallGun.Location = New System.Drawing.Point(93, 14)
+        Me.tbSmallGun.Name = "tbSmallGun"
+        Me.tbSmallGun.ReadOnly = True
+        Me.tbSmallGun.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.tbSmallGun.Size = New System.Drawing.Size(31, 20)
+        Me.tbSmallGun.TabIndex = 1
+        Me.tbSmallGun.TabStop = False
+        Me.tbSmallGun.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label36
         '
@@ -2125,15 +2125,17 @@ Partial Class Critter_Form
         'ListView1
         '
         Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
+        Me.ListView1.Font = New System.Drawing.Font("Courier New", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ListView1.FullRowSelect = True
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.ListView1.HideSelection = False
+        ListViewItem1.ToolTipText = "Restore armor bonus characteristics."
         Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
-        Me.ListView1.Location = New System.Drawing.Point(6, 135)
+        Me.ListView1.Location = New System.Drawing.Point(6, 125)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(147, 156)
+        Me.ListView1.Size = New System.Drawing.Size(147, 166)
         Me.ListView1.TabIndex = 2
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -2147,9 +2149,9 @@ Partial Class Critter_Form
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox2.Location = New System.Drawing.Point(25, 19)
+        Me.PictureBox2.Location = New System.Drawing.Point(29, 19)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(110, 110)
+        Me.PictureBox2.Size = New System.Drawing.Size(100, 100)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox2.TabIndex = 1
         Me.PictureBox2.TabStop = False
@@ -3623,13 +3625,13 @@ Partial Class Critter_Form
         'ComboBox9
         '
         Me.ComboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox9.DropDownWidth = 350
-        Me.ComboBox9.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.ComboBox9.DropDownWidth = 500
+        Me.ComboBox9.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ComboBox9.Items.AddRange(New Object() {"None"})
         Me.ComboBox9.Location = New System.Drawing.Point(6, 18)
         Me.ComboBox9.MaxDropDownItems = 25
         Me.ComboBox9.Name = "ComboBox9"
-        Me.ComboBox9.Size = New System.Drawing.Size(217, 21)
+        Me.ComboBox9.Size = New System.Drawing.Size(217, 23)
         Me.ComboBox9.TabIndex = 0
         '
         'GroupBox9
@@ -3749,17 +3751,17 @@ Partial Class Critter_Form
         '
         Me.Label58.AutoSize = True
         Me.Label58.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label58.Location = New System.Drawing.Point(70, 58)
+        Me.Label58.Location = New System.Drawing.Point(11, 57)
         Me.Label58.Name = "Label58"
-        Me.Label58.Size = New System.Drawing.Size(33, 14)
+        Me.Label58.Size = New System.Drawing.Size(73, 14)
         Me.Label58.TabIndex = 1
-        Me.Label58.Text = "Team"
+        Me.Label58.Text = "Team Number"
         '
         'Label57
         '
         Me.Label57.AutoSize = True
         Me.Label57.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label57.Location = New System.Drawing.Point(60, 16)
+        Me.Label57.Location = New System.Drawing.Point(11, 15)
         Me.Label57.Name = "Label57"
         Me.Label57.Size = New System.Drawing.Size(52, 14)
         Me.Label57.TabIndex = 1
@@ -4271,7 +4273,7 @@ Partial Class Critter_Form
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents NumericUpDown8 As System.Windows.Forms.NumericUpDown
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents tbSmallGun As System.Windows.Forms.TextBox
     Friend WithEvents Label26 As System.Windows.Forms.Label
     Friend WithEvents Label25 As System.Windows.Forms.Label
     Friend WithEvents NumericUpDown25 As System.Windows.Forms.NumericUpDown
