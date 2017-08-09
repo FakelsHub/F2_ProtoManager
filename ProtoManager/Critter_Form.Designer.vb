@@ -23,7 +23,7 @@ Partial Class Critter_Form
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("[Restore Bonus]")
+        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("[Restore Bonus]")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Critter_Form))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown7 = New System.Windows.Forms.NumericUpDown()
@@ -2129,8 +2129,8 @@ Partial Class Critter_Form
         Me.ListView1.FullRowSelect = True
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.ListView1.HideSelection = False
-        ListViewItem1.ToolTipText = "Restore armor bonus characteristics."
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem3.ToolTipText = "Restore armor bonus characteristics."
+        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
         Me.ListView1.Location = New System.Drawing.Point(6, 125)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
@@ -3770,9 +3770,10 @@ Partial Class Critter_Form
         'ComboBox3
         '
         Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox3.DropDownWidth = 250
         Me.ComboBox3.FormattingEnabled = True
         Me.ComboBox3.Location = New System.Drawing.Point(6, 74)
-        Me.ComboBox3.MaxDropDownItems = 13
+        Me.ComboBox3.MaxDropDownItems = 15
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(217, 22)
         Me.ComboBox3.TabIndex = 0
@@ -3780,6 +3781,7 @@ Partial Class Critter_Form
         'ComboBox2
         '
         Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox2.DropDownWidth = 250
         Me.ComboBox2.FormattingEnabled = True
         Me.ComboBox2.Location = New System.Drawing.Point(6, 32)
         Me.ComboBox2.MaxDropDownItems = 15

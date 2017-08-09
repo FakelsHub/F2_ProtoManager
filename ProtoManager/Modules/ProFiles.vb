@@ -4,6 +4,22 @@ Imports Prototypes
 
 Module ProFiles
 
+    Friend Sub CreateProFile(ByVal path As String, ByVal pName As String)
+        path = SaveMOD_Path & path
+        Dim nProFile As String = path & pName
+
+        If File.Exists(nProFile) Then
+            File.SetAttributes(nProFile, FileAttributes.Normal)
+            File.Delete(nProFile)
+        End If
+        If Not (Directory.Exists(path)) Then Directory.CreateDirectory(path)
+        File.Move("template", nProFile)
+        If proRO Then File.SetAttributes(nProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+
+        'Log 
+        Main_Form.TextBox1.Text = "Create Pro: " & nProFile & vbCrLf & Main_Form.TextBox1.Text
+    End Sub
+
     ''' <summary>
     ''' Получить Description ID из про-файла предмета и определить его тип
     ''' </summary>
@@ -22,6 +38,8 @@ Module ProFiles
             NameID = 0
             If TypeID > ItemType.Unknown Then TypeID = ItemType.Unknown
             MsgBox("The file is in an incorrect format or damaged." & vbLf & Current_Path & PROTO_ITEMS & ProFile)
+        Catch ex As Exception
+            TypeID = ItemType.Unknown
         End Try
 
         'определяем тип предмета

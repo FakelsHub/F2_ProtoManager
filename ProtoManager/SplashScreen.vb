@@ -1,4 +1,6 @@
-﻿Public NotInheritable Class SplashScreen
+﻿Imports System.IO
+
+Public NotInheritable Class SplashScreen
 
     Private Sub SplashScreen_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
         Label3.Text &= My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build & "." & My.Application.Info.Version.Revision
@@ -17,6 +19,7 @@
         Try
             Main.Main()
         Catch ex As Exception
+            File.WriteAllText("error.log", ex.StackTrace)
             MsgBox(ex.Message)
             ControlShow()
         End Try

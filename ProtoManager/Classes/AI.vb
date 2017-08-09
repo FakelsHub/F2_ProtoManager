@@ -62,7 +62,13 @@ Friend Class AI
 
         For n = 0 To fileData.Length - 1
             If fileData(n).StartsWith("[") Then
-                packet.Add(fileData(n).TrimEnd().Substring(1, (fileData(n).LastIndexOf("]") - 1)), n)
+                Dim name = fileData(n).TrimEnd().Substring(1, (fileData(n).IndexOf("]") - 1))
+                If packet.ContainsKey(name) Then
+                    MessageBox.Show("The AI.txt file contains duplicate name of AI package: " + name + vbLf _
+                                    + "You must correct the value of this name to another unique name.", "Warning: Duplicate name")
+                Else
+                    packet.Add(name, n)
+                End If
             End If
         Next
         packet.Add(endPackedID, fileData.Length)
@@ -83,13 +89,13 @@ Friend Class AI
     Shared Function GetAllAIPacketNumber(ByRef Path As String) As SortedList(Of String, Integer)
         Dim packet As SortedList(Of String, Integer) = New SortedList(Of String, Integer)
         Dim fileData As String() = File.ReadAllLines(Path)
-        Dim debris As Char() = {"[", "]", " "}
 
         For Each line In fileData
             If line.StartsWith("[") Then
-                Dim name As String = line.Trim(debris) '.Substring(1, (line.LastIndexOf("]") - 1))
+                Dim name As String = line.Substring(1, (line.IndexOf("]") - 1))
                 Dim num As Integer = GetIniParam(name, "packet_num", Path)
-                packet.Add(String.Format("{0} ({1})", name, num), num)
+                name = String.Format("{0} ({1})", name, num)
+                If Not (packet.ContainsKey(name)) Then packet.Add(name, num)
             End If
         Next
         Return packet

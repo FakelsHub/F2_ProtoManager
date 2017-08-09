@@ -269,4 +269,26 @@
         Public W_Onset As Integer
     End Structure
 
+    Structure CommonPro
+        Public ProtoID As Integer
+        Public DescID As Integer
+        Public FrmID As Integer
+    End Structure
+
+    Structure WallsPro
+        Public LightDis As Integer
+        Public LightInt As Integer
+        Public Falgs As Integer
+        Public FalgsExt As Integer
+        Public ScriptID As Integer
+        Public MaterialID As Integer
+    End Structure
+
+    Structure TilesPro
+        Public Falgs As Integer
+        Public FalgsExt As Integer
+        Public Unknown As Integer
+        Public MaterialID As Integer
+    End Structure
+
 End Class

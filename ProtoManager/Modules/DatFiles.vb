@@ -53,14 +53,8 @@ Module DatFiles
                 Return Game_Path & MasterDAT  'папка
             End If
         Else
-            If Not (File.Exists(Cache_Patch & pFile)) And unpack Then
-                'Извлечь требуемый файл в кэш папку
-                Main_Form.TextBox1.Text = "Extraction: " & pFile & vbCrLf & Main_Form.TextBox1.Text
-                Dim fileDAT As String = MasterDAT
-                If сDat Then fileDAT = CritterDAT
-                Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & fileDAT & """ " & pFile.Remove(0, 1), AppWinStyle.Hide, True)
-            End If
-            Return Cache_Patch
+            If Not (File.Exists(Cache_Patch & pFile)) And unpack Then UnPackFile(pFile, сDat)
+        Return Cache_Patch
         End If
     End Function
 
@@ -70,11 +64,22 @@ Module DatFiles
     ''' </summary>
     Friend Function UnDatFile(ByRef pFile As String, ByVal size As Integer) As Boolean
         If File.Exists(Cache_Patch & pFile) AndAlso FileSystem.GetFileInfo(Cache_Patch & pFile).Length = size Then Return True
-        'Извлечь требуемый файл в кэш
-        Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & pFile.Remove(0, 1), AppWinStyle.Hide, True)
+        UnPackFile(pFile)
         If File.Exists(Cache_Patch & pFile) Then Return True
         Return False
     End Function
+
+    'Извлечь требуемый файл в кэш папку
+    Private Sub UnPackFile(ByVal pFile As String, Optional ByVal сDat As Boolean = False)
+        Main_Form.TextBox1.Text = "Extracting file: " & pFile & vbCrLf & Main_Form.TextBox1.Text
+        Dim fileDAT As String
+        If сDat Then
+            fileDAT = CritterDAT
+        Else
+            fileDAT = MasterDAT
+        End If
+        Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & fileDAT & """ " & pFile.Remove(0, 1), AppWinStyle.Hide, True)
+    End Sub
 
     ''' <summary>
     ''' Преобразовать frm файл криттера в gif формат

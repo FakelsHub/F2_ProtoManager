@@ -1283,7 +1283,7 @@ Partial Class AI_Form
         '
         Me.ComboBox0.ContextMenuStrip = Me.ContextMenuStrip2
         Me.ComboBox0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox0.DropDownWidth = 250
+        Me.ComboBox0.DropDownWidth = 300
         Me.ComboBox0.Font = New System.Drawing.Font("Courier New", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ComboBox0.FormattingEnabled = True
         Me.ComboBox0.Location = New System.Drawing.Point(103, 4)

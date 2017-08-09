@@ -110,7 +110,7 @@ SetDefConf:
     Friend Sub Clear_Cache()
         On Error Resume Next
         Directory.Delete(Cache_Patch & "\proto", True)
-        Directory.Delete(Cache_Patch & "\proto", True)
+        Directory.Delete(Cache_Patch & "\data", True)
         Directory.Delete(Cache_Patch & "\scripts", True)
         Directory.Delete(Cache_Patch & "\text", True)
         File.Delete(Cache_Patch & "\cache.id")

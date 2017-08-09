@@ -560,6 +560,7 @@ Friend Class Critter_Form
                 If InvFID = -1 Then
                     PictureBox2.Image = Nothing
                 Else
+                    Main.GetItemsLstFRM()
                     InvFID = ProFiles.ReverseBytes(InvFID) - &H7000000
                     ProFile = Strings.Left(Iven_FRM(InvFID), RTrim(Iven_FRM(InvFID)).Length - 4)
                     If Not File.Exists(Cache_Patch & ART_INVEN & ProFile & ".gif") Then

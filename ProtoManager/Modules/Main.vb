@@ -17,39 +17,38 @@ Friend Module Main
 
     Friend Declare Function SetParent Lib "user32" (ByVal hWndChild As Integer, ByVal hWndNewParent As Integer) As Integer
 
-    Friend Critter_LST() As CrittersLst
-    Friend Items_LST() As ItemsLst
+    Friend Critter_LST As CrittersLst()
+    Friend Items_LST As ItemsLst()
     '
-    Friend Critters_FRM() As String
-    Friend Items_FRM() As String
-    Friend Iven_FRM() As String
+    Friend Critters_FRM As String()
+    Friend Items_FRM As String()
+    Friend Iven_FRM As String()
     '
-    Private Misc_LST() As String
-    Friend Misc_NAME() As String
+    Private Misc_LST As String()
+    Friend Misc_NAME As String()
     '
-    Friend Scripts_Lst() As String
+    Friend Scripts_Lst As String()
     '
-    Friend AmmoPID() As Integer
-    Friend AmmoNAME() As String
-    Friend CaliberNAME() As String
-    Friend Perk_NAME() As String
+    Friend AmmoPID As Integer()
+    Friend AmmoNAME As String()
+    Friend CaliberNAME As String()
+    Friend Perk_NAME As String()
     '
     Private Teams As List(Of String) = New List(Of String)
     Friend PacketAI As SortedList(Of String, Integer) 'Private AI() As String
 
     'Initialization...
     Friend Sub Main()
-        Dim noRe, noId As Boolean
-        Dim timeout As Integer = 10000
+        Dim noRe, noId, wait As Boolean
 
         SplashScreen.ProgressBar1.Value = 10
         Application.DoEvents()
 
         If Not (File.Exists(Cache_Patch & "\cache.id")) Then noId = True
         If cCache OrElse Setting_Form.fRun OrElse noId Then
-            If cCache OrElse noId Then Clear_Cache()
+            If cCache OrElse noId Then Settings.Clear_Cache()
             '
-            If ExtractBack Then timeout = 1
+            If Not (ExtractBack) Then wait = True
             Current_Path = DatFiles.CheckFile(itemsLstPath)
             Dim pLST() As String = File.ReadAllLines(Current_Path & itemsLstPath)
             For n = UBound(pLST) To 0 Step -1
@@ -68,7 +67,7 @@ Friend Module Main
             SplashScreen.ProgressBar1.Value = 20
             Application.DoEvents()
 
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iProto.lst", AppWinStyle.Hide, True, 10000)
+            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iProto.lst", AppWinStyle.Hide, True, 30000)
 
             Current_Path = DatFiles.CheckFile(crittersLstPath)
             pLST = File.ReadAllLines(Current_Path & crittersLstPath)
@@ -87,7 +86,7 @@ Friend Module Main
             SplashScreen.ProgressBar1.Value = 40
             Application.DoEvents()
 
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@cProto.lst", AppWinStyle.Hide, True, timeout)
+            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@cProto.lst", AppWinStyle.Hide, wait, 30000)
             File.Create(Cache_Patch & "\cache.id").Close()
         End If
 
@@ -95,16 +94,12 @@ Friend Module Main
 
         Settings.SetEncoding()
 
+        GetCrittersLstFRM()
         CreateItemsList()
         If Not (cCache) And Not (ExtractBack) Then
             SplashScreen.ProgressBar1.Value = 80
             CreateCritterList()
         End If
-
-        GetScriptLst()
-        GetTeams()
-        PacketAI = AI.GetAllAIPacketNumber(DatFiles.CheckFile(AI.AIFILE) & AI.AIFILE) 'AI = File.ReadAllLines(WorkAppDIR & "\ai.def")
-
 
         SplashScreen.ProgressBar1.Value = 100
         Main_Form.Show()
@@ -116,6 +111,8 @@ Friend Module Main
     End Sub
 
     Friend Sub GetScriptLst()
+        If Scripts_Lst IsNot Nothing Then Return
+
         Dim splt() As String
 
         Current_Path = DatFiles.CheckFile(scriptsLstPath)
@@ -127,11 +124,30 @@ Friend Module Main
         Next
     End Sub
 
+    Private Function GetCrittersLstFRM() As Boolean
+        Current_Path = DatFiles.CheckFile(artCrittersLstPath, True)
+        Try
+            Critters_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artCrittersLstPath))
+        Catch ex As DirectoryNotFoundException
+            MsgBox("Cannot open required file: \art\critter\critter.lst", MsgBoxStyle.Critical, "File Missing")
+            Return True
+        End Try
+
+        Return False
+    End Function
+
+    Friend Sub GetItemsLstFRM()
+        If Items_FRM IsNot Nothing Then Return
+        Current_Path = DatFiles.CheckFile(artItemsLstPath)
+        Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artItemsLstPath))
+
+        If Iven_FRM IsNot Nothing Then Return
+        Current_Path = DatFiles.CheckFile(artInvenLstPath)
+        Iven_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artInvenLstPath))
+    End Sub
+
     Friend Sub CreateCritterList()
-        SetParent(Progress_Form.Handle.ToInt32, Main_Form.Handle.ToInt32)
-        Progress_Form.SetDesktopLocation(Main_Form.Width / 4, Main_Form.Height / 2.25)
-        Progress_Form.Show()
-        Application.DoEvents()
+        ShowProgressBar(0)
 
         Current_Path = DatFiles.CheckFile(crittersLstPath)
         Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & crittersLstPath))
@@ -156,50 +172,15 @@ Friend Module Main
             .ListView1.EndUpdate()
         End With
 
-        Current_Path = DatFiles.CheckFile(artCrittersLstPath, True)
-        Critters_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artCrittersLstPath))
-
         Progress_Form.Close()
     End Sub
 
     Friend Sub CreateItemsList()
         Dim tempList0 As List(Of String) = New List(Of String)()
         Dim tempList1 As List(Of Integer) = New List(Of Integer)()
-
-        'Progress_Form.MdiParent = Main_Form Main_Form.SplitContainer1.Panel1.Handle.ToInt32
-        SetParent(Progress_Form.Handle.ToInt32, Main_Form.Handle.ToInt32)
-        Progress_Form.SetDesktopLocation(Main_Form.Width / 4, Main_Form.Height / 2.25)
-        Progress_Form.Show()
-        Application.DoEvents()
-
-        Current_Path = DatFiles.CheckFile(artCrittersLstPath, True)
-        Try
-            Critters_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artCrittersLstPath))
-        Catch ex As Exception
-            MsgBox("Can not open required file: \art\critter\critter.lst", MsgBoxStyle.Critical, "File Missing")
-            SplashScreen.TopMost = False
-            Setting_Form.ShowDialog()
-            Application.Exit()
-            Exit Sub
-        End Try
-        
-        Current_Path = DatFiles.CheckFile(artItemsLstPath)
-        Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artItemsLstPath))
-
-        Current_Path = DatFiles.CheckFile(artInvenLstPath)
-        Iven_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artInvenLstPath))
- 
-        Messages.GetMsgData("perk.msg")
         Dim n As Integer
-        For n = 0 To UBound(MSG_DATATEXT)
-            If Messages.GetParamMsg(MSG_DATATEXT(n)) = "1101" Then Exit For
-            If MSG_DATATEXT(n).StartsWith("{") Then
-                tempList0.Add(Messages.GetParamMsg(MSG_DATATEXT(n), True))
-            End If
-        Next
-        ReDim Perk_NAME(tempList0.Count - 1)
-        tempList0.CopyTo(Perk_NAME)
-        tempList0.Clear()
+
+        ShowProgressBar(0)
 
         Messages.GetMsgData("pro_item.msg")
         Current_Path = DatFiles.CheckFile(itemsLstPath)
@@ -211,6 +192,7 @@ Friend Module Main
 
         Progress_Form.ProgressBar1.Maximum = n
         Application.DoEvents()
+
         With Main_Form
             .ListView2.BeginUpdate()
             .ListView2.Items.Clear()
@@ -232,23 +214,29 @@ Friend Module Main
             ReDim AmmoPID(tempList1.Count - 1)
             tempList0.CopyTo(AmmoNAME)
             tempList1.CopyTo(AmmoPID)
-            tempList0.Clear()
 
             .ListView2.Visible = True
             .ListView2.EndUpdate()
         End With
-        Application.DoEvents()
+
+        Progress_Form.Close()
+    End Sub
+
+    Private Sub GetItemsData()
+        If Misc_NAME IsNot Nothing Then Return
+
+        Dim tempList0 As List(Of String) = New List(Of String)()
 
         Current_Path = DatFiles.CheckFile(miscLstPath)
         Misc_LST = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & miscLstPath))
         Messages.GetMsgData("pro_misc.msg")
         ReDim Misc_NAME(UBound(Misc_LST))
-        For n = 0 To UBound(Misc_LST)
+        For n As Integer = 0 To UBound(Misc_LST)
             Misc_NAME(n) = Messages.GetNameObject((n + 1) * 100)
         Next
 
         Messages.GetMsgData("proto.msg")
-        For n = Messages.GetMSGLine(300) To UBound(MSG_DATATEXT)
+        For n As Integer = Messages.GetMSGLine(300) To UBound(MSG_DATATEXT)
             If Messages.GetParamMsg(MSG_DATATEXT(n)) = "350" Then Exit For
             If MSG_DATATEXT(n).StartsWith("{") Then
                 tempList0.Add(Messages.GetParamMsg(MSG_DATATEXT(n), True))
@@ -256,8 +244,18 @@ Friend Module Main
         Next
         ReDim CaliberNAME(tempList0.Count - 1)
         tempList0.CopyTo(CaliberNAME)
+        tempList0.Clear()
 
-        Progress_Form.Close()
+        Messages.GetMsgData("perk.msg")
+        For n As Integer = 0 To UBound(MSG_DATATEXT)
+            If Messages.GetParamMsg(MSG_DATATEXT(n)) = "1101" Then Exit For
+            If MSG_DATATEXT(n).StartsWith("{") Then
+                tempList0.Add(Messages.GetParamMsg(MSG_DATATEXT(n), True))
+            End If
+        Next
+        ReDim Perk_NAME(tempList0.Count - 1)
+        tempList0.CopyTo(Perk_NAME)
+
     End Sub
 
     Friend Sub FilterCreateItemsList(ByVal filter As Integer)
@@ -313,8 +311,13 @@ Friend Module Main
 
     'Cоздает и открывает новую форму для редактирования криттера
     Friend Sub Create_CritterForm(ByVal cLST_Index As Integer)
-        Dim CrttFrm As New Critter_Form(cLST_Index)
+        'Check...
+        If GetCrittersLstFRM() Then Return
+        GetScriptLst()
+        GetTeams()
+        If PacketAI Is Nothing Then PacketAI = AI.GetAllAIPacketNumber(DatFiles.CheckFile(AI.AIFILE) & AI.AIFILE)
 
+        Dim CrttFrm As New Critter_Form(cLST_Index)
         With CrttFrm
             SetParent(.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32) 'CrttFrm.MdiParent = Main_Form
             .ComboBox1.Items.AddRange(Critters_FRM)
@@ -332,9 +335,14 @@ Friend Module Main
     'Cоздает и открывает новую форму для редактирования предметов
     Friend Sub Create_ItemsForm(ByVal iLST_Index As Integer)
         If Items_LST(iLST_Index).itemType >= ItemType.Unknown Then
-            MsgBox("This object has an unknown type." & vbLf & "The prototype has not the correct format or the file is corrupted.", MsgBoxStyle.Critical ,"Error Item Type")
+            MsgBox("This object has an unknown type." & vbLf & "The prototype has not the correct format or the file is corrupted.", MsgBoxStyle.Critical, "Error Item Type")
             Exit Sub
         End If
+
+        If (Items_LST(iLST_Index).itemType = ItemType.Armor) AndAlso GetCrittersLstFRM() Then Return
+        GetItemsData()
+        GetItemsLstFRM()
+        GetScriptLst()
 
         Dim ItmsFrm As New Items_Form(iLST_Index)
         SetParent(ItmsFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32) 'ItmsFrm.MdiParent = Main_Form
@@ -363,6 +371,8 @@ Friend Module Main
     End Sub
 
     Private Sub GetTeams()
+        If Teams.Count > 0 Then Return
+
         Dim tData As String() = File.ReadAllLines(WorkAppDIR & "\teams.h")
         For Each t In tData
             Dim line As String = t.Trim("/", " ")
@@ -378,4 +388,14 @@ Friend Module Main
         Next
         Teams.Sort()
     End Sub
+
+    Friend Sub ShowProgressBar(ByVal maxValue As Integer)
+        'Progress_Form.MdiParent = Main_Form Main_Form.SplitContainer1.Panel1.Handle.ToInt32
+        SetParent(Progress_Form.Handle.ToInt32, Main_Form.Handle.ToInt32)
+        Progress_Form.SetDesktopLocation(Main_Form.Width / 4, Main_Form.Height / 2.25)
+        Progress_Form.ProgressBar1.Maximum = maxValue
+        Progress_Form.Show()
+        Application.DoEvents()
+    End Sub
+
 End Module

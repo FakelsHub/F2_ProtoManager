@@ -127,12 +127,9 @@ Public Class Table_Form
         Else
             ' Critter table
             If Critter_LST Is Nothing Then Main.CreateCritterList()
+
             Progress_Form.ProgressBar1.Value = 0
-            Progress_Form.ProgressBar1.Maximum = UBound(Critter_LST) + 1
-            SetParent(Progress_Form.Handle.ToInt32, Main_Form.Handle.ToInt32)
-            Progress_Form.SetDesktopLocation(Main_Form.Width / 4, Main_Form.Height / 2.25)
-            Progress_Form.Show()
-            Application.DoEvents()
+            Main.ShowProgressBar(UBound(Critter_LST) + 1)
 
             GetMsgData("pro_crit.msg")
             For n = 1 To UBound(Critter_LST) + 1

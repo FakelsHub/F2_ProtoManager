@@ -65,16 +65,7 @@ Friend Class Main_Form
         FilePut(ffile, ReverseBytes((pCont + 1) * 100))
         FileClose(ffile)
 
-        Dim nProFile As String = SaveMOD_Path & PROTO_CRITTERS & pName
-        If File.Exists(nProFile) Then
-            File.SetAttributes(nProFile, FileAttributes.Normal)
-            File.Delete(nProFile)
-        End If
-        File.Move("template", nProFile)
-        If proRO Then File.SetAttributes(nProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
-
-        'Log 
-        TextBox1.Text = "Create Pro: " & nProFile & vbCrLf & TextBox1.Text
+        ProFiles.CreateProFile(PROTO_CRITTERS, pName)
 
         Array.Resize(Critter_LST, pCont + 1)
         Critter_LST(pCont).proFile = pName
@@ -107,16 +98,7 @@ Friend Class Main_Form
         FilePut(ffile, ReverseBytes((pCont + 1) * 100))
         FileClose(ffile)
 
-        Dim nProFile As String = SaveMOD_Path & PROTO_ITEMS & pName
-        If File.Exists(nProFile) Then
-            File.SetAttributes(nProFile, FileAttributes.Normal)
-            File.Delete(nProFile)
-        End If
-        File.Move("template", nProFile)
-        If proRO Then File.SetAttributes(nProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
-
-        'Log 
-        TextBox1.Text = "Create Pro: " & nProFile & vbCrLf & TextBox1.Text
+        ProFiles.CreateProFile(PROTO_ITEMS, pName)
 
         Array.Resize(Items_LST, pCont + 1)
         Items_LST(pCont).proFile = pName
@@ -585,4 +567,7 @@ Friend Class Main_Form
         End If
     End Sub
 
+    Private Sub MassCreateProfiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MassCreateProfilesToolStripMenuItem.Click
+        Dim MassCreateFrm As New MassCreate()
+    End Sub
 End Class

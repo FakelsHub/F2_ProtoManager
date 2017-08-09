@@ -38,6 +38,8 @@ Partial Class Main_Form
         Me.pMiscToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.KeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TypeCrittersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MassCreateProfilesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutToolStripButton7 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton4 = New System.Windows.Forms.ToolStripSeparator()
@@ -55,8 +57,8 @@ Partial Class Main_Form
         Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.ClearToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DontHoverSelectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.fAllToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -163,7 +165,7 @@ Partial Class Main_Form
         '
         'ToolStripButton6
         '
-        Me.ToolStripButton6.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TypeItemsToolStripMenuItem1, Me.TypeCrittersToolStripMenuItem})
+        Me.ToolStripButton6.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TypeItemsToolStripMenuItem1, Me.TypeCrittersToolStripMenuItem, Me.ToolStripSeparator5, Me.MassCreateProfilesToolStripMenuItem})
         Me.ToolStripButton6.Image = CType(resources.GetObject("ToolStripButton6.Image"), System.Drawing.Image)
         Me.ToolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton6.Name = "ToolStripButton6"
@@ -176,7 +178,7 @@ Partial Class Main_Form
         Me.TypeItemsToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.pWeaponToolStripMenuItem2, Me.pAmmoToolStripMenuItem1, Me.pArmorToolStripMenuItem1, Me.pDrugToolStripMenuItem2, Me.ContainerToolStripMenuItem, Me.pMiscToolStripMenuItem1, Me.KeyToolStripMenuItem})
         Me.TypeItemsToolStripMenuItem1.Image = CType(resources.GetObject("TypeItemsToolStripMenuItem1.Image"), System.Drawing.Image)
         Me.TypeItemsToolStripMenuItem1.Name = "TypeItemsToolStripMenuItem1"
-        Me.TypeItemsToolStripMenuItem1.Size = New System.Drawing.Size(147, 22)
+        Me.TypeItemsToolStripMenuItem1.Size = New System.Drawing.Size(175, 22)
         Me.TypeItemsToolStripMenuItem1.Text = "Type: Item"
         '
         'pWeaponToolStripMenuItem2
@@ -225,8 +227,19 @@ Partial Class Main_Form
         '
         Me.TypeCrittersToolStripMenuItem.Image = CType(resources.GetObject("TypeCrittersToolStripMenuItem.Image"), System.Drawing.Image)
         Me.TypeCrittersToolStripMenuItem.Name = "TypeCrittersToolStripMenuItem"
-        Me.TypeCrittersToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.TypeCrittersToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
         Me.TypeCrittersToolStripMenuItem.Text = "Type: Critter"
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(172, 6)
+        '
+        'MassCreateProfilesToolStripMenuItem
+        '
+        Me.MassCreateProfilesToolStripMenuItem.Name = "MassCreateProfilesToolStripMenuItem"
+        Me.MassCreateProfilesToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
+        Me.MassCreateProfilesToolStripMenuItem.Text = "Mass proto create "
         '
         'ToolStripSeparator1
         '
@@ -347,6 +360,14 @@ Partial Class Main_Form
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
         Me.ToolStripSeparator10.Size = New System.Drawing.Size(184, 6)
         '
+        'DontHoverSelectToolStripMenuItem
+        '
+        Me.DontHoverSelectToolStripMenuItem.CheckOnClick = True
+        Me.DontHoverSelectToolStripMenuItem.Name = "DontHoverSelectToolStripMenuItem"
+        Me.DontHoverSelectToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.DontHoverSelectToolStripMenuItem.Text = "Don't select on hover"
+        Me.DontHoverSelectToolStripMenuItem.ToolTipText = "Don't select element in prototypes list when mouse hover."
+        '
         'ViewLogToolStripMenuItem
         '
         Me.ViewLogToolStripMenuItem.Checked = True
@@ -355,14 +376,6 @@ Partial Class Main_Form
         Me.ViewLogToolStripMenuItem.Name = "ViewLogToolStripMenuItem"
         Me.ViewLogToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.ViewLogToolStripMenuItem.Text = "Show Log"
-        '
-        'DontHoverSelectToolStripMenuItem
-        '
-        Me.DontHoverSelectToolStripMenuItem.CheckOnClick = True
-        Me.DontHoverSelectToolStripMenuItem.Name = "DontHoverSelectToolStripMenuItem"
-        Me.DontHoverSelectToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.DontHoverSelectToolStripMenuItem.Text = "Don't select on hover"
-        Me.DontHoverSelectToolStripMenuItem.ToolTipText = "Don't select element in prototypes list when mouse hover."
         '
         'ToolStripSeparator2
         '
@@ -934,5 +947,7 @@ Partial Class Main_Form
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents ToolStripDropDownButton1 As System.Windows.Forms.ToolStripDropDownButton
     Friend WithEvents FindToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents MassCreateProfilesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

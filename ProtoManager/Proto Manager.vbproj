@@ -142,6 +142,12 @@
     </Compile>
     <Compile Include="Classes\CalcStats.vb" />
     <Compile Include="Classes\Comparer.vb" />
+    <Compile Include="MassCreate.Designer.vb">
+      <DependentUpon>MassCreate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MassCreate.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modules\DatFiles.vb" />
     <Compile Include="Modules\Messages.vb" />
     <Compile Include="Classes\Prototypes.vb" />
@@ -234,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AI_TextForm.resx">
       <DependentUpon>AI_TextForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MassCreate.resx">
+      <DependentUpon>MassCreate.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TxtEdit_Form.resx">
       <DependentUpon>TxtEdit_Form.vb</DependentUpon>

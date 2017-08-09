@@ -33,8 +33,10 @@ Friend Class Items_Form
             ComboBox13.Items.Add(AmmoNAME(n))
         Next
 
-        ComboBox16.Items.AddRange(Critters_FRM)
-        ComboBox17.Items.AddRange(Critters_FRM)
+        If Critters_FRM IsNot Nothing Then
+            ComboBox16.Items.AddRange(Critters_FRM)
+            ComboBox17.Items.AddRange(Critters_FRM)
+        End If
         ComboBox18.Items.AddRange(Perk_NAME)
         ComboBox22.Items.AddRange(Perk_NAME)
         ComboBox23.Items.AddRange(CaliberNAME)
