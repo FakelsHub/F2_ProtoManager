@@ -92,9 +92,15 @@ Module ProFiles
             File.SetAttributes(proFile, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
         End If
 
+        Dim sBuff As Integer() = ReverseSaveData(CritterStruct, Prototypes.CritterLen)
+        If CritterStruct.DamageType > 6 Then
+            Array.Resize(sBuff, Prototypes.CritterLen - 1)
+            File.Delete(proFile) ' удаляем файл для перезаписи его размера.
+        End If
+
         Dim fFile As Byte = FreeFile()
         FileOpen(fFile, proFile, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
-        FilePut(fFile, ReverseSaveData(CritterStruct, Prototypes.CritterLen))
+        FilePut(fFile, sBuff)
         FileClose(fFile)
 
         If proRO Then File.SetAttributes(proFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
@@ -104,17 +110,26 @@ Module ProFiles
     ''' Загрузить данные из про-файла криттера в структуру.
     ''' </summary>
     Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CritterStruct As CritPro) As Boolean
-        Dim cProData(Prototypes.CritterLen - 1) As Integer ' read buffer
+        Dim cProData(Prototypes.CritterLen - 1) As Integer  ' read f2 buffer
+        Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
 
+        Dim fFile As Integer = FreeFile()
+        FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
         Try
-            Dim fFile As Integer = FreeFile()
-            FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            FileGet(fFile, cProData)
-            FileClose(fFile)
-            ProFiles.ReverseLoadData(cProData, CritterStruct)
+            Dim file As New FileInfo(PathProFile)
+            If file.Length = 412 Then
+                FileGet(fFile, f1ProData)
+                f1ProData.CopyTo(cProData, 0)
+                cProData(Prototypes.CritterLen - 1) = &H7000000 'this index 7
+                ProFiles.ReverseLoadData(cProData, CritterStruct)
+            Else
+                FileGet(fFile, cProData)
+                ProFiles.ReverseLoadData(cProData, CritterStruct)
+            End If
         Catch
-            FileClose()
-            Return True 'this error
+            Return True 'for error
+        Finally
+            FileClose(fFile)
         End Try
 
         Return False
@@ -129,6 +144,7 @@ Module ProFiles
                               Optional ByRef ContanerItem As CnItemPro = Nothing, Optional ByRef KeyItem As kItemPro = Nothing)
         If File.Exists(PathProFile) Then
             File.SetAttributes(PathProFile, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+            File.Delete(PathProFile) ' удаляем файл для перезаписи его размера.
         End If
 
         Dim fFile As Integer = FreeFile()
@@ -221,6 +237,11 @@ Module ProFiles
         fnStructToBytes(bytes, bsize, Struct)
         For n = 0 To bytes.Length - 1 Step 4
             If (n / 4) >= buffer.Length Then Exit For
+            Dim value As Integer = BitConverter.ToInt32(bytes, n)
+            If value = 0 OrElse value = -1 Then
+                buffer(n / 4) = value
+                Continue For
+            End If
             buffer(n / 4) = ((bytes(n) And &HFF) << 24) + ((bytes(n + 1) And &HFF) << 16) + ((bytes(n + 2) And &HFF) << 8) + (bytes(n + 3) And &HFF)
         Next
 

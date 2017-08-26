@@ -23,7 +23,7 @@ Partial Class Critter_Form
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("[Restore Bonus]")
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("[Restore Bonus]")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Critter_Form))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown7 = New System.Windows.Forms.NumericUpDown()
@@ -2129,8 +2129,8 @@ Partial Class Critter_Form
         Me.ListView1.FullRowSelect = True
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.ListView1.HideSelection = False
-        ListViewItem3.ToolTipText = "Restore armor bonus characteristics."
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
+        ListViewItem1.ToolTipText = "Restore armor bonus characteristics."
+        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListView1.Location = New System.Drawing.Point(6, 125)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
@@ -3707,7 +3707,7 @@ Partial Class Critter_Form
         '
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Items.AddRange(New Object() {"Normal", "Laser", "Fire", "Plasma", "Electrical", "EMP", "Explode"})
+        Me.ComboBox5.Items.AddRange(New Object() {"Normal", "Laser", "Fire", "Plasma", "Electrical", "EMP", "Explode", "<F1 Format>"})
         Me.ComboBox5.Location = New System.Drawing.Point(162, 32)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(121, 22)

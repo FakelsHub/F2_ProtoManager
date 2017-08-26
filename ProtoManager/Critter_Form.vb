@@ -23,7 +23,7 @@ Friend Class Critter_Form
 
         If ProFiles.LoadCritterProData(cPath & proFile, CritterPro) Then
             'BadFormat
-            MsgBox("The file " & proFile & " does not have the correct format: Size not equal 416 Bytes", MsgBoxStyle.Critical)
+            MsgBox("The pro file " & proFile & " does not have the correct format.", MsgBoxStyle.Critical)
             Return True ' error
         End If
 
