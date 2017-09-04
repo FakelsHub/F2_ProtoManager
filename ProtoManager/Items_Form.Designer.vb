@@ -443,7 +443,7 @@ Partial Class Items_Form
         '
         Me.NumericUpDown3.BackColor = System.Drawing.SystemColors.Info
         Me.NumericUpDown3.Location = New System.Drawing.Point(67, 34)
-        Me.NumericUpDown3.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.NumericUpDown3.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown3.Name = "NumericUpDown3"
         Me.NumericUpDown3.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown3.TabIndex = 2
@@ -490,7 +490,7 @@ Partial Class Items_Form
         'NumericUpDown11
         '
         Me.NumericUpDown11.Location = New System.Drawing.Point(68, 78)
-        Me.NumericUpDown11.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.NumericUpDown11.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
         Me.NumericUpDown11.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown11.TabIndex = 4
@@ -518,7 +518,7 @@ Partial Class Items_Form
         'NumericUpDown10
         '
         Me.NumericUpDown10.Location = New System.Drawing.Point(7, 78)
-        Me.NumericUpDown10.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.NumericUpDown10.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
         Me.NumericUpDown10.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown10.TabIndex = 3
@@ -528,7 +528,7 @@ Partial Class Items_Form
         '
         Me.NumericUpDown2.BackColor = System.Drawing.SystemColors.Info
         Me.NumericUpDown2.Location = New System.Drawing.Point(6, 34)
-        Me.NumericUpDown2.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.NumericUpDown2.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown2.Name = "NumericUpDown2"
         Me.NumericUpDown2.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown2.TabIndex = 1
@@ -653,7 +653,7 @@ Partial Class Items_Form
         'NumericUpDown5
         '
         Me.NumericUpDown5.Location = New System.Drawing.Point(6, 88)
-        Me.NumericUpDown5.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.NumericUpDown5.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown5.Name = "NumericUpDown5"
         Me.NumericUpDown5.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown5.TabIndex = 11
@@ -672,7 +672,7 @@ Partial Class Items_Form
         'NumericUpDown4
         '
         Me.NumericUpDown4.Location = New System.Drawing.Point(6, 45)
-        Me.NumericUpDown4.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.NumericUpDown4.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown4.Name = "NumericUpDown4"
         Me.NumericUpDown4.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown4.TabIndex = 10
@@ -898,6 +898,7 @@ Partial Class Items_Form
         Me.ComboBox17.Name = "ComboBox17"
         Me.ComboBox17.Size = New System.Drawing.Size(100, 22)
         Me.ComboBox17.TabIndex = 2
+        Me.ComboBox17.Tag = "0"
         '
         'PictureBox3
         '
@@ -919,6 +920,7 @@ Partial Class Items_Form
         Me.ComboBox16.Name = "ComboBox16"
         Me.ComboBox16.Size = New System.Drawing.Size(100, 22)
         Me.ComboBox16.TabIndex = 2
+        Me.ComboBox16.Tag = "1"
         '
         'PictureBox2
         '
@@ -2072,7 +2074,8 @@ Partial Class Items_Form
         'NumericUpDown28
         '
         Me.NumericUpDown28.Location = New System.Drawing.Point(216, 34)
-        Me.NumericUpDown28.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
+        Me.NumericUpDown28.Maximum = New Decimal(New Integer() {250, 0, 0, 0})
+        Me.NumericUpDown28.Minimum = New Decimal(New Integer() {250, 0, 0, -2147483648})
         Me.NumericUpDown28.Name = "NumericUpDown28"
         Me.NumericUpDown28.Size = New System.Drawing.Size(58, 20)
         Me.NumericUpDown28.TabIndex = 2
@@ -2081,7 +2084,8 @@ Partial Class Items_Form
         'NumericUpDown27
         '
         Me.NumericUpDown27.Location = New System.Drawing.Point(152, 34)
-        Me.NumericUpDown27.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
+        Me.NumericUpDown27.Maximum = New Decimal(New Integer() {250, 0, 0, 0})
+        Me.NumericUpDown27.Minimum = New Decimal(New Integer() {250, 0, 0, -2147483648})
         Me.NumericUpDown27.Name = "NumericUpDown27"
         Me.NumericUpDown27.Size = New System.Drawing.Size(58, 20)
         Me.NumericUpDown27.TabIndex = 2
@@ -2618,7 +2622,7 @@ Partial Class Items_Form
         'NumericUpDown39
         '
         Me.NumericUpDown39.Location = New System.Drawing.Point(74, 19)
-        Me.NumericUpDown39.Maximum = New Decimal(New Integer() {4096, 0, 0, 0})
+        Me.NumericUpDown39.Maximum = New Decimal(New Integer() {4095, 0, 0, 0})
         Me.NumericUpDown39.Name = "NumericUpDown39"
         Me.NumericUpDown39.Size = New System.Drawing.Size(40, 20)
         Me.NumericUpDown39.TabIndex = 26
@@ -2627,7 +2631,7 @@ Partial Class Items_Form
         'NumericUpDown1
         '
         Me.NumericUpDown1.Location = New System.Drawing.Point(9, 19)
-        Me.NumericUpDown1.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
+        Me.NumericUpDown1.Maximum = New Decimal(New Integer() {16777215, 0, 0, 0})
         Me.NumericUpDown1.Name = "NumericUpDown1"
         Me.NumericUpDown1.Size = New System.Drawing.Size(55, 20)
         Me.NumericUpDown1.TabIndex = 25
@@ -2637,7 +2641,7 @@ Partial Class Items_Form
         'NumericUpDown38
         '
         Me.NumericUpDown38.Location = New System.Drawing.Point(125, 19)
-        Me.NumericUpDown38.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
+        Me.NumericUpDown38.Maximum = New Decimal(New Integer() {4095, 0, 0, 0})
         Me.NumericUpDown38.Name = "NumericUpDown38"
         Me.NumericUpDown38.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown38.TabIndex = 27

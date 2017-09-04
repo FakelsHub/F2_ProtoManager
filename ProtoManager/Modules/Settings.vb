@@ -10,7 +10,6 @@ Friend Module Settings
     Friend GameDATA_Path As String 'Папка DATA игры
     Friend SaveMOD_Path As String 'Папка в которую сохраняются отредактированные файлы.
     Friend HEX_Path As String
-    Friend Current_Path As String
 
     Friend ReadOnly defaultHEX As String = WorkAppDIR & "\hex\frhed.exe"
 

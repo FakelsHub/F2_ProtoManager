@@ -189,16 +189,14 @@ Friend Class Main_Form
         If TabControl1.SelectedIndex = 1 Then
             Dim pIndx As Integer = ListView1.FocusedItem.Index
 
-            Current_Path = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(pIndx).proFile)
-            FileSystem.CopyFile(Current_Path & PROTO_CRITTERS & Critter_LST(pIndx).proFile, "template", True)
+            FileSystem.CopyFile(DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(pIndx).proFile), "template", True)
             File.SetAttributes("template", FileAttributes.Normal Or FileAttributes.Archive)
 
             AddCritterPro()
         Else
             Dim pIndx As Integer = CInt(ListView2.FocusedItem.Tag)
 
-            Current_Path = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(pIndx).proFile)
-            FileSystem.CopyFile(Current_Path & PROTO_ITEMS & Items_LST(pIndx).proFile, "template", True)
+            FileSystem.CopyFile(DatFiles.CheckFile(PROTO_ITEMS & Items_LST(pIndx).proFile), "template", True)
             File.SetAttributes("template", FileAttributes.Normal Or FileAttributes.Archive)
 
             AddItemPro(Items_LST(pIndx).itemType)
@@ -206,7 +204,7 @@ Friend Class Main_Form
     End Sub
 
     'поиск ключевого слова
-    Private Sub ToolStripButton1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton1.Click, ToolStripDropDownButton1.Click
+    Private Sub Find(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton1.Click, FindToolStripMenuItem.Click
         Dim n As Integer
         Dim LIST_VIEW As ListView = ListView1
 
@@ -242,7 +240,7 @@ Friend Class Main_Form
     End Function
 
     Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ToolStripTextBox1.KeyUp
-        If e.KeyData = Keys.Enter Then ToolStripButton1_Click(Nothing, Nothing)
+        If e.KeyData = Keys.Enter Then Find(Nothing, Nothing)
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
@@ -392,13 +390,13 @@ Friend Class Main_Form
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
         On Error Resume Next
-        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.ItemIndex).proFile, , False) & PROTO_CRITTERS & Critter_LST(e.ItemIndex).proFile
+        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.ItemIndex).proFile, , , False)
         ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + e.ItemIndex
     End Sub
 
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
         On Error Resume Next
-        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(e.Item.Tag).proFile, , False) & PROTO_ITEMS & Items_LST(e.Item.Tag).proFile
+        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(e.Item.Tag).proFile, , , False)
         ToolStripStatusLabel2.Text = "Item PID: " & StrDup(8 - Len(CStr(CInt(e.Item.Tag) + 1)), "0") & CInt(e.Item.Tag) + 1
     End Sub
 
@@ -513,19 +511,21 @@ Friend Class Main_Form
     End Sub
 
     Private Sub ToolStripMenuItem2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripMenuItem2.Click
+        Dim cpath As String
+
         If TabControl1.SelectedIndex = 1 Then
             Dim pIndx As Integer = ListView1.FocusedItem.Index
+            Dim pFile As String = Critter_LST(pIndx).proFile
 
-            Current_Path = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(pIndx).proFile)
-            Hex_Form.LoadHex(Current_Path & PROTO_CRITTERS, Critter_LST(pIndx).proFile)
-            Hex_Form.Tag = Current_Path & PROTO_CRITTERS & Critter_LST(pIndx).proFile
-            'SetParent(Hex_Form.Handle.ToInt32, SplitContainer1.Panel1.Handle.ToInt32)
+            cpath = DatFiles.CheckFile(PROTO_CRITTERS & pFile, False)
+            Hex_Form.LoadHex(cpath & PROTO_CRITTERS, pFile)
+            Hex_Form.Tag = cpath & PROTO_CRITTERS & pFile
         Else
             Dim pFile As String = ListView2.FocusedItem.SubItems(1).Text
 
-            Current_Path = DatFiles.CheckFile(PROTO_ITEMS & pFile)
-            Hex_Form.LoadHex(Current_Path & PROTO_ITEMS, pFile)
-            Hex_Form.Tag = Current_Path & PROTO_ITEMS & pFile
+            cpath = DatFiles.CheckFile(PROTO_ITEMS & pFile, False)
+            Hex_Form.LoadHex(cpath & PROTO_ITEMS, pFile)
+            Hex_Form.Tag = cpath & PROTO_ITEMS & pFile
         End If
     End Sub
 
@@ -570,4 +570,5 @@ Friend Class Main_Form
     Private Sub MassCreateProfiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MassCreateProfilesToolStripMenuItem.Click
         Dim MassCreateFrm As New MassCreate()
     End Sub
+
 End Class

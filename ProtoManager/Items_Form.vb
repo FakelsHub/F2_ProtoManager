@@ -5,6 +5,11 @@ Imports Prototypes
 
 Friend Class Items_Form
 
+    Private Enum Gender As Integer
+        Female = 0
+        Male = 1
+    End Enum
+
     Private CommonItem As CmItemPro
     Private WeaponItem As WpItemPro
     Private ArmorItem As ArItemPro
@@ -83,7 +88,7 @@ Friend Class Items_Form
     Private Sub LoadProData()
         Dim ProFile As String = PROTO_ITEMS & Items_LST(iLST_Index).proFile
 
-        If cPath = Nothing Then cPath = DatFiles.CheckFile(ProFile)
+        If cPath = Nothing Then cPath = DatFiles.CheckFile(ProFile, False)
         ProFile = cPath & ProFile
         ProFiles.LoadItemProData(ProFile, Items_LST(iLST_Index).itemType, CommonItem, WeaponItem, ArmorItem, AmmoItem, DrugItem, MiscItem, ContanerItem, KeyItem)
     End Sub
@@ -119,6 +124,8 @@ Friend Class Items_Form
     End Function
 
     Private Sub SetCommonValue_Form()
+        On Error Resume Next
+
         ComboBox7.SelectedIndex = CommonItem.ObjType
         TextBox29.Text = GetNameItemMsg(CommonItem.DescID)
         TextBox30.Text = GetNameItemMsg(CommonItem.DescID, True)
@@ -165,6 +172,8 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetWeaponValue_Form()
+        On Error Resume Next
+
         NumericUpDown2.Value = WeaponItem.MinDmg
         NumericUpDown3.Value = WeaponItem.MaxDmg
         NumericUpDown4.Value = WeaponItem.MaxRangeP
@@ -183,8 +192,16 @@ Friend Class Items_Form
             If CChar(ComboBox6.Items(n)) = Chr(WeaponItem.wSoundID) Then ComboBox6.SelectedIndex = n
         Next
 
-        If WeaponItem.ProjPID <> -1 Then ComboBox10.SelectedIndex = WeaponItem.ProjPID - &H5000000 Else ComboBox10.SelectedIndex = 0
-        If WeaponItem.Perk <> -1 Then ComboBox11.SelectedIndex = WeaponItem.Perk + 1 Else ComboBox11.SelectedIndex = 0
+        If WeaponItem.ProjPID <> -1 Then
+            ComboBox10.SelectedIndex = WeaponItem.ProjPID - &H5000000
+        Else
+            ComboBox10.SelectedIndex = 0
+        End If
+        If WeaponItem.Perk <> -1 Then
+            ComboBox11.SelectedIndex = WeaponItem.Perk + 1
+        Else
+            ComboBox11.SelectedIndex = 0
+        End If
 
         ComboBox12.SelectedIndex = WeaponItem.Caliber
 
@@ -207,6 +224,8 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetArmorValue_Form()
+        On Error Resume Next
+
         NumericUpDown12.Value = ArmorItem.AC
 
         NumericUpDown56.Value = ArmorItem.DTNormal
@@ -232,6 +251,8 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetAmmoValue_Form()
+        On Error Resume Next
+
         ComboBox23.SelectedIndex = AmmoItem.Caliber
         NumericUpDown26.Value = AmmoItem.Quantity
         NumericUpDown27.Value = AmmoItem.ACAdjust
@@ -267,12 +288,16 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetContanerValue_Form()
+        On Error Resume Next
+
         NumericUpDown32.Value = ContanerItem.MaxSize
         CheckBox15.Checked = ContanerItem.OpenFlags And &H1
         GroupBox25.Enabled = True
     End Sub
 
     Private Sub SetDrugsValue_Form()
+        On Error Resume Next
+
         If DrugItem.Stat0 <> -1 Then
             ComboBox19.SelectedIndex = 2 + DrugItem.Stat0
         Else
@@ -303,8 +328,12 @@ Friend Class Items_Form
         NumericUpDown22.Value = DrugItem.Duration1
         NumericUpDown23.Value = DrugItem.Duration2
 
-        If DrugItem.W_Effect <> -1 Then ComboBox22.SelectedIndex = 1 + DrugItem.W_Effect Else ComboBox22.SelectedIndex = 0
-
+        If DrugItem.W_Effect <> -1 Then
+            ComboBox22.SelectedIndex = 1 + DrugItem.W_Effect
+        Else
+            ComboBox22.SelectedIndex = 0
+        End If
+        
         NumericUpDown24.Value = DrugItem.AddictionRate
         NumericUpDown25.Value = DrugItem.W_Onset
     End Sub
@@ -315,16 +344,21 @@ Friend Class Items_Form
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_ITEMS & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("items\", frm)
-            Dim img As Image = Image.FromFile(pfile)
-            If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
-                PictureBox1.BackgroundImageLayout = ImageLayout.Zoom
-            Else
-                PictureBox1.BackgroundImageLayout = ImageLayout.Center
-            End If
-            PictureBox1.BackgroundImage = img
+            Dim img As Image = Nothing
+            Try
+                img = Image.FromFile(pfile)
+                If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
+                    PictureBox1.BackgroundImageLayout = ImageLayout.Zoom
+                Else
+                    PictureBox1.BackgroundImageLayout = ImageLayout.Center
+                End If
+            Catch
+                img = My.Resources.RESERVAA
+            Finally
+                PictureBox1.BackgroundImage = img
+            End Try
             Exit Sub
         End If
-
         'BadFrm
         PictureBox1.BackgroundImage = My.Resources.RESERVAA
     End Sub
@@ -341,13 +375,19 @@ Friend Class Items_Form
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_INVEN & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("inven\", frm)
-            Dim img As Image = Image.FromFile(pfile)
-            If img.Width > PictureBox4.Size.Width Then
-                PictureBox4.BackgroundImageLayout = ImageLayout.Zoom
-            Else
-                PictureBox4.BackgroundImageLayout = ImageLayout.Center
-            End If
-            PictureBox4.BackgroundImage = img
+            Dim img As Image = Nothing
+            Try
+                img = Image.FromFile(pfile)
+                If img.Width > PictureBox4.Size.Width Then
+                    PictureBox4.BackgroundImageLayout = ImageLayout.Zoom
+                Else
+                    PictureBox4.BackgroundImageLayout = ImageLayout.Center
+                End If
+            Catch
+                img = My.Resources.RESERVAA
+            Finally
+                PictureBox4.BackgroundImage = img
+            End Try
             Exit Sub
         End If
 
@@ -362,7 +402,7 @@ Friend Class Items_Form
             Dim pfile As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
             If Not File.Exists(pfile) Then DatFiles.CritterFrmGif(frm)
             Dim img As Image = Image.FromFile(pfile)
-            If CType(sender, ComboBox).Name.ToString = "ComboBox16" Then
+            If CInt(CType(sender, ComboBox).Tag) = Gender.Male Then
                 PictureBox2.Image = img
             Else
                 PictureBox3.Image = img
@@ -372,7 +412,7 @@ Friend Class Items_Form
 
         'BadFrm
         Dim resFile As Image = My.Resources.RESERVAA
-        If CType(sender, ComboBox).Name.ToString = "ComboBox16" Then
+        If CInt(CType(sender, ComboBox).Tag) = Gender.Male Then
             PictureBox2.Image = resFile
         Else
             PictureBox3.Image = resFile
@@ -548,7 +588,7 @@ Friend Class Items_Form
             Main_Form.ListView2.Items(indx).Text = "* " & Items_LST(Main_Form.ListView2.Items(indx).Tag).itemName
         End If
 
-        cPath = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile)
+        cPath = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, False)
         Button6.Enabled = False
     End Sub
 

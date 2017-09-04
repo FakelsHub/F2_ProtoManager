@@ -19,7 +19,7 @@ Friend Class Critter_Form
 
     Friend Function LoadProData() As Boolean
         Dim proFile As String = PROTO_CRITTERS & Critter_LST(cLST_Index).proFile
-        If cPath = Nothing Then cPath = DatFiles.CheckFile(proFile)
+        If cPath = Nothing Then cPath = DatFiles.CheckFile(proFile, False)
 
         If ProFiles.LoadCritterProData(cPath & proFile, CritterPro) Then
             'BadFormat
@@ -82,6 +82,8 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SetStatsValue_Tab()
+        On Error Resume Next
+
         TextBox29.Text = GetNameCritterMsg(CritterPro.DescID)
         Me.Text = TextBox29.Text & " [" & Critter_LST(cLST_Index).proFile & "]"
 
@@ -147,6 +149,8 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub CalcSpecialParam()
+        On Error Resume Next
+
         tbSmallGun.Text = CalcStats.SmallGun_Skill(NumericUpDown6.Value) + NumericUpDown8.Value
         TextBox2.Text = CalcStats.BigEnergyGun_Skill(NumericUpDown6.Value) + NumericUpDown9.Value
         TextBox3.Text = CalcStats.EnergyGun_Skill(NumericUpDown6.Value) + NumericUpDown10.Value
@@ -180,6 +184,8 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SetDefenceValue_Tab()
+        On Error Resume Next
+
         NumericUpDown56.Value = CritterPro.DTNormal ' + fCritterPro.b_DTNormal
         NumericUpDown57.Value = CritterPro.DTLaser ' + fCritterPro.b_DTLaser
         NumericUpDown58.Value = CritterPro.DTFire '+ fCritterPro.b_DTFire
@@ -200,6 +206,8 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SetBonusDefenceValue()
+        On Error Resume Next
+
         NumericUpDown40.Value = CritterPro.b_DTNormal
         NumericUpDown41.Value = CritterPro.b_DTLaser
         NumericUpDown42.Value = CritterPro.b_DTFire
@@ -220,6 +228,8 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SetMiscValue_Tab()
+        On Error Resume Next
+
         TextBox30.Text = GetNameCritterMsg(CritterPro.DescID, True)
         Button4.Enabled = False
         Button5.Enabled = False
@@ -475,6 +485,11 @@ Friend Class Critter_Form
         If TabStatsView Then
             CalcSpecialParam()
             Button6.Enabled = True
+        Else
+            Dim cntl As NumericUpDown = sender
+            If cntl.Value <> -100 AndAlso cntl.BackColor <> Color.Black Then
+                cntl.BackColor = Color.White
+            End If
         End If
     End Sub
 
@@ -483,6 +498,11 @@ Friend Class Critter_Form
             TextBox31.Text = (5 * NumericUpDown3.Value) + NumericUpDown55.Value 'DRPoison
             TextBox32.Text = (2 * NumericUpDown3.Value) + NumericUpDown54.Value 'DRRadiation
             Button6.Enabled = True
+        Else
+            Dim cntl As NumericUpDown = sender
+            If cntl.Value <> -100 Then
+                cntl.BackColor = Color.White
+            End If
         End If
     End Sub
 
@@ -493,7 +513,14 @@ Friend Class Critter_Form
     NumericUpDown45.ValueChanged, NumericUpDown44.ValueChanged, NumericUpDown47.ValueChanged, NumericUpDown46.ValueChanged, NumericUpDown43.ValueChanged, NumericUpDown42.ValueChanged, _
     NumericUpDown41.ValueChanged, NumericUpDown40.ValueChanged
         '
-        If TabDefenceView Then Button6.Enabled = True
+        If TabDefenceView Then
+            Button6.Enabled = True
+        Else
+            Dim cntl As NumericUpDown = sender
+            If cntl.Value <> -999 Then
+                cntl.BackColor = Color.White
+            End If
+        End If
     End Sub
 
     Private Sub ValueChanged_Tab3(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown64.ValueChanged, NumericUpDown39.ValueChanged, NumericUpDown38.ValueChanged, _
@@ -537,8 +564,7 @@ Friend Class Critter_Form
                 Dim fFile As Integer = FreeFile()
                 Dim ProFile As String = ListView1.FocusedItem.Tag
 
-                Dim filePath = PROTO_ITEMS & ProFile
-                filePath = DatFiles.CheckFile(filePath) & filePath
+                Dim filePath = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
                 FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
                 FileGet(fFile, InvFID, Prototypes.InvenFID)
                 FileGet(fFile, aItem, Prototypes.ArmorBlock)
@@ -581,7 +607,7 @@ Friend Class Critter_Form
 
         If proFile IsNot Nothing Then
             Dim fFile As Integer = FreeFile()
-            proFile = DatFiles.CheckFile(PROTO_ITEMS & proFile) & PROTO_ITEMS & proFile
+            proFile = DatFiles.CheckFile(PROTO_ITEMS & proFile)
             FileOpen(fFile, proFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
             FileGet(fFile, aItem, Prototypes.ArmorBlock)
             FileClose(fFile)
@@ -670,7 +696,7 @@ Friend Class Critter_Form
         Save_CritterPro()
         Main_Form.ListView1.Items(cLST_Index).Text = "* " & Critter_LST(cLST_Index).crtName
         Button6.Enabled = False
-        cPath = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(cLST_Index).proFile)
+        cPath = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(cLST_Index).proFile, False)
     End Sub
 
     Private Sub Button4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button4.Click

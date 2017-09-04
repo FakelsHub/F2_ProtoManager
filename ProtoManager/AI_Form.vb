@@ -29,7 +29,7 @@ Public Class AI_Form
         SortedListMenuItem.Checked = SortedAIPacket
         ComboBox0.Sorted = SortedAIPacket
 
-        aiPath = DatFiles.CheckFile(AI.AIFILE) & AI.AIFILE
+        aiPath = DatFiles.CheckFile(AI.AIFILE)
         AIPacket = AI.GetAll_AIPacket(aiPath)
     End Sub
 
@@ -40,11 +40,13 @@ Public Class AI_Form
             End If
         Next
 
-        Dim tmpPath As String = DatFiles.CheckFile(AIGENMSG) & AIGENMSG
+        Dim tmpPath As String = DatFiles.CheckFile(AIGENMSG)
         ComboBox8.Items.AddRange(AI.GetAll_AIPacket(tmpPath).Keys.ToArray)
+        ComboBox8.Items.RemoveAt(ComboBox8.Items.Count - 1)
 
-        tmpPath = DatFiles.CheckFile(AIBODYMSG) & AIBODYMSG
+        tmpPath = DatFiles.CheckFile(AIBODYMSG)
         ComboBox4.Items.AddRange(AI.GetAll_AIPacket(tmpPath).Keys.ToArray)
+        ComboBox4.Items.RemoveAt(ComboBox4.Items.Count - 1)
 
         PacketList(Me) 'ComboBox0.Items.AddRange((From t In AI_Packet Take (AI_Packet.GetLength(1))).ToArray)
 

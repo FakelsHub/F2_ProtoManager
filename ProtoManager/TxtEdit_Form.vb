@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Drawing
 Imports System.Globalization
+
 Imports Prototypes
 
 Public Class TxtEdit_Form
@@ -247,20 +248,8 @@ Public Class TxtEdit_Form
     End Sub
 
     Friend Sub Init_Data()
-        Dim filePath As String
-        Dim fFile As Byte = FreeFile()
-
-        On Error GoTo BadFormat
-
         If type = ProType.Critter Then
-            filePath = PROTO_CRITTERS & Critter_LST(index).proFile
-            filePath = DatFiles.CheckFile(filePath) & filePath
-            FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            FileGet(fFile, CrttrProData)
-            FileClose(fFile)
-            For n = 0 To CrttrProData.Length - 1
-                CrttrProData(n) = ProFiles.ReverseBytes(CrttrProData(n))
-            Next
+            If ProFiles.LoadCritterProData(Critter_LST(index).proFile, CrttrProData) Then GoTo BadFormat
 
             For n = 0 To CrttrProData.Length - 1    'collumn param           value                   hex
                 ListView1.Items.Add(New ListViewItem({CrtNamePro(n), CrttrProData(n), "0x" + Hex(CrttrProData(n))}))
@@ -276,10 +265,12 @@ Public Class TxtEdit_Form
                 End If
             Next
         Else
-            filePath = PROTO_ITEMS & Items_LST(index).proFile
-            filePath = DatFiles.CheckFile(filePath) & filePath
-            FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
+            Dim fFile As Byte = FreeFile()
+            Dim filePath As String = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(index).proFile)
 
+            On Error GoTo BadFormat
+
+            FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
             GetProData(ItmNamePro, ItemProData, fFile, 0, GroupsType.Common)
             FileGet(fFile, SndProData)
             ListView1.Items.Add(New ListViewItem({SndNamePro, SndProData, "0x" + Hex(SndProData)}))
@@ -435,17 +426,25 @@ BadFormat:
     Private Sub SavePro(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         Dim filePath As String
         Dim fFile As Byte = FreeFile()
+        Dim f1Format As Boolean = False
 
         If type = ProType.Critter Then
             filePath = SaveMOD_Path & PROTO_CRITTERS
             If Not Directory.Exists(filePath) Then Directory.CreateDirectory(filePath)
             filePath &= Critter_LST(index).proFile
+
             If File.Exists(filePath) Then
                 File.SetAttributes(filePath, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
             End If
+            ' for Falout 1 format
+            If CrttrProData(Prototypes.CritterLen - 1) = -1 Then
+                f1Format = True
+                File.Delete(filePath) ' удаляем файл для перезаписи его размера.
+            End If
+
             'Save to Pro critter
             FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
-            PutProData(CrttrProData.Clone, fFile)
+            PutProData(CrttrProData.Clone, fFile, f1Format)
         Else
             filePath = SaveMOD_Path & PROTO_ITEMS
             If Not Directory.Exists(filePath) Then Directory.CreateDirectory(filePath)
@@ -487,7 +486,8 @@ BadFormat:
         Main_Form.TextBox1.Text = "Save Pro: " & filePath & vbCrLf & Main_Form.TextBox1.Text
     End Sub
 
-    Private Sub PutProData(ByVal data() As Integer, ByVal fFile As Integer)
+    Private Sub PutProData(ByVal data() As Integer, ByVal fFile As Integer, Optional ByVal f1Format As Boolean = False)
+        If f1Format Then Array.Resize(data, Prototypes.CritterLen - 1)
         For n = 0 To data.Length - 1
             data(n) = ProFiles.ReverseBytes(data(n))
         Next

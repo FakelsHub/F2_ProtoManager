@@ -1,6 +1,7 @@
 ﻿Imports System.Text
 Imports System.IO
 Imports Microsoft.VisualBasic.FileIO
+
 Imports Prototypes
 
 Public Class Table_Form
@@ -46,6 +47,7 @@ Public Class Table_Form
 
     Private Sub CreateTable()
         Dim fFile As Integer, iType As Integer = TabControl1.SelectedIndex
+        Dim cPath, pathFile As String
 
         Table.Add("Import" & spr & "ProFILE" & spr & "NAME")
         If iType > TabType.Critter Then
@@ -58,14 +60,16 @@ Public Class Table_Form
             Dim Read As Boolean = False
             GetMsgData("pro_item.msg")
             For n = 1 To Table.Count - 1
-                Current_Path = DatFiles.CheckFile(PROTO_ITEMS & Table(n))
+                cPath = DatFiles.CheckFile(PROTO_ITEMS & Table(n), False)
+                pathFile = String.Concat(cPath, PROTO_ITEMS, Table(n))
                 Dim cmProDataBuf(Prototypes.ItemCommonLen - 1) As Integer
                 fFile = FreeFile()
-                FileOpen(fFile, Current_Path & PROTO_ITEMS & Table(n), OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
+                FileOpen(fFile, pathFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
                 FileGet(fFile, cmProDataBuf)
                 ProFiles.ReverseLoadData(cmProDataBuf, CommonItem)
                 FileGet(fFile, CommonItem.SoundID)
-                If Current_Path = SaveMOD_Path Then
+
+                If cPath.Equals(SaveMOD_Path, StringComparison.OrdinalIgnoreCase) Then
                     Table(n) = spr & Table(n)
                 Else
                     Table(n) = "#" & spr & Table(n) ' # - ignore mark
@@ -134,8 +138,8 @@ Public Class Table_Form
             GetMsgData("pro_crit.msg")
             For n = 1 To UBound(Critter_LST) + 1
                 Dim proFile As String = Critter_LST(n - 1).proFile
-                Current_Path = DatFiles.CheckFile(PROTO_CRITTERS & proFile)
-                Dim pathFile As String = Current_Path & PROTO_CRITTERS & proFile
+                cPath = DatFiles.CheckFile(PROTO_CRITTERS & proFile, False)
+                pathFile = String.Concat(cPath, PROTO_CRITTERS & proFile)
                 If FileSystem.GetFileInfo(pathFile).Length < 416 Then
                     Table.Add("#" & spr & proFile & spr & "<BadFormat>")
                     'Log 
@@ -145,7 +149,7 @@ Public Class Table_Form
                 End If
                 ProFiles.LoadCritterProData(pathFile, CritterPro)
 
-                If Current_Path.ToLower = SaveMOD_Path.ToLower Then
+                If cPath.Equals(SaveMOD_Path, StringComparison.OrdinalIgnoreCase) Then
                     Table.Add(spr & proFile)
                 Else
                     Table.Add("#" & spr & proFile) ' # - ignore mark
@@ -508,7 +512,7 @@ SaveRetry:
             If ProFile = Nothing Then Continue For
             Dim pPath = SaveMOD_Path & PROTO_ITEMS & ProFile
             If Not File.Exists(pPath) Then
-                Dim source As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile) & PROTO_ITEMS & ProFile
+                Dim source As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
                 FileSystem.CopyFile(source, pPath, FileIO.UIOption.AllDialogs)
             End If
 
@@ -751,7 +755,7 @@ SaveRetry:
             If ProFile = Nothing Then Continue For
             Dim filePath = SaveMOD_Path & PROTO_CRITTERS & ProFile
             If Not File.Exists(filePath) Then
-                Dim source = DatFiles.CheckFile(PROTO_CRITTERS & ProFile) & PROTO_CRITTERS & ProFile
+                Dim source = DatFiles.CheckFile(PROTO_CRITTERS & ProFile)
                 FileSystem.CopyFile(source, filePath, FileIO.UIOption.AllDialogs)
             End If
             ProFiles.LoadCritterProData(filePath, CritterPro)

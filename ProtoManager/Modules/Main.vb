@@ -35,7 +35,7 @@ Friend Module Main
     Friend Perk_NAME As String()
     '
     Private Teams As List(Of String) = New List(Of String)
-    Friend PacketAI As SortedList(Of String, Integer) 'Private AI() As String
+    Friend PacketAI As SortedList(Of String, Integer)
 
     'Initialization...
     Friend Sub Main()
@@ -49,8 +49,7 @@ Friend Module Main
             If cCache OrElse noId Then Settings.Clear_Cache()
             '
             If Not (ExtractBack) Then wait = True
-            Current_Path = DatFiles.CheckFile(itemsLstPath)
-            Dim pLST() As String = File.ReadAllLines(Current_Path & itemsLstPath)
+            Dim pLST() As String = File.ReadAllLines(DatFiles.CheckFile(itemsLstPath))
             For n = UBound(pLST) To 0 Step -1
                 pLST(n) = pLST(n).Trim
                 If pLST(n).Length > 0 Then
@@ -69,8 +68,7 @@ Friend Module Main
 
             Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iProto.lst", AppWinStyle.Hide, True, 30000)
 
-            Current_Path = DatFiles.CheckFile(crittersLstPath)
-            pLST = File.ReadAllLines(Current_Path & crittersLstPath)
+            pLST = File.ReadAllLines(DatFiles.CheckFile(crittersLstPath))
             For n = 0 To UBound(pLST)
                 pLST(n) = pLST(n).Trim
                 If pLST(n).Length > 0 Then
@@ -115,8 +113,7 @@ Friend Module Main
 
         Dim splt() As String
 
-        Current_Path = DatFiles.CheckFile(scriptsLstPath)
-        Scripts_Lst = File.ReadAllLines(Current_Path & scriptsLstPath)
+        Scripts_Lst = File.ReadAllLines(DatFiles.CheckFile(scriptsLstPath), System.Text.Encoding.Default)
         For n As Integer = 0 To UBound(Scripts_Lst)
             splt = Scripts_Lst(n).Split("#"c)
             splt = splt(0).Split(";"c)
@@ -125,9 +122,9 @@ Friend Module Main
     End Sub
 
     Private Function GetCrittersLstFRM() As Boolean
-        Current_Path = DatFiles.CheckFile(artCrittersLstPath, True)
+
         Try
-            Critters_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artCrittersLstPath))
+            Critters_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artCrittersLstPath, , True)))
         Catch ex As DirectoryNotFoundException
             MsgBox("Cannot open required file: \art\critter\critter.lst", MsgBoxStyle.Critical, "File Missing")
             Return True
@@ -138,19 +135,16 @@ Friend Module Main
 
     Friend Sub GetItemsLstFRM()
         If Items_FRM IsNot Nothing Then Return
-        Current_Path = DatFiles.CheckFile(artItemsLstPath)
-        Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artItemsLstPath))
+        Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artItemsLstPath)))
 
         If Iven_FRM IsNot Nothing Then Return
-        Current_Path = DatFiles.CheckFile(artInvenLstPath)
-        Iven_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & artInvenLstPath))
+        Iven_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artInvenLstPath)))
     End Sub
 
     Friend Sub CreateCritterList()
         ShowProgressBar(0)
 
-        Current_Path = DatFiles.CheckFile(crittersLstPath)
-        Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & crittersLstPath))
+        Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(crittersLstPath)))
         Dim cCount As Integer = UBound(lstfile)
 
         Progress_Form.ProgressBar1.Maximum = cCount
@@ -183,8 +177,7 @@ Friend Module Main
         ShowProgressBar(0)
 
         Messages.GetMsgData("pro_item.msg")
-        Current_Path = DatFiles.CheckFile(itemsLstPath)
-        Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & itemsLstPath))
+        Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(itemsLstPath)))
         ReDim Items_LST(UBound(lstfile))
         For n = 0 To UBound(lstfile)
             Items_LST(n).proFile = lstfile(n)
@@ -227,8 +220,7 @@ Friend Module Main
 
         Dim tempList0 As List(Of String) = New List(Of String)()
 
-        Current_Path = DatFiles.CheckFile(miscLstPath)
-        Misc_LST = ProFiles.ClearEmptyLines(File.ReadAllLines(Current_Path & miscLstPath))
+        Misc_LST = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(miscLstPath)))
         Messages.GetMsgData("pro_misc.msg")
         ReDim Misc_NAME(UBound(Misc_LST))
         For n As Integer = 0 To UBound(Misc_LST)
@@ -315,7 +307,7 @@ Friend Module Main
         If GetCrittersLstFRM() Then Return
         GetScriptLst()
         GetTeams()
-        If PacketAI Is Nothing Then PacketAI = AI.GetAllAIPacketNumber(DatFiles.CheckFile(AI.AIFILE) & AI.AIFILE)
+        If PacketAI Is Nothing Then PacketAI = AI.GetAllAIPacketNumber(DatFiles.CheckFile(AI.AIFILE))
 
         Dim CrttFrm As New Critter_Form(cLST_Index)
         With CrttFrm

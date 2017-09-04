@@ -1,5 +1,7 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.IO
+Imports Microsoft.VisualBasic.FileIO
+
 Imports Prototypes
 
 Module ProFiles
@@ -25,10 +27,10 @@ Module ProFiles
     ''' </summary>
     Friend Function GetProItemsNameID(ByRef ProFile As String, ByRef n As Integer) As Integer
         Dim NameID, TypeID As Integer
+        Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
 
-        Current_Path = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
         Try
-            Using rFile As New BinaryReader(File.Open(Current_Path & PROTO_ITEMS & ProFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            Using rFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 rFile.BaseStream.Seek(Prototypes.offsetDescID, SeekOrigin.Begin)
                 NameID = rFile.ReadInt32()
                 rFile.BaseStream.Seek(Prototypes.offsetISubType, SeekOrigin.Begin)
@@ -37,7 +39,7 @@ Module ProFiles
         Catch ex As EndOfStreamException
             NameID = 0
             If TypeID > ItemType.Unknown Then TypeID = ItemType.Unknown
-            MsgBox("The file is in an incorrect format or damaged." & vbLf & Current_Path & PROTO_ITEMS & ProFile)
+            MsgBox("The file is in an incorrect format or damaged." & vbLf & cPath)
         Catch ex As Exception
             TypeID = ItemType.Unknown
         End Try
@@ -58,11 +60,16 @@ Module ProFiles
     Friend Function GetProCritNameID(ByRef ProFile As String) As Integer
         Dim NameID As Integer
         Dim fFile As Byte = FreeFile()
+        Dim cPath = DatFiles.CheckFile(PROTO_CRITTERS & ProFile)
 
-        Current_Path = DatFiles.CheckFile(PROTO_CRITTERS & ProFile)
-        FileOpen(fFile, Current_Path & PROTO_CRITTERS & ProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-        FileGet(fFile, NameID, 5)
-        FileClose(fFile)
+        Try
+            FileOpen(fFile, cPath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
+            FileGet(fFile, NameID, 5)
+        Catch
+            Return 0
+        Finally
+            FileClose(fFile)
+        End Try
 
         Return ReverseBytes(NameID)
     End Function
@@ -114,20 +121,53 @@ Module ProFiles
         Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
 
         Dim fFile As Integer = FreeFile()
-        FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
         Try
+            FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
             Dim file As New FileInfo(PathProFile)
             If file.Length = 412 Then
                 FileGet(fFile, f1ProData)
                 f1ProData.CopyTo(cProData, 0)
                 cProData(Prototypes.CritterLen - 1) = &H7000000 'this index 7
                 ProFiles.ReverseLoadData(cProData, CritterStruct)
-            Else
+            ElseIf file.Length = 416 Then
                 FileGet(fFile, cProData)
                 ProFiles.ReverseLoadData(cProData, CritterStruct)
+            Else
+                Throw New System.Exception
             End If
         Catch
             Return True 'for error
+        Finally
+            FileClose(fFile)
+        End Try
+
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Загрузить данные из про-файла криттера в массив.
+    ''' </summary>
+    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CrttrProData As Integer()) As Boolean
+        Dim fFile As Byte = FreeFile()
+        Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
+
+        PathProFile = DatFiles.CheckFile(PROTO_CRITTERS & PathProFile)
+
+        Try
+            FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
+            If FileSystem.GetFileInfo(PathProFile).Length = 412 Then
+                FileGet(fFile, f1ProData)
+                f1ProData.CopyTo(CrttrProData, 0)
+                CrttrProData(Prototypes.CritterLen - 1) = -1
+            Else
+                FileGet(fFile, CrttrProData)
+            End If
+
+            For n = 0 To CrttrProData.Length - 1
+                CrttrProData(n) = ProFiles.ReverseBytes(CrttrProData(n))
+            Next
+        Catch ex As Exception
+            Return True
         Finally
             FileClose(fFile)
         End Try
@@ -252,6 +292,7 @@ Module ProFiles
     ''' Инвертирует значение в BigEndian и обратно
     ''' </summary>
     Friend Function ReverseBytes(ByVal Value As Integer) As Integer
+        If Value = 0 OrElse Value = -1 Then Return Value
         Dim bytes() As Byte = BitConverter.GetBytes(Value)
         Array.Reverse(bytes)
         Return BitConverter.ToInt32(bytes, 0)

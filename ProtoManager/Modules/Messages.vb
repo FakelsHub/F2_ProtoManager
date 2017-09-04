@@ -20,8 +20,7 @@ Friend Module Messages
 
     'Считывает содержимое из msg файла в массив с соответствующей выбранной кодировкой
     Friend Sub GetMsgData(ByRef msgFile As String, Optional ByVal ToLV As Boolean = True)
-        Current_Path = DatFiles.CheckFile(TEXT_GAME & msgFile)
-        MSG_DATATEXT = File.ReadAllLines(Current_Path & TEXT_GAME & msgFile, Settings.MsgEncoding)
+        MSG_DATATEXT = File.ReadAllLines(DatFiles.CheckFile(TEXT_GAME & msgFile), Settings.MsgEncoding)
         If txtLvCp And ToLV Then EncodingLevCorp()
     End Sub
 
