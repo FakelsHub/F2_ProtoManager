@@ -26,7 +26,8 @@ Module ProFiles
     ''' Получить Description ID из про-файла предмета и определить его тип
     ''' </summary>
     Friend Function GetProItemsNameID(ByRef ProFile As String, ByRef n As Integer) As Integer
-        Dim NameID, TypeID As Integer
+        Dim NameID As Integer
+        Dim TypeID As Integer = -1
         Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
 
         Try
@@ -38,14 +39,14 @@ Module ProFiles
             End Using
         Catch ex As EndOfStreamException
             NameID = 0
-            If TypeID > ItemType.Unknown Then TypeID = ItemType.Unknown
+            TypeID = ItemType.Unknown
             MsgBox("The file is in an incorrect format or damaged." & vbLf & cPath)
         Catch ex As Exception
             TypeID = ItemType.Unknown
         End Try
 
         'определяем тип предмета
-        If TypeID < ItemType.Unknown Then
+        If TypeID >= 0 AndAlso TypeID < ItemType.Unknown Then
             Items_LST(n).itemType = TypeID
         Else
             Items_LST(n).itemType = ItemType.Unknown
