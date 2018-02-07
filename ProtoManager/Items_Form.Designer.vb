@@ -705,7 +705,7 @@ Partial Class Items_Form
         '
         Me.ComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox4.FormattingEnabled = True
-        Me.ComboBox4.Items.AddRange(New Object() {"None", "Knife (D)", "Club (E)", "2Hnd Club (F)", "Spear (G)", "Pistol (H)", "Uzi (I)", "Rifle (J)", "Laser (K)", "Minigun (L)", "Rocket Launcher (M)"})
+        Me.ComboBox4.Items.AddRange(New Object() {"None", "Knife (D)", "Club (E)", "2Hnd Club (F)", "Spear (G)", "Pistol (H)", "Uzi (I)", "Rifle (J)", "Laser (K)", "Minigun (L)", "Rocket Launcher (M)", "Custom sFall Anim (S)", "Custom sFall Anim (O)", "Custom sFall Anim (P)", "Custom sFall Anim (Q)", "Custom sFall Anim (T)"})
         Me.ComboBox4.Location = New System.Drawing.Point(6, 78)
         Me.ComboBox4.MaxDropDownItems = 15
         Me.ComboBox4.Name = "ComboBox4"
