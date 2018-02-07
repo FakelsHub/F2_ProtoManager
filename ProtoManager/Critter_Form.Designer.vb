@@ -2173,7 +2173,7 @@ Partial Class Critter_Form
         Me.GroupBox16.Controls.Add(Me.Label124)
         Me.GroupBox16.Location = New System.Drawing.Point(6, 353)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(524, 52)
+        Me.GroupBox16.Size = New System.Drawing.Size(359, 52)
         Me.GroupBox16.TabIndex = 3
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Tips"
@@ -2205,7 +2205,7 @@ Partial Class Critter_Form
         Me.GroupBox15.Controls.Add(Me.Button7)
         Me.GroupBox15.Location = New System.Drawing.Point(371, 6)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(159, 341)
+        Me.GroupBox15.Size = New System.Drawing.Size(159, 399)
         Me.GroupBox15.TabIndex = 2
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "Armor Stamp"
@@ -2223,7 +2223,7 @@ Partial Class Critter_Form
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(147, 172)
+        Me.ListView1.Size = New System.Drawing.Size(147, 230)
         Me.ListView1.TabIndex = 2
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -2249,7 +2249,7 @@ Partial Class Critter_Form
         Me.Button7.Enabled = False
         Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(20, 303)
+        Me.Button7.Location = New System.Drawing.Point(20, 361)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(122, 32)
         Me.Button7.TabIndex = 0
