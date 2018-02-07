@@ -117,7 +117,8 @@ Friend Module Main
         For n As Integer = 0 To UBound(Scripts_Lst)
             splt = Scripts_Lst(n).Split("#"c)
             splt = splt(0).Split(";"c)
-            Scripts_Lst(n) = splt(0) & " [" & (n + 1) & "]      -  " & splt(1).Trim
+            Scripts_Lst(n) = String.Format("{0} {1} - {2}", splt(0).TrimEnd.PadRight(14),
+                                           ("[" & (n + 1) & "]").PadRight(6), splt(1).Trim)
         Next
     End Sub
 
@@ -161,6 +162,7 @@ Friend Module Main
                 Dim cName As String = Critter_LST(n).crtName
                 Dim rOnly As String = CheckProFileRO(cName, (PROTO_CRITTERS & Critter_LST(n).proFile))
                 .ListView1.Items.Add(New ListViewItem({cName, Critter_LST(n).proFile, rOnly, (&H1000001 + n)}))
+                .ListView1.Items(n).Tag = n 'запись индекса(pid) криттера в critters.lst
                 Progress_Form.ProgressBar1.Value = n
             Next
             .ListView1.EndUpdate()

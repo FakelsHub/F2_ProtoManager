@@ -468,7 +468,12 @@ Friend Class Critter_Form
         If Not (Desc) Then
             Button4.Enabled = False
             Critter_LST(cLST_Index).crtName = str
-            Main_Form.ListView1.Items(cLST_Index).Text = "? " & str
+            For Each item As ListViewItem In Main_Form.ListView1.Items
+                If CInt(item.Tag) = cLST_Index Then
+                    Main_Form.ListView1.Items(item.Index).Text = "? " & str
+                    Exit For
+                End If
+            Next
         Else
             Button5.Enabled = False
         End If
@@ -694,7 +699,12 @@ Friend Class Critter_Form
         If TabDefenceView = False Then SetDefenceValue_Tab()
         If TabMiscView = False Then SetMiscValue_Tab()
         Save_CritterPro()
-        Main_Form.ListView1.Items(cLST_Index).Text = "* " & Critter_LST(cLST_Index).crtName
+        For Each item As ListViewItem In Main_Form.ListView1.Items
+            If CInt(item.Tag) = cLST_Index Then
+                Main_Form.ListView1.Items(item.Index).Text = "* " & Critter_LST(cLST_Index).crtName
+                Exit For
+            End If
+        Next
         Button6.Enabled = False
         cPath = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(cLST_Index).proFile, False)
     End Sub

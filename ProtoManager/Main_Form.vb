@@ -78,12 +78,16 @@ Friend Class Main_Form
         'Log 
         TextBox1.Text = "Update: " & SaveMOD_Path & crittersLstPath & vbCrLf & TextBox1.Text
 
+        ListView1.BeginUpdate()
+        ListView1.ListViewItemSorter = Nothing
         ListView1.Items.Add("<NoName>")
         ListView1.Items(pCont).SubItems.Add(pName)
         ListView1.Items(pCont).SubItems.Add("N/A")
         ListView1.Items(pCont).SubItems.Add(&H1000001 + pCont)
+        ListView1.Items(pCont).Tag = pCont
         ListView1.Items(pCont).Selected = True
         ListView1.EnsureVisible(pCont)
+        ListView1.EndUpdate()
 
         Main.Create_CritterForm(pCont)
     End Sub
@@ -114,6 +118,8 @@ Friend Class Main_Form
         'Log 
         TextBox1.Text = "Update: " & SaveMOD_Path & itemsLstPath & vbCrLf & TextBox1.Text
 
+        ListView2.BeginUpdate()
+        ListView2.ListViewItemSorter = Nothing
         ListView2.Items.Add("<No Name>")
         ListView2.Items(ListView2.Items.Count - 1).SubItems.Add(pName)
         ListView2.Items(ListView2.Items.Count - 1).SubItems.Add(ItemTypesName(Items_LST(pCont).itemType))
@@ -121,6 +127,7 @@ Friend Class Main_Form
         ListView2.Items(ListView2.Items.Count - 1).Selected = True
         ListView2.Items(ListView2.Items.Count - 1).Tag = pCont
         ListView2.EnsureVisible(ListView2.Items.Count - 1)
+        ListView2.EndUpdate()
 
         Main.Create_ItemsForm(pCont)
     End Sub
@@ -166,8 +173,8 @@ Friend Class Main_Form
                     TextBox1.Text = "Delete Pro: " & dProFile & vbCrLf & TextBox1.Text
                 End If
                 Dim pCont As Integer = UBound(Critter_LST)
-                If ListView1.FocusedItem.Index = pCont Then
-                    ListView1.Items.RemoveAt(pCont)
+                If CInt(ListView1.FocusedItem.Tag) = pCont Then
+                    ListView1.Items.RemoveAt(ListView1.FocusedItem.Index)
                     Array.Resize(Critter_LST, pCont)
                     pCont -= 1
 
@@ -187,7 +194,7 @@ Friend Class Main_Form
 
     Private Sub CreateToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CreateToolStripMenuItem.Click
         If TabControl1.SelectedIndex = 1 Then
-            Dim pIndx As Integer = ListView1.FocusedItem.Index
+            Dim pIndx As Integer = ListView1.FocusedItem.Tag
 
             FileSystem.CopyFile(DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(pIndx).proFile), "template", True)
             File.SetAttributes("template", FileAttributes.Normal Or FileAttributes.Archive)
@@ -244,7 +251,7 @@ Friend Class Main_Form
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
-        Main.Create_CritterForm(ListView1.FocusedItem.Index)
+        Main.Create_CritterForm(ListView1.FocusedItem.Tag)
     End Sub
 
     Private Sub ListView2_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView2.MouseDoubleClick
@@ -253,7 +260,7 @@ Friend Class Main_Form
 
     Private Sub HToolStripMenuItem_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles HToolStripMenuItem.Click
         If TabControl1.SelectedIndex = 1 Then
-            Main.Create_CritterForm(ListView1.FocusedItem.Index)
+            Main.Create_CritterForm(ListView1.FocusedItem.Tag)
         Else
             Main.Create_ItemsForm(ListView2.FocusedItem.Tag)
         End If
@@ -359,14 +366,15 @@ Friend Class Main_Form
         If ListView1.Items.Count = 0 Then CreateCritterList() ': TypeCrittersToolStripMenuItem.Enabled = True
     End Sub
 
-    Private Sub ListView2_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView2.ColumnClick
-        ListView2.ListViewItemSorter = New Comparer.ListViewItemComparer(e.Column)
+    Private Sub ListView_Sorting(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView2.ColumnClick, ListView1.ColumnClick
+        Dim lw As ListView = sender
+        lw.ListViewItemSorter = New Comparer.ListViewItemComparer(e.Column)
     End Sub
 
     Private Sub ListView1_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseClick
         Dim checkFile As String = PROTO_CRITTERS & ListView1.FocusedItem.SubItems(1).Text
 
-        If e.Button = Forms.MouseButtons.Right AndAlso ListView1.FocusedItem.Index = ListView1.Items.Count - 1 _
+        If e.Button = Forms.MouseButtons.Right AndAlso CInt(ListView1.FocusedItem.Tag) = ListView1.Items.Count - 1 _
             Or (File.Exists(SaveMOD_Path & checkFile) And (File.Exists(GameDATA_Path & checkFile) Or File.Exists(Cache_Patch & checkFile))) Then
             DeleteToolStripMenuItem.Enabled = True
         Else
@@ -390,8 +398,8 @@ Friend Class Main_Form
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
         On Error Resume Next
-        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.ItemIndex).proFile, , , False)
-        ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + e.ItemIndex
+        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.Item.Tag).proFile, , , False)
+        ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + CInt(e.Item.Tag)
     End Sub
 
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
@@ -488,7 +496,7 @@ Friend Class Main_Form
 
     Private Sub ListView1_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseUp
         If e.Button = Windows.Forms.MouseButtons.Middle Then
-            Main.Create_CritterForm(ListView1.FocusedItem.Index)
+            Main.Create_CritterForm(ListView1.FocusedItem.Tag)
             ListView1.HoverSelection = Not DontHoverSelectToolStripMenuItem.Checked
         End If
     End Sub
@@ -514,7 +522,7 @@ Friend Class Main_Form
         Dim cpath As String
 
         If TabControl1.SelectedIndex = 1 Then
-            Dim pIndx As Integer = ListView1.FocusedItem.Index
+            Dim pIndx As Integer = ListView1.FocusedItem.Tag
             Dim pFile As String = Critter_LST(pIndx).proFile
 
             cpath = DatFiles.CheckFile(PROTO_CRITTERS & pFile, False)
@@ -540,7 +548,7 @@ Friend Class Main_Form
 
     Private Sub TextEditProFileToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TextEditProFileToolStripMenuItem.Click
         If TabControl1.SelectedIndex = 1 Then
-            Create_TxtEditForm(ListView1.FocusedItem.Index, 0)
+            Create_TxtEditForm(ListView1.FocusedItem.Tag, 0)
         Else
             Create_TxtEditForm(ListView2.FocusedItem.Tag, 1)
         End If
