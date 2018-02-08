@@ -51,7 +51,7 @@ Partial Class AboutBox
         Me.LabelCopyright.BackColor = System.Drawing.Color.Transparent
         Me.LabelCopyright.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LabelCopyright.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.LabelCopyright.Location = New System.Drawing.Point(6, 46)
+        Me.LabelCopyright.Location = New System.Drawing.Point(6, 47)
         Me.LabelCopyright.Margin = New System.Windows.Forms.Padding(6, 0, 3, 0)
         Me.LabelCopyright.MaximumSize = New System.Drawing.Size(0, 17)
         Me.LabelCopyright.Name = "LabelCopyright"
@@ -65,7 +65,7 @@ Partial Class AboutBox
         Me.LabelVersion.BackColor = System.Drawing.Color.Transparent
         Me.LabelVersion.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LabelVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.LabelVersion.Location = New System.Drawing.Point(6, 23)
+        Me.LabelVersion.Location = New System.Drawing.Point(6, 28)
         Me.LabelVersion.Margin = New System.Windows.Forms.Padding(6, 0, 3, 0)
         Me.LabelVersion.MaximumSize = New System.Drawing.Size(0, 17)
         Me.LabelVersion.Name = "LabelVersion"
@@ -78,12 +78,12 @@ Partial Class AboutBox
         '
         Me.LabelProductName.BackColor = System.Drawing.Color.Transparent
         Me.LabelProductName.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LabelProductName.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.LabelProductName.Location = New System.Drawing.Point(6, 0)
-        Me.LabelProductName.Margin = New System.Windows.Forms.Padding(6, 0, 3, 0)
-        Me.LabelProductName.MaximumSize = New System.Drawing.Size(0, 17)
+        Me.LabelProductName.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.LabelProductName.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.LabelProductName.Location = New System.Drawing.Point(3, 3)
+        Me.LabelProductName.Margin = New System.Windows.Forms.Padding(3)
         Me.LabelProductName.Name = "LabelProductName"
-        Me.LabelProductName.Size = New System.Drawing.Size(387, 17)
+        Me.LabelProductName.Size = New System.Drawing.Size(390, 22)
         Me.LabelProductName.TabIndex = 0
         Me.LabelProductName.Text = "Имя продукта"
         Me.LabelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -100,9 +100,9 @@ Partial Class AboutBox
         Me.TableLayoutPanel.Location = New System.Drawing.Point(76, 12)
         Me.TableLayoutPanel.Name = "TableLayoutPanel"
         Me.TableLayoutPanel.RowCount = 5
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.0!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.0!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.0!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.655172!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.551724!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.586207!))
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.0!))
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
@@ -112,13 +112,12 @@ Partial Class AboutBox
         'TextBoxDescription
         '
         Me.TextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBoxDescription.Location = New System.Drawing.Point(6, 72)
-        Me.TextBoxDescription.Margin = New System.Windows.Forms.Padding(6, 3, 3, 3)
+        Me.TextBoxDescription.Location = New System.Drawing.Point(3, 72)
         Me.TextBoxDescription.Multiline = True
         Me.TextBoxDescription.Name = "TextBoxDescription"
         Me.TextBoxDescription.ReadOnly = True
         Me.TextBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBoxDescription.Size = New System.Drawing.Size(387, 185)
+        Me.TextBoxDescription.Size = New System.Drawing.Size(390, 185)
         Me.TextBoxDescription.TabIndex = 0
         Me.TextBoxDescription.TabStop = False
         Me.TextBoxDescription.Text = resources.GetString("TextBoxDescription.Text")
@@ -137,10 +136,11 @@ Partial Class AboutBox
         'LinkLabel1
         '
         Me.LinkLabel1.AutoSize = True
+        Me.LinkLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.LinkLabel1.LinkArea = New System.Windows.Forms.LinkArea(0, 17)
-        Me.LinkLabel1.Location = New System.Drawing.Point(12, 281)
+        Me.LinkLabel1.Location = New System.Drawing.Point(12, 279)
         Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(99, 13)
+        Me.LinkLabel1.Size = New System.Drawing.Size(139, 16)
         Me.LinkLabel1.TabIndex = 3
         Me.LinkLabel1.TabStop = True
         Me.LinkLabel1.Text = "Check new Version"
