@@ -810,8 +810,12 @@ Friend Class Items_Form
     End Sub
 
     Private Sub Items_Form_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
-        Main_Form.Focus()
+        If PictureBox1.BackgroundImage IsNot Nothing Then PictureBox1.BackgroundImage.Dispose()
+        If PictureBox4.BackgroundImage IsNot Nothing Then PictureBox4.BackgroundImage.Dispose()
+        If PictureBox2.Image IsNot Nothing Then PictureBox2.Image.Dispose()
+        If PictureBox3.Image IsNot Nothing Then PictureBox3.Image.Dispose()
         Me.Dispose()
+        Main_Form.Focus()
     End Sub
 
     Private Sub Items_Form_Activated(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Activated

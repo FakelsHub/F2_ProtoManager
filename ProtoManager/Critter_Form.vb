@@ -46,8 +46,10 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub Critter_Form_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
-        Main_Form.Focus()
+        If PictureBox1.Image IsNot Nothing Then PictureBox1.Image.Dispose()
+        If PictureBox2.Image IsNot Nothing Then PictureBox2.Image.Dispose()
         Me.Dispose()
+        Main_Form.Focus()
     End Sub
 
     Private Sub Critter_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load

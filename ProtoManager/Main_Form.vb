@@ -43,6 +43,7 @@ Friend Class Main_Form
 
     Private Sub Main_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
         If e.CloseReason = CloseReason.UserClosing Then
+            Application.Exit()
             If cCache Then
                 Clear_Cache()
             ElseIf cArtCache Then
@@ -51,7 +52,6 @@ Friend Class Main_Form
             Settings.Save_Config()
             File.Delete("iProto.lst")
             File.Delete("cProto.lst")
-            Application.Exit()
         End If
     End Sub
 
