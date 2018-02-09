@@ -3,6 +3,7 @@ Imports Microsoft.VisualBasic.FileIO
 Imports System.Text
 Imports System.Windows
 Imports Prototypes
+Imports System.Drawing
 
 Friend Class Main_Form
 
@@ -136,7 +137,8 @@ Friend Class Main_Form
         If MsgBox("Delete Pro File?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             If TabControl1.SelectedIndex = 0 Then
                 'del file
-                Dim dProFile As String = SaveMOD_Path & PROTO_ITEMS & ListView2.FocusedItem.SubItems(1).Text
+                Dim focusedItem As ListViewItem = ListView2.FocusedItem
+                Dim dProFile As String = SaveMOD_Path & PROTO_ITEMS & focusedItem.SubItems(1).Text
                 If File.Exists(dProFile) Then
                     File.SetAttributes(dProFile, FileAttributes.Normal)
                     File.Delete(dProFile)
@@ -145,7 +147,7 @@ Friend Class Main_Form
                     TextBox1.Text = "Delete Pro: " & dProFile & vbCrLf & TextBox1.Text
                 End If
                 Dim pCont As Integer = UBound(Items_LST)
-                If CInt(ListView2.FocusedItem.Tag) = pCont Then
+                If CInt(focusedItem.Tag) = pCont Then
                     Array.Resize(Items_LST, pCont)
 
                     'save to lst file
@@ -155,16 +157,18 @@ Friend Class Main_Form
                         lst(n) = Items_LST(n).proFile
                     Next
                     File.WriteAllLines(SaveMOD_Path & itemsLstPath, lst)
-                    ListView2.Items.RemoveAt(ListView2.FocusedItem.Index)
+                    ListView2.Items.RemoveAt(focusedItem.Index)
 
                     'Log 
                     TextBox1.Text = "Update: " & SaveMOD_Path & itemsLstPath & vbCrLf & TextBox1.Text
                 Else
-                    ListView2.Items.Item(ListView2.FocusedItem.Index).Text = "- " & Items_LST(ListView2.FocusedItem.Tag).itemName
+                    ListView2.Items.Item(focusedItem.Index).SubItems(3).Text = "?"
+                    ListView2.Items.Item(focusedItem.Index).ForeColor = Color.OrangeRed
                 End If
             Else
                 'del file
-                Dim dProFile As String = SaveMOD_Path & PROTO_CRITTERS & ListView1.FocusedItem.SubItems(1).Text
+                Dim focusedItem As ListViewItem = ListView1.FocusedItem
+                Dim dProFile As String = SaveMOD_Path & PROTO_CRITTERS & focusedItem.SubItems(1).Text
                 If File.Exists(dProFile) Then
                     File.SetAttributes(dProFile, FileAttributes.Normal)
                     File.Delete(dProFile)
@@ -173,8 +177,9 @@ Friend Class Main_Form
                     TextBox1.Text = "Delete Pro: " & dProFile & vbCrLf & TextBox1.Text
                 End If
                 Dim pCont As Integer = UBound(Critter_LST)
-                If CInt(ListView1.FocusedItem.Tag) = pCont Then
-                    ListView1.Items.RemoveAt(ListView1.FocusedItem.Index)
+
+                If CInt(focusedItem.Tag) = pCont Then
+                    ListView1.Items.RemoveAt(focusedItem.Index)
                     Array.Resize(Critter_LST, pCont)
                     pCont -= 1
 
@@ -187,6 +192,9 @@ Friend Class Main_Form
 
                     'Log 
                     TextBox1.Text = "Update: " & SaveMOD_Path & crittersLstPath & vbCrLf & TextBox1.Text
+                Else
+                    ListView1.Items.Item(focusedItem.Index).SubItems(2).Text = "?"
+                    ListView1.Items.Item(focusedItem.Index).ForeColor = Color.OrangeRed
                 End If
             End If
         End If

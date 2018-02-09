@@ -364,7 +364,7 @@ Friend Class Items_Form
     End Sub
 
     Private Sub ComboBox2_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox2.SelectedIndexChanged
-        Dim frm As String = ComboBox2.SelectedItem
+        Dim frm As String = ComboBox2.SelectedItem.ToString
 
         If frm = "None" Then
             PictureBox4.BackgroundImage = Nothing
@@ -372,51 +372,43 @@ Friend Class Items_Form
         End If
 
         frm = GetImageName(frm, ".")
+
+        Dim img As Image = My.Resources.RESERVAA 'BadFrm
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_INVEN & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("inven\", frm)
-            Dim img As Image = Nothing
-            Try
+            If File.Exists(pfile) Then
                 img = Image.FromFile(pfile)
                 If img.Width > PictureBox4.Size.Width Then
                     PictureBox4.BackgroundImageLayout = ImageLayout.Zoom
                 Else
                     PictureBox4.BackgroundImageLayout = ImageLayout.Center
                 End If
-            Catch
-                img = My.Resources.RESERVAA
-            Finally
-                PictureBox4.BackgroundImage = img
-            End Try
-            Exit Sub
+                If frmReady Then Button6.Enabled = True
+            End If
         End If
+        PictureBox4.BackgroundImage = img
 
-        'BadFrm
-        PictureBox4.BackgroundImage = My.Resources.RESERVAA
     End Sub
 
     Private Sub GenderFID(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox17.SelectedIndexChanged, ComboBox16.SelectedIndexChanged
-        Dim frm As String = GetImageName(CType(sender, ComboBox).SelectedItem, ",")
+        Dim frm As String = CType(sender, ComboBox).SelectedItem.ToString
 
-        If frm IsNot Nothing Then
-            Dim pfile As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
-            If Not File.Exists(pfile) Then DatFiles.CritterFrmGif(frm)
-            Dim img As Image = Image.FromFile(pfile)
-            If CInt(CType(sender, ComboBox).Tag) = Gender.Male Then
-                PictureBox2.Image = img
-            Else
-                PictureBox3.Image = img
-            End If
-            Exit Sub
+        Dim frmFile As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
+        If Not File.Exists(frmFile) Then DatFiles.CritterFrmGif(frm)
+
+        Dim img As Image = My.Resources.RESERVAA 'BadFrm
+        If File.Exists(frmFile) Then
+            img = Image.FromFile(frmFile)
+            If frmReady Then Button6.Enabled = True
         End If
 
-        'BadFrm
-        Dim resFile As Image = My.Resources.RESERVAA
         If CInt(CType(sender, ComboBox).Tag) = Gender.Male Then
-            PictureBox2.Image = resFile
+            PictureBox2.Image = img
         Else
-            PictureBox3.Image = resFile
+            PictureBox3.Image = img
         End If
+
     End Sub
 
     Private Function GetImageName(ByVal frm As String, ByVal symbol As String) As String
@@ -424,7 +416,6 @@ Friend Class Items_Form
 
         If n <= 0 Then Return Nothing 'BadFrm
         frm = frm.Remove(n)
-        If frmReady Then Button6.Enabled = True
 
         Return frm
     End Function
@@ -585,7 +576,8 @@ Friend Class Items_Form
             If Main_Form.ListView2.Items(indx).SubItems(2).Text <> ComboBox7.Text Then
                 Main_Form.ListView2.Items(indx).SubItems(2).Text = ComboBox7.Text
             End If
-            Main_Form.ListView2.Items(indx).Text = "* " & Items_LST(Main_Form.ListView2.Items(indx).Tag).itemName
+            Main_Form.ListView2.Items(indx).ForeColor = Color.DarkBlue
+            Main_Form.ListView2.Items(indx).SubItems(3).Text = "*"
         End If
 
         cPath = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, False)
@@ -618,7 +610,7 @@ Friend Class Items_Form
             Button4.Enabled = False
             Items_LST(iLST_Index).itemName = str
             Dim indx As Integer = LW_SearhItemIndex(iLST_Index, Main_Form.ListView2)
-            If indx <> Nothing Then Main_Form.ListView2.Items(indx).Text = "? " & str
+            If indx <> Nothing Then Main_Form.ListView2.Items(indx).SubItems(0).Text = str
         Else
             Button5.Enabled = False
         End If

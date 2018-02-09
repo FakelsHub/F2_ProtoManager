@@ -472,7 +472,7 @@ Friend Class Critter_Form
             Critter_LST(cLST_Index).crtName = str
             For Each item As ListViewItem In Main_Form.ListView1.Items
                 If CInt(item.Tag) = cLST_Index Then
-                    Main_Form.ListView1.Items(item.Index).Text = "? " & str
+                    Main_Form.ListView1.Items(item.Index).SubItems(0).Text = str
                     Exit For
                 End If
             Next
@@ -641,29 +641,25 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub ComboBox1_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        Dim frm As String = ComboBox1.SelectedItem
-        Dim n As Integer = frm.IndexOf(",")
 
         Label44.Text = "Frm ID: " & (ComboBox1.SelectedIndex + &H1000000)
 
-        If n > 0 Then
-            frm = frm.Remove(n)
-            If TabStatsView Then Button6.Enabled = True
-            If Not File.Exists(Cache_Patch & ART_CRITTERS & frm & "aa.gif") Then
-                DatFiles.CritterFrmGif(frm)
-            End If
-            Dim img As Image = Image.FromFile(Cache_Patch & ART_CRITTERS & frm & "aa.gif")
+        Dim frm As String = ComboBox1.SelectedItem
+        Dim fileFrm As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
+        If Not File.Exists(fileFrm) Then DatFiles.CritterFrmGif(frm)
+
+        Dim img As Image = My.Resources.RESERVAA 'BadFrm
+        If File.Exists(fileFrm) Then
+            img = Image.FromFile(fileFrm)
             If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
                 PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
             Else
                 PictureBox1.SizeMode = PictureBoxSizeMode.CenterImage
             End If
-            PictureBox1.Image = img
-            Exit Sub
+            If TabStatsView Then Button6.Enabled = True
         End If
+        PictureBox1.Image = img
 
-        'BadFrm
-        PictureBox1.Image = My.Resources.RESERVAA 'My.Resources.ResourceManager.GetObject(frm & "AA")
     End Sub
 
     Private Sub InitFormData()
@@ -703,7 +699,8 @@ Friend Class Critter_Form
         Save_CritterPro()
         For Each item As ListViewItem In Main_Form.ListView1.Items
             If CInt(item.Tag) = cLST_Index Then
-                Main_Form.ListView1.Items(item.Index).Text = "* " & Critter_LST(cLST_Index).crtName
+                Main_Form.ListView1.Items(item.Index).ForeColor = Color.DarkBlue
+                Main_Form.ListView1.Items(item.Index).SubItems(2).Text = "*"
                 Exit For
             End If
         Next

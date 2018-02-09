@@ -1,6 +1,7 @@
 ﻿Option Explicit On
 Imports System.IO
 Imports Prototypes
+Imports System.Drawing
 
 Friend Module Main
 
@@ -131,6 +132,13 @@ Friend Module Main
             Return True
         End Try
 
+        For i As Integer = 0 To Critters_FRM.Length - 1
+            Dim frm As String = Critters_FRM(i)
+            Dim z As Integer = frm.IndexOf(","c)
+            If z > 0 Then frm = frm.Remove(z)
+            Critters_FRM(i) = frm.ToUpper
+        Next
+
         Return False
     End Function
 
@@ -159,10 +167,12 @@ Friend Module Main
                 Critter_LST(n).proFile = lstfile(n)
                 Critter_LST(n).crtName = Messages.GetNameObject(ProFiles.GetProCritNameID(Critter_LST(n).proFile))
                 If Critter_LST(n).crtName = String.Empty Then Critter_LST(n).crtName = "<NoName>"
-                Dim cName As String = Critter_LST(n).crtName
-                Dim rOnly As String = CheckProFileRO(cName, (PROTO_CRITTERS & Critter_LST(n).proFile))
-                .ListView1.Items.Add(New ListViewItem({cName, Critter_LST(n).proFile, rOnly, (&H1000001 + n)}))
+                Dim proIsEdit As Boolean = False
+                Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_CRITTERS & Critter_LST(n).proFile))
+                If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
+                .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n)}))
                 .ListView1.Items(n).Tag = n 'запись индекса(pid) криттера в critters.lst
+                If proIsEdit Then .ListView1.Items(n).ForeColor = Color.DarkBlue
                 Progress_Form.ProgressBar1.Value = n
             Next
             .ListView1.EndUpdate()
@@ -195,10 +205,12 @@ Friend Module Main
             For n = 0 To UBound(Items_LST)
                 Items_LST(n).itemName = Messages.GetNameObject(ProFiles.GetProItemsNameID(Items_LST(n).proFile, n))
                 If Items_LST(n).itemName = String.Empty Then Items_LST(n).itemName = "<NoName>"
-                Dim iName As String = Items_LST(n).itemName
-                Dim rOnly As String = CheckProFileRO(iName, (PROTO_ITEMS & Items_LST(n).proFile))
-                .ListView2.Items.Add(New ListViewItem({iName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+                Dim proIsEdit As Boolean = False
+                Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
+                If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
+                .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
                 .ListView2.Items(n).Tag = n 'запись индекса(pid) итема в item.lst
+                If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue
                 If Items_LST(n).itemType = ItemType.Ammo Then
                     tempList0.Add(Items_LST(n).itemName)
                     tempList1.Add(n + 1)
@@ -259,19 +271,20 @@ Friend Module Main
             .ListView2.BeginUpdate()
             .ListView2.Items.Clear()
             For n As Integer = 0 To UBound(Items_LST)
+                Dim proIsEdit As Boolean = False
+                Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
+                If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
                 If filter <> ItemType.Unknown Then
                     If Items_LST(n).itemType = filter OrElse (filter = ItemType.Misc And Items_LST(n).itemType = ItemType.Key) Then
-                        Dim iName As String = Items_LST(n).itemName
-                        Dim rOnly As String = CheckProFileRO(iName, (PROTO_ITEMS & Items_LST(n).proFile))
-                        .ListView2.Items.Add(New ListViewItem({iName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+                        .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
                         .ListView2.Items(x).Tag = n 'указатель индекса(pid) итема в item.lst
+                        If proIsEdit Then .ListView2.Items(x).ForeColor = Color.DarkBlue
                         x += 1
                     End If
                 Else
-                    Dim iName As String = Items_LST(n).itemName
-                    Dim rOnly As String = CheckProFileRO(iName, (PROTO_ITEMS & Items_LST(n).proFile))
-                    .ListView2.Items.Add(New ListViewItem({iName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+                    .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
                     .ListView2.Items(n).Tag = n 'указатель индекса(pid) итема в item.lst
+                    If proIsEdit Then .ListView2.Items(n).ForeColor = Color.Blue
                 End If
             Next
             .ListView2.EndUpdate()
@@ -279,11 +292,11 @@ Friend Module Main
     End Sub
 
     ' Проверяет профайл итема на атрибут чтения и ставит соответствующие метки в листе 
-    Private Function CheckProFileRO(ByRef name As String, ByVal pFile As String) As String
+    Private Function CheckProFileRO(ByRef exists As Boolean, ByVal pFile As String) As String
         Dim path As String = SaveMOD_Path & pFile
 
         If File.Exists(path) Then
-            name = "* " & name
+            exists = True
             If (File.GetAttributes(path) And &H1) = FileAttributes.ReadOnly Then
                 Return "R/O"
             End If
@@ -369,7 +382,7 @@ Friend Module Main
 
         Dim tData As String() = File.ReadAllLines(WorkAppDIR & "\teams.h")
         For Each t In tData
-            Dim line As String = t.Trim("/", " ")
+            Dim line As String = t.Trim("/"c, " "c)
             If line.ToLower.StartsWith("#define ") Then
                 Dim fSpace As Integer = line.IndexOf(" ", 9)
                 If fSpace <= 0 Then Continue For
