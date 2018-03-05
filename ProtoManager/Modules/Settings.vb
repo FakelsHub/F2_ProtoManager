@@ -30,6 +30,11 @@ Friend Module Settings
 
     Friend MsgEncoding As Encoding
 
+    Friend Sub SetDoubleBuffered(ByVal control As Control)
+        Dim doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.NonPublic)
+        doubleBufferPropertyInfo.SetValue(control, True, Nothing)
+    End Sub
+
     Friend Sub SetEncoding()
         If txtWin Then
             MsgEncoding = Encoding.Default
@@ -43,28 +48,32 @@ Friend Module Settings
         Dim strIni As String = String.Empty
 
         Dim ifile As StreamReader = File.OpenText(WorkAppDIR & "\config.ini")
-        On Error GoTo SetDefConf
-        Do Until ifile.EndOfStream
-            strIni = ifile.ReadLine
-            Select Case strIni
-                Case "[Path]"
-                    Game_Path = ifile.ReadLine.Substring(11).Trim
-                    SaveMOD_Path = ifile.ReadLine.Substring(8).Trim
-                    HEX_Path = ifile.ReadLine.Substring(8).Trim
-                Case "[Option]"
-                    proRO = CBool(ifile.ReadLine.Substring(9))
-                    txtWin = CBool(ifile.ReadLine.Substring(7))
-                    txtLvCp = CBool(ifile.ReadLine.Substring(6))
-                    cCache = CBool(ifile.ReadLine.Substring(11))
-                    cArtCache = CBool(ifile.ReadLine.Substring(14))
-                    ExtractBack = CBool(ifile.ReadLine.Substring(11)) 'Background=
-                    HoverSelect = CBool(ifile.ReadLine.Substring(12))
-                    SplitSize = CInt(ifile.ReadLine.Substring(10))
-            End Select
-        Loop
-
+        Try
+            Do Until ifile.EndOfStream
+                strIni = ifile.ReadLine
+                Select Case strIni
+                    Case "[Path]"
+                        Game_Path = ifile.ReadLine.Substring(11).Trim
+                        SaveMOD_Path = ifile.ReadLine.Substring(8).Trim
+                        HEX_Path = ifile.ReadLine.Substring(8).Trim
+                    Case "[Option]"
+                        proRO = CBool(ifile.ReadLine.Substring(9))
+                        txtWin = CBool(ifile.ReadLine.Substring(7))
+                        txtLvCp = CBool(ifile.ReadLine.Substring(6))
+                        cCache = CBool(ifile.ReadLine.Substring(11))
+                        cArtCache = CBool(ifile.ReadLine.Substring(14))
+                        ExtractBack = CBool(ifile.ReadLine.Substring(11)) 'Background=
+                        HoverSelect = CBool(ifile.ReadLine.Substring(12))
+                        SplitSize = CInt(ifile.ReadLine.Substring(10))
+                End Select
+            Loop
+        Catch ex As Exception
+            GoTo SetDefConf
+        Finally
+            ifile.Close()
+        End Try
+        
         If Game_Path = String.Empty Then GoTo SetDefConf
-        ifile.Close()
         GameDATA_Path = Game_Path & DIR_DATA
         If SaveMOD_Path = String.Empty Then SaveMOD_Path = GameDATA_Path
         gPath = Game_Path
@@ -72,7 +81,6 @@ Friend Module Settings
         Exit Sub
 
 SetDefConf:
-        ifile.Close()
         proRO = True : txtWin = True : cCache = True : ExtractBack = True
         Setting_Form.fRun = True
         Setting_Form.settingExit = True

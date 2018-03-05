@@ -25,13 +25,17 @@
         Unknown         '0x7...
     End Enum
 
-    'data offse
-    Friend Const InvenFID As Byte = &H35 '(0x34)
+    'Data offset
+    Friend Const offsetFrmID As Byte = &H8
+    Friend Const offsetInvenFID As Byte = &H34
     Friend Const offsetDescID As Byte = &H4
     Friend Const offsetISubType As Byte = &H20
 
-    'begin data offset
-    Friend Shared ItemSubType As Byte = offsetISubType / 4  'index
+    Friend Const offsetHP As Byte = &H4C
+    Friend Const offsetbHP As Byte = &HD8
+
+    'Begin data offset
+    Friend Shared ItemSubType As Byte = (offsetISubType / &H4) 'index
     Friend Const ArmorBlock As Byte = &H3A
 
     '

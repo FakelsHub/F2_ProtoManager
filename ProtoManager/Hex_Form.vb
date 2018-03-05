@@ -19,7 +19,7 @@
     End Sub
 
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
-        Dim programPath As String = IIf(HEX_Path.Length > 0, HEX_Path, Settings.defaultHEX)
+        Dim programPath As String = If(HEX_Path.Length > 0, HEX_Path, Settings.defaultHEX)
         Process.Start(programPath, """" & Me.Tag.ToString & """")
     End Sub
 End Class

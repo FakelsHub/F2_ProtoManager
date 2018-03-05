@@ -6,6 +6,41 @@ Imports Prototypes
 
 Module ProFiles
 
+    ''' <summary>
+    ''' Возвращает имя Frm файла для инвентаря(ivent), или имя FID предмета, если файл для инвентаря не определен.  
+    ''' </summary>
+    Friend Function GetItemInvenFID(ByVal nPro As Integer, ByRef Inventory As Boolean) As String
+        Dim FID As Integer = -1
+        Dim iFID As Integer = -1
+
+        Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(nPro).proFile)
+        Try
+            Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                readFile.BaseStream.Seek(Prototypes.offsetFrmID, SeekOrigin.Begin)
+                FID = ReverseBytes(readFile.ReadInt32())
+                readFile.BaseStream.Seek(Prototypes.offsetInvenFID, SeekOrigin.Begin)
+                iFID = ReverseBytes(readFile.ReadInt32())
+            End Using
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+        Dim lstName As String
+        If iFID > -1 Then
+            iFID -= &H7000000
+            lstName = Iven_FRM(iFID)
+        Else
+            If FID = -1 Then Return Nothing
+            lstName = Items_FRM(FID)
+            Inventory = False
+        End If
+
+        Return lstName.ToLower
+    End Function
+
+    ''' <summary>
+    ''' Создает pro-файл по указаному имени и пути.
+    ''' </summary>
     Friend Sub CreateProFile(ByVal path As String, ByVal pName As String)
         path = SaveMOD_Path & path
         Dim nProFile As String = path & pName
@@ -19,15 +54,16 @@ Module ProFiles
         If proRO Then File.SetAttributes(nProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
 
         'Log 
-        Main_Form.TextBox1.Text = "Create Pro: " & nProFile & vbCrLf & Main_Form.TextBox1.Text
+        Main.PrintLog("Create Pro: " & nProFile)
     End Sub
 
     ''' <summary>
-    ''' Получить Description ID из про-файла предмета и определить его тип
+    ''' Возвращает номер Description ID из про-файла предмета, и его тип.
     ''' </summary>
     Friend Function GetProItemsNameID(ByRef ProFile As String, ByRef n As Integer) As Integer
         Dim NameID As Integer
         Dim TypeID As Integer = -1
+
         Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
 
         Try
@@ -45,7 +81,7 @@ Module ProFiles
             TypeID = ItemType.Unknown
         End Try
 
-        'определяем тип предмета
+        ' Определяем тип предмета
         If TypeID >= 0 AndAlso TypeID < ItemType.Unknown Then
             Items_LST(n).itemType = TypeID
         Else
@@ -56,7 +92,36 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Получает Description ID из про-файла криттера
+    ''' Возвращает имя FID из про-файла криттера.
+    ''' </summary>
+    Friend Function GetCritterFID(ByVal nPro As Integer) As String
+        Dim hp, bhp As Integer
+        Dim FID As Integer = -1
+
+        Dim cPath As String = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(nPro).proFile)
+        Try
+            Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                readFile.BaseStream.Seek(Prototypes.offsetFrmID, SeekOrigin.Begin)
+                FID = ReverseBytes(readFile.ReadInt32())
+                readFile.BaseStream.Seek(Prototypes.offsetHP, SeekOrigin.Begin)
+                hp = ReverseBytes(readFile.ReadInt32())
+                readFile.BaseStream.Seek(Prototypes.offsetbHP, SeekOrigin.Begin)
+                bhp = ReverseBytes(readFile.ReadInt32())
+            End Using
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+        Critter_LST(nPro).crtHP = hp + bhp
+
+        If FID = -1 Then Return Nothing
+        FID -= &H1000000I
+
+        Return Critters_FRM(FID).ToLower
+    End Function
+
+    ''' <summary>
+    ''' Возвращает номер Description ID из про-файла криттера.
     ''' </summary>
     Friend Function GetProCritNameID(ByRef ProFile As String) As Integer
         Dim NameID As Integer
@@ -76,9 +141,9 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Удалить пустые строки и лишние пробелы в массиве
+    ''' Удаляет пустые строки в конце массива и лишние пробелы в строке.
     ''' </summary>
-    Friend Function ClearEmptyLines(ByVal lst() As String) As String()
+    Friend Function ClearEmptyLines(ByVal lst As String()) As String()
         Dim count As Integer = UBound(lst)
 
         For n As Integer = 0 To count
@@ -93,7 +158,7 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Сохранить структуру криттера в про-файл.
+    ''' Сохраняет структуру криттера в pro-файл.
     ''' </summary>
     Friend Sub SaveCritterProData(ByVal proFile As String, ByRef CritterStruct As CritPro)
         If File.Exists(proFile) Then
@@ -115,7 +180,7 @@ Module ProFiles
     End Sub
 
     ''' <summary>
-    ''' Загрузить данные из про-файла криттера в структуру.
+    ''' Получает данные из pro-файла криттера в структуре.
     ''' </summary>
     Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CritterStruct As CritPro) As Boolean
         Dim cProData(Prototypes.CritterLen - 1) As Integer  ' read f2 buffer
@@ -146,7 +211,7 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Загрузить данные из про-файла криттера в массив.
+    ''' Помещает данные из pro-файла криттера в массив.
     ''' </summary>
     Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CrttrProData As Integer()) As Boolean
         Dim fFile As Byte = FreeFile()
@@ -177,11 +242,11 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Сохранить структуру итема в про-файл.
+    ''' Сохраняет структуру предмета в pro-файл.
     ''' </summary>
-    Friend Sub SaveItemProData(ByVal PathProFile As String, ByVal iType As Integer, _
-                              ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro, _
-                              ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro, _
+    Friend Sub SaveItemProData(ByVal PathProFile As String, ByVal iType As Integer,
+                              ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro,
+                              ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro,
                               Optional ByRef ContanerItem As CnItemPro = Nothing, Optional ByRef KeyItem As kItemPro = Nothing)
         If File.Exists(PathProFile) Then
             File.SetAttributes(PathProFile, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
@@ -215,11 +280,11 @@ Module ProFiles
     End Sub
 
     ''' <summary>
-    ''' Загрузить данные из про-файла предмета в структуру.
+    ''' Помещает данные из pro-файла предмета в структуру.
     ''' </summary>
-    Friend Sub LoadItemProData(ByVal PathProFile As String, ByVal iType As Integer, _
-                              ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro, _
-                              ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro, _
+    Friend Sub LoadItemProData(ByVal PathProFile As String, ByVal iType As Integer,
+                              ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro,
+                              ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro,
                               Optional ByRef ContanerItem As CnItemPro = Nothing, Optional ByRef KeyItem As kItemPro = Nothing)
         Dim cmProDataBuf(Prototypes.ItemCommonLen - 1) As Integer
         Dim fFile As Integer = FreeFile()
@@ -290,7 +355,7 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Инвертирует значение в BigEndian и обратно
+    ''' Инвертирует значение в BigEndian и обратно.
     ''' </summary>
     Friend Function ReverseBytes(ByVal Value As Integer) As Integer
         If Value = 0 OrElse Value = -1 Then Return Value
@@ -301,7 +366,7 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Преобразовать структуру в массив
+    ''' Преобразовывает структуру в массив.
     ''' </summary>
     Private Function fnStructToBytes(ByRef bytes() As Byte, ByVal bsize As Integer, ByVal Struct As Object) As Byte()
         Dim Ptr As IntPtr = Marshal.AllocHGlobal(bsize)
@@ -312,7 +377,7 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Преобразовать массив в структуру
+    ''' Преобразовывает массив в структуру.
     ''' </summary>
     Private Function fnBytesToStruct(ByVal Buff() As Integer, ByVal StrcType As Type) As Object
         Dim MyGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)

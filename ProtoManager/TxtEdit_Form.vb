@@ -362,7 +362,7 @@ BadFormat:
 
         TextBox1.Enabled = False
 
-        On Error Resume Next
+        'On Error Resume Next
         If (TextBox1.Text <> TextBox1.Tag.ToString) AndAlso TextBox1.Text.Length > 0 Then TxtChangEn = True
 
         If TxtChangEn OrElse ListView1.Items.Item(LocIndex).BackColor = Color.Pink Then
@@ -483,7 +483,7 @@ BadFormat:
         If proRO Then File.SetAttributes(filePath, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
 
         'log
-        Main_Form.TextBox1.Text = "Save Pro: " & filePath & vbCrLf & Main_Form.TextBox1.Text
+        Main.PrintLog("Save Pro: " & filePath)
     End Sub
 
     Private Sub PutProData(ByVal data() As Integer, ByVal fFile As Integer, Optional ByVal f1Format As Boolean = False)

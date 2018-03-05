@@ -2,8 +2,9 @@
 Imports Microsoft.VisualBasic.FileIO
 Imports System.Text
 Imports System.Windows
-Imports Prototypes
 Imports System.Drawing
+
+Imports Prototypes
 
 Friend Class Main_Form
 
@@ -40,17 +41,21 @@ Friend Class Main_Form
         Timer1.Start()
         TabControl1.Visible = True
         SplitContainer1.SplitterDistance = SplitSize
+        Settings.SetDoubleBuffered(ListView1)
+        Settings.SetDoubleBuffered(ListView2)
     End Sub
 
     Private Sub Main_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
         If e.CloseReason = CloseReason.UserClosing Then
+            Settings.Save_Config()
             Application.Exit()
+            ThumbnailImage.Dispose()
             If cCache Then
                 Clear_Cache()
             ElseIf cArtCache Then
                 Clear_Art_Cache()
             End If
-            Settings.Save_Config()
+            File.Delete("iImage.lst")
             File.Delete("iProto.lst")
             File.Delete("cProto.lst")
         End If
@@ -77,7 +82,7 @@ Friend Class Main_Form
         File.WriteAllLines(SaveMOD_Path & crittersLstPath, lst)
 
         'Log 
-        TextBox1.Text = "Update: " & SaveMOD_Path & crittersLstPath & vbCrLf & TextBox1.Text
+        Main.PrintLog("Update: " & SaveMOD_Path & crittersLstPath)
 
         ListView1.BeginUpdate()
         ListView1.ListViewItemSorter = Nothing
@@ -117,7 +122,7 @@ Friend Class Main_Form
         File.WriteAllLines(SaveMOD_Path & itemsLstPath, lst)
 
         'Log 
-        TextBox1.Text = "Update: " & SaveMOD_Path & itemsLstPath & vbCrLf & TextBox1.Text
+        Main.PrintLog("Update: " & SaveMOD_Path & itemsLstPath)
 
         ListView2.BeginUpdate()
         ListView2.ListViewItemSorter = Nothing
@@ -144,7 +149,7 @@ Friend Class Main_Form
                     File.Delete(dProFile)
 
                     'Log 
-                    TextBox1.Text = "Delete Pro: " & dProFile & vbCrLf & TextBox1.Text
+                    Main.PrintLog("Delete Pro: " & dProFile)
                 End If
                 Dim pCont As Integer = UBound(Items_LST)
                 If CInt(focusedItem.Tag) = pCont Then
@@ -160,7 +165,7 @@ Friend Class Main_Form
                     ListView2.Items.RemoveAt(focusedItem.Index)
 
                     'Log 
-                    TextBox1.Text = "Update: " & SaveMOD_Path & itemsLstPath & vbCrLf & TextBox1.Text
+                    Main.PrintLog("Update: " & SaveMOD_Path & itemsLstPath)
                 Else
                     ListView2.Items.Item(focusedItem.Index).SubItems(3).Text = "?"
                     ListView2.Items.Item(focusedItem.Index).ForeColor = Color.OrangeRed
@@ -174,7 +179,7 @@ Friend Class Main_Form
                     File.Delete(dProFile)
 
                     'Log 
-                    TextBox1.Text = "Delete Pro: " & dProFile & vbCrLf & TextBox1.Text
+                    Main.PrintLog("Delete Pro: " & dProFile)
                 End If
                 Dim pCont As Integer = UBound(Critter_LST)
 
@@ -191,7 +196,7 @@ Friend Class Main_Form
                     File.WriteAllLines(SaveMOD_Path & crittersLstPath, lst)
 
                     'Log 
-                    TextBox1.Text = "Update: " & SaveMOD_Path & crittersLstPath & vbCrLf & TextBox1.Text
+                    Main.PrintLog("Update: " & SaveMOD_Path & crittersLstPath)
                 Else
                     ListView1.Items.Item(focusedItem.Index).SubItems(2).Text = "?"
                     ListView1.Items.Item(focusedItem.Index).ForeColor = Color.OrangeRed
@@ -220,25 +225,31 @@ Friend Class Main_Form
 
     'поиск ключевого слова
     Private Sub Find(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton1.Click, FindToolStripMenuItem.Click
-        Dim n As Integer
-        Dim LIST_VIEW As ListView = ListView1
-
         If ToolStripTextBox1.Text <> Nothing Then
-            If TabControl1.SelectedIndex = 0 Then LIST_VIEW = ListView2
+            Dim LIST_VIEW As ListView
+            If TabControl1.SelectedIndex = 0 Then
+                LIST_VIEW = ListView2
+            Else
+                LIST_VIEW = ListView1
+            End If
+
             LIST_VIEW.Focus()
 
-            n = LIST_VIEW.FocusedItem.Index + 1
+            Dim n As Integer = LIST_VIEW.FocusedItem.Index + 1
             If n >= LIST_VIEW.Items.Count Then n = 0
             If SearhLW(n, LIST_VIEW) >= LIST_VIEW.Items.Count Then
                 If SearhLW(0, LIST_VIEW) >= LIST_VIEW.Items.Count Then Exit Sub
             End If
 
-            LIST_VIEW.TopItem = LIST_VIEW.FocusedItem
-            If LIST_VIEW.FocusedItem.Index > 10 Then
-                LIST_VIEW.EnsureVisible(LIST_VIEW.FocusedItem.Index - 10)
-            Else
-                LIST_VIEW.EnsureVisible(LIST_VIEW.FocusedItem.Index)
+            If LIST_VIEW.View = View.Details Then
+                Dim pos As Point = LIST_VIEW.FocusedItem.Position
+                If pos.Y >= LIST_VIEW.Bounds.Size.Height Then
+                    LIST_VIEW.TopItem = LIST_VIEW.FocusedItem
+                End If
             End If
+
+            LIST_VIEW.FocusedItem.EnsureVisible()
+
         End If
     End Sub
 
@@ -368,15 +379,16 @@ Friend Class Main_Form
     Private Sub TabControl1_Selecting(ByVal sender As Object, ByVal e As TabControlCancelEventArgs) Handles TabControl1.Selecting
         If TabControl1.SelectedIndex = 0 Then
             ToolStripSplitButton1.Enabled = True
+            ImageListingToolStripButton.Checked = (ListView2.View = View.Tile)
         Else
             ToolStripSplitButton1.Enabled = False
+            ImageListingToolStripButton.Checked = (ListView1.View = View.Tile)
         End If
         If ListView1.Items.Count = 0 Then CreateCritterList() ': TypeCrittersToolStripMenuItem.Enabled = True
     End Sub
 
     Private Sub ListView_Sorting(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView2.ColumnClick, ListView1.ColumnClick
-        Dim lw As ListView = sender
-        lw.ListViewItemSorter = New Comparer.ListViewItemComparer(e.Column)
+        CType(sender, ListView).ListViewItemSorter = New Comparer.ListViewItemComparer(e.Column)
     End Sub
 
     Private Sub ListView1_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseClick
@@ -405,13 +417,13 @@ Friend Class Main_Form
     End Sub
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
-        On Error Resume Next
+        'On Error Resume Next
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.Item.Tag).proFile, , , False)
         ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + CInt(e.Item.Tag)
     End Sub
 
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
-        On Error Resume Next
+        'On Error Resume Next
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(e.Item.Tag).proFile, , , False)
         ToolStripStatusLabel2.Text = "Item PID: " & StrDup(8 - Len(CStr(CInt(e.Item.Tag) + 1)), "0") & CInt(e.Item.Tag) + 1
     End Sub
@@ -586,5 +598,51 @@ Friend Class Main_Form
     Private Sub MassCreateProfiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MassCreateProfilesToolStripMenuItem.Click
         Dim MassCreateFrm As New MassCreate()
     End Sub
+
+#Region "Drawning trumb image"
+    Private Sub ListView2_DrawItem(ByVal sender As Object, ByVal e As DrawListViewItemEventArgs) Handles ListView2.DrawItem
+        Dim img As Image = ThumbnailImage.GetDrawItemImage(CInt(e.Item.Tag))
+        Dim isEdit As Boolean = (e.Item.SubItems(3).Text.Length > 0)
+        ThumbnailImage.DrawListItem(e, img, e.Item.SubItems(2).Text, ListView2.Font, isEdit)
+    End Sub
+
+    Private Sub ListView1_DrawItem(ByVal sender As Object, ByVal e As DrawListViewItemEventArgs) Handles ListView1.DrawItem
+        Dim img As Image = ThumbnailImage.GetDrawCritterImage(CInt(e.Item.Tag))
+        Dim isEdit As Boolean = (e.Item.SubItems(2).Text.Length > 0)
+        ThumbnailImage.DrawListItem(e, img, "Hp: " & Critter_LST(CInt(e.Item.Tag)).crtHP.ToString, ListView1.Font, isEdit)
+    End Sub
+
+    Private onlyOnceItem As Boolean
+    Private onlyOnceCritter As Boolean
+
+    Private Sub ImageListingToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ImageListingToolStripButton.Click
+        Dim list As ListView
+        If TabControl1.SelectedIndex = 0 Then
+            list = ListView2
+            If onlyOnceItem = False Then
+                onlyOnceItem = True
+                Main.GetItemsLstFRM()
+                ThumbnailImage.GetItemsImages()
+                ListView2.TileSize = New Size(150, 80)
+            End If
+        Else
+            list = ListView1
+            If onlyOnceCritter = False Then
+                onlyOnceCritter = True
+                ListView1.TileSize = New Size(130, 95)
+                ThumbnailImage.GetCrittersImages()
+            End If
+        End If
+
+        list.OwnerDraw = ImageListingToolStripButton.Checked
+        If ImageListingToolStripButton.Checked Then
+            list.BackColor = Color.Black
+            list.View = View.Tile
+        Else
+            list.BackColor = Color.White
+            list.View = View.Details
+        End If
+    End Sub
+#End Region
 
 End Class

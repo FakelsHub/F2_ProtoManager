@@ -53,7 +53,7 @@ Public Class AI_Form
         If numPacket <> -1 Then
             For Each packet As String In AIPacket.Keys
                 If AI.GetIniParam(packet, "packet_num", aiPath) = numPacket Then
-                    ComboBox0.SelectedItem = IIf(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket, 3), packet), packet)
+                    ComboBox0.SelectedItem = If(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket, 3), packet), packet)
                     Exit For
                 End If
             Next

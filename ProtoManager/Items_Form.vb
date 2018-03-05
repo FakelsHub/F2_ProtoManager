@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.IO
 Imports System.Text
+
 Imports Prototypes
 
 Friend Class Items_Form
@@ -339,28 +340,26 @@ Friend Class Items_Form
     End Sub
 
     Private Sub ComboBox1_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        Dim frm As String = GetImageName(ComboBox1.SelectedItem, ".")
+        Dim frm As String = GetImageName(ComboBox1.SelectedItem.ToString, ".")
+
+        Dim img As Image = My.Resources.RESERVAA 'BadFrm
 
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_ITEMS & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("items\", frm)
-            Dim img As Image = Nothing
-            Try
+            If File.Exists(pfile) Then
                 img = Image.FromFile(pfile)
+                If ThumbnailImage.ItemsImage.ContainsKey(frm) = False Then ThumbnailImage.ItemsImage.Add(frm, img.Clone)
                 If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
                     PictureBox1.BackgroundImageLayout = ImageLayout.Zoom
                 Else
                     PictureBox1.BackgroundImageLayout = ImageLayout.Center
                 End If
-            Catch
-                img = My.Resources.RESERVAA
-            Finally
-                PictureBox1.BackgroundImage = img
-            End Try
-            Exit Sub
+                If frmReady Then Button6.Enabled = True
+            End If
         End If
-        'BadFrm
-        PictureBox1.BackgroundImage = My.Resources.RESERVAA
+
+        PictureBox1.BackgroundImage = img
     End Sub
 
     Private Sub ComboBox2_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox2.SelectedIndexChanged
@@ -368,17 +367,19 @@ Friend Class Items_Form
 
         If frm = "None" Then
             PictureBox4.BackgroundImage = Nothing
+            If frmReady Then Button6.Enabled = True
             Exit Sub
         End If
 
-        frm = GetImageName(frm, ".")
-
         Dim img As Image = My.Resources.RESERVAA 'BadFrm
+
+        frm = GetImageName(frm, ".")
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_INVEN & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("inven\", frm)
             If File.Exists(pfile) Then
                 img = Image.FromFile(pfile)
+                If ThumbnailImage.InventImage.ContainsKey(frm) = False Then ThumbnailImage.InventImage.Add(frm, img.Clone)
                 If img.Width > PictureBox4.Size.Width Then
                     PictureBox4.BackgroundImageLayout = ImageLayout.Zoom
                 Else
@@ -591,7 +592,7 @@ Friend Class Items_Form
         ProFiles.SaveItemProData(proFile, iType, CommonItem, WeaponItem, ArmorItem, AmmoItem, DrugItem, MiscItem, ContanerItem, KeyItem)
 
         'Log
-        Main_Form.TextBox1.Text = "Save Pro: " & proFile & vbCrLf & Main_Form.TextBox1.Text
+        Main.PrintLog("Save Pro: " & proFile)
     End Sub
 
     Private Sub SaveItemMsg(ByVal str As String, Optional ByRef Desc As Boolean = False)

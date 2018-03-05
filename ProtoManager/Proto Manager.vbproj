@@ -41,9 +41,9 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
-    <NoWarn>41999,42016</NoWarn>
+    <DocumentationFile>ProtoManager.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -55,12 +55,13 @@
     <DefineTrace>false</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
-    <NoWarn>41999,42016</NoWarn>
+    <DocumentationFile>ProtoManager.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -142,6 +143,7 @@
     </Compile>
     <Compile Include="Classes\CalcStats.vb" />
     <Compile Include="Classes\Comparer.vb" />
+    <Compile Include="Classes\ThumbnailImage.vb" />
     <Compile Include="MassCreate.Designer.vb">
       <DependentUpon>MassCreate.vb</DependentUpon>
     </Compile>
@@ -234,12 +236,15 @@
   <ItemGroup>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AI_Form.resx">
       <DependentUpon>AI_Form.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AI_TextForm.resx">
       <DependentUpon>AI_TextForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MassCreate.resx">
       <DependentUpon>MassCreate.vb</DependentUpon>
@@ -249,6 +254,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Hex_Form.resx">
       <DependentUpon>Hex_Form.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.vb</DependentUpon>
@@ -261,6 +267,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Items_Form.resx">
       <DependentUpon>Items_Form.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Setting_Form.resx">
       <DependentUpon>Setting_Form.vb</DependentUpon>

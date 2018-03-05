@@ -46,7 +46,7 @@ Public Class MassCreate
             PID = &H3000000
         End If
 
-        Main.ShowProgressBar(NumericUpDown2.Value)
+        Progress_Form.ShowProgressBar(NumericUpDown2.Value)
 
         For ProNum As Integer = NumericUpDown1.Value To MaxCount
             ProDataSave(ProNum, PID, FIDnum, data)

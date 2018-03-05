@@ -42,7 +42,8 @@ Partial Class Main_Form
         Me.MassCreateProfilesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutToolStripButton7 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ImageListingToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton11 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.AIPacketToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ItemsTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -60,6 +61,7 @@ Partial Class Main_Form
         Me.DontHoverSelectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButton10 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.fAllToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
@@ -71,7 +73,7 @@ Partial Class Main_Form
         Me.fMiscToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton9 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton10 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButton4 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
@@ -155,7 +157,7 @@ Partial Class Main_Form
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripButton4, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripSplitButton1, Me.ToolStripSeparator7, Me.ToolStripButton9, Me.ToolStripButton10, Me.ToolStripTextBox1, Me.ToolStripButton1, Me.ToolStripSeparator3, Me.ToolStripDropDownButton1})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripSeparator11, Me.ImageListingToolStripButton, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripButton10, Me.ToolStripSplitButton1, Me.ToolStripSeparator7, Me.ToolStripButton9, Me.ToolStripButton4, Me.ToolStripTextBox1, Me.ToolStripButton1, Me.ToolStripSeparator3, Me.ToolStripDropDownButton1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
@@ -256,11 +258,22 @@ Partial Class Main_Form
         Me.AboutToolStripButton7.Text = "Info"
         Me.AboutToolStripButton7.ToolTipText = "About editor."
         '
-        'ToolStripButton4
+        'ToolStripSeparator11
         '
-        Me.ToolStripButton4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripButton4.Name = "ToolStripButton4"
-        Me.ToolStripButton4.Size = New System.Drawing.Size(6, 25)
+        Me.ToolStripSeparator11.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(6, 25)
+        '
+        'ImageListingToolStripButton
+        '
+        Me.ImageListingToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ImageListingToolStripButton.CheckOnClick = True
+        Me.ImageListingToolStripButton.Image = CType(resources.GetObject("ImageListingToolStripButton.Image"), System.Drawing.Image)
+        Me.ImageListingToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ImageListingToolStripButton.Name = "ImageListingToolStripButton"
+        Me.ImageListingToolStripButton.Size = New System.Drawing.Size(75, 22)
+        Me.ImageListingToolStripButton.Text = "Thumbnail"
+        Me.ImageListingToolStripButton.ToolTipText = "View thumbnail images"
         '
         'ToolStripButton11
         '
@@ -382,6 +395,12 @@ Partial Class Main_Form
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
         '
+        'ToolStripButton10
+        '
+        Me.ToolStripButton10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripButton10.Name = "ToolStripButton10"
+        Me.ToolStripButton10.Size = New System.Drawing.Size(6, 25)
+        '
         'ToolStripSplitButton1
         '
         Me.ToolStripSplitButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -458,11 +477,11 @@ Partial Class Main_Form
         Me.ToolStripButton9.Text = "Refresh List"
         Me.ToolStripButton9.ToolTipText = "Update the list of prototypes."
         '
-        'ToolStripButton10
+        'ToolStripButton4
         '
-        Me.ToolStripButton10.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripButton10.Name = "ToolStripButton10"
-        Me.ToolStripButton10.Size = New System.Drawing.Size(6, 25)
+        Me.ToolStripButton4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripButton4.Name = "ToolStripButton4"
+        Me.ToolStripButton4.Size = New System.Drawing.Size(6, 25)
         '
         'ToolStripTextBox1
         '
@@ -497,7 +516,7 @@ Partial Class Main_Form
         Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
-        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 22)
+        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 20)
         Me.ToolStripDropDownButton1.Text = "ToolStripDropDownButton1"
         Me.ToolStripDropDownButton1.Visible = False
         '
@@ -626,7 +645,7 @@ Partial Class Main_Form
         Me.ListView2.Activation = System.Windows.Forms.ItemActivation.OneClick
         Me.ListView2.Alignment = System.Windows.Forms.ListViewAlignment.Left
         Me.ListView2.AllowColumnReorder = True
-        Me.ListView2.AutoArrange = False
+        Me.ListView2.BackColor = System.Drawing.SystemColors.Window
         Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader7})
         Me.ListView2.ContextMenuStrip = Me.ContextMenuStrip1
         Me.ListView2.Dock = System.Windows.Forms.DockStyle.Fill
@@ -642,6 +661,7 @@ Partial Class Main_Form
         Me.ListView2.ShowItemToolTips = True
         Me.ListView2.Size = New System.Drawing.Size(230, 543)
         Me.ListView2.TabIndex = 10
+        Me.ListView2.TileSize = New System.Drawing.Size(1, 1)
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Details
         Me.ListView2.Visible = False
@@ -948,5 +968,7 @@ Partial Class Main_Form
     Friend WithEvents FindToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents MassCreateProfilesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ImageListingToolStripButton As System.Windows.Forms.ToolStripButton
 
 End Class

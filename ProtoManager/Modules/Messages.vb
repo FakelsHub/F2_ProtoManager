@@ -15,7 +15,7 @@ Friend Module Messages
         File.WriteAllLines(savePath & msgFile, MSG_DATATEXT, Settings.MsgEncoding)
 
         'Log
-        Main_Form.TextBox1.Text = "Update file: " & savePath & msgFile & vbCrLf & Main_Form.TextBox1.Text
+        Main.PrintLog("Update file: " & savePath & msgFile)
     End Sub
 
     'Считывает содержимое из msg файла в массив с соответствующей выбранной кодировкой

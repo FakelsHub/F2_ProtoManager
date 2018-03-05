@@ -452,7 +452,7 @@ Friend Class Critter_Form
         ProFiles.SaveCritterProData(proFile, CritterPro)
 
         'Log
-        Main_Form.TextBox1.Text = "Save Pro: " & proFile & vbCrLf & Main_Form.TextBox1.Text
+        Main.PrintLog("Save Pro: " & proFile)
     End Sub
 
     Private Sub SaveCritterMsg(ByVal str As String, Optional ByRef Desc As Boolean = False)
@@ -573,7 +573,7 @@ Friend Class Critter_Form
 
                 Dim filePath = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
                 FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-                FileGet(fFile, InvFID, Prototypes.InvenFID)
+                FileGet(fFile, InvFID, Prototypes.offsetInvenFID + 1)
                 FileGet(fFile, aItem, Prototypes.ArmorBlock)
                 FileClose(fFile)
 

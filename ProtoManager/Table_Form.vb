@@ -132,8 +132,7 @@ Public Class Table_Form
             ' Critter table
             If Critter_LST Is Nothing Then Main.CreateCritterList()
 
-            Progress_Form.ProgressBar1.Value = 0
-            Main.ShowProgressBar(UBound(Critter_LST) + 1)
+            Progress_Form.ShowProgressBar(UBound(Critter_LST) + 1)
 
             GetMsgData("pro_crit.msg")
             For n = 1 To UBound(Critter_LST) + 1
@@ -143,7 +142,7 @@ Public Class Table_Form
                 If FileSystem.GetFileInfo(pathFile).Length < 416 Then
                     Table.Add("#" & spr & proFile & spr & "<BadFormat>")
                     'Log 
-                    Main_Form.TextBox1.Text = "Bad Format: " & pathFile & vbLf & Main_Form.TextBox1.Text
+                    Main.PrintLog("Bad Format: " & pathFile)
                     Application.DoEvents()
                     Continue For
                 End If

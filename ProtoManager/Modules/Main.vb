@@ -8,6 +8,7 @@ Friend Module Main
     Structure CrittersLst
         Friend proFile As String
         Friend crtName As String
+        Friend crtHP As Integer
     End Structure
 
     Structure ItemsLst
@@ -67,7 +68,7 @@ Friend Module Main
             SplashScreen.ProgressBar1.Value = 20
             Application.DoEvents()
 
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iProto.lst", AppWinStyle.Hide, True, 30000)
+            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iProto.lst", AppWinStyle.Hide, True, 60000)
 
             pLST = File.ReadAllLines(DatFiles.CheckFile(crittersLstPath))
             For n = 0 To UBound(pLST)
@@ -85,7 +86,7 @@ Friend Module Main
             SplashScreen.ProgressBar1.Value = 40
             Application.DoEvents()
 
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@cProto.lst", AppWinStyle.Hide, wait, 30000)
+            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@cProto.lst", AppWinStyle.Hide, wait, 60000)
             File.Create(Cache_Patch & "\cache.id").Close()
         End If
 
@@ -143,15 +144,16 @@ Friend Module Main
     End Function
 
     Friend Sub GetItemsLstFRM()
-        If Items_FRM IsNot Nothing Then Return
-        Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artItemsLstPath)))
+        If Items_FRM Is Nothing Then
+            Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artItemsLstPath)))
+        End If
 
         If Iven_FRM IsNot Nothing Then Return
         Iven_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artInvenLstPath)))
     End Sub
 
     Friend Sub CreateCritterList()
-        ShowProgressBar(0)
+        Progress_Form.ShowProgressBar(0)
 
         Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(crittersLstPath)))
         Dim cCount As Integer = UBound(lstfile)
@@ -186,7 +188,7 @@ Friend Module Main
         Dim tempList1 As List(Of Integer) = New List(Of Integer)()
         Dim n As Integer
 
-        ShowProgressBar(0)
+        Progress_Form.ShowProgressBar(0)
 
         Messages.GetMsgData("pro_item.msg")
         Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(itemsLstPath)))
@@ -209,7 +211,7 @@ Friend Module Main
                 Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
                 If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
                 .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
-                .ListView2.Items(n).Tag = n 'запись индекса(pid) итема в item.lst
+                .ListView2.Items(n).Tag = n 'запись индекса(pid) итема из item.lst
                 If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue
                 If Items_LST(n).itemType = ItemType.Ammo Then
                     tempList0.Add(Items_LST(n).itemName)
@@ -396,13 +398,9 @@ Friend Module Main
         Teams.Sort()
     End Sub
 
-    Friend Sub ShowProgressBar(ByVal maxValue As Integer)
-        'Progress_Form.MdiParent = Main_Form Main_Form.SplitContainer1.Panel1.Handle.ToInt32
-        SetParent(Progress_Form.Handle.ToInt32, Main_Form.Handle.ToInt32)
-        Progress_Form.SetDesktopLocation(Main_Form.Width / 4, Main_Form.Height / 2.25)
-        Progress_Form.ProgressBar1.Maximum = maxValue
-        Progress_Form.Show()
-        Application.DoEvents()
+    Friend Sub PrintLog(ByVal textLog As String)
+        Main_Form.TextBox1.AppendText(textLog & vbLf)
+        Main_Form.TextBox1.ScrollToCaret()
     End Sub
 
 End Module
