@@ -123,6 +123,9 @@
   <metadata name="TabPage1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="GroupBox15.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -162,9 +165,15 @@
   <metadata name="NumericUpDown9.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="NumericUpDown9.ToolTip" xml:space="preserve">
+    <value>Critical Table:
+0 - No Critical, Lose Turn, Knocked Down + Hurt Self, Crip Body.
+1 - Drop Weapon, Random Hit, Self Hit, No Critical, Lose Ammo.
+2 - Destroy Weapon, Lose Turn, Lose Turn + Drop weapon, Lose Turn + Lose Ammo, Random Hit, Lose Turn + Weapon Explodes , Dud Shot.
+3 - Drop weapon, Drop Weapon + Hurt Self, Random Hit, Weapon Explodes, Lose Turn, Dud Shot, Destroy Weapon.
+4 - Random Hit, Lose Turn + Knocked Down + Weapon Explodes, No Critical, Lose Turn, Destroy Weapon, Lose Turn + Weapon Explodes + On Fire.
+</value>
+  </data>
   <metadata name="NumericUpDown10.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -259,12 +268,6 @@
     <value>True</value>
   </metadata>
   <metadata name="GroupBox1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="CheckBox21.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="CheckBox22.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="TabPage2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

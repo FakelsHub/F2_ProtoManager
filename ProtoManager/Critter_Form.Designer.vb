@@ -316,9 +316,10 @@ Partial Class Critter_Form
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.Label44 = New System.Windows.Forms.Label()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.tbFrmID = New System.Windows.Forms.TextBox()
+        Me.Label44 = New System.Windows.Forms.Label()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
@@ -2186,7 +2187,7 @@ Partial Class Critter_Form
         Me.Label125.Name = "Label125"
         Me.Label125.Size = New System.Drawing.Size(217, 14)
         Me.Label125.TabIndex = 1
-        Me.Label125.Text = "* Tresholds - Стойкость к повреждениям."
+        Me.Label125.Text = "* Threshold - Стойкость к повреждениям."
         '
         'Label124
         '
@@ -2336,7 +2337,7 @@ Partial Class Critter_Form
         Me.Label101.Name = "Label101"
         Me.Label101.Size = New System.Drawing.Size(45, 12)
         Me.Label101.TabIndex = 3
-        Me.Label101.Text = "Tresholds"
+        Me.Label101.Text = "Threshold"
         '
         'Label100
         '
@@ -2377,7 +2378,7 @@ Partial Class Critter_Form
         Me.Label99.Name = "Label99"
         Me.Label99.Size = New System.Drawing.Size(45, 12)
         Me.Label99.TabIndex = 3
-        Me.Label99.Text = "Tresholds"
+        Me.Label99.Text = "Threshold"
         '
         'Label106
         '
@@ -2833,7 +2834,7 @@ Partial Class Critter_Form
         Me.Label97.Name = "Label97"
         Me.Label97.Size = New System.Drawing.Size(45, 12)
         Me.Label97.TabIndex = 3
-        Me.Label97.Text = "Tresholds"
+        Me.Label97.Text = "Threshold"
         '
         'Label96
         '
@@ -2853,7 +2854,7 @@ Partial Class Critter_Form
         Me.Label93.Name = "Label93"
         Me.Label93.Size = New System.Drawing.Size(45, 12)
         Me.Label93.TabIndex = 3
-        Me.Label93.Text = "Tresholds"
+        Me.Label93.Text = "Threshold"
         '
         'Label76
         '
@@ -3376,7 +3377,7 @@ Partial Class Critter_Form
         Me.GroupBox18.Size = New System.Drawing.Size(80, 50)
         Me.GroupBox18.TabIndex = 8
         Me.GroupBox18.TabStop = False
-        Me.GroupBox18.Text = "Msg ID"
+        Me.GroupBox18.Text = "Message ID"
         '
         'NumericUpDown64
         '
@@ -3937,7 +3938,7 @@ Partial Class Critter_Form
         '
         'GroupBox12
         '
-        Me.GroupBox12.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox12.BackColor = System.Drawing.Color.WhiteSmoke
         Me.GroupBox12.Controls.Add(Me.RadioButton5)
         Me.GroupBox12.Controls.Add(Me.RadioButton4)
         Me.GroupBox12.Controls.Add(Me.RadioButton3)
@@ -4099,9 +4100,10 @@ Partial Class Critter_Form
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.Label44)
         Me.GroupBox4.Controls.Add(Me.ComboBox1)
         Me.GroupBox4.Controls.Add(Me.PictureBox1)
+        Me.GroupBox4.Controls.Add(Me.tbFrmID)
+        Me.GroupBox4.Controls.Add(Me.Label44)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.GroupBox4.Location = New System.Drawing.Point(553, 75)
         Me.GroupBox4.Name = "GroupBox4"
@@ -4109,17 +4111,6 @@ Partial Class Critter_Form
         Me.GroupBox4.TabIndex = 6
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Sprite"
-        '
-        'Label44
-        '
-        Me.Label44.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.Label44.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label44.ForeColor = System.Drawing.Color.DarkRed
-        Me.Label44.Location = New System.Drawing.Point(12, 16)
-        Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(100, 18)
-        Me.Label44.TabIndex = 2
-        Me.Label44.Text = "Frm ID: 00000000"
         '
         'ComboBox1
         '
@@ -4141,6 +4132,30 @@ Partial Class Critter_Form
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
+        '
+        'tbFrmID
+        '
+        Me.tbFrmID.BackColor = System.Drawing.SystemColors.Control
+        Me.tbFrmID.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.tbFrmID.ForeColor = System.Drawing.Color.DarkRed
+        Me.tbFrmID.Location = New System.Drawing.Point(50, 13)
+        Me.tbFrmID.Name = "tbFrmID"
+        Me.tbFrmID.ReadOnly = True
+        Me.tbFrmID.Size = New System.Drawing.Size(62, 20)
+        Me.tbFrmID.TabIndex = 3
+        Me.tbFrmID.Text = "00000000"
+        Me.tbFrmID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Label44.ForeColor = System.Drawing.Color.DarkRed
+        Me.Label44.Location = New System.Drawing.Point(6, 16)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(45, 14)
+        Me.Label44.TabIndex = 2
+        Me.Label44.Text = "Frm ID:"
         '
         'ToolTip1
         '
@@ -4178,6 +4193,7 @@ Partial Class Critter_Form
         '
         'Button3
         '
+        Me.Button3.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -4214,8 +4230,10 @@ Partial Class Critter_Form
         '
         'Critter_Form
         '
+        Me.AcceptButton = Me.Button6
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Button3
         Me.ClientSize = New System.Drawing.Size(684, 443)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button6)
@@ -4341,6 +4359,7 @@ Partial Class Critter_Form
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox12.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
@@ -4647,4 +4666,5 @@ Partial Class Critter_Form
     Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox9 As System.Windows.Forms.ComboBox
     Friend WithEvents Button8 As System.Windows.Forms.Button
+    Friend WithEvents tbFrmID As System.Windows.Forms.TextBox
 End Class

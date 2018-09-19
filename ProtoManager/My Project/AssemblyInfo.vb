@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 ' Проверьте значения атрибутов сборки
 
-<Assembly: AssemblyTitle("Pro-files editor for Fallout 2")> 
+<Assembly: AssemblyTitle("Proto files editor for Fallout 1/2")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("2008-2018")> 
 <Assembly: AssemblyProduct("Proto Manager")> 
@@ -33,7 +33,7 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.1.2.0")> 
-<Assembly: AssemblyFileVersion("1.1.2.0")> 
+<Assembly: AssemblyVersion("1.1.3.0")> 
+<Assembly: AssemblyFileVersion("1.1.3.0")> 
 
 <Assembly: NeutralResourcesLanguageAttribute("ru")> 

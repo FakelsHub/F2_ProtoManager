@@ -136,9 +136,8 @@ Friend Class Items_Form
         If CommonItem.InvFID <> -1 Then ComboBox2.SelectedIndex = 1 + (CommonItem.InvFID - &H7000000) Else ComboBox2.SelectedIndex = 0
         ComboBox8.SelectedIndex = CommonItem.MaterialID
         If CommonItem.ScriptID <> -1 Then ComboBox9.SelectedIndex = 1 + (CommonItem.ScriptID - &H3000000) Else ComboBox9.SelectedIndex = 0
-        For n = 0 To ComboBox3.Items.Count - 1
-            If CChar(ComboBox3.Items(n)) = Chr(CommonItem.SoundID) Then ComboBox3.SelectedIndex = n
-        Next
+        '
+        SetSoundID(CommonItem.SoundID, ComboBox3)
         '
         NumericUpDown1.Value = CommonItem.Cost
         NumericUpDown36.Value = CommonItem.LightDis
@@ -189,9 +188,10 @@ Friend Class Items_Form
         ComboBox4.SelectedIndex = WeaponItem.AnimCode
         ComboBox5.SelectedIndex = WeaponItem.DmgType
 
-        For n As SByte = 0 To ComboBox6.Items.Count - 1
-            If CChar(ComboBox6.Items(n)) = Chr(WeaponItem.wSoundID) Then ComboBox6.SelectedIndex = n
-        Next
+        SetSoundID(WeaponItem.wSoundID, ComboBox6)
+        'For n As SByte = 0 To ComboBox6.Items.Count - 1
+        '    If CChar(ComboBox6.Items(n)) = Chr(WeaponItem.wSoundID) Then ComboBox6.SelectedIndex = n
+        'Next
 
         If WeaponItem.ProjPID <> -1 Then
             ComboBox10.SelectedIndex = WeaponItem.ProjPID - &H5000000
@@ -222,6 +222,9 @@ Friend Class Items_Form
         ComboBox15.SelectedIndex = (CommonItem.FalgsExt >> 4) And &HF
         CheckBox21.Checked = CommonItem.FalgsExt And &H100
         CheckBox22.Checked = CommonItem.FalgsExt And &H200
+
+        lblWeaponScore.Text = CalcStats.WeaponScore(WeaponItem)
+
     End Sub
 
     Private Sub SetArmorValue_Form()
@@ -249,6 +252,8 @@ Friend Class Items_Form
         ComboBox17.SelectedIndex = ArmorItem.FemaleFID - &H1000000
 
         If ArmorItem.Perk <> -1 Then ComboBox18.SelectedIndex = ArmorItem.Perk + 1 Else ComboBox18.SelectedIndex = 0
+
+        lblArmorScore.Text = CalcStats.ArmorScore(ArmorItem)
     End Sub
 
     Private Sub SetAmmoValue_Form()
@@ -429,8 +434,8 @@ Friend Class Items_Form
         CommonItem.MaterialID = ComboBox8.SelectedIndex
         'CommonItem.ObjType = ComboBox7.SelectedIndex
         If ComboBox9.SelectedIndex > 0 Then CommonItem.ScriptID = (ComboBox9.SelectedIndex - 1) + &H3000000 Else CommonItem.ScriptID = &HFFFFFFFF
-        CommonItem.SoundID = Asc(ComboBox3.Text)
 
+        CommonItem.SoundID = GetSoundID(ComboBox3.Text)
         CommonItem.Cost = NumericUpDown1.Value
         CommonItem.LightDis = NumericUpDown36.Value
         CommonItem.LightInt = Math.Round((NumericUpDown37.Value * &HFFFF) / 100)
@@ -488,7 +493,8 @@ Friend Class Items_Form
                 WeaponItem.MaxAmmo = NumericUpDown11.Value
                 WeaponItem.AnimCode = ComboBox4.SelectedIndex
                 WeaponItem.DmgType = ComboBox5.SelectedIndex
-                WeaponItem.wSoundID = Asc(ComboBox6.Text)
+                WeaponItem.wSoundID = GetSoundID(ComboBox6.Text)
+
                 If ComboBox10.SelectedIndex > 0 Then WeaponItem.ProjPID = ComboBox10.SelectedIndex + &H5000000 Else WeaponItem.ProjPID = &HFFFFFFFF
                 If ComboBox11.SelectedIndex > 0 Then WeaponItem.Perk = ComboBox11.SelectedIndex - 1 Else WeaponItem.Perk = &HFFFFFFFF
                 WeaponItem.Caliber = ComboBox12.SelectedIndex
@@ -639,7 +645,7 @@ Friend Class Items_Form
         NumericUpDown30.ValueChanged, NumericUpDown29.ValueChanged, NumericUpDown28.ValueChanged, NumericUpDown27.ValueChanged, NumericUpDown25.ValueChanged, _
         NumericUpDown24.ValueChanged, NumericUpDown23.ValueChanged, NumericUpDown22.ValueChanged, NumericUpDown21.ValueChanged, NumericUpDown20.ValueChanged, _
         NumericUpDown19.ValueChanged, NumericUpDown18.ValueChanged, NumericUpDown17.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown15.ValueChanged, _
-        NumericUpDown14.ValueChanged, NumericUpDown13.ValueChanged, NumericUpDown1.ValueChanged
+        NumericUpDown14.ValueChanged, NumericUpDown13.ValueChanged, NumericUpDown1.ValueChanged, NumericUpDown26.ValueChanged
         '
         If frmReady Then Button6.Enabled = True
     End Sub
@@ -707,8 +713,8 @@ Friend Class Items_Form
                 Case ItemType.Armor
                     CommonItem.ObjType = ItemType.Armor
                     If frmReady Then
-                        ArmorItem.FemaleFID = &H1000000
-                        ArmorItem.MaleFID = &H1000000
+                        If (ArmorItem.FemaleFID = 0) Then ArmorItem.FemaleFID = &H1000000
+                        If (ArmorItem.FemaleFID = 0) Then ArmorItem.MaleFID = &H1000000
                     End If
                     TabControl1.TabPages.Insert(0, TabPage2)
                 Case ItemType.Drugs
@@ -717,16 +723,16 @@ Friend Class Items_Form
                 Case ItemType.Weapon
                     CommonItem.ObjType = ItemType.Weapon
                     If frmReady Then
-                        WeaponItem.ProjPID = &H5000000
-                        WeaponItem.AmmoPID = -1
+                        If (WeaponItem.ProjPID = 0) Then WeaponItem.ProjPID = &H5000000
+                        If (WeaponItem.AmmoPID = 0) Then WeaponItem.AmmoPID = -1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage1)
-                    ComboBox6.SelectedIndex = 0
+                    If (WeaponItem.wSoundID = 0) Then ComboBox6.SelectedIndex = 0
                 Case ItemType.Ammo
                     CommonItem.ObjType = ItemType.Ammo
                     If frmReady Then
-                        AmmoItem.DamMult = 1
-                        AmmoItem.DamDiv = 1
+                        If (AmmoItem.DamMult = 0) Then AmmoItem.DamMult = 1
+                        If (AmmoItem.DamDiv = 0) Then AmmoItem.DamDiv = 1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage5)
                     GroupBox23.Enabled = True
@@ -734,7 +740,7 @@ Friend Class Items_Form
                 Case ItemType.Misc
                     If frmReady Then
                         CommonItem.ObjType = ItemType.Misc
-                        MiscItem.PowerPID = -1
+                        If (MiscItem.PowerPID = 0) Then MiscItem.PowerPID = -1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage5)
                     GroupBox23.Enabled = False
@@ -819,9 +825,38 @@ Friend Class Items_Form
         If Button6.Enabled Then Button2.Enabled = True
     End Sub
 
+    Private Sub NumericUpDown_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles NumericUpDown1.KeyPress, NumericUpDown9.KeyPress, NumericUpDown8.KeyPress,
+        NumericUpDown71.KeyPress, NumericUpDown70.KeyPress, NumericUpDown7.KeyPress, NumericUpDown69.KeyPress, NumericUpDown68.KeyPress, NumericUpDown67.KeyPress,
+        NumericUpDown65.KeyPress, NumericUpDown64.KeyPress, NumericUpDown63.KeyPress, NumericUpDown62.KeyPress, NumericUpDown61.KeyPress, NumericUpDown60.KeyPress,
+        NumericUpDown6.KeyPress, NumericUpDown59.KeyPress, NumericUpDown58.KeyPress, NumericUpDown57.KeyPress, NumericUpDown56.KeyPress, NumericUpDown5.KeyPress,
+        NumericUpDown4.KeyPress, NumericUpDown39.KeyPress, NumericUpDown38.KeyPress, NumericUpDown37.KeyPress, NumericUpDown36.KeyPress, NumericUpDown32.KeyPress,
+        NumericUpDown31.KeyPress, NumericUpDown30.KeyPress, NumericUpDown3.KeyPress, NumericUpDown29.KeyPress, NumericUpDown28.KeyPress, NumericUpDown27.KeyPress,
+        NumericUpDown26.KeyPress, NumericUpDown25.KeyPress, NumericUpDown24.KeyPress, NumericUpDown23.KeyPress, NumericUpDown22.KeyPress, NumericUpDown21.KeyPress,
+        NumericUpDown20.KeyPress, NumericUpDown2.KeyPress, NumericUpDown19.KeyPress, NumericUpDown18.KeyPress, NumericUpDown17.KeyPress, NumericUpDown16.KeyPress,
+        NumericUpDown15.KeyPress, NumericUpDown14.KeyPress, NumericUpDown13.KeyPress, NumericUpDown12.KeyPress, NumericUpDown11.KeyPress, NumericUpDown10.KeyPress
+        If (Char.IsDigit(e.KeyChar)) Then Button6.Enabled = True
+    End Sub
+
     'Private Sub Items_Form_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
     'For Each upDown As NumericUpDown In Me.Controls.OfType(Of NumericUpDown)()
     'AddHandler upDown.ValueChanged, AddressOf SaveEnable
     'Next
     'End Sub
+
+    Private Sub SetSoundID(ByRef ID As Byte, ByRef control As ComboBox)
+        For n = 0 To control.Items.Count - 1
+            If (control.Items(n).ToString.StartsWith(ID.ToString)) Then
+                control.SelectedIndex = n
+                Exit Sub
+            End If
+        Next
+        control.Text = ID.ToString
+    End Sub
+
+    Private Function GetSoundID(ByVal sound As String) As Byte
+        Dim pos As Integer = sound.IndexOf(" "c)
+        If pos <> -1 Then sound = sound.Remove(pos)
+        Return Convert.ToByte(sound)
+    End Function
+
 End Class

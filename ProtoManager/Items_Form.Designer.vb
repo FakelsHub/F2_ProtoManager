@@ -26,6 +26,8 @@ Partial Class Items_Form
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Items_Form))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.lblWeaponScore = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox15 = New System.Windows.Forms.GroupBox()
         Me.Label61 = New System.Windows.Forms.Label()
         Me.Label22 = New System.Windows.Forms.Label()
@@ -74,6 +76,8 @@ Partial Class Items_Form
         Me.CheckBox21 = New System.Windows.Forms.CheckBox()
         Me.CheckBox22 = New System.Windows.Forms.CheckBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label54 = New System.Windows.Forms.Label()
+        Me.lblArmorScore = New System.Windows.Forms.Label()
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
         Me.ComboBox17 = New System.Windows.Forms.ComboBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
@@ -352,11 +356,13 @@ Partial Class Items_Form
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(433, 342)
-        Me.TabControl1.TabIndex = 3
+        Me.TabControl1.TabIndex = 6
         '
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.TabPage1.Controls.Add(Me.lblWeaponScore)
+        Me.TabPage1.Controls.Add(Me.Label1)
         Me.TabPage1.Controls.Add(Me.GroupBox15)
         Me.TabPage1.Controls.Add(Me.GroupBox17)
         Me.TabPage1.Controls.Add(Me.GroupBox16)
@@ -371,6 +377,29 @@ Partial Class Items_Form
         Me.TabPage1.Size = New System.Drawing.Size(425, 315)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Weapon"
+        '
+        'lblWeaponScore
+        '
+        Me.lblWeaponScore.AutoSize = True
+        Me.lblWeaponScore.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.lblWeaponScore.ForeColor = System.Drawing.Color.DarkRed
+        Me.lblWeaponScore.Location = New System.Drawing.Point(142, 293)
+        Me.lblWeaponScore.Name = "lblWeaponScore"
+        Me.lblWeaponScore.Size = New System.Drawing.Size(28, 15)
+        Me.lblWeaponScore.TabIndex = 21
+        Me.lblWeaponScore.Text = "000"
+        Me.lblWeaponScore.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Label1.Location = New System.Drawing.Point(10, 293)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(134, 14)
+        Me.Label1.TabIndex = 20
+        Me.Label1.Text = "AI Weapon points priority:"
+        Me.ToolTip1.SetToolTip(Me.Label1, "((MaxDmg - MinDmg) / 2) * 5(if have perk)")
         '
         'GroupBox15
         '
@@ -427,7 +456,7 @@ Partial Class Items_Form
         Me.ComboBox12.MaxDropDownItems = 20
         Me.ComboBox12.Name = "ComboBox12"
         Me.ComboBox12.Size = New System.Drawing.Size(125, 22)
-        Me.ComboBox12.TabIndex = 8
+        Me.ComboBox12.TabIndex = 15
         '
         'ComboBox5
         '
@@ -437,7 +466,7 @@ Partial Class Items_Form
         Me.ComboBox5.Location = New System.Drawing.Point(127, 34)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(125, 22)
-        Me.ComboBox5.TabIndex = 7
+        Me.ComboBox5.TabIndex = 12
         '
         'NumericUpDown3
         '
@@ -446,7 +475,7 @@ Partial Class Items_Form
         Me.NumericUpDown3.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown3.Name = "NumericUpDown3"
         Me.NumericUpDown3.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown3.TabIndex = 2
+        Me.NumericUpDown3.TabIndex = 11
         Me.NumericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'ComboBox13
@@ -458,7 +487,7 @@ Partial Class Items_Form
         Me.ComboBox13.MaxDropDownItems = 20
         Me.ComboBox13.Name = "ComboBox13"
         Me.ComboBox13.Size = New System.Drawing.Size(125, 22)
-        Me.ComboBox13.TabIndex = 9
+        Me.ComboBox13.TabIndex = 18
         '
         'Label2
         '
@@ -493,7 +522,7 @@ Partial Class Items_Form
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
         Me.NumericUpDown11.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown11.TabIndex = 4
+        Me.NumericUpDown11.TabIndex = 14
         Me.NumericUpDown11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label14
@@ -510,10 +539,9 @@ Partial Class Items_Form
         Me.NumericUpDown9.Location = New System.Drawing.Point(68, 121)
         Me.NumericUpDown9.Name = "NumericUpDown9"
         Me.NumericUpDown9.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown9.TabIndex = 6
+        Me.NumericUpDown9.TabIndex = 17
         Me.NumericUpDown9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ToolTip1.SetToolTip(Me.NumericUpDown9, "0 - None Crittical" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "1 - Drop weapon, explodes weapon(grenade)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "2 - Drop weapon, l" & _
-                "ose ammo" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3 - Drop weapon, lose ammo, explodes weapon" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4 -" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5 -" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "6 -")
+        Me.ToolTip1.SetToolTip(Me.NumericUpDown9, resources.GetString("NumericUpDown9.ToolTip"))
         '
         'NumericUpDown10
         '
@@ -521,7 +549,7 @@ Partial Class Items_Form
         Me.NumericUpDown10.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
         Me.NumericUpDown10.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown10.TabIndex = 3
+        Me.NumericUpDown10.TabIndex = 13
         Me.NumericUpDown10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown2
@@ -531,7 +559,7 @@ Partial Class Items_Form
         Me.NumericUpDown2.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown2.Name = "NumericUpDown2"
         Me.NumericUpDown2.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown2.TabIndex = 1
+        Me.NumericUpDown2.TabIndex = 10
         Me.NumericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label15
@@ -566,7 +594,7 @@ Partial Class Items_Form
         Me.NumericUpDown6.Location = New System.Drawing.Point(6, 121)
         Me.NumericUpDown6.Name = "NumericUpDown6"
         Me.NumericUpDown6.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown6.TabIndex = 5
+        Me.NumericUpDown6.TabIndex = 16
         Me.NumericUpDown6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label10
@@ -606,7 +634,7 @@ Partial Class Items_Form
         Me.NumericUpDown7.Location = New System.Drawing.Point(6, 45)
         Me.NumericUpDown7.Name = "NumericUpDown7"
         Me.NumericUpDown7.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown7.TabIndex = 12
+        Me.NumericUpDown7.TabIndex = 22
         Me.NumericUpDown7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label9
@@ -624,7 +652,7 @@ Partial Class Items_Form
         Me.NumericUpDown8.Location = New System.Drawing.Point(6, 88)
         Me.NumericUpDown8.Name = "NumericUpDown8"
         Me.NumericUpDown8.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown8.TabIndex = 13
+        Me.NumericUpDown8.TabIndex = 23
         Me.NumericUpDown8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'GroupBox16
@@ -656,7 +684,7 @@ Partial Class Items_Form
         Me.NumericUpDown5.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown5.Name = "NumericUpDown5"
         Me.NumericUpDown5.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown5.TabIndex = 11
+        Me.NumericUpDown5.TabIndex = 25
         Me.NumericUpDown5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label5
@@ -675,7 +703,7 @@ Partial Class Items_Form
         Me.NumericUpDown4.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown4.Name = "NumericUpDown4"
         Me.NumericUpDown4.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown4.TabIndex = 10
+        Me.NumericUpDown4.TabIndex = 24
         Me.NumericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'GroupBox3
@@ -705,12 +733,12 @@ Partial Class Items_Form
         '
         Me.ComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox4.FormattingEnabled = True
-        Me.ComboBox4.Items.AddRange(New Object() {"None", "Knife (D)", "Club (E)", "2Hnd Club (F)", "Spear (G)", "Pistol (H)", "Uzi (I)", "Rifle (J)", "Laser (K)", "Minigun (L)", "Rocket Launcher (M)", "Custom sFall Anim (S)", "Custom sFall Anim (O)", "Custom sFall Anim (P)", "Custom sFall Anim (Q)", "Custom sFall Anim (T)"})
+        Me.ComboBox4.Items.AddRange(New Object() {"None", "Knife (D)", "Club (E)", "2Hnd Club (F)", "Spear (G)", "Pistol (H)", "Uzi (I)", "Rifle (J)", "Laser (K)", "Minigun (L)", "Rocket Launcher (M)", "Custom Anim (S)", "Custom Anim (O)", "Custom Anim (P)", "Custom Anim (Q)", "Custom Anim (T)"})
         Me.ComboBox4.Location = New System.Drawing.Point(6, 78)
         Me.ComboBox4.MaxDropDownItems = 15
         Me.ComboBox4.Name = "ComboBox4"
         Me.ComboBox4.Size = New System.Drawing.Size(136, 22)
-        Me.ComboBox4.TabIndex = 17
+        Me.ComboBox4.TabIndex = 20
         '
         'ComboBox10
         '
@@ -721,7 +749,7 @@ Partial Class Items_Form
         Me.ComboBox10.MaxDropDownItems = 15
         Me.ComboBox10.Name = "ComboBox10"
         Me.ComboBox10.Size = New System.Drawing.Size(136, 22)
-        Me.ComboBox10.TabIndex = 16
+        Me.ComboBox10.TabIndex = 19
         '
         'Label6
         '
@@ -745,12 +773,12 @@ Partial Class Items_Form
         '
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "@", "#", "$", "_"})
+        Me.ComboBox6.Items.AddRange(New Object() {"48 (0)", "49 (1)", "50 (2)", "51 (3)", "52 (4)", "53 (5)", "54 (6)", "55 (7)", "56 (8)", "57 (9)", "65 (A)", "66 (B)", "67 (C)", "68 (D)", "69 (E)", "70 (F)", "71 (G)", "72 (H)", "73 (I)", "74 (J)", "75 (K)", "76 (L)", "77 (M)", "78 (N)", "79 (O)", "80 (P)", "81 (Q)", "82 (R)", "83 (S)", "84 (T)", "85 (U)", "86 (V)", "87 (W)", "88 (X)", "89 (Y)", "90 (Z)", "33 (!)", "64 (@)", "35 (#)", "36 ($)", "95 (_)"})
         Me.ComboBox6.Location = New System.Drawing.Point(6, 121)
         Me.ComboBox6.MaxDropDownItems = 10
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(137, 22)
-        Me.ComboBox6.TabIndex = 18
+        Me.ComboBox6.TabIndex = 21
         '
         'Label11
         '
@@ -764,13 +792,14 @@ Partial Class Items_Form
         'ComboBox11
         '
         Me.ComboBox11.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox11.DropDownWidth = 200
         Me.ComboBox11.FormattingEnabled = True
         Me.ComboBox11.Items.AddRange(New Object() {"None"})
         Me.ComboBox11.Location = New System.Drawing.Point(270, 256)
         Me.ComboBox11.MaxDropDownItems = 15
         Me.ComboBox11.Name = "ComboBox11"
         Me.ComboBox11.Size = New System.Drawing.Size(149, 22)
-        Me.ComboBox11.TabIndex = 19
+        Me.ComboBox11.TabIndex = 30
         '
         'GroupBox2
         '
@@ -794,7 +823,7 @@ Partial Class Items_Form
         Me.ComboBox15.MaxDropDownItems = 10
         Me.ComboBox15.Name = "ComboBox15"
         Me.ComboBox15.Size = New System.Drawing.Size(110, 22)
-        Me.ComboBox15.TabIndex = 15
+        Me.ComboBox15.TabIndex = 27
         '
         'Label21
         '
@@ -814,7 +843,7 @@ Partial Class Items_Form
         Me.ComboBox14.MaxDropDownItems = 10
         Me.ComboBox14.Name = "ComboBox14"
         Me.ComboBox14.Size = New System.Drawing.Size(110, 22)
-        Me.ComboBox14.TabIndex = 14
+        Me.ComboBox14.TabIndex = 26
         '
         'Label20
         '
@@ -839,26 +868,28 @@ Partial Class Items_Form
         'CheckBox21
         '
         Me.CheckBox21.AutoSize = True
-        Me.CheckBox21.Location = New System.Drawing.Point(6, 27)
+        Me.CheckBox21.Location = New System.Drawing.Point(9, 42)
         Me.CheckBox21.Name = "CheckBox21"
-        Me.CheckBox21.Size = New System.Drawing.Size(61, 18)
-        Me.CheckBox21.TabIndex = 20
-        Me.CheckBox21.Text = "BigGun"
+        Me.CheckBox21.Size = New System.Drawing.Size(64, 18)
+        Me.CheckBox21.TabIndex = 29
+        Me.CheckBox21.Text = "Big Gun"
         Me.CheckBox21.UseVisualStyleBackColor = True
         '
         'CheckBox22
         '
         Me.CheckBox22.AutoSize = True
-        Me.CheckBox22.Location = New System.Drawing.Point(73, 27)
+        Me.CheckBox22.Location = New System.Drawing.Point(9, 19)
         Me.CheckBox22.Name = "CheckBox22"
-        Me.CheckBox22.Size = New System.Drawing.Size(73, 18)
-        Me.CheckBox22.TabIndex = 21
-        Me.CheckBox22.Text = "TwoHand"
+        Me.CheckBox22.Size = New System.Drawing.Size(76, 18)
+        Me.CheckBox22.TabIndex = 28
+        Me.CheckBox22.Text = "Two Hand"
         Me.CheckBox22.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.TabPage2.Controls.Add(Me.Label54)
+        Me.TabPage2.Controls.Add(Me.lblArmorScore)
         Me.TabPage2.Controls.Add(Me.GroupBox14)
         Me.TabPage2.Controls.Add(Me.NumericUpDown12)
         Me.TabPage2.Controls.Add(Me.Label19)
@@ -872,6 +903,28 @@ Partial Class Items_Form
         Me.TabPage2.Size = New System.Drawing.Size(425, 315)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Armor"
+        '
+        'Label54
+        '
+        Me.Label54.AutoSize = True
+        Me.Label54.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Label54.Location = New System.Drawing.Point(11, 293)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(123, 14)
+        Me.Label54.TabIndex = 23
+        Me.Label54.Text = "AI Armor points priority:"
+        '
+        'lblArmorScore
+        '
+        Me.lblArmorScore.AutoSize = True
+        Me.lblArmorScore.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.lblArmorScore.ForeColor = System.Drawing.Color.Maroon
+        Me.lblArmorScore.Location = New System.Drawing.Point(140, 293)
+        Me.lblArmorScore.Name = "lblArmorScore"
+        Me.lblArmorScore.Size = New System.Drawing.Size(28, 15)
+        Me.lblArmorScore.TabIndex = 0
+        Me.lblArmorScore.Text = "000"
+        Me.lblArmorScore.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'GroupBox14
         '
@@ -897,14 +950,14 @@ Partial Class Items_Form
         Me.ComboBox17.MaxDropDownItems = 20
         Me.ComboBox17.Name = "ComboBox17"
         Me.ComboBox17.Size = New System.Drawing.Size(100, 22)
-        Me.ComboBox17.TabIndex = 2
+        Me.ComboBox17.TabIndex = 65
         Me.ComboBox17.Tag = "0"
         '
         'PictureBox3
         '
         Me.PictureBox3.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox3.Location = New System.Drawing.Point(112, 20)
+        Me.PictureBox3.Location = New System.Drawing.Point(112, 33)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(100, 107)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -919,14 +972,14 @@ Partial Class Items_Form
         Me.ComboBox16.MaxDropDownItems = 20
         Me.ComboBox16.Name = "ComboBox16"
         Me.ComboBox16.Size = New System.Drawing.Size(100, 22)
-        Me.ComboBox16.TabIndex = 2
+        Me.ComboBox16.TabIndex = 64
         Me.ComboBox16.Tag = "1"
         '
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox2.Location = New System.Drawing.Point(6, 20)
+        Me.PictureBox2.Location = New System.Drawing.Point(6, 33)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(100, 107)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -937,7 +990,7 @@ Partial Class Items_Form
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label17.Location = New System.Drawing.Point(126, 130)
+        Me.Label17.Location = New System.Drawing.Point(127, 16)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(66, 14)
         Me.Label17.TabIndex = 3
@@ -947,7 +1000,7 @@ Partial Class Items_Form
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label16.Location = New System.Drawing.Point(22, 131)
+        Me.Label16.Location = New System.Drawing.Point(23, 17)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(52, 14)
         Me.Label16.TabIndex = 3
@@ -960,7 +1013,7 @@ Partial Class Items_Form
         Me.NumericUpDown12.Minimum = New Decimal(New Integer() {120, 0, 0, -2147483648})
         Me.NumericUpDown12.Name = "NumericUpDown12"
         Me.NumericUpDown12.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown12.TabIndex = 20
+        Me.NumericUpDown12.TabIndex = 66
         Me.NumericUpDown12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label19
@@ -990,7 +1043,7 @@ Partial Class Items_Form
         Me.ComboBox18.MaxDropDownItems = 15
         Me.ComboBox18.Name = "ComboBox18"
         Me.ComboBox18.Size = New System.Drawing.Size(142, 22)
-        Me.ComboBox18.TabIndex = 4
+        Me.ComboBox18.TabIndex = 67
         '
         'GroupBox13
         '
@@ -1056,7 +1109,7 @@ Partial Class Items_Form
         Me.Label93.Name = "Label93"
         Me.Label93.Size = New System.Drawing.Size(45, 12)
         Me.Label93.TabIndex = 3
-        Me.Label93.Text = "Tresholds"
+        Me.Label93.Text = "Threshold"
         '
         'Label76
         '
@@ -1238,7 +1291,7 @@ Partial Class Items_Form
         Me.NumericUpDown62.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown62.Name = "NumericUpDown62"
         Me.NumericUpDown62.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown62.TabIndex = 0
+        Me.NumericUpDown62.TabIndex = 62
         Me.NumericUpDown62.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown61
@@ -1251,7 +1304,7 @@ Partial Class Items_Form
         Me.NumericUpDown61.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown61.Name = "NumericUpDown61"
         Me.NumericUpDown61.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown61.TabIndex = 0
+        Me.NumericUpDown61.TabIndex = 60
         Me.NumericUpDown61.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label117
@@ -1307,7 +1360,7 @@ Partial Class Items_Form
         Me.NumericUpDown60.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown60.Name = "NumericUpDown60"
         Me.NumericUpDown60.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown60.TabIndex = 0
+        Me.NumericUpDown60.TabIndex = 58
         Me.NumericUpDown60.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown71
@@ -1320,7 +1373,7 @@ Partial Class Items_Form
         Me.NumericUpDown71.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown71.Name = "NumericUpDown71"
         Me.NumericUpDown71.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown71.TabIndex = 0
+        Me.NumericUpDown71.TabIndex = 51
         Me.NumericUpDown71.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label108
@@ -1344,7 +1397,7 @@ Partial Class Items_Form
         Me.NumericUpDown70.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown70.Name = "NumericUpDown70"
         Me.NumericUpDown70.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown70.TabIndex = 0
+        Me.NumericUpDown70.TabIndex = 53
         Me.NumericUpDown70.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown59
@@ -1357,7 +1410,7 @@ Partial Class Items_Form
         Me.NumericUpDown59.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown59.Name = "NumericUpDown59"
         Me.NumericUpDown59.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown59.TabIndex = 0
+        Me.NumericUpDown59.TabIndex = 56
         Me.NumericUpDown59.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown69
@@ -1370,7 +1423,7 @@ Partial Class Items_Form
         Me.NumericUpDown69.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown69.Name = "NumericUpDown69"
         Me.NumericUpDown69.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown69.TabIndex = 0
+        Me.NumericUpDown69.TabIndex = 55
         Me.NumericUpDown69.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown58
@@ -1383,7 +1436,7 @@ Partial Class Items_Form
         Me.NumericUpDown58.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown58.Name = "NumericUpDown58"
         Me.NumericUpDown58.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown58.TabIndex = 0
+        Me.NumericUpDown58.TabIndex = 54
         Me.NumericUpDown58.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown65
@@ -1396,7 +1449,7 @@ Partial Class Items_Form
         Me.NumericUpDown65.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown65.Name = "NumericUpDown65"
         Me.NumericUpDown65.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown65.TabIndex = 0
+        Me.NumericUpDown65.TabIndex = 61
         Me.NumericUpDown65.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown57
@@ -1409,7 +1462,7 @@ Partial Class Items_Form
         Me.NumericUpDown57.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown57.Name = "NumericUpDown57"
         Me.NumericUpDown57.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown57.TabIndex = 0
+        Me.NumericUpDown57.TabIndex = 52
         Me.NumericUpDown57.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown68
@@ -1422,7 +1475,7 @@ Partial Class Items_Form
         Me.NumericUpDown68.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown68.Name = "NumericUpDown68"
         Me.NumericUpDown68.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown68.TabIndex = 0
+        Me.NumericUpDown68.TabIndex = 57
         Me.NumericUpDown68.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown63
@@ -1435,7 +1488,7 @@ Partial Class Items_Form
         Me.NumericUpDown63.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown63.Name = "NumericUpDown63"
         Me.NumericUpDown63.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown63.TabIndex = 0
+        Me.NumericUpDown63.TabIndex = 63
         Me.NumericUpDown63.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown56
@@ -1448,7 +1501,7 @@ Partial Class Items_Form
         Me.NumericUpDown56.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown56.Name = "NumericUpDown56"
         Me.NumericUpDown56.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown56.TabIndex = 0
+        Me.NumericUpDown56.TabIndex = 50
         Me.NumericUpDown56.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown67
@@ -1461,7 +1514,7 @@ Partial Class Items_Form
         Me.NumericUpDown67.Minimum = New Decimal(New Integer() {999, 0, 0, -2147483648})
         Me.NumericUpDown67.Name = "NumericUpDown67"
         Me.NumericUpDown67.Size = New System.Drawing.Size(44, 20)
-        Me.NumericUpDown67.TabIndex = 0
+        Me.NumericUpDown67.TabIndex = 59
         Me.NumericUpDown67.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label53
@@ -1517,12 +1570,13 @@ Partial Class Items_Form
         'ComboBox22
         '
         Me.ComboBox22.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox22.DropDownWidth = 200
         Me.ComboBox22.FormattingEnabled = True
         Me.ComboBox22.Items.AddRange(New Object() {"None"})
         Me.ComboBox22.Location = New System.Drawing.Point(6, 32)
         Me.ComboBox22.Name = "ComboBox22"
         Me.ComboBox22.Size = New System.Drawing.Size(134, 22)
-        Me.ComboBox22.TabIndex = 16
+        Me.ComboBox22.TabIndex = 24
         '
         'NumericUpDown25
         '
@@ -1531,7 +1585,7 @@ Partial Class Items_Form
         Me.NumericUpDown25.Minimum = New Decimal(New Integer() {32000, 0, 0, -2147483648})
         Me.NumericUpDown25.Name = "NumericUpDown25"
         Me.NumericUpDown25.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown25.TabIndex = 0
+        Me.NumericUpDown25.TabIndex = 25
         Me.NumericUpDown25.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'NumericUpDown24
@@ -1539,7 +1593,7 @@ Partial Class Items_Form
         Me.NumericUpDown24.Location = New System.Drawing.Point(253, 32)
         Me.NumericUpDown24.Name = "NumericUpDown24"
         Me.NumericUpDown24.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown24.TabIndex = 0
+        Me.NumericUpDown24.TabIndex = 26
         Me.NumericUpDown24.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label40
@@ -1593,7 +1647,7 @@ Partial Class Items_Form
         Me.ComboBox21.MaxDropDownItems = 15
         Me.ComboBox21.Name = "ComboBox21"
         Me.ComboBox21.Size = New System.Drawing.Size(134, 22)
-        Me.ComboBox21.TabIndex = 16
+        Me.ComboBox21.TabIndex = 18
         '
         'Label24
         '
@@ -1613,7 +1667,7 @@ Partial Class Items_Form
         Me.ComboBox20.MaxDropDownItems = 15
         Me.ComboBox20.Name = "ComboBox20"
         Me.ComboBox20.Size = New System.Drawing.Size(134, 22)
-        Me.ComboBox20.TabIndex = 16
+        Me.ComboBox20.TabIndex = 14
         '
         'Label27
         '
@@ -1642,7 +1696,7 @@ Partial Class Items_Form
         Me.ComboBox19.MaxDropDownItems = 15
         Me.ComboBox19.Name = "ComboBox19"
         Me.ComboBox19.Size = New System.Drawing.Size(134, 22)
-        Me.ComboBox19.TabIndex = 16
+        Me.ComboBox19.TabIndex = 10
         '
         'GroupBox20
         '
@@ -1667,7 +1721,7 @@ Partial Class Items_Form
         Me.NumericUpDown23.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown23.Name = "NumericUpDown23"
         Me.NumericUpDown23.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown23.TabIndex = 18
+        Me.NumericUpDown23.TabIndex = 23
         Me.NumericUpDown23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'NumericUpDown19
@@ -1677,7 +1731,7 @@ Partial Class Items_Form
         Me.NumericUpDown19.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown19.Name = "NumericUpDown19"
         Me.NumericUpDown19.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown19.TabIndex = 18
+        Me.NumericUpDown19.TabIndex = 13
         Me.NumericUpDown19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown20
@@ -1687,7 +1741,7 @@ Partial Class Items_Form
         Me.NumericUpDown20.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown20.Name = "NumericUpDown20"
         Me.NumericUpDown20.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown20.TabIndex = 18
+        Me.NumericUpDown20.TabIndex = 17
         Me.NumericUpDown20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label37
@@ -1724,7 +1778,7 @@ Partial Class Items_Form
         Me.NumericUpDown21.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown21.Name = "NumericUpDown21"
         Me.NumericUpDown21.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown21.TabIndex = 18
+        Me.NumericUpDown21.TabIndex = 21
         Me.NumericUpDown21.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label35
@@ -1759,7 +1813,7 @@ Partial Class Items_Form
         Me.NumericUpDown22.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown22.Name = "NumericUpDown22"
         Me.NumericUpDown22.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown22.TabIndex = 18
+        Me.NumericUpDown22.TabIndex = 22
         Me.NumericUpDown22.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'NumericUpDown16
@@ -1769,7 +1823,7 @@ Partial Class Items_Form
         Me.NumericUpDown16.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown16.Name = "NumericUpDown16"
         Me.NumericUpDown16.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown16.TabIndex = 18
+        Me.NumericUpDown16.TabIndex = 12
         Me.NumericUpDown16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label36
@@ -1788,7 +1842,7 @@ Partial Class Items_Form
         Me.NumericUpDown17.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown17.Name = "NumericUpDown17"
         Me.NumericUpDown17.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown17.TabIndex = 18
+        Me.NumericUpDown17.TabIndex = 16
         Me.NumericUpDown17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label30
@@ -1816,7 +1870,7 @@ Partial Class Items_Form
         Me.NumericUpDown18.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown18.Name = "NumericUpDown18"
         Me.NumericUpDown18.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown18.TabIndex = 18
+        Me.NumericUpDown18.TabIndex = 20
         Me.NumericUpDown18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label32
@@ -1850,7 +1904,7 @@ Partial Class Items_Form
         Me.NumericUpDown15.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown15.Name = "NumericUpDown15"
         Me.NumericUpDown15.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown15.TabIndex = 18
+        Me.NumericUpDown15.TabIndex = 19
         Me.NumericUpDown15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown14
@@ -1860,7 +1914,7 @@ Partial Class Items_Form
         Me.NumericUpDown14.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown14.Name = "NumericUpDown14"
         Me.NumericUpDown14.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown14.TabIndex = 18
+        Me.NumericUpDown14.TabIndex = 15
         Me.NumericUpDown14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label28
@@ -1888,7 +1942,7 @@ Partial Class Items_Form
         Me.NumericUpDown13.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
         Me.NumericUpDown13.Name = "NumericUpDown13"
         Me.NumericUpDown13.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown13.TabIndex = 18
+        Me.NumericUpDown13.TabIndex = 11
         Me.NumericUpDown13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label25
@@ -1934,7 +1988,7 @@ Partial Class Items_Form
         Me.ComboBox25.Location = New System.Drawing.Point(152, 34)
         Me.ComboBox25.Name = "ComboBox25"
         Me.ComboBox25.Size = New System.Drawing.Size(125, 22)
-        Me.ComboBox25.TabIndex = 0
+        Me.ComboBox25.TabIndex = 17
         '
         'ComboBox24
         '
@@ -1944,7 +1998,7 @@ Partial Class Items_Form
         Me.ComboBox24.Location = New System.Drawing.Point(6, 34)
         Me.ComboBox24.Name = "ComboBox24"
         Me.ComboBox24.Size = New System.Drawing.Size(125, 22)
-        Me.ComboBox24.TabIndex = 0
+        Me.ComboBox24.TabIndex = 16
         '
         'Label49
         '
@@ -1980,7 +2034,7 @@ Partial Class Items_Form
         Me.NumericUpDown31.Minimum = New Decimal(New Integer() {1, 0, 0, -2147483648})
         Me.NumericUpDown31.Name = "NumericUpDown31"
         Me.NumericUpDown31.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown31.TabIndex = 2
+        Me.NumericUpDown31.TabIndex = 18
         Me.NumericUpDown31.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'GroupBox23
@@ -2056,7 +2110,7 @@ Partial Class Items_Form
         Me.NumericUpDown30.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown30.Name = "NumericUpDown30"
         Me.NumericUpDown30.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown30.TabIndex = 2
+        Me.NumericUpDown30.TabIndex = 15
         Me.NumericUpDown30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.NumericUpDown30.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
@@ -2067,7 +2121,7 @@ Partial Class Items_Form
         Me.NumericUpDown29.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown29.Name = "NumericUpDown29"
         Me.NumericUpDown29.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown29.TabIndex = 2
+        Me.NumericUpDown29.TabIndex = 14
         Me.NumericUpDown29.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.NumericUpDown29.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
@@ -2078,7 +2132,7 @@ Partial Class Items_Form
         Me.NumericUpDown28.Minimum = New Decimal(New Integer() {250, 0, 0, -2147483648})
         Me.NumericUpDown28.Name = "NumericUpDown28"
         Me.NumericUpDown28.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown28.TabIndex = 2
+        Me.NumericUpDown28.TabIndex = 13
         Me.NumericUpDown28.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown27
@@ -2088,7 +2142,7 @@ Partial Class Items_Form
         Me.NumericUpDown27.Minimum = New Decimal(New Integer() {250, 0, 0, -2147483648})
         Me.NumericUpDown27.Name = "NumericUpDown27"
         Me.NumericUpDown27.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown27.TabIndex = 2
+        Me.NumericUpDown27.TabIndex = 12
         Me.NumericUpDown27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown26
@@ -2097,7 +2151,7 @@ Partial Class Items_Form
         Me.NumericUpDown26.Maximum = New Decimal(New Integer() {32000, 0, 0, 0})
         Me.NumericUpDown26.Name = "NumericUpDown26"
         Me.NumericUpDown26.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown26.TabIndex = 2
+        Me.NumericUpDown26.TabIndex = 11
         Me.NumericUpDown26.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label41
@@ -2117,7 +2171,7 @@ Partial Class Items_Form
         Me.ComboBox23.MaxDropDownItems = 20
         Me.ComboBox23.Name = "ComboBox23"
         Me.ComboBox23.Size = New System.Drawing.Size(125, 22)
-        Me.ComboBox23.TabIndex = 0
+        Me.ComboBox23.TabIndex = 10
         '
         'TabPage3
         '
@@ -2157,7 +2211,7 @@ Partial Class Items_Form
         Me.NumericUpDown32.Maximum = New Decimal(New Integer() {15000, 0, 0, 0})
         Me.NumericUpDown32.Name = "NumericUpDown32"
         Me.NumericUpDown32.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown32.TabIndex = 2
+        Me.NumericUpDown32.TabIndex = 40
         Me.NumericUpDown32.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label51
@@ -2176,7 +2230,7 @@ Partial Class Items_Form
         Me.CheckBox15.Location = New System.Drawing.Point(6, 20)
         Me.CheckBox15.Name = "CheckBox15"
         Me.CheckBox15.Size = New System.Drawing.Size(112, 18)
-        Me.CheckBox15.TabIndex = 0
+        Me.CheckBox15.TabIndex = 39
         Me.CheckBox15.Text = "Use Hand Ground"
         Me.CheckBox15.UseVisualStyleBackColor = False
         '
@@ -2188,7 +2242,7 @@ Partial Class Items_Form
         Me.Button5.Location = New System.Drawing.Point(339, 52)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(80, 26)
-        Me.Button5.TabIndex = 7
+        Me.Button5.TabIndex = 13
         Me.Button5.Text = "Save Desc"
         Me.ToolTip1.SetToolTip(Me.Button5, "Save description to MSG file.")
         Me.Button5.UseVisualStyleBackColor = True
@@ -2201,7 +2255,7 @@ Partial Class Items_Form
         Me.Button4.Location = New System.Drawing.Point(339, 6)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(80, 26)
-        Me.Button4.TabIndex = 7
+        Me.Button4.TabIndex = 11
         Me.Button4.Text = "Save Name"
         Me.ToolTip1.SetToolTip(Me.Button4, "Save name to MSG.")
         Me.Button4.UseVisualStyleBackColor = True
@@ -2214,7 +2268,7 @@ Partial Class Items_Form
         Me.TextBox30.Name = "TextBox30"
         Me.TextBox30.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TextBox30.Size = New System.Drawing.Size(327, 68)
-        Me.TextBox30.TabIndex = 1
+        Me.TextBox30.TabIndex = 12
         '
         'TextBox29
         '
@@ -2222,7 +2276,7 @@ Partial Class Items_Form
         Me.TextBox29.Location = New System.Drawing.Point(6, 6)
         Me.TextBox29.Name = "TextBox29"
         Me.TextBox29.Size = New System.Drawing.Size(327, 20)
-        Me.TextBox29.TabIndex = 1
+        Me.TextBox29.TabIndex = 10
         '
         'GroupBox6
         '
@@ -2244,7 +2298,7 @@ Partial Class Items_Form
         Me.CheckBox11.Location = New System.Drawing.Point(6, 118)
         Me.CheckBox11.Name = "CheckBox11"
         Me.CheckBox11.Size = New System.Drawing.Size(57, 18)
-        Me.CheckBox11.TabIndex = 0
+        Me.CheckBox11.TabIndex = 36
         Me.CheckBox11.Text = "Pickup"
         Me.CheckBox11.UseVisualStyleBackColor = True
         '
@@ -2257,7 +2311,7 @@ Partial Class Items_Form
         Me.CheckBox10.Location = New System.Drawing.Point(6, 94)
         Me.CheckBox10.Name = "CheckBox10"
         Me.CheckBox10.Size = New System.Drawing.Size(45, 18)
-        Me.CheckBox10.TabIndex = 0
+        Me.CheckBox10.TabIndex = 35
         Me.CheckBox10.Text = "Talk"
         Me.CheckBox10.UseVisualStyleBackColor = True
         '
@@ -2268,7 +2322,7 @@ Partial Class Items_Form
         Me.CheckBox9.Location = New System.Drawing.Point(6, 69)
         Me.CheckBox9.Name = "CheckBox9"
         Me.CheckBox9.Size = New System.Drawing.Size(49, 18)
-        Me.CheckBox9.TabIndex = 0
+        Me.CheckBox9.TabIndex = 34
         Me.CheckBox9.Text = "Look"
         Me.CheckBox9.UseVisualStyleBackColor = True
         '
@@ -2278,7 +2332,7 @@ Partial Class Items_Form
         Me.CheckBox8.Location = New System.Drawing.Point(6, 44)
         Me.CheckBox8.Name = "CheckBox8"
         Me.CheckBox8.Size = New System.Drawing.Size(62, 18)
-        Me.CheckBox8.TabIndex = 0
+        Me.CheckBox8.TabIndex = 33
         Me.CheckBox8.Text = "Use On"
         Me.CheckBox8.UseVisualStyleBackColor = True
         '
@@ -2288,7 +2342,7 @@ Partial Class Items_Form
         Me.CheckBox7.Location = New System.Drawing.Point(6, 19)
         Me.CheckBox7.Name = "CheckBox7"
         Me.CheckBox7.Size = New System.Drawing.Size(45, 18)
-        Me.CheckBox7.TabIndex = 0
+        Me.CheckBox7.TabIndex = 32
         Me.CheckBox7.Text = "Use"
         Me.CheckBox7.UseVisualStyleBackColor = True
         '
@@ -2315,7 +2369,7 @@ Partial Class Items_Form
         Me.NumericUpDown64.Maximum = New Decimal(New Integer() {400000, 0, 0, 0})
         Me.NumericUpDown64.Name = "NumericUpDown64"
         Me.NumericUpDown64.Size = New System.Drawing.Size(68, 20)
-        Me.NumericUpDown64.TabIndex = 8
+        Me.NumericUpDown64.TabIndex = 17
         Me.NumericUpDown64.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label58
@@ -2331,14 +2385,14 @@ Partial Class Items_Form
         'ComboBox9
         '
         Me.ComboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox9.DropDownWidth = 500
+        Me.ComboBox9.DropDownWidth = 600
         Me.ComboBox9.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ComboBox9.Items.AddRange(New Object() {"None"})
-        Me.ComboBox9.Location = New System.Drawing.Point(6, 20)
+        Me.ComboBox9.Location = New System.Drawing.Point(6, 19)
         Me.ComboBox9.MaxDropDownItems = 20
         Me.ComboBox9.Name = "ComboBox9"
-        Me.ComboBox9.Size = New System.Drawing.Size(183, 23)
-        Me.ComboBox9.TabIndex = 0
+        Me.ComboBox9.Size = New System.Drawing.Size(196, 23)
+        Me.ComboBox9.TabIndex = 14
         '
         'Label66
         '
@@ -2352,14 +2406,13 @@ Partial Class Items_Form
         '
         'ComboBox3
         '
-        Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "@", "#", "$", "_"})
-        Me.ComboBox3.Location = New System.Drawing.Point(281, 20)
+        Me.ComboBox3.Items.AddRange(New Object() {"48 (0)", "49 (1)", "50 (2)", "51 (3)", "52 (4)", "53 (5)", "54 (6)", "55 (7)", "56 (8)", "57 (9)", "65 (A)", "66 (B)", "67 (C)", "68 (D)", "69 (E)", "70 (F)", "71 (G)", "72 (H)", "73 (I)", "74 (J)", "75 (K)", "76 (L)", "77 (M)", "78 (N)", "79 (O)", "80 (P)", "81 (Q)", "82 (R)", "83 (S)", "84 (T)", "85 (U)", "86 (V)", "87 (W)", "88 (X)", "89 (Y)", "90 (Z)", "33 (!)", "64 (@)", "35 (#)", "36 ($)", "95 (_)"})
+        Me.ComboBox3.Location = New System.Drawing.Point(272, 20)
         Me.ComboBox3.MaxDropDownItems = 10
         Me.ComboBox3.Name = "ComboBox3"
-        Me.ComboBox3.Size = New System.Drawing.Size(46, 22)
-        Me.ComboBox3.TabIndex = 0
+        Me.ComboBox3.Size = New System.Drawing.Size(61, 22)
+        Me.ComboBox3.TabIndex = 16
         '
         'ComboBox8
         '
@@ -2369,7 +2422,7 @@ Partial Class Items_Form
         Me.ComboBox8.Location = New System.Drawing.Point(208, 20)
         Me.ComboBox8.Name = "ComboBox8"
         Me.ComboBox8.Size = New System.Drawing.Size(58, 22)
-        Me.ComboBox8.TabIndex = 0
+        Me.ComboBox8.TabIndex = 15
         '
         'Label23
         '
@@ -2377,9 +2430,9 @@ Partial Class Items_Form
         Me.Label23.ForeColor = System.Drawing.SystemColors.Highlight
         Me.Label23.Location = New System.Drawing.Point(344, 0)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(44, 14)
+        Me.Label23.Size = New System.Drawing.Size(63, 14)
         Me.Label23.TabIndex = 1
-        Me.Label23.Text = "Desc ID"
+        Me.Label23.Text = "Message ID"
         '
         'GroupBox5
         '
@@ -2404,7 +2457,7 @@ Partial Class Items_Form
         Me.CheckBox24.Location = New System.Drawing.Point(106, 100)
         Me.CheckBox24.Name = "CheckBox24"
         Me.CheckBox24.Size = New System.Drawing.Size(82, 18)
-        Me.CheckBox24.TabIndex = 0
+        Me.CheckBox24.TabIndex = 30
         Me.CheckBox24.Text = "No Highlight"
         Me.CheckBox24.UseVisualStyleBackColor = True
         '
@@ -2414,7 +2467,7 @@ Partial Class Items_Form
         Me.CheckBox5.Location = New System.Drawing.Point(6, 120)
         Me.CheckBox5.Name = "CheckBox5"
         Me.CheckBox5.Size = New System.Drawing.Size(74, 18)
-        Me.CheckBox5.TabIndex = 0
+        Me.CheckBox5.TabIndex = 23
         Me.CheckBox5.Text = "Light Thru"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
@@ -2425,7 +2478,7 @@ Partial Class Items_Form
         Me.CheckBox13.Location = New System.Drawing.Point(106, 125)
         Me.CheckBox13.Name = "CheckBox13"
         Me.CheckBox13.Size = New System.Drawing.Size(81, 18)
-        Me.CheckBox13.TabIndex = 0
+        Me.CheckBox13.TabIndex = 31
         Me.CheckBox13.Text = "Hidden Item"
         Me.CheckBox13.UseVisualStyleBackColor = False
         '
@@ -2451,7 +2504,7 @@ Partial Class Items_Form
         Me.RadioButton5.Location = New System.Drawing.Point(6, 69)
         Me.RadioButton5.Name = "RadioButton5"
         Me.RadioButton5.Size = New System.Drawing.Size(59, 18)
-        Me.RadioButton5.TabIndex = 1
+        Me.RadioButton5.TabIndex = 26
         Me.RadioButton5.Text = "Energy"
         Me.RadioButton5.UseVisualStyleBackColor = True
         '
@@ -2461,7 +2514,7 @@ Partial Class Items_Form
         Me.RadioButton4.Location = New System.Drawing.Point(70, 69)
         Me.RadioButton4.Name = "RadioButton4"
         Me.RadioButton4.Size = New System.Drawing.Size(53, 18)
-        Me.RadioButton4.TabIndex = 1
+        Me.RadioButton4.TabIndex = 29
         Me.RadioButton4.Text = "Glass"
         Me.RadioButton4.UseVisualStyleBackColor = True
         '
@@ -2471,7 +2524,7 @@ Partial Class Items_Form
         Me.RadioButton3.Location = New System.Drawing.Point(70, 44)
         Me.RadioButton3.Name = "RadioButton3"
         Me.RadioButton3.Size = New System.Drawing.Size(44, 18)
-        Me.RadioButton3.TabIndex = 1
+        Me.RadioButton3.TabIndex = 28
         Me.RadioButton3.Text = "Red"
         Me.RadioButton3.UseVisualStyleBackColor = True
         '
@@ -2481,7 +2534,7 @@ Partial Class Items_Form
         Me.RadioButton2.Location = New System.Drawing.Point(6, 44)
         Me.RadioButton2.Name = "RadioButton2"
         Me.RadioButton2.Size = New System.Drawing.Size(59, 18)
-        Me.RadioButton2.TabIndex = 1
+        Me.RadioButton2.TabIndex = 25
         Me.RadioButton2.Text = "Stream"
         Me.RadioButton2.UseVisualStyleBackColor = True
         '
@@ -2491,7 +2544,7 @@ Partial Class Items_Form
         Me.RadioButton1.Location = New System.Drawing.Point(70, 19)
         Me.RadioButton1.Name = "RadioButton1"
         Me.RadioButton1.Size = New System.Drawing.Size(45, 18)
-        Me.RadioButton1.TabIndex = 1
+        Me.RadioButton1.TabIndex = 27
         Me.RadioButton1.Text = "Wall"
         Me.RadioButton1.UseVisualStyleBackColor = True
         '
@@ -2501,7 +2554,7 @@ Partial Class Items_Form
         Me.CheckBox6.Location = New System.Drawing.Point(6, 19)
         Me.CheckBox6.Name = "CheckBox6"
         Me.CheckBox6.Size = New System.Drawing.Size(51, 18)
-        Me.CheckBox6.TabIndex = 0
+        Me.CheckBox6.TabIndex = 24
         Me.CheckBox6.Text = "None"
         Me.CheckBox6.UseVisualStyleBackColor = True
         '
@@ -2511,7 +2564,7 @@ Partial Class Items_Form
         Me.CheckBox4.Location = New System.Drawing.Point(6, 95)
         Me.CheckBox4.Name = "CheckBox4"
         Me.CheckBox4.Size = New System.Drawing.Size(79, 18)
-        Me.CheckBox4.TabIndex = 0
+        Me.CheckBox4.TabIndex = 22
         Me.CheckBox4.Text = "Shoot Thru"
         Me.CheckBox4.UseVisualStyleBackColor = True
         '
@@ -2521,7 +2574,7 @@ Partial Class Items_Form
         Me.CheckBox3.Location = New System.Drawing.Point(6, 70)
         Me.CheckBox3.Name = "CheckBox3"
         Me.CheckBox3.Size = New System.Drawing.Size(69, 18)
-        Me.CheckBox3.TabIndex = 0
+        Me.CheckBox3.TabIndex = 21
         Me.CheckBox3.Text = "Multi Hex"
         Me.CheckBox3.UseVisualStyleBackColor = True
         '
@@ -2531,7 +2584,7 @@ Partial Class Items_Form
         Me.CheckBox2.Location = New System.Drawing.Point(6, 45)
         Me.CheckBox2.Name = "CheckBox2"
         Me.CheckBox2.Size = New System.Drawing.Size(68, 18)
-        Me.CheckBox2.TabIndex = 0
+        Me.CheckBox2.TabIndex = 20
         Me.CheckBox2.Text = "No Block"
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
@@ -2541,7 +2594,7 @@ Partial Class Items_Form
         Me.CheckBox1.Location = New System.Drawing.Point(6, 20)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(43, 18)
-        Me.CheckBox1.TabIndex = 0
+        Me.CheckBox1.TabIndex = 19
         Me.CheckBox1.Text = "Flat"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
@@ -2564,7 +2617,7 @@ Partial Class Items_Form
         Me.NumericUpDown37.Location = New System.Drawing.Point(58, 34)
         Me.NumericUpDown37.Name = "NumericUpDown37"
         Me.NumericUpDown37.Size = New System.Drawing.Size(40, 20)
-        Me.NumericUpDown37.TabIndex = 0
+        Me.NumericUpDown37.TabIndex = 38
         Me.NumericUpDown37.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown36
@@ -2573,7 +2626,7 @@ Partial Class Items_Form
         Me.NumericUpDown36.Maximum = New Decimal(New Integer() {8, 0, 0, 0})
         Me.NumericUpDown36.Name = "NumericUpDown36"
         Me.NumericUpDown36.Size = New System.Drawing.Size(40, 20)
-        Me.NumericUpDown36.TabIndex = 0
+        Me.NumericUpDown36.TabIndex = 37
         Me.NumericUpDown36.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label65
@@ -2625,7 +2678,7 @@ Partial Class Items_Form
         Me.NumericUpDown39.Maximum = New Decimal(New Integer() {4095, 0, 0, 0})
         Me.NumericUpDown39.Name = "NumericUpDown39"
         Me.NumericUpDown39.Size = New System.Drawing.Size(40, 20)
-        Me.NumericUpDown39.TabIndex = 26
+        Me.NumericUpDown39.TabIndex = 104
         Me.NumericUpDown39.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'NumericUpDown1
@@ -2634,7 +2687,7 @@ Partial Class Items_Form
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {16777215, 0, 0, 0})
         Me.NumericUpDown1.Name = "NumericUpDown1"
         Me.NumericUpDown1.Size = New System.Drawing.Size(55, 20)
-        Me.NumericUpDown1.TabIndex = 25
+        Me.NumericUpDown1.TabIndex = 103
         Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown1.ThousandsSeparator = True
         '
@@ -2644,7 +2697,7 @@ Partial Class Items_Form
         Me.NumericUpDown38.Maximum = New Decimal(New Integer() {4095, 0, 0, 0})
         Me.NumericUpDown38.Name = "NumericUpDown38"
         Me.NumericUpDown38.Size = New System.Drawing.Size(45, 20)
-        Me.NumericUpDown38.TabIndex = 27
+        Me.NumericUpDown38.TabIndex = 105
         Me.NumericUpDown38.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label68
@@ -2654,7 +2707,7 @@ Partial Class Items_Form
         Me.Label68.Location = New System.Drawing.Point(79, 0)
         Me.Label68.Name = "Label68"
         Me.Label68.Size = New System.Drawing.Size(28, 14)
-        Me.Label68.TabIndex = 1
+        Me.Label68.TabIndex = 0
         Me.Label68.Text = "Size"
         '
         'Label69
@@ -2664,7 +2717,7 @@ Partial Class Items_Form
         Me.Label69.Location = New System.Drawing.Point(129, 0)
         Me.Label69.Name = "Label69"
         Me.Label69.Size = New System.Drawing.Size(40, 14)
-        Me.Label69.TabIndex = 1
+        Me.Label69.TabIndex = 0
         Me.Label69.Text = "Weight"
         '
         'GroupBox9
@@ -2687,17 +2740,17 @@ Partial Class Items_Form
         Me.ComboBox7.Location = New System.Drawing.Point(6, 16)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(110, 22)
-        Me.ComboBox7.TabIndex = 22
+        Me.ComboBox7.TabIndex = 99
         Me.ToolTip1.SetToolTip(Me.ComboBox7, "Change type of item.")
         '
         'Label57
         '
         Me.Label57.AutoSize = True
         Me.Label57.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label57.Location = New System.Drawing.Point(28, 140)
+        Me.Label57.Location = New System.Drawing.Point(29, 16)
         Me.Label57.Name = "Label57"
         Me.Label57.Size = New System.Drawing.Size(71, 14)
-        Me.Label57.TabIndex = 1
+        Me.Label57.TabIndex = 0
         Me.Label57.Text = "Inventar FID"
         '
         'ComboBox2
@@ -2705,11 +2758,11 @@ Partial Class Items_Form
         Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox2.FormattingEnabled = True
         Me.ComboBox2.Items.AddRange(New Object() {"None"})
-        Me.ComboBox2.Location = New System.Drawing.Point(14, 157)
+        Me.ComboBox2.Location = New System.Drawing.Point(6, 158)
         Me.ComboBox2.MaxDropDownItems = 20
         Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(100, 22)
-        Me.ComboBox2.TabIndex = 23
+        Me.ComboBox2.Size = New System.Drawing.Size(120, 22)
+        Me.ComboBox2.TabIndex = 101
         '
         'GroupBox4
         '
@@ -2721,7 +2774,7 @@ Partial Class Items_Form
         Me.GroupBox4.Controls.Add(Me.ComboBox2)
         Me.GroupBox4.Location = New System.Drawing.Point(437, 60)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(259, 193)
+        Me.GroupBox4.Size = New System.Drawing.Size(259, 191)
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Sprite"
@@ -2730,28 +2783,28 @@ Partial Class Items_Form
         '
         Me.Label44.AutoSize = True
         Me.Label44.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label44.Location = New System.Drawing.Point(156, 140)
+        Me.Label44.Location = New System.Drawing.Point(157, 16)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(67, 14)
-        Me.Label44.TabIndex = 2
+        Me.Label44.TabIndex = 0
         Me.Label44.Text = "Ground FID"
         '
         'ComboBox1
         '
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.IntegralHeight = False
-        Me.ComboBox1.Location = New System.Drawing.Point(144, 156)
+        Me.ComboBox1.Location = New System.Drawing.Point(132, 158)
         Me.ComboBox1.MaxDropDownItems = 20
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(100, 22)
-        Me.ComboBox1.TabIndex = 24
+        Me.ComboBox1.Size = New System.Drawing.Size(120, 22)
+        Me.ComboBox1.TabIndex = 102
         '
         'PictureBox4
         '
         Me.PictureBox4.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox4.Location = New System.Drawing.Point(6, 20)
+        Me.PictureBox4.Location = New System.Drawing.Point(6, 33)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(120, 118)
         Me.PictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -2763,7 +2816,7 @@ Partial Class Items_Form
         Me.PictureBox1.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox1.Location = New System.Drawing.Point(132, 20)
+        Me.PictureBox1.Location = New System.Drawing.Point(132, 33)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(120, 118)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -2778,7 +2831,7 @@ Partial Class Items_Form
         Me.Button2.Location = New System.Drawing.Point(507, 308)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(60, 34)
-        Me.Button2.TabIndex = 13
+        Me.Button2.TabIndex = 108
         Me.Button2.Text = "Reload"
         Me.ToolTip1.SetToolTip(Me.Button2, "Reload prototype data from the current Pro file.")
         Me.Button2.UseVisualStyleBackColor = True
@@ -2790,7 +2843,7 @@ Partial Class Items_Form
         Me.Button1.Location = New System.Drawing.Point(441, 308)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(60, 34)
-        Me.Button1.TabIndex = 12
+        Me.Button1.TabIndex = 107
         Me.Button1.Text = "Restore"
         Me.ToolTip1.SetToolTip(Me.Button1, "Restore prototype data from DAT file.")
         Me.Button1.UseVisualStyleBackColor = True
@@ -2814,7 +2867,7 @@ Partial Class Items_Form
         Me.TextBox33.Name = "TextBox33"
         Me.TextBox33.ReadOnly = True
         Me.TextBox33.Size = New System.Drawing.Size(110, 20)
-        Me.TextBox33.TabIndex = 28
+        Me.TextBox33.TabIndex = 100
         Me.TextBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Button6
@@ -2826,7 +2879,7 @@ Partial Class Items_Form
         Me.Button6.Location = New System.Drawing.Point(622, 262)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(74, 40)
-        Me.Button6.TabIndex = 10
+        Me.Button6.TabIndex = 106
         Me.Button6.Text = "Save Pro"
         Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.ToolTip1.SetToolTip(Me.Button6, "Save change data to Pro file.")
@@ -2834,6 +2887,7 @@ Partial Class Items_Form
         '
         'Button3
         '
+        Me.Button3.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -2848,8 +2902,10 @@ Partial Class Items_Form
         '
         'Items_Form
         '
+        Me.AcceptButton = Me.Button6
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Button3
         Me.ClientSize = New System.Drawing.Size(701, 348)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.GroupBox4)
@@ -3213,4 +3269,8 @@ Partial Class Items_Form
     Friend WithEvents Label53 As System.Windows.Forms.Label
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents ComboBox19 As System.Windows.Forms.ComboBox
+    Friend WithEvents lblArmorScore As System.Windows.Forms.Label
+    Friend WithEvents lblWeaponScore As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label54 As System.Windows.Forms.Label
 End Class

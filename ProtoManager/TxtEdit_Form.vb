@@ -362,8 +362,8 @@ BadFormat:
 
         TextBox1.Enabled = False
 
-        'On Error Resume Next
-        If (TextBox1.Text <> TextBox1.Tag.ToString) AndAlso TextBox1.Text.Length > 0 Then TxtChangEn = True
+        Dim valueText As String = TextBox1.Text
+        If (valueText <> TextBox1.Tag.ToString) AndAlso valueText.Length > 0 Then TxtChangEn = True
 
         If TxtChangEn OrElse ListView1.Items.Item(LocIndex).BackColor = Color.Pink Then
             ListView1.Items.Item(LocIndex).BackColor = Color.MistyRose
@@ -371,42 +371,46 @@ BadFormat:
             ListView1.Items.Item(LocIndex).BackColor = Color.White
         End If
         If TxtChangEn Then
+            Dim value As Integer
             If CheckBox1.Checked Then
-                TextBox1.Text = CStr(Integer.Parse(TextBox1.Text, NumberStyles.HexNumber))
+                value = Integer.Parse(valueText, NumberStyles.AllowHexSpecifier)
+                valueText = value.ToString()
+            Else
+                If (Integer.TryParse(valueText, value) = False) Then Exit Sub
             End If
 
-            ListView1.Items.Item(LocIndex).SubItems(1).Text = TextBox1.Text
-            ListView1.Items.Item(LocIndex).SubItems(2).Text = "0x" & Convert.ToString(CInt(TextBox1.Text), 16).ToUpper
+            ListView1.Items.Item(LocIndex).SubItems(1).Text = valueText
+            ListView1.Items.Item(LocIndex).SubItems(2).Text = "0x" & Convert.ToString(value, 16).ToUpper
 
             If type = ProType.Critter Then
-                CrttrProData(LocIndex) = CInt(TextBox1.Text)
+                CrttrProData(LocIndex) = value
             Else
                 If LocIndex <= 13 Then
-                    ItemProData(LocIndex) = CInt(TextBox1.Text)
+                    ItemProData(LocIndex) = value
                 Else
                     If LocIndex = 14 Then
-                        SndProData = CInt(TextBox1.Text)
+                        SndProData = CByte(value)
                     Else
                         LocIndex -= 15
                         Select Case ItemProData(Prototypes.ItemSubType)
                             Case ItemType.Weapon
                                 If LocIndex > 14 Then
-                                    wSndProData = CInt(TextBox1.Text)
+                                    wSndProData = CByte(value)
                                 Else
-                                    WpnItmProData(LocIndex) = CInt(TextBox1.Text)
+                                    WpnItmProData(LocIndex) = value
                                 End If
                             Case ItemType.Armor
-                                ArmItmProData(LocIndex) = CInt(TextBox1.Text)
+                                ArmItmProData(LocIndex) = value
                             Case ItemType.Ammo
-                                AmmItmProData(LocIndex) = CInt(TextBox1.Text)
+                                AmmItmProData(LocIndex) = value
                             Case ItemType.Container
-                                CntItmProData(LocIndex) = CInt(TextBox1.Text)
+                                CntItmProData(LocIndex) = value
                             Case ItemType.Drugs
-                                DrgItmProData(LocIndex) = CInt(TextBox1.Text)
+                                DrgItmProData(LocIndex) = value
                             Case ItemType.Misc
-                                MscItmProData(LocIndex) = CInt(TextBox1.Text)
+                                MscItmProData(LocIndex) = value
                             Case Else 'ItemType.Key
-                                KeyItmProData = CInt(TextBox1.Text)
+                                KeyItmProData = value
                         End Select
                     End If
                 End If
@@ -508,9 +512,9 @@ BadFormat:
     End Sub
 
     Private Sub TextBoxKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TextBox1.KeyPress
-        If Not (e.KeyChar = ChrW(Keys.Back) OrElse e.KeyChar = ChrW(Keys.Delete) OrElse e.KeyChar = "-"c) Then
+        If Not (e.KeyChar = ChrW(Keys.Back) OrElse e.KeyChar = ChrW(Keys.Delete)) Then
             If CheckBox1.Checked = False Then
-                If Not (Char.IsDigit(e.KeyChar)) Then e.Handled = True
+                If e.KeyChar <> "-"c AndAlso Not (Char.IsDigit(e.KeyChar)) Then e.Handled = True
             Else
                 e.KeyChar = Char.ToUpper(e.KeyChar)
                 If Not (Char.IsDigit(e.KeyChar)) AndAlso Not (e.KeyChar >= "A"c And e.KeyChar <= "F"c) Then e.Handled = True

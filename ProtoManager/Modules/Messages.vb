@@ -41,15 +41,21 @@ Friend Module Messages
     'Возвращает параметры из строки формата Msg  
     Friend Function GetParamMsg(ByRef str As String, Optional ByRef strValue As Boolean = False) As String
         If str.Length < 2 Then Return Nothing
-        Dim n As Integer = str.IndexOf("}", 1)
-        If n = -1 Then Return Nothing
+        Dim n As Integer
 
         'Извлекаем
         If strValue = True Then
-            n = str.IndexOf("{", n + 2)
-            Return str.Substring(n + 1, str.Length - (n + 2))
+            n = str.LastIndexOf("{"c)
+            Dim last As Integer = str.LastIndexOf("}"c)
+            If last < n OrElse last = -1 Then
+                Return "<Error: Wrong closing parenthesis in message line>"
+            Else
+                n += 1
+                Return str.Substring(n, last - n)
+            End If
         Else
-            Return str.Substring(1, n - 1)
+            n = str.IndexOf("}"c, 1)
+            Return If(n > 0, str.Substring(str.IndexOf("{"c) + 1, n - 1), Nothing)
         End If
     End Function
 
@@ -89,7 +95,7 @@ Friend Module Messages
         End If
 
         If txtLvCp Then CodingToLevCorp(str)
-        MSG_DATATEXT(nline) = "{" & ID & "}{}{" & str & "}"
+        MSG_DATATEXT(nline) = "{" & ID & "}{}{" & str.Replace(vbCrLf, " ") & "}"
 
         Return False
     End Function
@@ -102,7 +108,7 @@ Friend Module Messages
                 data = Encoding.GetEncoding("cp866").GetBytes(MSG_DATATEXT(n))
                 For m As Integer = 0 To UBound(data)
                     If data(m) >= &HB0 And data(m) <= &HBF Then
-                        data(m) = data(m) + &H30
+                        data(m) = CByte(data(m) + &H30)
                     End If
                 Next
                 MSG_DATATEXT(n) = Encoding.GetEncoding("cp866").GetString(data)
@@ -116,7 +122,7 @@ Friend Module Messages
 
         For m As Integer = 0 To UBound(data)
             If data(m) >= &HE0 And data(m) <= &HEF Then
-                data(m) = data(m) - &H30
+                data(m) = CByte(data(m) - &H30)
             End If
         Next
         str = Encoding.GetEncoding("cp866").GetString(data)

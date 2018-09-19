@@ -25,7 +25,7 @@ Friend Class Main_Form
     End Sub
 
     Private Sub Main_Form_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
-        Me.Text &= My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & My.Application.Info.Version.Build & " - by " & My.Application.Info.Copyright
+        Me.Text &= String.Format("{0}.{1}.{2} - by {3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Copyright)
         LinkLabel1.Text = Settings.GameDATA_Path
         LinkLabel2.Text = Settings.SaveMOD_Path
         SetFormSettings()

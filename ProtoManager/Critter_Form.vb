@@ -642,7 +642,7 @@ Friend Class Critter_Form
 
     Private Sub ComboBox1_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged
 
-        Label44.Text = "Frm ID: " & (ComboBox1.SelectedIndex + &H1000000)
+        tbFrmID.Text = (ComboBox1.SelectedIndex + &H1000000)
 
         Dim frm As String = ComboBox1.SelectedItem
         Dim fileFrm As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
@@ -734,6 +734,16 @@ Friend Class Critter_Form
 
     Private Sub Button8_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button8.Click
         Main.Create_AIEditForm(CritterPro.AIPacket)
+    End Sub
+
+    Private Sub NumericUpDown_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles NumericUpDown71.KeyPress, NumericUpDown70.KeyPress, NumericUpDown69.KeyPress,
+        NumericUpDown68.KeyPress, NumericUpDown67.KeyPress, NumericUpDown65.KeyPress, NumericUpDown64.KeyPress, NumericUpDown63.KeyPress, NumericUpDown62.KeyPress,
+        NumericUpDown61.KeyPress, NumericUpDown60.KeyPress, NumericUpDown59.KeyPress, NumericUpDown58.KeyPress, NumericUpDown57.KeyPress, NumericUpDown56.KeyPress,
+        NumericUpDown53.KeyPress, NumericUpDown52.KeyPress, NumericUpDown51.KeyPress, NumericUpDown50.KeyPress, NumericUpDown49.KeyPress, NumericUpDown48.KeyPress,
+        NumericUpDown47.KeyPress, NumericUpDown46.KeyPress, NumericUpDown45.KeyPress, NumericUpDown44.KeyPress, NumericUpDown43.KeyPress, NumericUpDown42.KeyPress,
+        NumericUpDown41.KeyPress, NumericUpDown40.KeyPress, NumericUpDown39.KeyPress, NumericUpDown38.KeyPress, NumericUpDown37.KeyPress, NumericUpDown36.KeyPress
+        '
+        If Char.IsDigit(e.KeyChar) Then Button6.Enabled = True
     End Sub
 
 End Class
