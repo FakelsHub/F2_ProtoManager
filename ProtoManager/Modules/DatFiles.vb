@@ -129,7 +129,12 @@ Module DatFiles
 
         ExtractConvertFRM(cPath, checkFile, FrmFile & "aa", CritterDAT)
 
-        Dim gifFile As String = Path.ChangeExtension(checkFile, ".gif") 'ART_CRITTERS & FrmFile & "aa.gif"
+        Dim artDir As String = Path.GetDirectoryName(WorkAppDIR & checkFile)
+        If Not Directory.Exists(artDir) Then
+            Exit Sub
+        End If
+
+        Dim gifFile As String = Path.ChangeExtension(checkFile, ".gif")
 
         On Error Resume Next
         If File.Exists(WorkAppDIR & gifFile) Then
@@ -137,7 +142,8 @@ Module DatFiles
         Else
             FileSystem.MoveFile(WorkAppDIR & ART_CRITTERS & FrmFile & "aa_sw.gif", Cache_Patch & gifFile)
         End If
-        Directory.Delete(WorkAppDIR & "\art", True)
+        On Error GoTo -1
+        Directory.Delete(artDir, True)
     End Sub
 
     ''' <summary>
@@ -149,15 +155,21 @@ Module DatFiles
 
         ExtractConvertFRM(cPath, checkFile, FrmFile, MasterDAT)
 
+        Dim artDir As String = Path.GetDirectoryName(WorkAppDIR & checkFile) & "\"
+        If Not Directory.Exists(artDir) Then
+            Exit Sub
+        End If
+
         Dim gifFile As String = Path.ChangeExtension(checkFile, ".gif")
 
         On Error Resume Next
         If File.Exists(WorkAppDIR & gifFile) Then
             FileSystem.MoveFile(WorkAppDIR & gifFile, Cache_Patch & gifFile)
         Else
-            FileSystem.MoveFile(WorkAppDIR & "\art\" & iPath & FrmFile & "_ne.gif", Cache_Patch & gifFile)
+            FileSystem.MoveFile(artDir & FrmFile & "_ne.gif", Cache_Patch & gifFile)
         End If
-        Directory.Delete(WorkAppDIR & "\art", True)
+        On Error GoTo -1
+        Directory.Delete(artDir, True)
     End Sub
 
     ''' <summary>
@@ -176,7 +188,8 @@ Module DatFiles
             End If
         End If
 
-        FileSystem.CopyFile(cPath, WorkAppDIR & checkFile)
+        FileSystem.CopyFile(cPath, WorkAppDIR & checkFile, True)
+        File.SetAttributes(WorkAppDIR & checkFile, FileAttributes.Normal)
         Shell(WorkAppDIR & "\frm2gif.exe -p color.pal ." & checkFile, AppWinStyle.Hide, True)
     End Sub
 

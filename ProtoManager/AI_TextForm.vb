@@ -2,18 +2,23 @@
 
 Public Class AI_TextForm
 
+    Private path As String
+    Private aiCustom As Boolean
+
     Private buffer As List(Of String)
     Private sPacketID As Integer
     Private ePacketID As Integer
     Private change As Boolean
     Private ownerSaveButton As Boolean
 
-    Friend Sub New(ByVal sPacketID As Integer, ByVal ePacketID As Integer, ByRef path As String, ByVal ownerSaveButton As Boolean)
+    Friend Sub New(ByVal sPacketID As Integer, ByVal ePacketID As Integer, ByRef path As String, ByVal ownerSaveButton As Boolean, ByVal aiCustom As Boolean)
         InitializeComponent()
 
         Me.sPacketID = sPacketID
         Me.ePacketID = ePacketID
         Me.ownerSaveButton = ownerSaveButton
+        Me.aiCustom = aiCustom
+        Me.path = path
 
         buffer = File.ReadAllLines(path).ToList
         Dim str As String = String.Empty
@@ -43,8 +48,11 @@ Public Class AI_TextForm
         buffer.RemoveRange(sPacketID, (ePacketID - sPacketID))
         buffer.InsertRange(sPacketID, Split(RichTextBox1.Text, vbLf).ToList)
         ' save to file
-        File.WriteAllLines(SaveMOD_Path & AI.AIFILE, buffer)
+        Dim sFile As String = If(aiCustom, path, SaveMOD_Path & AI.AIFILE)
+        File.WriteAllLines(sFile, buffer)
         change = True
+        'Log
+        Main.PrintLog("Save AI: " & sFile)
     End Sub
 
     ' Рекурсивный перебор контролов класса формы

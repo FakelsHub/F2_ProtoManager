@@ -163,6 +163,13 @@ Friend Module Main
             .ListView1.BeginUpdate()
             .ListView1.Items.Clear()
 
+            Dim showFID As Boolean = .ShowFIDToolStripMenuItem.Checked
+            If showFID Then
+                If .ListView1.Columns.Count < 5 Then .ListView1.Columns.Add("FID", 65, HorizontalAlignment.Center)
+            Else
+                If .ListView1.Columns.Count > 4 Then .ListView1.Columns.RemoveAt(4)
+            End If
+
             Messages.GetMsgData("pro_crit.msg")
             ReDim Critter_LST(cCount)
             For n = 0 To cCount
@@ -172,7 +179,11 @@ Friend Module Main
                 Dim proIsEdit As Boolean = False
                 Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_CRITTERS & Critter_LST(n).proFile))
                 If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
-                .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n)}))
+                If showFID Then
+                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n).ToString, GetFID(n).ToString})) 'FID
+                Else
+                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n).ToString}))
+                End If
                 .ListView1.Items(n).Tag = n 'запись индекса(pid) криттера в critters.lst
                 If proIsEdit Then .ListView1.Items(n).ForeColor = Color.DarkBlue
                 Progress_Form.ProgressBar1.Value = n
@@ -204,13 +215,14 @@ Friend Module Main
             .ListView2.BeginUpdate()
             .ListView2.Items.Clear()
 
+            Dim showPID As Boolean = IsShowPID()
             For n = 0 To UBound(Items_LST)
                 Items_LST(n).itemName = Messages.GetNameObject(ProFiles.GetProItemsNameID(Items_LST(n).proFile, n))
                 If Items_LST(n).itemName = String.Empty Then Items_LST(n).itemName = "<NoName>"
                 Dim proIsEdit As Boolean = False
                 Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
                 If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
-                .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+                CreateListItem(n, rOnly, showPID)
                 .ListView2.Items(n).Tag = n 'запись индекса(pid) итема из item.lst
                 If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue
                 If Items_LST(n).itemType = ItemType.Ammo Then
@@ -272,25 +284,46 @@ Friend Module Main
         With Main_Form
             .ListView2.BeginUpdate()
             .ListView2.Items.Clear()
+
+            Dim showPID As Boolean = IsShowPID()
             For n As Integer = 0 To UBound(Items_LST)
                 Dim proIsEdit As Boolean = False
                 Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
                 If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
                 If filter <> ItemType.Unknown Then
                     If Items_LST(n).itemType = filter OrElse (filter = ItemType.Misc And Items_LST(n).itemType = ItemType.Key) Then
-                        .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+                        CreateListItem(n, rOnly, showPID)
                         .ListView2.Items(x).Tag = n 'указатель индекса(pid) итема в item.lst
                         If proIsEdit Then .ListView2.Items(x).ForeColor = Color.DarkBlue
                         x += 1
                     End If
                 Else
-                    .ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+                    CreateListItem(n, rOnly, showPID)
                     .ListView2.Items(n).Tag = n 'указатель индекса(pid) итема в item.lst
-                    If proIsEdit Then .ListView2.Items(n).ForeColor = Color.Blue
+                    If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue
                 End If
             Next
             .ListView2.EndUpdate()
         End With
+    End Sub
+
+    Friend Function IsShowPID() As Boolean
+        Dim result As Boolean = Main_Form.ShowPIDToolStripMenuItem.Checked
+        If result Then
+            If Main_Form.ListView2.Columns.Count < 5 Then Main_Form.ListView2.Columns.Add("PID", 65, HorizontalAlignment.Center)
+        Else
+            If Main_Form.ListView2.Columns.Count > 4 Then Main_Form.ListView2.Columns.RemoveAt(4)
+        End If
+        Return result
+    End Function
+
+    Friend Sub CreateListItem(ByRef n As Integer, ByRef rOnly As String, ByRef showPID As Boolean)
+        If showPID Then
+            Dim pid As String = (n + 1).ToString.PadLeft(8, "0"c)
+            Main_Form.ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly, pid}))
+        Else
+            Main_Form.ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
+        End If
     End Sub
 
     ' Проверяет профайл итема на атрибут чтения и ставит соответствующие метки в листе 

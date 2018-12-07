@@ -58,6 +58,7 @@ Friend Class Main_Form
             File.Delete("iImage.lst")
             File.Delete("iProto.lst")
             File.Delete("cProto.lst")
+            Directory.Delete("art\", True)
         End If
     End Sub
 
@@ -425,7 +426,7 @@ Friend Class Main_Form
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
         'On Error Resume Next
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(e.Item.Tag).proFile, , , False)
-        ToolStripStatusLabel2.Text = "Item PID: " & StrDup(8 - Len(CStr(CInt(e.Item.Tag) + 1)), "0") & CInt(e.Item.Tag) + 1
+        ToolStripStatusLabel2.Text = "Item PID: " & (CInt(e.Item.Tag) + 1).ToString.PadLeft(8, "0"c)
     End Sub
 
     Private Sub TypeCrittersToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TypeCrittersToolStripMenuItem.Click

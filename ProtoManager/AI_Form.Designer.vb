@@ -204,7 +204,7 @@ Partial Class AI_Form
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Location = New System.Drawing.Point(10, 28)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(445, 338)
+        Me.GroupBox1.Size = New System.Drawing.Size(445, 293)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "AI Parametrs"
@@ -212,7 +212,7 @@ Partial Class AI_Form
         'Button4
         '
         Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button4.Location = New System.Drawing.Point(225, 108)
+        Me.Button4.Location = New System.Drawing.Point(380, 192)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(56, 36)
         Me.Button4.TabIndex = 7
@@ -232,7 +232,7 @@ Partial Class AI_Form
         Me.GroupBox3.Controls.Add(Me.Label19)
         Me.GroupBox3.Controls.Add(Me.ComboBox10)
         Me.GroupBox3.Controls.Add(Me.ComboBox9)
-        Me.GroupBox3.Location = New System.Drawing.Point(9, 150)
+        Me.GroupBox3.Location = New System.Drawing.Point(9, 179)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(272, 108)
         Me.GroupBox3.TabIndex = 8
@@ -331,7 +331,7 @@ Partial Class AI_Form
         Me.ComboBox10.Items.AddRange(New Object() {"<NotSpecified>", "none", "coward", "finger_hurts", "bleeding", "not_feeling_good", "tourniquet", "never"})
         Me.ComboBox10.Location = New System.Drawing.Point(9, 32)
         Me.ComboBox10.Name = "ComboBox10"
-        Me.ComboBox10.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox10.Size = New System.Drawing.Size(133, 21)
         Me.ComboBox10.TabIndex = 1
         Me.ComboBox10.Tag = "run_away_mode"
         '
@@ -341,7 +341,7 @@ Partial Class AI_Form
         Me.ComboBox9.Items.AddRange(New Object() {"<NotSpecified>", "crippled", "blind", "crippled_arms", "crippled_legs"})
         Me.ComboBox9.Location = New System.Drawing.Point(9, 72)
         Me.ComboBox9.Name = "ComboBox9"
-        Me.ComboBox9.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox9.Size = New System.Drawing.Size(133, 21)
         Me.ComboBox9.TabIndex = 1
         Me.ComboBox9.Tag = "hurt_too_much"
         '
@@ -353,11 +353,11 @@ Partial Class AI_Form
         Me.ListView1.GridLines = True
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.ListView1.LabelEdit = True
-        Me.ListView1.Location = New System.Drawing.Point(296, 72)
+        Me.ListView1.Location = New System.Drawing.Point(287, 72)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowGroups = False
-        Me.ListView1.Size = New System.Drawing.Size(143, 260)
+        Me.ListView1.Size = New System.Drawing.Size(152, 101)
         Me.ListView1.TabIndex = 7
         Me.ListView1.Tag = ""
         Me.ListView1.UseCompatibleStateImageBehavior = False
@@ -366,12 +366,12 @@ Partial Class AI_Form
         'ColumnHeader1
         '
         Me.ColumnHeader1.Text = "PID"
-        Me.ColumnHeader1.Width = 33
+        Me.ColumnHeader1.Width = 43
         '
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Drugs Name"
-        Me.ColumnHeader2.Width = 105
+        Me.ColumnHeader2.Width = 103
         '
         'ContextMenuStrip1
         '
@@ -455,7 +455,7 @@ Partial Class AI_Form
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(157, 108)
+        Me.Label20.Location = New System.Drawing.Point(290, 185)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(69, 13)
         Me.Label20.TabIndex = 5
@@ -467,7 +467,7 @@ Partial Class AI_Form
         Me.NumericUpDown10.BackColor = System.Drawing.Color.WhiteSmoke
         Me.NumericUpDown10.Increment = New Decimal(New Integer() {0, 0, 0, 0})
         Me.NumericUpDown10.InterceptArrowKeys = False
-        Me.NumericUpDown10.Location = New System.Drawing.Point(160, 124)
+        Me.NumericUpDown10.Location = New System.Drawing.Point(293, 201)
         Me.NumericUpDown10.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
         Me.NumericUpDown10.ReadOnly = True
@@ -478,7 +478,7 @@ Partial Class AI_Form
         '
         'NumericUpDown11
         '
-        Me.NumericUpDown11.Location = New System.Drawing.Point(93, 124)
+        Me.NumericUpDown11.Location = New System.Drawing.Point(93, 112)
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
         Me.NumericUpDown11.Size = New System.Drawing.Size(58, 20)
@@ -488,7 +488,7 @@ Partial Class AI_Form
         '
         'NumericUpDown4
         '
-        Me.NumericUpDown4.Location = New System.Drawing.Point(93, 98)
+        Me.NumericUpDown4.Location = New System.Drawing.Point(93, 153)
         Me.NumericUpDown4.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown4.Name = "NumericUpDown4"
@@ -511,7 +511,7 @@ Partial Class AI_Form
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(293, 16)
+        Me.Label11.Location = New System.Drawing.Point(290, 16)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(59, 13)
         Me.Label11.TabIndex = 2
@@ -521,7 +521,7 @@ Partial Class AI_Form
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(4, 126)
+        Me.Label21.Location = New System.Drawing.Point(2, 115)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(85, 13)
         Me.Label21.TabIndex = 2
@@ -532,7 +532,7 @@ Partial Class AI_Form
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(293, 56)
+        Me.Label10.Location = New System.Drawing.Point(290, 56)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(107, 13)
         Me.Label10.TabIndex = 2
@@ -541,7 +541,7 @@ Partial Class AI_Form
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(25, 100)
+        Me.Label8.Location = New System.Drawing.Point(24, 155)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(63, 13)
         Me.Label8.TabIndex = 2
@@ -552,7 +552,7 @@ Partial Class AI_Form
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(157, 261)
+        Me.Label13.Location = New System.Drawing.Point(157, 96)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(52, 13)
         Me.Label13.TabIndex = 2
@@ -562,7 +562,7 @@ Partial Class AI_Form
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(6, 261)
+        Me.Label12.Location = New System.Drawing.Point(157, 136)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(61, 13)
         Me.Label12.TabIndex = 2
@@ -606,7 +606,7 @@ Partial Class AI_Form
         Me.ComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox7.FormattingEnabled = True
         Me.ComboBox7.Items.AddRange(New Object() {"<NotSpecified>", "random", "charge", "on_your_own", "stay", "stay_close", "snipe"})
-        Me.ComboBox7.Location = New System.Drawing.Point(160, 277)
+        Me.ComboBox7.Location = New System.Drawing.Point(160, 112)
         Me.ComboBox7.Name = "ComboBox7"
         Me.ComboBox7.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox7.TabIndex = 1
@@ -617,7 +617,7 @@ Partial Class AI_Form
         Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox6.FormattingEnabled = True
         Me.ComboBox6.Items.AddRange(New Object() {"<NotSpecified>", "-1", "none", "coward", "defensive", "aggressive", "berserk", "custom"})
-        Me.ComboBox6.Location = New System.Drawing.Point(9, 277)
+        Me.ComboBox6.Location = New System.Drawing.Point(160, 152)
         Me.ComboBox6.Name = "ComboBox6"
         Me.ComboBox6.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox6.TabIndex = 1
@@ -628,7 +628,7 @@ Partial Class AI_Form
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox5.FormattingEnabled = True
         Me.ComboBox5.Items.AddRange(New Object() {"<NotSpecified>", "clean", "sometimes", "stims_when_hurt_little", "stims_when_hurt_lots", "anytime", "always"})
-        Me.ComboBox5.Location = New System.Drawing.Point(296, 32)
+        Me.ComboBox5.Location = New System.Drawing.Point(293, 32)
         Me.ComboBox5.Name = "ComboBox5"
         Me.ComboBox5.Size = New System.Drawing.Size(143, 21)
         Me.ComboBox5.TabIndex = 1
@@ -641,7 +641,7 @@ Partial Class AI_Form
         Me.ComboBox1.Items.AddRange(New Object() {"<NotSpecified>", "no_pref", "always", "sometimes", "be_sure", "be_careful", "be_absolutely_sure"})
         Me.ComboBox1.Location = New System.Drawing.Point(18, 32)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(133, 21)
         Me.ComboBox1.TabIndex = 1
         Me.ComboBox1.Tag = "area_attack_mode"
         '
@@ -658,7 +658,7 @@ Partial Class AI_Form
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(471, 26)
+        Me.Label14.Location = New System.Drawing.Point(18, 326)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(74, 13)
         Me.Label14.TabIndex = 6
@@ -669,7 +669,7 @@ Partial Class AI_Form
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(612, 26)
+        Me.Label7.Location = New System.Drawing.Point(158, 326)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(61, 13)
         Me.Label7.TabIndex = 6
@@ -700,10 +700,10 @@ Partial Class AI_Form
         '
         Me.ComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox8.FormattingEnabled = True
-        Me.ComboBox8.Location = New System.Drawing.Point(472, 42)
+        Me.ComboBox8.Location = New System.Drawing.Point(19, 342)
         Me.ComboBox8.MaxDropDownItems = 20
         Me.ComboBox8.Name = "ComboBox8"
-        Me.ComboBox8.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox8.Size = New System.Drawing.Size(133, 21)
         Me.ComboBox8.TabIndex = 1
         Me.ComboBox8.Tag = "general_type"
         '
@@ -711,17 +711,17 @@ Partial Class AI_Form
         '
         Me.ComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox4.FormattingEnabled = True
-        Me.ComboBox4.Location = New System.Drawing.Point(615, 42)
+        Me.ComboBox4.Location = New System.Drawing.Point(158, 342)
         Me.ComboBox4.MaxDropDownItems = 20
         Me.ComboBox4.Name = "ComboBox4"
-        Me.ComboBox4.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox4.Size = New System.Drawing.Size(133, 21)
         Me.ComboBox4.TabIndex = 1
         Me.ComboBox4.Tag = "body_type"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(13, 21)
+        Me.Label4.Location = New System.Drawing.Point(14, 31)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(66, 13)
         Me.Label4.TabIndex = 5
@@ -730,7 +730,7 @@ Partial Class AI_Form
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(16, 41)
+        Me.Label3.Location = New System.Drawing.Point(17, 51)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(63, 13)
         Me.Label3.TabIndex = 4
@@ -739,7 +739,7 @@ Partial Class AI_Form
         'NumericUpDown3
         '
         Me.NumericUpDown3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown3.Location = New System.Drawing.Point(85, 39)
+        Me.NumericUpDown3.Location = New System.Drawing.Point(86, 49)
         Me.NumericUpDown3.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown3.Name = "NumericUpDown3"
         Me.NumericUpDown3.Size = New System.Drawing.Size(46, 18)
@@ -751,7 +751,7 @@ Partial Class AI_Form
         'NumericUpDown2
         '
         Me.NumericUpDown2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown2.Location = New System.Drawing.Point(85, 19)
+        Me.NumericUpDown2.Location = New System.Drawing.Point(86, 29)
         Me.NumericUpDown2.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown2.Name = "NumericUpDown2"
         Me.NumericUpDown2.Size = New System.Drawing.Size(46, 18)
@@ -810,9 +810,9 @@ Partial Class AI_Form
         Me.GroupBox2.Controls.Add(Me.Label32)
         Me.GroupBox2.Controls.Add(Me.Label26)
         Me.GroupBox2.Controls.Add(Me.Label24)
-        Me.GroupBox2.Location = New System.Drawing.Point(462, 65)
+        Me.GroupBox2.Location = New System.Drawing.Point(465, 32)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(280, 301)
+        Me.GroupBox2.Size = New System.Drawing.Size(280, 331)
         Me.GroupBox2.TabIndex = 2
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Taunts Messages"
@@ -820,7 +820,7 @@ Partial Class AI_Form
         'Label37
         '
         Me.Label37.AutoSize = True
-        Me.Label37.Location = New System.Drawing.Point(2, 160)
+        Me.Label37.Location = New System.Drawing.Point(3, 170)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(78, 13)
         Me.Label37.TabIndex = 5
@@ -829,7 +829,7 @@ Partial Class AI_Form
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(6, 116)
+        Me.Label23.Location = New System.Drawing.Point(7, 126)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(74, 13)
         Me.Label23.TabIndex = 5
@@ -838,7 +838,7 @@ Partial Class AI_Form
         'Label43
         '
         Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(167, 66)
+        Me.Label43.Location = New System.Drawing.Point(168, 76)
         Me.Label43.Name = "Label43"
         Me.Label43.Size = New System.Drawing.Size(55, 13)
         Me.Label43.TabIndex = 5
@@ -847,7 +847,7 @@ Partial Class AI_Form
         'Label41
         '
         Me.Label41.AutoSize = True
-        Me.Label41.Location = New System.Drawing.Point(17, 67)
+        Me.Label41.Location = New System.Drawing.Point(18, 77)
         Me.Label41.Name = "Label41"
         Me.Label41.Size = New System.Drawing.Size(62, 13)
         Me.Label41.TabIndex = 5
@@ -856,7 +856,7 @@ Partial Class AI_Form
         'Label39
         '
         Me.Label39.AutoSize = True
-        Me.Label39.Location = New System.Drawing.Point(166, 20)
+        Me.Label39.Location = New System.Drawing.Point(167, 30)
         Me.Label39.Name = "Label39"
         Me.Label39.Size = New System.Drawing.Size(56, 13)
         Me.Label39.TabIndex = 5
@@ -865,7 +865,7 @@ Partial Class AI_Form
         'NumericUpDown25
         '
         Me.NumericUpDown25.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown25.Location = New System.Drawing.Point(228, 252)
+        Me.NumericUpDown25.Location = New System.Drawing.Point(229, 262)
         Me.NumericUpDown25.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown25.Name = "NumericUpDown25"
         Me.NumericUpDown25.Size = New System.Drawing.Size(46, 18)
@@ -877,7 +877,7 @@ Partial Class AI_Form
         'NumericUpDown23
         '
         Me.NumericUpDown23.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown23.Location = New System.Drawing.Point(228, 206)
+        Me.NumericUpDown23.Location = New System.Drawing.Point(229, 216)
         Me.NumericUpDown23.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown23.Name = "NumericUpDown23"
         Me.NumericUpDown23.Size = New System.Drawing.Size(46, 18)
@@ -889,7 +889,7 @@ Partial Class AI_Form
         'NumericUpDown21
         '
         Me.NumericUpDown21.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown21.Location = New System.Drawing.Point(85, 250)
+        Me.NumericUpDown21.Location = New System.Drawing.Point(86, 260)
         Me.NumericUpDown21.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown21.Name = "NumericUpDown21"
         Me.NumericUpDown21.Size = New System.Drawing.Size(46, 18)
@@ -901,7 +901,7 @@ Partial Class AI_Form
         'NumericUpDown19
         '
         Me.NumericUpDown19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown19.Location = New System.Drawing.Point(85, 204)
+        Me.NumericUpDown19.Location = New System.Drawing.Point(86, 214)
         Me.NumericUpDown19.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown19.Name = "NumericUpDown19"
         Me.NumericUpDown19.Size = New System.Drawing.Size(46, 18)
@@ -913,7 +913,7 @@ Partial Class AI_Form
         'NumericUpDown17
         '
         Me.NumericUpDown17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown17.Location = New System.Drawing.Point(228, 113)
+        Me.NumericUpDown17.Location = New System.Drawing.Point(229, 123)
         Me.NumericUpDown17.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown17.Name = "NumericUpDown17"
         Me.NumericUpDown17.Size = New System.Drawing.Size(46, 18)
@@ -925,7 +925,7 @@ Partial Class AI_Form
         'NumericUpDown15
         '
         Me.NumericUpDown15.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown15.Location = New System.Drawing.Point(228, 160)
+        Me.NumericUpDown15.Location = New System.Drawing.Point(229, 170)
         Me.NumericUpDown15.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown15.Name = "NumericUpDown15"
         Me.NumericUpDown15.Size = New System.Drawing.Size(46, 18)
@@ -937,7 +937,7 @@ Partial Class AI_Form
         'NumericUpDown27
         '
         Me.NumericUpDown27.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown27.Location = New System.Drawing.Point(85, 158)
+        Me.NumericUpDown27.Location = New System.Drawing.Point(86, 168)
         Me.NumericUpDown27.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown27.Name = "NumericUpDown27"
         Me.NumericUpDown27.Size = New System.Drawing.Size(46, 18)
@@ -949,7 +949,7 @@ Partial Class AI_Form
         'NumericUpDown13
         '
         Me.NumericUpDown13.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown13.Location = New System.Drawing.Point(85, 112)
+        Me.NumericUpDown13.Location = New System.Drawing.Point(86, 122)
         Me.NumericUpDown13.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown13.Name = "NumericUpDown13"
         Me.NumericUpDown13.Size = New System.Drawing.Size(46, 18)
@@ -961,7 +961,7 @@ Partial Class AI_Form
         'NumericUpDown33
         '
         Me.NumericUpDown33.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown33.Location = New System.Drawing.Point(228, 64)
+        Me.NumericUpDown33.Location = New System.Drawing.Point(229, 74)
         Me.NumericUpDown33.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown33.Name = "NumericUpDown33"
         Me.NumericUpDown33.Size = New System.Drawing.Size(46, 18)
@@ -973,7 +973,7 @@ Partial Class AI_Form
         'NumericUpDown31
         '
         Me.NumericUpDown31.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown31.Location = New System.Drawing.Point(85, 65)
+        Me.NumericUpDown31.Location = New System.Drawing.Point(86, 75)
         Me.NumericUpDown31.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown31.Name = "NumericUpDown31"
         Me.NumericUpDown31.Size = New System.Drawing.Size(46, 18)
@@ -985,7 +985,7 @@ Partial Class AI_Form
         'NumericUpDown29
         '
         Me.NumericUpDown29.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown29.Location = New System.Drawing.Point(228, 18)
+        Me.NumericUpDown29.Location = New System.Drawing.Point(229, 28)
         Me.NumericUpDown29.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown29.Name = "NumericUpDown29"
         Me.NumericUpDown29.Size = New System.Drawing.Size(46, 18)
@@ -997,7 +997,7 @@ Partial Class AI_Form
         'NumericUpDown24
         '
         Me.NumericUpDown24.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown24.Location = New System.Drawing.Point(228, 272)
+        Me.NumericUpDown24.Location = New System.Drawing.Point(229, 282)
         Me.NumericUpDown24.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown24.Name = "NumericUpDown24"
         Me.NumericUpDown24.Size = New System.Drawing.Size(46, 18)
@@ -1009,7 +1009,7 @@ Partial Class AI_Form
         'NumericUpDown22
         '
         Me.NumericUpDown22.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown22.Location = New System.Drawing.Point(228, 226)
+        Me.NumericUpDown22.Location = New System.Drawing.Point(229, 236)
         Me.NumericUpDown22.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown22.Name = "NumericUpDown22"
         Me.NumericUpDown22.Size = New System.Drawing.Size(46, 18)
@@ -1021,7 +1021,7 @@ Partial Class AI_Form
         'NumericUpDown20
         '
         Me.NumericUpDown20.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown20.Location = New System.Drawing.Point(85, 270)
+        Me.NumericUpDown20.Location = New System.Drawing.Point(86, 280)
         Me.NumericUpDown20.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown20.Name = "NumericUpDown20"
         Me.NumericUpDown20.Size = New System.Drawing.Size(46, 18)
@@ -1033,7 +1033,7 @@ Partial Class AI_Form
         'NumericUpDown18
         '
         Me.NumericUpDown18.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown18.Location = New System.Drawing.Point(85, 224)
+        Me.NumericUpDown18.Location = New System.Drawing.Point(86, 234)
         Me.NumericUpDown18.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown18.Name = "NumericUpDown18"
         Me.NumericUpDown18.Size = New System.Drawing.Size(46, 18)
@@ -1045,7 +1045,7 @@ Partial Class AI_Form
         'NumericUpDown16
         '
         Me.NumericUpDown16.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown16.Location = New System.Drawing.Point(228, 133)
+        Me.NumericUpDown16.Location = New System.Drawing.Point(229, 143)
         Me.NumericUpDown16.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown16.Name = "NumericUpDown16"
         Me.NumericUpDown16.Size = New System.Drawing.Size(46, 18)
@@ -1057,7 +1057,7 @@ Partial Class AI_Form
         'NumericUpDown14
         '
         Me.NumericUpDown14.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown14.Location = New System.Drawing.Point(228, 180)
+        Me.NumericUpDown14.Location = New System.Drawing.Point(229, 190)
         Me.NumericUpDown14.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown14.Name = "NumericUpDown14"
         Me.NumericUpDown14.Size = New System.Drawing.Size(46, 18)
@@ -1069,7 +1069,7 @@ Partial Class AI_Form
         'NumericUpDown32
         '
         Me.NumericUpDown32.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown32.Location = New System.Drawing.Point(228, 84)
+        Me.NumericUpDown32.Location = New System.Drawing.Point(229, 94)
         Me.NumericUpDown32.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown32.Name = "NumericUpDown32"
         Me.NumericUpDown32.Size = New System.Drawing.Size(46, 18)
@@ -1081,7 +1081,7 @@ Partial Class AI_Form
         'NumericUpDown26
         '
         Me.NumericUpDown26.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown26.Location = New System.Drawing.Point(85, 178)
+        Me.NumericUpDown26.Location = New System.Drawing.Point(86, 188)
         Me.NumericUpDown26.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown26.Name = "NumericUpDown26"
         Me.NumericUpDown26.Size = New System.Drawing.Size(46, 18)
@@ -1093,7 +1093,7 @@ Partial Class AI_Form
         'NumericUpDown30
         '
         Me.NumericUpDown30.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown30.Location = New System.Drawing.Point(85, 85)
+        Me.NumericUpDown30.Location = New System.Drawing.Point(86, 95)
         Me.NumericUpDown30.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown30.Name = "NumericUpDown30"
         Me.NumericUpDown30.Size = New System.Drawing.Size(46, 18)
@@ -1105,7 +1105,7 @@ Partial Class AI_Form
         'NumericUpDown12
         '
         Me.NumericUpDown12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown12.Location = New System.Drawing.Point(85, 132)
+        Me.NumericUpDown12.Location = New System.Drawing.Point(86, 142)
         Me.NumericUpDown12.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown12.Name = "NumericUpDown12"
         Me.NumericUpDown12.Size = New System.Drawing.Size(46, 18)
@@ -1117,7 +1117,7 @@ Partial Class AI_Form
         'NumericUpDown28
         '
         Me.NumericUpDown28.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.NumericUpDown28.Location = New System.Drawing.Point(228, 38)
+        Me.NumericUpDown28.Location = New System.Drawing.Point(229, 48)
         Me.NumericUpDown28.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.NumericUpDown28.Name = "NumericUpDown28"
         Me.NumericUpDown28.Size = New System.Drawing.Size(46, 18)
@@ -1129,7 +1129,7 @@ Partial Class AI_Form
         'Label30
         '
         Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(2, 274)
+        Me.Label30.Location = New System.Drawing.Point(3, 284)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(81, 13)
         Me.Label30.TabIndex = 4
@@ -1138,7 +1138,7 @@ Partial Class AI_Form
         'Label28
         '
         Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(2, 228)
+        Me.Label28.Location = New System.Drawing.Point(3, 238)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(81, 13)
         Me.Label28.TabIndex = 4
@@ -1147,7 +1147,7 @@ Partial Class AI_Form
         'Label42
         '
         Me.Label42.AutoSize = True
-        Me.Label42.Location = New System.Drawing.Point(170, 86)
+        Me.Label42.Location = New System.Drawing.Point(171, 96)
         Me.Label42.Name = "Label42"
         Me.Label42.Size = New System.Drawing.Size(52, 13)
         Me.Label42.TabIndex = 4
@@ -1156,7 +1156,7 @@ Partial Class AI_Form
         'Label40
         '
         Me.Label40.AutoSize = True
-        Me.Label40.Location = New System.Drawing.Point(20, 87)
+        Me.Label40.Location = New System.Drawing.Point(21, 97)
         Me.Label40.Name = "Label40"
         Me.Label40.Size = New System.Drawing.Size(59, 13)
         Me.Label40.TabIndex = 4
@@ -1165,7 +1165,7 @@ Partial Class AI_Form
         'Label36
         '
         Me.Label36.AutoSize = True
-        Me.Label36.Location = New System.Drawing.Point(5, 180)
+        Me.Label36.Location = New System.Drawing.Point(6, 190)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(75, 13)
         Me.Label36.TabIndex = 4
@@ -1174,7 +1174,7 @@ Partial Class AI_Form
         'Label38
         '
         Me.Label38.AutoSize = True
-        Me.Label38.Location = New System.Drawing.Point(169, 40)
+        Me.Label38.Location = New System.Drawing.Point(170, 50)
         Me.Label38.Name = "Label38"
         Me.Label38.Size = New System.Drawing.Size(53, 13)
         Me.Label38.TabIndex = 4
@@ -1183,7 +1183,7 @@ Partial Class AI_Form
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(9, 137)
+        Me.Label22.Location = New System.Drawing.Point(10, 147)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(71, 13)
         Me.Label22.TabIndex = 4
@@ -1192,7 +1192,7 @@ Partial Class AI_Form
         'Label31
         '
         Me.Label31.AutoSize = True
-        Me.Label31.Location = New System.Drawing.Point(5, 254)
+        Me.Label31.Location = New System.Drawing.Point(6, 264)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(78, 13)
         Me.Label31.TabIndex = 5
@@ -1201,7 +1201,7 @@ Partial Class AI_Form
         'Label29
         '
         Me.Label29.AutoSize = True
-        Me.Label29.Location = New System.Drawing.Point(5, 206)
+        Me.Label29.Location = New System.Drawing.Point(6, 216)
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(78, 13)
         Me.Label29.TabIndex = 5
@@ -1210,7 +1210,7 @@ Partial Class AI_Form
         'Label35
         '
         Me.Label35.AutoSize = True
-        Me.Label35.Location = New System.Drawing.Point(137, 254)
+        Me.Label35.Location = New System.Drawing.Point(138, 264)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(85, 13)
         Me.Label35.TabIndex = 5
@@ -1219,7 +1219,7 @@ Partial Class AI_Form
         'Label33
         '
         Me.Label33.AutoSize = True
-        Me.Label33.Location = New System.Drawing.Point(139, 208)
+        Me.Label33.Location = New System.Drawing.Point(140, 218)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(85, 13)
         Me.Label33.TabIndex = 5
@@ -1228,7 +1228,7 @@ Partial Class AI_Form
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(145, 114)
+        Me.Label27.Location = New System.Drawing.Point(146, 124)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(77, 13)
         Me.Label27.TabIndex = 5
@@ -1237,7 +1237,7 @@ Partial Class AI_Form
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(146, 163)
+        Me.Label25.Location = New System.Drawing.Point(147, 173)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(76, 13)
         Me.Label25.TabIndex = 5
@@ -1246,7 +1246,7 @@ Partial Class AI_Form
         'Label34
         '
         Me.Label34.AutoSize = True
-        Me.Label34.Location = New System.Drawing.Point(133, 274)
+        Me.Label34.Location = New System.Drawing.Point(134, 284)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(91, 13)
         Me.Label34.TabIndex = 4
@@ -1255,7 +1255,7 @@ Partial Class AI_Form
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(133, 228)
+        Me.Label32.Location = New System.Drawing.Point(134, 238)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(91, 13)
         Me.Label32.TabIndex = 4
@@ -1264,7 +1264,7 @@ Partial Class AI_Form
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(148, 134)
+        Me.Label26.Location = New System.Drawing.Point(149, 144)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(74, 13)
         Me.Label26.TabIndex = 4
@@ -1273,7 +1273,7 @@ Partial Class AI_Form
         'Label24
         '
         Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(149, 182)
+        Me.Label24.Location = New System.Drawing.Point(150, 192)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(73, 13)
         Me.Label24.TabIndex = 4
@@ -1289,7 +1289,7 @@ Partial Class AI_Form
         Me.ComboBox0.Location = New System.Drawing.Point(103, 4)
         Me.ComboBox0.MaxDropDownItems = 30
         Me.ComboBox0.Name = "ComboBox0"
-        Me.ComboBox0.Size = New System.Drawing.Size(220, 24)
+        Me.ComboBox0.Size = New System.Drawing.Size(278, 24)
         Me.ComboBox0.TabIndex = 3
         '
         'ContextMenuStrip2
@@ -1349,10 +1349,9 @@ Partial Class AI_Form
         Me.SaveButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.SaveButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.SaveButton.Image = CType(resources.GetObject("SaveButton.Image"), System.Drawing.Image)
-        Me.SaveButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.SaveButton.Location = New System.Drawing.Point(365, 3)
+        Me.SaveButton.Location = New System.Drawing.Point(394, 327)
         Me.SaveButton.Name = "SaveButton"
-        Me.SaveButton.Size = New System.Drawing.Size(57, 25)
+        Me.SaveButton.Size = New System.Drawing.Size(61, 36)
         Me.SaveButton.TabIndex = 6
         Me.SaveButton.Text = "Save"
         Me.SaveButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
@@ -1383,7 +1382,7 @@ Partial Class AI_Form
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(329, 3)
+        Me.Button6.Location = New System.Drawing.Point(387, 4)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(30, 25)
         Me.Button6.TabIndex = 6
@@ -1397,19 +1396,19 @@ Partial Class AI_Form
         Me.ClientSize = New System.Drawing.Size(749, 375)
         Me.Controls.Add(Me.ComboBox0)
         Me.Controls.Add(Me.Button5)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.NumericUpDown5)
-        Me.Controls.Add(Me.SaveButton)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label44)
-        Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.ComboBox8)
+        Me.Controls.Add(Me.SaveButton)
+        Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.ComboBox4)
+        Me.Controls.Add(Me.ComboBox8)
+        Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.Label7)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

@@ -92,6 +92,25 @@ Module ProFiles
     End Function
 
     ''' <summary>
+    ''' Возвращает номер FID из про-файла криттера.
+    ''' </summary>
+    Friend Function GetFID(ByVal nPro As Integer) As Integer
+        Dim FID As Integer = -1
+
+        Dim cPath As String = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(nPro).proFile)
+        Try
+            Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                readFile.BaseStream.Seek(Prototypes.offsetFrmID, SeekOrigin.Begin)
+                FID = ReverseBytes(readFile.ReadInt32())
+            End Using
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+        Return IIf(FID = -1, Nothing, FID)
+    End Function
+
+    ''' <summary>
     ''' Возвращает имя FID из про-файла криттера.
     ''' </summary>
     Friend Function GetCritterFID(ByVal nPro As Integer) As String

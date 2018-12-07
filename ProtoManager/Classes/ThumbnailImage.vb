@@ -165,7 +165,7 @@ Friend Class ThumbnailImage
             If Not File.Exists(pathF) Then
                 DatFiles.CritterFrmGif(iName)
             End If
-            img = Image.FromFile(pathF)
+            If File.Exists(pathF) Then img = Image.FromFile(pathF)
             CrittersImage.Add(iName, img)
         End If
 
@@ -219,11 +219,13 @@ Friend Class ThumbnailImage
         e.Graphics.TextRenderingHint = Text.TextRenderingHint.ClearTypeGridFit
         e.Graphics.TextContrast = 0
 
-        If img Is Nothing Then img = My.Resources.RESERVAA
+        'If img Is Nothing Then img = My.Resources.RESERVAA
 
         ' Draw image
-        Dim fitImage As XYSize = ThumbnailImage.FitImage(e.Bounds.Width, e.Bounds.Height, img.Width, img.Height)
-        e.Graphics.DrawImage(img, e.Bounds.X + fitImage.xLocShift, e.Bounds.Y + fitImage.yLocShift, fitImage.width, fitImage.height)
+        If img IsNot Nothing Then
+            Dim fitImage As XYSize = ThumbnailImage.FitImage(e.Bounds.Width, e.Bounds.Height, img.Width, img.Height)
+            e.Graphics.DrawImage(img, e.Bounds.X + fitImage.xLocShift, e.Bounds.Y + fitImage.yLocShift, fitImage.width, fitImage.height)
+        End If
 
         ' Draw text
         Dim font As Font = New Font(scrFont, FontStyle.Bold)
@@ -247,12 +249,15 @@ Friend Class ThumbnailImage
 
     Friend Shared Sub Dispose()
         For Each item In ThumbnailImage.InventImage
+            If item.Value Is Nothing Then Continue For
             item.Value.Dispose()
         Next
         For Each item In ThumbnailImage.ItemsImage
+            If item.Value Is Nothing Then Continue For
             item.Value.Dispose()
         Next
         For Each item In ThumbnailImage.CrittersImage
+            If item.Value Is Nothing Then Continue For
             item.Value.Dispose()
         Next
     End Sub

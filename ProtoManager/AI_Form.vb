@@ -14,6 +14,7 @@ Public Class AI_Form
     Private AIPacket As Dictionary(Of String, Integer)  'Список всех имен, и их номера строк в файле 
 
     Private fReady As Boolean
+    Private aiCustom As Boolean
 
     Private Const _width As Integer = 287
     Private Const _capform As String = "] AI Packet Editor"
@@ -31,6 +32,7 @@ Public Class AI_Form
 
         aiPath = DatFiles.CheckFile(AI.AIFILE)
         AIPacket = AI.GetAll_AIPacket(aiPath)
+        aiCustom = False
     End Sub
 
     Friend Sub Initialize(ByVal numPacket As Integer)
@@ -95,7 +97,10 @@ Public Class AI_Form
         ListView1.Items.Clear()
         Dim drug_lst() As String = Split(AI.GetIniStringParam(Section, "chem_primary_desire", aiPath), ",")
         If drug_lst(0) <> AI.Unknown And drug_lst(0) <> "-1" Then
-            For i = 0 To drug_lst.GetLength(0) - 1
+            Dim count As Integer = drug_lst.GetLength(0) - 1
+            If count > 2 Then count = 2
+            For i = 0 To count
+                If drug_lst(i).Length = 0 Then Continue For
                 ListView1.Items.Add(New ListViewItem({drug_lst(i), Items_LST(drug_lst(i) - 1).itemName}))
             Next
         Else
@@ -125,7 +130,7 @@ Public Class AI_Form
                 eKey = AI.GetPacketName(ComboBox0.Items(sIndx).ToString)
             End If
         End If
-        Dim AITxtfrm As New AI_TextForm(AIPacket.Item(sKey), AIPacket.Item(eKey), aiPath, SaveButton.Enabled)
+        Dim AITxtfrm As New AI_TextForm(AIPacket.Item(sKey), AIPacket.Item(eKey), aiPath, SaveButton.Enabled, aiCustom)
 
         AITxtfrm.Owner = Me
         AITxtfrm.Text &= sKey
@@ -134,7 +139,9 @@ Public Class AI_Form
     End Sub
 
     Private Sub ToolStripComboBox1_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripComboBox1.SelectedIndexChanged
-        AddDrugsToolStripMenuItem.Enabled = True
+        If ListView1.Items.Count < 3 Then
+            AddDrugsToolStripMenuItem.Enabled = True
+        End If
         ContextMenuStrip1.Focus()
     End Sub
 
@@ -147,6 +154,9 @@ Public Class AI_Form
         Next
         Dim pid As Integer = ToolStripComboBox1.Text.Remove(3)
         ListView1.Items.Add(New ListViewItem({pid, Items_LST(pid - 1).itemName}))
+        If ListView1.Items.Count > 2 Then
+            AddDrugsToolStripMenuItem.Enabled = False
+        End If
         SaveButton.Enabled = True
     End Sub
 
@@ -162,6 +172,9 @@ Public Class AI_Form
     Private Sub Delete(ByVal sender As Object, ByVal e As EventArgs) Handles DeleteToolStripMenuItem.Click
         On Error Resume Next
         ListView1.Items.RemoveAt(ListView1.FocusedItem.Index)
+        If ListView1.Items.Count < 3 Then
+            AddDrugsToolStripMenuItem.Enabled = True
+        End If
         SaveButton.Enabled = True
     End Sub
 
@@ -192,6 +205,9 @@ Public Class AI_Form
         End Try
         Select_AI_Packet(Nothing, Nothing)
         SaveButton.Enabled = False
+        aiCustom = True
+        'Log
+        Main.PrintLog("Open AI: " & aiPath)
     End Sub
 
     Private Sub AI_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -212,9 +228,12 @@ Public Class AI_Form
     End Sub
 
     Private Sub SaveAI(ByVal sender As Object, ByVal e As EventArgs) Handles SaveButton.Click
-        If Not (File.Exists(SaveMOD_Path & AI.AIFILE)) Then FileSystem.CopyFile(aiPath, SaveMOD_Path & AI.AIFILE)
         Dim Section As String = AI.GetPacketName(ComboBox0.Text)
-        aiPath = SaveMOD_Path & AI.AIFILE
+        If Not aiCustom Then
+            If Not (File.Exists(SaveMOD_Path & AI.AIFILE)) Then FileSystem.CopyFile(aiPath, SaveMOD_Path & AI.AIFILE)
+            aiPath = SaveMOD_Path & AI.AIFILE
+        End If
+
         'chem_primary_desire
         Dim List As String = String.Empty
         For Each ic As ListViewItem In ListView1.Items 'ListView.ListViewItemCollection
@@ -223,9 +242,12 @@ Public Class AI_Form
             List &= ic.Text
         Next
         If List.Length > 0 Then AI.PutIniParam(Section, "chem_primary_desire", List, aiPath)
-        SubSaveControl(Me, Section)
 
+        SubSaveControl(Me, Section)
         SaveButton.Enabled = False
+
+        'Log
+        Main.PrintLog("Save AI: " & aiPath)
     End Sub
 
     ' Рекурсивный перебор контролов класса формы
@@ -283,7 +305,7 @@ Public Class AI_Form
     End Sub
 
     Friend Shared Sub ReloadFile(ByVal owner As AI_Form, Optional ByVal ready As Boolean = True)
-        owner.aiPath = SaveMOD_Path & AI.AIFILE
+        If Not owner.aiCustom Then owner.aiPath = SaveMOD_Path & AI.AIFILE
         owner.AIPacket.Clear()
         owner.AIPacket = AI.GetAll_AIPacket(owner.aiPath)
 
@@ -362,11 +384,17 @@ Public Class AI_Form
         Dim name As String = InputBox("Enter the name for new AI Packet", "Create AI Packet number: " & maxNumPacket)
         If name.Length = 0 Then Exit Sub
 
-        Dim pathAI As String = SaveMOD_Path & AI.AIFILE
-        If Not (File.Exists(pathAI)) Then FileSystem.CopyFile(aiPath, pathAI)
+        Dim pathAI As String = aiPath
+        If Not aiCustom Then
+            pathAI = SaveMOD_Path & AI.AIFILE
+            If Not (File.Exists(pathAI)) Then FileSystem.CopyFile(aiPath, pathAI)
+        End If
         File.AppendAllText(pathAI, vbCrLf & "[" & name & "]" & vbCrLf)
         File.AppendAllText(pathAI, My.Resources.defaultAI, System.Text.Encoding.Default)
         AI.PutIniParam(name, "packet_num", maxNumPacket, pathAI)
+        'Log
+        Main.PrintLog("Save AI: " & pathAI)
+
         ReloadFile(Me, False)
 
         If ShowPacketIDMenuItem.Checked Then

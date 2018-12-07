@@ -58,8 +58,11 @@ Partial Class Main_Form
         Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.ClearToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
-        Me.DontHoverSelectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShowFIDToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShowPIDToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
+        Me.DontHoverSelectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton10 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton1 = New System.Windows.Forms.ToolStripDropDownButton()
@@ -328,7 +331,7 @@ Partial Class Main_Form
         '
         'ToolStripSplitButton2
         '
-        Me.ToolStripSplitButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Cp886ToolStripMenuItem, Me.AttrReadOnlyToolStripMenuItem, Me.ToolStripSeparator9, Me.ClearToolStripMenuItem2, Me.ToolStripSeparator10, Me.DontHoverSelectToolStripMenuItem, Me.ViewLogToolStripMenuItem})
+        Me.ToolStripSplitButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Cp886ToolStripMenuItem, Me.AttrReadOnlyToolStripMenuItem, Me.ToolStripSeparator9, Me.ClearToolStripMenuItem2, Me.ToolStripSeparator10, Me.ShowFIDToolStripMenuItem, Me.ShowPIDToolStripMenuItem, Me.ViewLogToolStripMenuItem, Me.ToolStripSeparator12, Me.DontHoverSelectToolStripMenuItem})
         Me.ToolStripSplitButton2.Image = CType(resources.GetObject("ToolStripSplitButton2.Image"), System.Drawing.Image)
         Me.ToolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripSplitButton2.Name = "ToolStripSplitButton2"
@@ -373,13 +376,19 @@ Partial Class Main_Form
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
         Me.ToolStripSeparator10.Size = New System.Drawing.Size(184, 6)
         '
-        'DontHoverSelectToolStripMenuItem
+        'ShowFIDToolStripMenuItem
         '
-        Me.DontHoverSelectToolStripMenuItem.CheckOnClick = True
-        Me.DontHoverSelectToolStripMenuItem.Name = "DontHoverSelectToolStripMenuItem"
-        Me.DontHoverSelectToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.DontHoverSelectToolStripMenuItem.Text = "Don't select on hover"
-        Me.DontHoverSelectToolStripMenuItem.ToolTipText = "Don't select element in prototypes list when mouse hover."
+        Me.ShowFIDToolStripMenuItem.CheckOnClick = True
+        Me.ShowFIDToolStripMenuItem.Name = "ShowFIDToolStripMenuItem"
+        Me.ShowFIDToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.ShowFIDToolStripMenuItem.Text = "Show FID column"
+        '
+        'ShowPIDToolStripMenuItem
+        '
+        Me.ShowPIDToolStripMenuItem.CheckOnClick = True
+        Me.ShowPIDToolStripMenuItem.Name = "ShowPIDToolStripMenuItem"
+        Me.ShowPIDToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.ShowPIDToolStripMenuItem.Text = "Show PID column"
         '
         'ViewLogToolStripMenuItem
         '
@@ -389,6 +398,19 @@ Partial Class Main_Form
         Me.ViewLogToolStripMenuItem.Name = "ViewLogToolStripMenuItem"
         Me.ViewLogToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.ViewLogToolStripMenuItem.Text = "Show Log"
+        '
+        'ToolStripSeparator12
+        '
+        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(184, 6)
+        '
+        'DontHoverSelectToolStripMenuItem
+        '
+        Me.DontHoverSelectToolStripMenuItem.CheckOnClick = True
+        Me.DontHoverSelectToolStripMenuItem.Name = "DontHoverSelectToolStripMenuItem"
+        Me.DontHoverSelectToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.DontHoverSelectToolStripMenuItem.Text = "Don't select on hover"
+        Me.DontHoverSelectToolStripMenuItem.ToolTipText = "Don't select element in prototypes list when mouse hover."
         '
         'ToolStripSeparator2
         '
@@ -744,7 +766,8 @@ Partial Class Main_Form
         '
         'ColumnHeader6
         '
-        Me.ColumnHeader6.Text = "Pid Number"
+        Me.ColumnHeader6.Text = "PID"
+        Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader6.Width = 65
         '
         'SplitContainer1
@@ -777,12 +800,13 @@ Partial Class Main_Form
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.Label3.Location = New System.Drawing.Point(0, 461)
+        Me.Label3.Location = New System.Drawing.Point(0, 458)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(59, 13)
+        Me.Label3.Size = New System.Drawing.Size(38, 16)
         Me.Label3.TabIndex = 2
-        Me.Label3.Text = "Log Stack:"
+        Me.Label3.Text = "Log:"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'TextBox1
@@ -970,5 +994,8 @@ Partial Class Main_Form
     Friend WithEvents MassCreateProfilesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ImageListingToolStripButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ShowFIDToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ShowPIDToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

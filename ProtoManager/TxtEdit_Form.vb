@@ -168,13 +168,6 @@ Public Class TxtEdit_Form
 
     Private ReadOnly ArmNamePro() As String = {
        "armor_class",
-       "armor_dt_normal",
-       "armor_dt_laser",
-       "armor_dt_fire",
-       "armor_dt_plasma",
-       "armor_dt_electrical",
-       "armor_dt_emp",
-       "armor_dt_explode",
        "armor_dr_normal",
        "armor_dr_laser",
        "armor_dr_fire",
@@ -182,6 +175,13 @@ Public Class TxtEdit_Form
        "armor_dr_electrical",
        "armor_dr_emp",
        "armor_dr_explode",
+       "armor_dt_normal",
+       "armor_dt_laser",
+       "armor_dt_fire",
+       "armor_dt_plasma",
+       "armor_dt_electrical",
+       "armor_dt_emp",
+       "armor_dt_explode",
        "armor_perk_id",
        "armor_male_fid",
        "armor_female_fid"}
