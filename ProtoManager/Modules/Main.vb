@@ -246,7 +246,7 @@ Friend Module Main
     Private Sub GetItemsData()
         If Misc_NAME IsNot Nothing Then Return
 
-        Dim tempList0 As List(Of String) = New List(Of String)()
+        Dim tempList As SortedList(Of Integer, String) = New SortedList(Of Integer, String)()
 
         Misc_LST = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(miscLstPath)))
         Messages.GetMsgData("pro_misc.msg")
@@ -256,26 +256,31 @@ Friend Module Main
         Next
 
         Messages.GetMsgData("proto.msg")
-        For n As Integer = Messages.GetMSGLine(300) To UBound(MSG_DATATEXT)
-            If Messages.GetParamMsg(MSG_DATATEXT(n)) = "350" Then Exit For
+        Dim i As Integer = Messages.GetMSGLine(300)
+        If i = -1 Then i = Integer.MaxValue
+        For n As Integer = i To UBound(MSG_DATATEXT)
             If MSG_DATATEXT(n).StartsWith("{") Then
-                tempList0.Add(Messages.GetParamMsg(MSG_DATATEXT(n), True))
+                Dim msgLine As Integer = Convert.ToInt32(Val(Messages.GetParamMsg(MSG_DATATEXT(n))))
+                If msgLine >= 350 Then Exit For
+                tempList.Add(msgLine, Messages.GetParamMsg(MSG_DATATEXT(n), True))
             End If
         Next
-        ReDim CaliberNAME(tempList0.Count - 1)
-        tempList0.CopyTo(CaliberNAME)
-        tempList0.Clear()
+        ReDim CaliberNAME(tempList.Count - 1)
+        tempList.Values.CopyTo(CaliberNAME, 0)
+        tempList.Clear()
 
         Messages.GetMsgData("perk.msg")
-        For n As Integer = 0 To UBound(MSG_DATATEXT)
-            If Messages.GetParamMsg(MSG_DATATEXT(n)) = "1101" Then Exit For
-            If MSG_DATATEXT(n).StartsWith("{") Then
-                tempList0.Add(Messages.GetParamMsg(MSG_DATATEXT(n), True))
+        For Each line In MSG_DATATEXT
+            If line.StartsWith("{") Then
+                Dim msgLine As Integer = Convert.ToInt32(Val(GetParamMsg(line)))
+                If msgLine > 100 Then
+                    If msgLine = 1101 Then Exit For
+                    tempList.Add(msgLine, Messages.GetParamMsg(line, True))
+                End If
             End If
         Next
-        ReDim Perk_NAME(tempList0.Count - 1)
-        tempList0.CopyTo(Perk_NAME)
-
+        ReDim Perk_NAME(tempList.Count - 1)
+        tempList.Values.CopyTo(Perk_NAME, 0)
     End Sub
 
     Friend Sub FilterCreateItemsList(ByVal filter As Integer)
