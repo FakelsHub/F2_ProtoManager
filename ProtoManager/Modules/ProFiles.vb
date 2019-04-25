@@ -107,7 +107,7 @@ Module ProFiles
             Return Nothing
         End Try
 
-        Return IIf(FID = -1, Nothing, FID)
+        Return If(FID = -1, 0, FID)
     End Function
 
     ''' <summary>

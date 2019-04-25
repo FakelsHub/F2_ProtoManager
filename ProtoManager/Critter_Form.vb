@@ -139,8 +139,8 @@ Friend Class Critter_Form
         'TextBox25.Text = fCritterPro.Healing
         'TextBox26.Text = fCritterPro.Critical
 
-        TextBox27.Text = CritterPro.Better
-        TextBox28.Text = CritterPro.UnarmedDmg
+        TextBox27.Text = CritterPro.Better.ToString
+        TextBox28.Text = CritterPro.UnarmedDmg.ToString
 
         'TextBox31.Text = fCritterPro.DRPoison
         'TextBox32.Text = fCritterPro.DRRadiation
@@ -180,6 +180,7 @@ Friend Class Critter_Form
         TextBox24.Text = CalcStats.Sequence(NumericUpDown2.Value) + NumericUpDown31.Value
         TextBox25.Text = CalcStats.Healing_Rate(NumericUpDown3.Value) + NumericUpDown32.Value
         TextBox26.Text = NumericUpDown7.Value + NumericUpDown33.Value
+        TextBox27.Text = CritterPro.Better + NumericUpDown34.Value
 
         TextBox31.Text = CalcStats.Poison(NumericUpDown3.Value) + NumericUpDown55.Value 'DRPoison
         TextBox32.Text = CalcStats.Radiation(NumericUpDown3.Value) + NumericUpDown54.Value 'DRRadiation
@@ -340,7 +341,7 @@ Friend Class Critter_Form
         CritterPro.Healing = Val(TextBox25.Text) - NumericUpDown32.Value
         CritterPro.Critical = Val(TextBox26.Text) - NumericUpDown33.Value
         '*************
-        'fCritterPro.Better = TextBox27.Text
+        CritterPro.Better = Val(TextBox27.Text) - NumericUpDown34.Value
         'fCritterPro.UnarmedDmg = TextBox28.Text
         '*************
         'Tab Defence
@@ -487,7 +488,8 @@ Friend Class Critter_Form
     NumericUpDown13.ValueChanged, NumericUpDown14.ValueChanged, NumericUpDown15.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown17.ValueChanged, _
     NumericUpDown18.ValueChanged, NumericUpDown19.ValueChanged, NumericUpDown20.ValueChanged, NumericUpDown21.ValueChanged, NumericUpDown22.ValueChanged, _
     NumericUpDown23.ValueChanged, NumericUpDown24.ValueChanged, NumericUpDown25.ValueChanged, NumericUpDown26.ValueChanged, NumericUpDown27.ValueChanged, _
-    NumericUpDown28.ValueChanged, NumericUpDown29.ValueChanged, NumericUpDown30.ValueChanged, NumericUpDown31.ValueChanged, NumericUpDown32.ValueChanged, NumericUpDown33.ValueChanged
+    NumericUpDown28.ValueChanged, NumericUpDown29.ValueChanged, NumericUpDown30.ValueChanged, NumericUpDown31.ValueChanged, NumericUpDown32.ValueChanged, _
+    NumericUpDown33.ValueChanged, NumericUpDown34.ValueChanged
         '
         If TabStatsView Then
             CalcSpecialParam()
@@ -700,7 +702,7 @@ Friend Class Critter_Form
         For Each item As ListViewItem In Main_Form.ListView1.Items
             If CInt(item.Tag) = cLST_Index Then
                 Main_Form.ListView1.Items(item.Index).ForeColor = Color.DarkBlue
-                Main_Form.ListView1.Items(item.Index).SubItems(2).Text = "*"
+                Main_Form.ListView1.Items(item.Index).SubItems(2).Text = If(Settings.proRO, "R/O", String.Empty)
                 Exit For
             End If
         Next

@@ -178,7 +178,6 @@ Friend Module Main
                 If Critter_LST(n).crtName = String.Empty Then Critter_LST(n).crtName = "<NoName>"
                 Dim proIsEdit As Boolean = False
                 Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_CRITTERS & Critter_LST(n).proFile))
-                If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
                 If showFID Then
                     .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n).ToString, GetFID(n).ToString})) 'FID
                 Else
@@ -221,7 +220,6 @@ Friend Module Main
                 If Items_LST(n).itemName = String.Empty Then Items_LST(n).itemName = "<NoName>"
                 Dim proIsEdit As Boolean = False
                 Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
-                If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
                 CreateListItem(n, rOnly, showPID)
                 .ListView2.Items(n).Tag = n 'запись индекса(pid) итема из item.lst
                 If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue

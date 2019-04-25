@@ -584,7 +584,7 @@ Friend Class Items_Form
                 Main_Form.ListView2.Items(indx).SubItems(2).Text = ComboBox7.Text
             End If
             Main_Form.ListView2.Items(indx).ForeColor = Color.DarkBlue
-            Main_Form.ListView2.Items(indx).SubItems(3).Text = "*"
+            Main_Form.ListView2.Items(indx).SubItems(3).Text = If(Settings.proRO, "R/O", String.Empty)
         End If
 
         cPath = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, False)

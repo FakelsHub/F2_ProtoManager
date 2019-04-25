@@ -824,7 +824,7 @@ Partial Class Critter_Form
         '
         Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label11.Location = New System.Drawing.Point(12, 93)
+        Me.Label11.Location = New System.Drawing.Point(12, 119)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(75, 18)
         Me.Label11.TabIndex = 0
@@ -953,7 +953,7 @@ Partial Class Critter_Form
         '
         Me.Label10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label10.Location = New System.Drawing.Point(12, 119)
+        Me.Label10.Location = New System.Drawing.Point(12, 93)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(75, 18)
         Me.Label10.TabIndex = 0
@@ -1092,7 +1092,7 @@ Partial Class Critter_Form
         '
         'NumericUpDown12
         '
-        Me.NumericUpDown12.Location = New System.Drawing.Point(130, 118)
+        Me.NumericUpDown12.Location = New System.Drawing.Point(130, 92)
         Me.NumericUpDown12.Maximum = New Decimal(New Integer() {300, 0, 0, 0})
         Me.NumericUpDown12.Minimum = New Decimal(New Integer() {300, 0, 0, -2147483648})
         Me.NumericUpDown12.Name = "NumericUpDown12"
@@ -1144,7 +1144,7 @@ Partial Class Critter_Form
         '
         'NumericUpDown11
         '
-        Me.NumericUpDown11.Location = New System.Drawing.Point(130, 92)
+        Me.NumericUpDown11.Location = New System.Drawing.Point(130, 118)
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {300, 0, 0, 0})
         Me.NumericUpDown11.Minimum = New Decimal(New Integer() {300, 0, 0, -2147483648})
         Me.NumericUpDown11.Name = "NumericUpDown11"
@@ -1170,7 +1170,7 @@ Partial Class Critter_Form
         Me.TextBox5.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.TextBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.TextBox5.ForeColor = System.Drawing.Color.Chartreuse
-        Me.TextBox5.Location = New System.Drawing.Point(93, 118)
+        Me.TextBox5.Location = New System.Drawing.Point(93, 92)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.ReadOnly = True
         Me.TextBox5.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -1241,7 +1241,7 @@ Partial Class Critter_Form
         Me.TextBox4.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.TextBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.TextBox4.ForeColor = System.Drawing.Color.Chartreuse
-        Me.TextBox4.Location = New System.Drawing.Point(93, 92)
+        Me.TextBox4.Location = New System.Drawing.Point(93, 118)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.ReadOnly = True
         Me.TextBox4.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -1748,6 +1748,7 @@ Partial Class Critter_Form
         Me.Label54.TabIndex = 0
         Me.Label54.Text = "Unarmed Damage"
         Me.Label54.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.ToolTip1.SetToolTip(Me.Label54, "Unused Stat")
         '
         'Label53
         '
@@ -1852,14 +1853,16 @@ Partial Class Critter_Form
         '
         'NumericUpDown34
         '
-        Me.NumericUpDown34.Enabled = False
+        Me.NumericUpDown34.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(200, Byte), Integer), CType(CType(200, Byte), Integer))
         Me.NumericUpDown34.Location = New System.Drawing.Point(344, 96)
-        Me.NumericUpDown34.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
+        Me.NumericUpDown34.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
+        Me.NumericUpDown34.Minimum = New Decimal(New Integer() {200, 0, 0, -2147483648})
         Me.NumericUpDown34.Name = "NumericUpDown34"
         Me.NumericUpDown34.Size = New System.Drawing.Size(41, 20)
         Me.NumericUpDown34.TabIndex = 2
         Me.NumericUpDown34.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ToolTip1.SetToolTip(Me.NumericUpDown34, "Bonus Stat")
+        Me.NumericUpDown34.Value = New Decimal(New Integer() {100, 0, 0, -2147483648})
         '
         'NumericUpDown29
         '

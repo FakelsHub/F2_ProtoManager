@@ -381,14 +381,14 @@ Partial Class Main_Form
         Me.ShowFIDToolStripMenuItem.CheckOnClick = True
         Me.ShowFIDToolStripMenuItem.Name = "ShowFIDToolStripMenuItem"
         Me.ShowFIDToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.ShowFIDToolStripMenuItem.Text = "Show FID column"
+        Me.ShowFIDToolStripMenuItem.Text = "Show critter FID"
         '
         'ShowPIDToolStripMenuItem
         '
         Me.ShowPIDToolStripMenuItem.CheckOnClick = True
         Me.ShowPIDToolStripMenuItem.Name = "ShowPIDToolStripMenuItem"
         Me.ShowPIDToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.ShowPIDToolStripMenuItem.Text = "Show PID column"
+        Me.ShowPIDToolStripMenuItem.Text = "Show item PID"
         '
         'ViewLogToolStripMenuItem
         '
@@ -521,7 +521,7 @@ Partial Class Main_Form
         Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
         Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(64, 22)
+        Me.ToolStripButton1.Size = New System.Drawing.Size(64, 20)
         Me.ToolStripButton1.Text = "Search:"
         Me.ToolStripButton1.ToolTipText = "Continue Search [F3]"
         '

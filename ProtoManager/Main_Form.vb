@@ -58,7 +58,7 @@ Friend Class Main_Form
             File.Delete("iImage.lst")
             File.Delete("iProto.lst")
             File.Delete("cProto.lst")
-            Directory.Delete("art\", True)
+            If Directory.Exists("art\") Then Directory.Delete("art\", True)
         End If
     End Sub
 
@@ -234,9 +234,7 @@ Friend Class Main_Form
                 LIST_VIEW = ListView1
             End If
 
-            LIST_VIEW.Focus()
-
-            Dim n As Integer = LIST_VIEW.FocusedItem.Index + 1
+            Dim n As Integer = If(LIST_VIEW.FocusedItem IsNot Nothing, LIST_VIEW.FocusedItem.Index + 1, 0)
             If n >= LIST_VIEW.Items.Count Then n = 0
             If SearhLW(n, LIST_VIEW) >= LIST_VIEW.Items.Count Then
                 If SearhLW(0, LIST_VIEW) >= LIST_VIEW.Items.Count Then Exit Sub
@@ -248,9 +246,10 @@ Friend Class Main_Form
                     LIST_VIEW.TopItem = LIST_VIEW.FocusedItem
                 End If
             End If
-
+            If Not (TypeOf sender Is ToolStripTextBox) Then
+                LIST_VIEW.Focus()
+            End If
             LIST_VIEW.FocusedItem.EnsureVisible()
-
         End If
     End Sub
 
@@ -266,8 +265,11 @@ Friend Class Main_Form
         Return n
     End Function
 
-    Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ToolStripTextBox1.KeyUp
-        If e.KeyData = Keys.Enter Then Find(Nothing, Nothing)
+    Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ToolStripTextBox1.KeyDown
+        If e.KeyData = Keys.Enter Then
+            e.SuppressKeyPress = True
+            Find(sender, Nothing)
+        End If
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
@@ -598,6 +600,38 @@ Friend Class Main_Form
 
     Private Sub MassCreateProfiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MassCreateProfilesToolStripMenuItem.Click
         Dim MassCreateFrm As New MassCreate()
+    End Sub
+
+    Private Sub ShowFIDToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowFIDToolStripMenuItem.Click
+        With Me.ListView1
+            If .Columns.ContainsKey("cFid") Then
+                .Columns.RemoveByKey("cFid")
+                Return
+            Else
+                .BeginUpdate()
+                .Columns.Add("cFid", "FID", 65, HorizontalAlignment.Center, 0)
+            End If
+            For Each item As ListViewItem In .Items
+                item.SubItems.Add(GetFID(item.Tag).ToString)
+            Next
+            .EndUpdate()
+        End With
+    End Sub
+
+    Private Sub ShowPIDToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowPIDToolStripMenuItem.Click
+        With Me.ListView2
+            If .Columns.ContainsKey("iPid") Then
+                .Columns.RemoveByKey("iPid")
+                Return
+            Else
+                .BeginUpdate()
+                .Columns.Add("iPid", "PID", 65, HorizontalAlignment.Center, 0)
+            End If
+            For Each item As ListViewItem In .Items
+                item.SubItems.Add((item.Tag + 1).ToString.PadLeft(8, "0"c))
+            Next
+            .EndUpdate()
+        End With
     End Sub
 
 #Region "Drawning trumb image"
