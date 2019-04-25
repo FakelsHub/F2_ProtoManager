@@ -40,7 +40,7 @@ Partial Class AboutBox
         '
         Me.OKButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OKButton.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.OKButton.Location = New System.Drawing.Point(378, 329)
+        Me.OKButton.Location = New System.Drawing.Point(472, 329)
         Me.OKButton.Name = "OKButton"
         Me.OKButton.Size = New System.Drawing.Size(75, 20)
         Me.OKButton.TabIndex = 0
@@ -55,7 +55,7 @@ Partial Class AboutBox
         Me.LabelCopyright.Margin = New System.Windows.Forms.Padding(6, 0, 3, 0)
         Me.LabelCopyright.MaximumSize = New System.Drawing.Size(0, 17)
         Me.LabelCopyright.Name = "LabelCopyright"
-        Me.LabelCopyright.Size = New System.Drawing.Size(447, 17)
+        Me.LabelCopyright.Size = New System.Drawing.Size(541, 17)
         Me.LabelCopyright.TabIndex = 0
         Me.LabelCopyright.Text = "Copyright: "
         Me.LabelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -69,7 +69,7 @@ Partial Class AboutBox
         Me.LabelVersion.Margin = New System.Windows.Forms.Padding(6, 0, 3, 0)
         Me.LabelVersion.MaximumSize = New System.Drawing.Size(0, 17)
         Me.LabelVersion.Name = "LabelVersion"
-        Me.LabelVersion.Size = New System.Drawing.Size(447, 17)
+        Me.LabelVersion.Size = New System.Drawing.Size(541, 17)
         Me.LabelVersion.TabIndex = 0
         Me.LabelVersion.Text = "Version:"
         Me.LabelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -83,13 +83,15 @@ Partial Class AboutBox
         Me.LabelProductName.Location = New System.Drawing.Point(3, 3)
         Me.LabelProductName.Margin = New System.Windows.Forms.Padding(3)
         Me.LabelProductName.Name = "LabelProductName"
-        Me.LabelProductName.Size = New System.Drawing.Size(450, 22)
+        Me.LabelProductName.Size = New System.Drawing.Size(544, 22)
         Me.LabelProductName.TabIndex = 0
         Me.LabelProductName.Text = "Имя продукта"
         Me.LabelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'TableLayoutPanel
         '
+        Me.TableLayoutPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel.ColumnCount = 1
         Me.TableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel.Controls.Add(Me.LabelProductName, 0, 0)
@@ -105,7 +107,7 @@ Partial Class AboutBox
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.0!))
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75.0!))
         Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.0!))
-        Me.TableLayoutPanel.Size = New System.Drawing.Size(456, 352)
+        Me.TableLayoutPanel.Size = New System.Drawing.Size(550, 352)
         Me.TableLayoutPanel.TabIndex = 0
         '
         'TextBoxDescription
@@ -117,7 +119,7 @@ Partial Class AboutBox
         Me.TextBoxDescription.Name = "TextBoxDescription"
         Me.TextBoxDescription.ReadOnly = True
         Me.TextBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBoxDescription.Size = New System.Drawing.Size(450, 258)
+        Me.TextBoxDescription.Size = New System.Drawing.Size(544, 258)
         Me.TextBoxDescription.TabIndex = 0
         Me.TextBoxDescription.TabStop = False
         Me.TextBoxDescription.Text = resources.GetString("TextBoxDescription.Text")
@@ -150,7 +152,7 @@ Partial Class AboutBox
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.OKButton
-        Me.ClientSize = New System.Drawing.Size(544, 376)
+        Me.ClientSize = New System.Drawing.Size(638, 376)
         Me.Controls.Add(Me.LinkLabel1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TableLayoutPanel)

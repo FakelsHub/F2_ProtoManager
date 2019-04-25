@@ -118,21 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TextBoxDescription.Text" xml:space="preserve">
-    <value>The priority of the search required files by the editor:
+    <value>The priority of searching the required files by the editor:
 1. Your chosen folder 'MOD' in which to save all changed files.
 2. The standard Data folder of the game (&lt;Game&gt;\Data\...)
 3. The folder with the extracted resources &lt;Master.dat&gt; &lt;Critter.dat&gt;
-4. Cache folder (Cache folder is a temporary folder where you extracted the files from the dat archives)
+4. Internal cache folder (Cache folder is a temporary folder of editor with extracted files from dat archives)
 5. Files from the archives of the Master.dat and Critter.dat
 
 Приоритет поиска требуемых файлов редактором:
 1. Выбранная вами папка 'MOD', в которую сохраняются все измененные файлы.
 2. Стандартная папка игры Data (&lt;Game&gt;\Data\...)
 3. Папки с извлеченными ресурсами &lt;Master.dat&gt; &lt;Critter.dat&gt;
-4. Кэш папка с файлами (Кэш папка это временная папка с извлеченными файлами из dat архивов)
+4. Внутренняя кэш папка (Кэш папка это временная папка редактора с извлеченными файлами из dat архивов)
 5. Файлы из архивов Master.dat и Critter.dat
 
 История изменений:
+v.1.1.5 (2019)
+----------------
+- Исправлена ошибка с неправильным отображением имен перков, когда в perks.msg был нарушен порядок строк.
+- Улучшено взаимодействие функции поиска с пользователем.
+- Доступен для редактирования параметр статистики Better Critical в интерфейсе криттеров. 
+- Доработка опций Show PID/FID, чтобы отобразить параметры без необходимости обновления листинга.
+- Изменена позиция параметров умений Melee и Unarmed в интерфейсе редактирования криттеров.
+- И другие незначительные исправления ошибок редактора.
+
 v.1.1.4 (2018)
 ----------------
 - Добавлены опции для отображения дополнительных столбцов PID и FID в списке для криттеров и предметов.
