@@ -136,7 +136,12 @@ Friend Class ThumbnailImage
                 If Not File.Exists(pathF) Then
                     DatFiles.ItemFrmGif("inven\", iName)
                 End If
-                img = Image.FromFile(pathF)
+                If File.Exists(pathF) Then
+                    img = Image.FromFile(pathF)
+                Else
+                    Main.PrintLog("Error convert: " + pathF)
+                    img = My.Resources.RESERVAA
+                End If
                 InventImage.Add(iName, img)
             End If
         Else
@@ -145,11 +150,15 @@ Friend Class ThumbnailImage
                 If Not File.Exists(pathF) Then
                     DatFiles.ItemFrmGif("items\", iName)
                 End If
-                img = Image.FromFile(pathF)
+                If File.Exists(pathF) Then
+                    img = Image.FromFile(pathF)
+                Else
+                    Main.PrintLog("Error convert: " + pathF)
+                    img = My.Resources.RESERVAA
+                End If
                 ItemsImage.Add(iName, img)
             End If
         End If
-
         Return img
     End Function
 

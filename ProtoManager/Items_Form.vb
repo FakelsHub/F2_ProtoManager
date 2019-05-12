@@ -348,22 +348,27 @@ Friend Class Items_Form
         Dim frm As String = GetImageName(ComboBox1.SelectedItem.ToString, ".")
 
         Dim img As Image = My.Resources.RESERVAA 'BadFrm
-
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_ITEMS & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("items\", frm)
             If File.Exists(pfile) Then
-                img = Image.FromFile(pfile)
-                If ThumbnailImage.ItemsImage.ContainsKey(frm) = False Then ThumbnailImage.ItemsImage.Add(frm, img.Clone)
+                Try
+                    img = Image.FromFile(pfile)
+                Catch ex As Exception
+                    Main.PrintLog("Error frm convert: " + pfile)
+                End Try
+
                 If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
                     PictureBox1.BackgroundImageLayout = ImageLayout.Zoom
                 Else
                     PictureBox1.BackgroundImageLayout = ImageLayout.Center
                 End If
                 If frmReady Then Button6.Enabled = True
+            Else
+                Main.PrintLog("Error frm convert: " + pfile)
             End If
+            If ThumbnailImage.ItemsImage.ContainsKey(frm) = False Then ThumbnailImage.ItemsImage.Add(frm, img.Clone)
         End If
-
         PictureBox1.BackgroundImage = img
     End Sub
 
@@ -377,24 +382,28 @@ Friend Class Items_Form
         End If
 
         Dim img As Image = My.Resources.RESERVAA 'BadFrm
-
         frm = GetImageName(frm, ".")
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_INVEN & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("inven\", frm)
             If File.Exists(pfile) Then
-                img = Image.FromFile(pfile)
-                If ThumbnailImage.InventImage.ContainsKey(frm) = False Then ThumbnailImage.InventImage.Add(frm, img.Clone)
+                Try
+                    img = Image.FromFile(pfile)
+                Catch ex As Exception
+                    Main.PrintLog("Error frm convert: " + pfile)
+                End Try
                 If img.Width > PictureBox4.Size.Width Then
                     PictureBox4.BackgroundImageLayout = ImageLayout.Zoom
                 Else
                     PictureBox4.BackgroundImageLayout = ImageLayout.Center
                 End If
                 If frmReady Then Button6.Enabled = True
+            Else
+                Main.PrintLog("Error frm convert: " + pfile)
             End If
+            If ThumbnailImage.InventImage.ContainsKey(frm) = False Then ThumbnailImage.InventImage.Add(frm, img.Clone)
         End If
         PictureBox4.BackgroundImage = img
-
     End Sub
 
     Private Sub GenderFID(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox17.SelectedIndexChanged, ComboBox16.SelectedIndexChanged
