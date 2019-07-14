@@ -2903,8 +2903,8 @@ Partial Class Items_Form
         'Items_Form
         '
         Me.AcceptButton = Me.Button6
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Button3
         Me.ClientSize = New System.Drawing.Size(701, 348)
         Me.Controls.Add(Me.Button6)

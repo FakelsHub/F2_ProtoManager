@@ -436,6 +436,7 @@ Friend Module Main
 
     Friend Sub PrintLog(ByVal textLog As String)
         Main_Form.TextBox1.AppendText(textLog & vbLf)
+        On Error Resume Next ' for wine on Lunix
         Main_Form.TextBox1.ScrollToCaret()
     End Sub
 
