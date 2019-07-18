@@ -16,7 +16,7 @@ Friend Module Settings
     Friend gPath, sPath As String
 
     ' Program sets
-    Friend SplitSize As Integer = 950 'default size
+    Friend SplitSize As Integer = -1 'default size
     Friend txtWin As Boolean
     Friend txtLvCp As Boolean
     Friend proRO As Boolean
@@ -27,6 +27,9 @@ Friend Module Settings
 
     Friend ShowAIPacket As Boolean = True
     Friend SortedAIPacket As Boolean
+
+    Friend ColumnItemSize(4) As Integer
+    Friend ColumnCritterSize(4) As Integer
 
     Friend MsgEncoding As Encoding
 
@@ -46,6 +49,7 @@ Friend Module Settings
     'Load from ini
     Friend Sub Get_Config()
         Dim strIni As String = String.Empty
+        Dim temp() As String
 
         Dim ifile As StreamReader = File.OpenText(WorkAppDIR & "\config.ini")
         Try
@@ -64,7 +68,22 @@ Friend Module Settings
                         cArtCache = CBool(ifile.ReadLine.Substring(14))
                         ExtractBack = CBool(ifile.ReadLine.Substring(11)) 'Background=
                         HoverSelect = CBool(ifile.ReadLine.Substring(12))
+                    Case "[Size]"
                         SplitSize = CInt(ifile.ReadLine.Substring(10))
+                        temp = Split(ifile.ReadLine.Substring(9), ",") ' ColumnIt
+                        Dim i As Integer = 0
+                        For Each size As String In temp
+                            ColumnItemSize(i) = CInt(size.Trim())
+                            i += 1
+                            If i > 4 Then Exit For
+                        Next
+                        temp = Split(ifile.ReadLine.Substring(9), ",") ' ColumnCr
+                        i = 0
+                        For Each size As String In temp
+                            ColumnCritterSize(i) = CInt(size.Trim())
+                            i += 1
+                            If i > 4 Then Exit For
+                        Next
                 End Select
             Loop
         Catch ex As Exception
@@ -72,7 +91,7 @@ Friend Module Settings
         Finally
             ifile.Close()
         End Try
-        
+
         If Game_Path = String.Empty Then GoTo SetDefConf
         GameDATA_Path = Game_Path & DIR_DATA
         If SaveMOD_Path = String.Empty Then SaveMOD_Path = GameDATA_Path
@@ -105,11 +124,22 @@ SetDefConf:
         AppSetting.Add("ClearArtCache=" & cArtCache)
         AppSetting.Add("Background=" & ExtractBack)
         AppSetting.Add("HoverSelect=" & HoverSelect)
+        AppSetting.Add(String.Empty)
+        AppSetting.Add("[Size]")
         If Main_Form.WindowState = FormWindowState.Maximized Then
             AppSetting.Add("SplitSize=" & Main_Form.SplitContainer1.SplitterDistance)
         Else
             AppSetting.Add("SplitSize=" & SplitSize)
         End If
+        '
+        For i As Integer = 0 To Main_Form.ListView1.Columns.Count - 1
+            ColumnCritterSize(i) = Main_Form.ListView1.Columns(i).Width
+        Next
+        For i As Integer = 0 To Main_Form.ListView2.Columns.Count - 1
+            ColumnItemSize(i) = Main_Form.ListView2.Columns(i).Width
+        Next
+        AppSetting.Add("ColumnIt=" & String.Join(",", ColumnItemSize))
+        AppSetting.Add("ColumnCr=" & String.Join(",", ColumnCritterSize))
         '
         File.WriteAllLines(WorkAppDIR & "\config.ini", AppSetting)
     End Sub

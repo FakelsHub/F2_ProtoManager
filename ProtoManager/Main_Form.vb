@@ -40,9 +40,16 @@ Friend Class Main_Form
     Private Sub Main_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Timer1.Start()
         TabControl1.Visible = True
-        SplitContainer1.SplitterDistance = SplitSize
+        SplitContainer1.SplitterDistance = If(SplitSize = -1, Me.Width - 350, SplitSize)
         Settings.SetDoubleBuffered(ListView1)
         Settings.SetDoubleBuffered(ListView2)
+        '
+        For i As Integer = 0 To ListView2.Columns.Count - 1
+            If (ColumnItemSize(i) > 15) Then ListView2.Columns(i).Width = ColumnItemSize(i)
+        Next
+        For i As Integer = 0 To ListView1.Columns.Count - 1
+            If ColumnCritterSize(0) > 15 Then ListView1.Columns(i).Width = ColumnCritterSize(i)
+        Next
     End Sub
 
     Private Sub Main_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -82,7 +89,7 @@ Friend Class Main_Form
         Next
         File.WriteAllLines(SaveMOD_Path & crittersLstPath, lst)
 
-        'Log 
+        'Log
         Main.PrintLog("Update: " & SaveMOD_Path & crittersLstPath)
 
         ListView1.BeginUpdate()
@@ -122,7 +129,7 @@ Friend Class Main_Form
         Next
         File.WriteAllLines(SaveMOD_Path & itemsLstPath, lst)
 
-        'Log 
+        'Log
         Main.PrintLog("Update: " & SaveMOD_Path & itemsLstPath)
 
         ListView2.BeginUpdate()
@@ -149,7 +156,7 @@ Friend Class Main_Form
                     File.SetAttributes(dProFile, FileAttributes.Normal)
                     File.Delete(dProFile)
 
-                    'Log 
+                    'Log
                     Main.PrintLog("Delete Pro: " & dProFile)
                 End If
                 Dim pCont As Integer = UBound(Items_LST)
@@ -165,7 +172,7 @@ Friend Class Main_Form
                     File.WriteAllLines(SaveMOD_Path & itemsLstPath, lst)
                     ListView2.Items.RemoveAt(focusedItem.Index)
 
-                    'Log 
+                    'Log
                     Main.PrintLog("Update: " & SaveMOD_Path & itemsLstPath)
                 Else
                     ListView2.Items.Item(focusedItem.Index).SubItems(3).Text = "?"
@@ -179,7 +186,7 @@ Friend Class Main_Form
                     File.SetAttributes(dProFile, FileAttributes.Normal)
                     File.Delete(dProFile)
 
-                    'Log 
+                    'Log
                     Main.PrintLog("Delete Pro: " & dProFile)
                 End If
                 Dim pCont As Integer = UBound(Critter_LST)
@@ -196,7 +203,7 @@ Friend Class Main_Form
                     Next
                     File.WriteAllLines(SaveMOD_Path & crittersLstPath, lst)
 
-                    'Log 
+                    'Log
                     Main.PrintLog("Update: " & SaveMOD_Path & crittersLstPath)
                 Else
                     ListView1.Items.Item(focusedItem.Index).SubItems(2).Text = "?"
@@ -609,7 +616,7 @@ Friend Class Main_Form
                 Return
             Else
                 .BeginUpdate()
-                .Columns.Add("cFid", "FID", 65, HorizontalAlignment.Center, 0)
+                .Columns.Add("cFid", "FID", If(ColumnCritterSize(4) > 15, ColumnCritterSize(4), 65), HorizontalAlignment.Center, 0)
             End If
             For Each item As ListViewItem In .Items
                 item.SubItems.Add(GetFID(item.Tag).ToString)
@@ -625,7 +632,7 @@ Friend Class Main_Form
                 Return
             Else
                 .BeginUpdate()
-                .Columns.Add("iPid", "PID", 65, HorizontalAlignment.Center, 0)
+                .Columns.Add("iPid", "PID", If(ColumnItemSize(4) > 15, ColumnItemSize(4), 65), HorizontalAlignment.Center, 0)
             End If
             For Each item As ListViewItem In .Items
                 item.SubItems.Add((item.Tag + 1).ToString.PadLeft(8, "0"c))
