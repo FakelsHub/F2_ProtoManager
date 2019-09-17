@@ -73,8 +73,9 @@ Partial Class Items_Form
         Me.ComboBox14 = New System.Windows.Forms.ComboBox()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.CheckBox21 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox22 = New System.Windows.Forms.CheckBox()
+        Me.cbEnergyGun = New System.Windows.Forms.CheckBox()
+        Me.cbTwoHand = New System.Windows.Forms.CheckBox()
+        Me.cbBigGun = New System.Windows.Forms.CheckBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Label54 = New System.Windows.Forms.Label()
         Me.lblArmorScore = New System.Windows.Forms.Label()
@@ -796,7 +797,7 @@ Partial Class Items_Form
         Me.ComboBox11.FormattingEnabled = True
         Me.ComboBox11.Items.AddRange(New Object() {"None"})
         Me.ComboBox11.Location = New System.Drawing.Point(270, 256)
-        Me.ComboBox11.MaxDropDownItems = 15
+        Me.ComboBox11.MaxDropDownItems = 20
         Me.ComboBox11.Name = "ComboBox11"
         Me.ComboBox11.Size = New System.Drawing.Size(149, 22)
         Me.ComboBox11.TabIndex = 30
@@ -856,8 +857,9 @@ Partial Class Items_Form
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.CheckBox21)
-        Me.GroupBox1.Controls.Add(Me.CheckBox22)
+        Me.GroupBox1.Controls.Add(Me.cbEnergyGun)
+        Me.GroupBox1.Controls.Add(Me.cbTwoHand)
+        Me.GroupBox1.Controls.Add(Me.cbBigGun)
         Me.GroupBox1.Location = New System.Drawing.Point(270, 167)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(149, 66)
@@ -865,25 +867,36 @@ Partial Class Items_Form
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Weapon Flags"
         '
-        'CheckBox21
+        'cbEnergyGun
         '
-        Me.CheckBox21.AutoSize = True
-        Me.CheckBox21.Location = New System.Drawing.Point(9, 42)
-        Me.CheckBox21.Name = "CheckBox21"
-        Me.CheckBox21.Size = New System.Drawing.Size(64, 18)
-        Me.CheckBox21.TabIndex = 29
-        Me.CheckBox21.Text = "Big Gun"
-        Me.CheckBox21.UseVisualStyleBackColor = True
+        Me.cbEnergyGun.AutoSize = True
+        Me.cbEnergyGun.Location = New System.Drawing.Point(6, 43)
+        Me.cbEnergyGun.Name = "cbEnergyGun"
+        Me.cbEnergyGun.Size = New System.Drawing.Size(83, 18)
+        Me.cbEnergyGun.TabIndex = 30
+        Me.cbEnergyGun.Text = "Energy Gun"
+        Me.cbEnergyGun.UseVisualStyleBackColor = True
         '
-        'CheckBox22
+        'cbTwoHand
         '
-        Me.CheckBox22.AutoSize = True
-        Me.CheckBox22.Location = New System.Drawing.Point(9, 19)
-        Me.CheckBox22.Name = "CheckBox22"
-        Me.CheckBox22.Size = New System.Drawing.Size(76, 18)
-        Me.CheckBox22.TabIndex = 28
-        Me.CheckBox22.Text = "Two Hand"
-        Me.CheckBox22.UseVisualStyleBackColor = True
+        Me.cbTwoHand.AutoSize = True
+        Me.cbTwoHand.BackColor = System.Drawing.Color.Transparent
+        Me.cbTwoHand.Location = New System.Drawing.Point(76, 17)
+        Me.cbTwoHand.Name = "cbTwoHand"
+        Me.cbTwoHand.Size = New System.Drawing.Size(76, 18)
+        Me.cbTwoHand.TabIndex = 28
+        Me.cbTwoHand.Text = "Two Hand"
+        Me.cbTwoHand.UseVisualStyleBackColor = False
+        '
+        'cbBigGun
+        '
+        Me.cbBigGun.AutoSize = True
+        Me.cbBigGun.Location = New System.Drawing.Point(6, 19)
+        Me.cbBigGun.Name = "cbBigGun"
+        Me.cbBigGun.Size = New System.Drawing.Size(64, 18)
+        Me.cbBigGun.TabIndex = 29
+        Me.cbBigGun.Text = "Big Gun"
+        Me.cbBigGun.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
@@ -3149,8 +3162,8 @@ Partial Class Items_Form
     Friend WithEvents CheckBox24 As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents CheckBox21 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox22 As System.Windows.Forms.CheckBox
+    Friend WithEvents cbBigGun As System.Windows.Forms.CheckBox
+    Friend WithEvents cbTwoHand As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
     Friend WithEvents NumericUpDown3 As System.Windows.Forms.NumericUpDown
@@ -3273,4 +3286,5 @@ Partial Class Items_Form
     Friend WithEvents lblWeaponScore As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label54 As System.Windows.Forms.Label
+    Friend WithEvents cbEnergyGun As System.Windows.Forms.CheckBox
 End Class

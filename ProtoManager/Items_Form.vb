@@ -11,6 +11,12 @@ Friend Class Items_Form
         Male = 1
     End Enum
 
+    Private Enum WeaponType As Integer
+        Big = &H100
+        TwoHand = &H200
+        Energy = &H400
+    End Enum
+
     Private CommonItem As CmItemPro
     Private WeaponItem As WpItemPro
     Private ArmorItem As ArItemPro
@@ -220,8 +226,9 @@ Friend Class Items_Form
 
         ComboBox14.SelectedIndex = CommonItem.FalgsExt And &HF
         ComboBox15.SelectedIndex = (CommonItem.FalgsExt >> 4) And &HF
-        CheckBox21.Checked = CommonItem.FalgsExt And &H100
-        CheckBox22.Checked = CommonItem.FalgsExt And &H200
+        cbBigGun.Checked = CommonItem.FalgsExt And WeaponType.Big
+        cbTwoHand.Checked = CommonItem.FalgsExt And WeaponType.TwoHand
+        cbEnergyGun.Checked = CommonItem.FalgsExt And WeaponType.Energy
 
         lblWeaponScore.Text = CalcStats.WeaponScore(WeaponItem)
 
@@ -339,7 +346,7 @@ Friend Class Items_Form
         Else
             ComboBox22.SelectedIndex = 0
         End If
-        
+
         NumericUpDown24.Value = DrugItem.AddictionRate
         NumericUpDown25.Value = DrugItem.W_Onset
     End Sub
@@ -510,8 +517,9 @@ Friend Class Items_Form
                 If ComboBox13.SelectedIndex > 0 Then WeaponItem.AmmoPID = AmmoPID(ComboBox13.SelectedIndex - 1) Else WeaponItem.AmmoPID = &HFFFFFFFF
                 flags = CommonItem.FalgsExt And &HFFFFFF00
                 flags = flags Or ComboBox15.SelectedIndex << 4 Or ComboBox14.SelectedIndex
-                If CheckBox21.Checked Then flags = flags Or &H100 Else flags = flags And (Not &H100)
-                If CheckBox22.Checked Then flags = flags Or &H200 Else flags = flags And (Not &H200)
+                If cbBigGun.Checked Then flags = flags Or WeaponType.Big Else flags = flags And (Not WeaponType.Big)
+                If cbTwoHand.Checked Then flags = flags Or WeaponType.TwoHand Else flags = flags And (Not WeaponType.TwoHand)
+                If cbEnergyGun.Checked Then flags = flags Or WeaponType.Energy Else flags = flags And (Not WeaponType.Energy)
                 CommonItem.FalgsExt = flags
                 'Save
                 SubSave_Pro(ItemType.Weapon)
@@ -668,7 +676,7 @@ Friend Class Items_Form
         If frmReady Then Button6.Enabled = True
     End Sub
 
-    Private Sub SaveEnable3(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBox21.CheckedChanged, CheckBox22.CheckedChanged, CheckBox9.CheckedChanged, _
+    Private Sub SaveEnable3(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.CheckedChanged, cbEnergyGun.CheckedChanged, cbTwoHand.CheckedChanged, CheckBox9.CheckedChanged, _
         CheckBox8.CheckedChanged, CheckBox7.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox24.CheckedChanged, CheckBox2.CheckedChanged, _
         CheckBox15.CheckedChanged, CheckBox13.CheckedChanged, CheckBox11.CheckedChanged, CheckBox1.CheckedChanged
         '
@@ -868,4 +876,11 @@ Friend Class Items_Form
         Return Convert.ToByte(sound)
     End Function
 
+    Private Sub cbBigGun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.Click
+        If cbBigGun.Checked Then cbEnergyGun.Checked = False
+    End Sub
+
+    Private Sub cbEnergyGun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cbEnergyGun.Click
+        If cbEnergyGun.Checked Then cbBigGun.Checked = False
+    End Sub
 End Class
