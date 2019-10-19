@@ -50,6 +50,11 @@ Friend Class Main_Form
         For i As Integer = 0 To ListView1.Columns.Count - 1
             If ColumnCritterSize(0) > 15 Then ListView1.Columns(i).Width = ColumnCritterSize(i)
         Next
+
+        If CalcStats.GetFormula() = CalcStats.FormulaType.Fallout1 Then
+            Fallout2ToolStripMenuItem.Checked = False
+            Fallout1ToolStripMenuItem.Checked = True
+        End If
     End Sub
 
     Private Sub Main_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -639,6 +644,16 @@ Friend Class Main_Form
             Next
             .EndUpdate()
         End With
+    End Sub
+
+    Private Sub Fallout2Formula_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Fallout2ToolStripMenuItem.Click
+        Fallout1ToolStripMenuItem.Checked = False
+        CalcStats.SetFormula(CalcStats.FormulaType.Fallout2)
+    End Sub
+
+    Private Sub Fallout1Formula_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Fallout1ToolStripMenuItem.Click
+        Fallout2ToolStripMenuItem.Checked = False
+        CalcStats.SetFormula(CalcStats.FormulaType.Fallout1)
     End Sub
 
 #Region "Drawning trumb image"

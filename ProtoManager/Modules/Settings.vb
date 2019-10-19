@@ -68,6 +68,7 @@ Friend Module Settings
                         cArtCache = CBool(ifile.ReadLine.Substring(14))
                         ExtractBack = CBool(ifile.ReadLine.Substring(11)) 'Background=
                         HoverSelect = CBool(ifile.ReadLine.Substring(12))
+                        CalcStats.SetFormula(Convert.ToInt32(ifile.ReadLine.Substring(12)))
                     Case "[Size]"
                         SplitSize = CInt(ifile.ReadLine.Substring(10))
                         temp = Split(ifile.ReadLine.Substring(9), ",") ' ColumnIt
@@ -124,6 +125,7 @@ SetDefConf:
         AppSetting.Add("ClearArtCache=" & cArtCache)
         AppSetting.Add("Background=" & ExtractBack)
         AppSetting.Add("HoverSelect=" & HoverSelect)
+        AppSetting.Add("StatFormula=" & CalcStats.GetFormula().ToString)
         AppSetting.Add(String.Empty)
         AppSetting.Add("[Size]")
         If Main_Form.WindowState = FormWindowState.Maximized Then

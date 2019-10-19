@@ -53,8 +53,12 @@ Partial Class Main_Form
         Me.ImportCritterTableToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSplitButton2 = New System.Windows.Forms.ToolStripSplitButton()
-        Me.Cp886ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.StatsFormulaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Fallout2ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Fallout1ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FromSfallToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AttrReadOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Cp886ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.ClearToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
@@ -331,7 +335,7 @@ Partial Class Main_Form
         '
         'ToolStripSplitButton2
         '
-        Me.ToolStripSplitButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Cp886ToolStripMenuItem, Me.AttrReadOnlyToolStripMenuItem, Me.ToolStripSeparator9, Me.ClearToolStripMenuItem2, Me.ToolStripSeparator10, Me.ShowFIDToolStripMenuItem, Me.ShowPIDToolStripMenuItem, Me.ViewLogToolStripMenuItem, Me.ToolStripSeparator12, Me.DontHoverSelectToolStripMenuItem})
+        Me.ToolStripSplitButton2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatsFormulaToolStripMenuItem, Me.AttrReadOnlyToolStripMenuItem, Me.Cp886ToolStripMenuItem, Me.ToolStripSeparator9, Me.ClearToolStripMenuItem2, Me.ToolStripSeparator10, Me.ShowFIDToolStripMenuItem, Me.ShowPIDToolStripMenuItem, Me.ViewLogToolStripMenuItem, Me.ToolStripSeparator12, Me.DontHoverSelectToolStripMenuItem})
         Me.ToolStripSplitButton2.Image = CType(resources.GetObject("ToolStripSplitButton2.Image"), System.Drawing.Image)
         Me.ToolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripSplitButton2.Name = "ToolStripSplitButton2"
@@ -339,14 +343,35 @@ Partial Class Main_Form
         Me.ToolStripSplitButton2.Text = "Settings"
         Me.ToolStripSplitButton2.ToolTipText = "Editor settings."
         '
-        'Cp886ToolStripMenuItem
+        'StatsFormulaToolStripMenuItem
         '
-        Me.Cp886ToolStripMenuItem.CheckOnClick = True
-        Me.Cp886ToolStripMenuItem.Name = "Cp886ToolStripMenuItem"
-        Me.Cp886ToolStripMenuItem.ShowShortcutKeys = False
-        Me.Cp886ToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.Cp886ToolStripMenuItem.Text = "Encoding Msg CP886"
-        Me.Cp886ToolStripMenuItem.ToolTipText = "Read and save Msg files in a DOS encoding."
+        Me.StatsFormulaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Fallout2ToolStripMenuItem, Me.Fallout1ToolStripMenuItem, Me.FromSfallToolStripMenuItem})
+        Me.StatsFormulaToolStripMenuItem.Name = "StatsFormulaToolStripMenuItem"
+        Me.StatsFormulaToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.StatsFormulaToolStripMenuItem.Text = "Critter stats formula"
+        '
+        'Fallout2ToolStripMenuItem
+        '
+        Me.Fallout2ToolStripMenuItem.Checked = True
+        Me.Fallout2ToolStripMenuItem.CheckOnClick = True
+        Me.Fallout2ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Fallout2ToolStripMenuItem.Name = "Fallout2ToolStripMenuItem"
+        Me.Fallout2ToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.Fallout2ToolStripMenuItem.Text = "Fallout 2"
+        '
+        'Fallout1ToolStripMenuItem
+        '
+        Me.Fallout1ToolStripMenuItem.CheckOnClick = True
+        Me.Fallout1ToolStripMenuItem.Name = "Fallout1ToolStripMenuItem"
+        Me.Fallout1ToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.Fallout1ToolStripMenuItem.Text = "Fallout 1"
+        '
+        'FromSfallToolStripMenuItem
+        '
+        Me.FromSfallToolStripMenuItem.Enabled = False
+        Me.FromSfallToolStripMenuItem.Name = "FromSfallToolStripMenuItem"
+        Me.FromSfallToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.FromSfallToolStripMenuItem.Text = "Custom"
         '
         'AttrReadOnlyToolStripMenuItem
         '
@@ -356,6 +381,15 @@ Partial Class Main_Form
         Me.AttrReadOnlyToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.AttrReadOnlyToolStripMenuItem.Text = "Set Pro 'ReadOnly'"
         Me.AttrReadOnlyToolStripMenuItem.ToolTipText = "Set read-only attribute on file when you save pro-file."
+        '
+        'Cp886ToolStripMenuItem
+        '
+        Me.Cp886ToolStripMenuItem.CheckOnClick = True
+        Me.Cp886ToolStripMenuItem.Name = "Cp886ToolStripMenuItem"
+        Me.Cp886ToolStripMenuItem.ShowShortcutKeys = False
+        Me.Cp886ToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.Cp886ToolStripMenuItem.Text = "Encoding Msg CP886"
+        Me.Cp886ToolStripMenuItem.ToolTipText = "Read and save Msg files in a DOS encoding."
         '
         'ToolStripSeparator9
         '
@@ -997,5 +1031,9 @@ Partial Class Main_Form
     Friend WithEvents ShowFIDToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ShowPIDToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents StatsFormulaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Fallout2ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Fallout1ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents FromSfallToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
