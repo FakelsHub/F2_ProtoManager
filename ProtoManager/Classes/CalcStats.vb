@@ -45,7 +45,7 @@
     End Function
 
     Friend Shared Function Health_Point(ByVal Strength As Integer, ByVal Endurance As Integer) As Integer
-        Return If(formula, (15 + 2 + Endurance + Strength), (15 + Strength + (Endurance * 2)))
+        Return (15 + Strength + (Endurance * 2))
     End Function
 
     Friend Shared Function Healing_Rate(ByVal Endurance As Integer) As Integer
