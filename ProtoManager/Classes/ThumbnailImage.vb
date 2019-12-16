@@ -23,8 +23,8 @@ Friend Class ThumbnailImage
             Main.PrintLog("Unpacking frm files....")
             Progress_Form.ShowProgressBar(imageFid.Count)
 
-            File.WriteAllLines("iImage.lst", imageFid)
-            Shell(WorkAppDIR & "\dat2.exe x -d cache\temp """ & Game_Path & CritterDAT & """ " & "@iImage.lst", AppWinStyle.Hide, True, 60000)
+            DatFiles.UnpackedFilesByList(imageFid.ToArray(), Game_Path & CritterDAT, "cache\\temp\\")
+
             Main.PrintLog("Done" & vbCrLf & "Converting frm files.")
             Application.DoEvents()
 
@@ -75,8 +75,8 @@ Friend Class ThumbnailImage
             Main.PrintLog("Unpacking frm files....")
             Progress_Form.ShowProgressBar(imageFid.Count)
 
-            File.WriteAllLines("iImage.lst", imageFid)
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iImage.lst", AppWinStyle.Hide, True, 60000)
+            DatFiles.UnpackedFilesByList(imageFid.ToArray(), Game_Path & MasterDAT)
+
             Main.PrintLog("Done" & vbCrLf & "Converting frm files.")
             Application.DoEvents()
 
@@ -118,7 +118,7 @@ Friend Class ThumbnailImage
     End Sub
 
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     Friend Shared Function GetDrawItemImage(ByVal pNum As Integer) As Image
         Dim img As Image = Nothing

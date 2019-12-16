@@ -41,16 +41,14 @@ Friend Module Main
 
     'Initialization...
     Friend Sub Main()
-        Dim noRe, noId, wait As Boolean
+        Dim noRe, noId As Boolean
 
-        SplashScreen.ProgressBar1.Value = 10
-        Application.DoEvents()
+        DatFiles.OpenDatFiles()
 
         If Not (File.Exists(Cache_Patch & "\cache.id")) Then noId = True
         If cCache OrElse Setting_Form.fRun OrElse noId Then
             If cCache OrElse noId Then Settings.Clear_Cache()
-            '
-            If Not (ExtractBack) Then wait = True
+
             Dim pLST() As String = File.ReadAllLines(DatFiles.CheckFile(itemsLstPath))
             For n = UBound(pLST) To 0 Step -1
                 pLST(n) = pLST(n).Trim
@@ -62,13 +60,13 @@ Friend Module Main
                 End If
             Next
             noRe = False
-            File.WriteAllLines("iProto.lst", pLST)
 
+            SplashScreen.ProgressBar1.Value += 10
             SplashScreen.Label1.Text = "Loading: Extracting items Pro-files..."
-            SplashScreen.ProgressBar1.Value = 20
             Application.DoEvents()
 
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@iProto.lst", AppWinStyle.Hide, True, 60000)
+            DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
+            SplashScreen.ProgressBar1.Value += 40
 
             pLST = File.ReadAllLines(DatFiles.CheckFile(crittersLstPath))
             For n = 0 To UBound(pLST)
@@ -80,28 +78,25 @@ Friend Module Main
                     ReDim Preserve pLST(n - 1)
                 End If
             Next
-            File.WriteAllLines("cProto.lst", pLST)
 
             SplashScreen.Label1.Text = "Loading: Extracting critter Pro-files..."
-            SplashScreen.ProgressBar1.Value = 40
             Application.DoEvents()
 
-            Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & MasterDAT & """ " & "@cProto.lst", AppWinStyle.Hide, wait, 60000)
+            DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
+            SplashScreen.ProgressBar1.Value += 40
+
             File.Create(Cache_Patch & "\cache.id").Close()
         End If
 
-        SplashScreen.ProgressBar1.Value = 60
-
         Settings.SetEncoding()
-
         GetCrittersLstFRM()
         CreateItemsList()
-        If Not (cCache) And Not (ExtractBack) Then
-            SplashScreen.ProgressBar1.Value = 80
-            CreateCritterList()
-        End If
+        'If Not (cCache) And Not (ExtractBack) Then
+        CreateCritterList()
+        'End If
 
         SplashScreen.ProgressBar1.Value = 100
+        Application.DoEvents()
         Main_Form.Show()
 
         If Setting_Form.fRun Then
@@ -120,7 +115,7 @@ Friend Module Main
             splt = Scripts_Lst(n).Split("#"c)
             splt = splt(0).Split(";"c)
             Scripts_Lst(n) = String.Format("{0} {1} - {2}", splt(0).TrimEnd.PadRight(14),
-                                           ("[" & (n + 1) & "]").PadRight(6), splt(1).Trim)
+                                          ("[" & (n + 1) & "]").PadRight(6), splt(1).Trim)
         Next
     End Sub
 
@@ -329,7 +324,7 @@ Friend Module Main
         End If
     End Sub
 
-    ' Проверяет профайл итема на атрибут чтения и ставит соответствующие метки в листе 
+    ' Проверяет профайл итема на атрибут чтения и ставит соответствующие метки в листе
     Private Function CheckProFileRO(ByRef exists As Boolean, ByVal pFile As String) As String
         Dim path As String = SaveMOD_Path & pFile
 

@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports Microsoft.VisualBasic.FileIO
+Imports DATLib
 
 Module DatFiles
 
@@ -36,6 +37,18 @@ Module DatFiles
 
     'Friend Const proCritMsgPath As String = "\Text\English\Game\pro_crit.msg"
     'Friend Const proItemMsgPath As String = "\Text\English\Game\pro_item.msg"
+
+    Friend Sub OpenDatFiles()
+        Dim message As String
+        If (DATManage.OpenDatFile(Game_Path & MasterDAT, message) = False) Then
+            MsgBox(message)
+        End If
+        DATManage.OpenDatFile(Game_Path & CritterDAT, message)
+    End Sub
+
+    Friend Sub UnpackedFilesByList(ByRef files As String(), ByRef datPath As String, Optional ByVal unpackPath As String = "cache\")
+        DATManage.UnpackFileList(unpackPath, files, datPath)
+    End Sub
 
     ''' <summary>
     ''' Проверить наличее файла и возвратить путь к нему, если такого файла не найдено то извлечь его из Dat архива.
@@ -117,7 +130,7 @@ Module DatFiles
         Else
             fileDAT = MasterDAT
         End If
-        Shell(WorkAppDIR & "\dat2.exe x -d cache """ & Game_Path & fileDAT & """ " & pFile.Remove(0, 1), AppWinStyle.Hide, True)
+        DATManage.UnPackFile("cache\", pFile.Remove(0, 1), Game_Path & fileDAT)
     End Sub
 
     ''' <summary>

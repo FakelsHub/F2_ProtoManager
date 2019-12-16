@@ -295,7 +295,6 @@
     </None>
     <None Include="Resources\LeftArrow.png" />
     <None Include="Resources\RightArrow.png" />
-    <None Include="Resources\zlib.dll" />
     <None Include="app.config" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
@@ -337,13 +336,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="dat2.exe" />
     <None Include="frm2gif.exe" />
     <None Include="template\defaultAI.txt" />
     <Content Include="Resources\pmicon32.ico" />
     <None Include="Resources\splash.png" />
     <None Include="Resources\error.png" />
     <None Include="Resources\Config.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DATLib.git\DATLib.csproj">
+      <Project>{CAD53BCA-DC4B-4BDD-8199-5CD640C47CC1}</Project>
+      <Name>DATLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
