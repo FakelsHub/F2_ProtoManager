@@ -1,8 +1,12 @@
-﻿Friend Class Prototypes
+﻿Class Prototypes
 
     Friend Shared ReadOnly ItemTypesName() As String = {"Armor", "Container", "Drug", "Weapon", "Ammo", "Misc", "Key", "Unknown"}
 
-    Friend Shared ReadOnly ItemTypesProLen() As Integer = {129, 65, 125, 122, 81, 69, 61, 0}
+    Private Shared ReadOnly ItemTypesProLen() As Integer = {129, 65, 125, 122, 81, 69, 61, 0}
+
+    Friend Shared Function GetSizeProByType(ByVal type As ItemType) As Integer
+        Return ItemTypesProLen(type)
+    End Function
 
     Enum DamageType As Integer
         Normal

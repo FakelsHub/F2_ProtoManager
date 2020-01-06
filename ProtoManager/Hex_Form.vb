@@ -1,4 +1,6 @@
-﻿Public Class Hex_Form
+﻿Imports System.IO
+
+Public Class Hex_Form
     Dim HexView As New System.ComponentModel.Design.ByteViewer
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -12,9 +14,10 @@
         GroupBox1.SendToBack()
     End Sub
 
-    Friend Sub LoadHex(ByVal path As String, ByVal file As String)
-        Me.Text = "HEX View: " & file
-        HexView.SetFile(path & file) 'или .SetBytes
+    Friend Sub LoadHex(ByVal path As String, ByVal _file As String)
+        Me.Text = "HEX View: " & _file
+        path &= _file
+        If (file.Exists(path)) Then HexView.SetFile(path) 'или .SetBytes
         If Not (Me.Visible) Then Me.Show()
     End Sub
 

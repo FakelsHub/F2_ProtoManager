@@ -1,7 +1,9 @@
 ﻿Option Explicit On
+
 Imports System.IO
-Imports Prototypes
 Imports System.Drawing
+
+Imports Prototypes
 
 Friend Module Main
 
@@ -19,22 +21,22 @@ Friend Module Main
 
     Friend Declare Function SetParent Lib "user32" (ByVal hWndChild As Integer, ByVal hWndNewParent As Integer) As Integer
 
-    Friend Critter_LST As CrittersLst()
-    Friend Items_LST As ItemsLst()
+    Friend Critter_LST() As CrittersLst
+    Friend Items_LST() As ItemsLst
     '
-    Friend Critters_FRM As String()
-    Friend Items_FRM As String()
-    Friend Iven_FRM As String()
+    Friend Critters_FRM() As String
+    Friend Items_FRM() As String
+    Friend Iven_FRM() As String
     '
-    Private Misc_LST As String()
-    Friend Misc_NAME As String()
+    Private Misc_LST() As String
+    Friend Misc_NAME() As String
     '
-    Friend Scripts_Lst As String()
+    Friend Scripts_Lst() As String
     '
-    Friend AmmoPID As Integer()
-    Friend AmmoNAME As String()
-    Friend CaliberNAME As String()
-    Friend Perk_NAME As String()
+    Friend AmmoPID() As Integer
+    Friend AmmoNAME() As String
+    Friend CaliberNAME() As String
+    Friend Perk_NAME() As String
     '
     Private Teams As List(Of String) = New List(Of String)
     Friend PacketAI As SortedList(Of String, Integer)
@@ -45,7 +47,7 @@ Friend Module Main
 
         DatFiles.OpenDatFiles()
 
-        If Not (File.Exists(Cache_Patch & "\cache.id")) Then noId = True
+        If (File.Exists(Cache_Patch & "\cache.id") = False) Then noId = True
         If cCache OrElse Setting_Form.fRun OrElse noId Then
             If cCache OrElse noId Then Settings.Clear_Cache()
 
@@ -62,7 +64,7 @@ Friend Module Main
             noRe = False
 
             SplashScreen.ProgressBar1.Value += 10
-            SplashScreen.Label1.Text = "Loading: Extracting items Pro-files..."
+            SplashScreen.Label1.Text = "Loading: Extraction items Pro-files..."
             Application.DoEvents()
 
             DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
@@ -79,7 +81,7 @@ Friend Module Main
                 End If
             Next
 
-            SplashScreen.Label1.Text = "Loading: Extracting critter Pro-files..."
+            SplashScreen.Label1.Text = "Loading: Extraction critter Pro-files..."
             Application.DoEvents()
 
             DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
@@ -91,9 +93,6 @@ Friend Module Main
         Settings.SetEncoding()
         GetCrittersLstFRM()
         CreateItemsList()
-        'If Not (cCache) And Not (ExtractBack) Then
-        CreateCritterList()
-        'End If
 
         SplashScreen.ProgressBar1.Value = 100
         Application.DoEvents()
@@ -112,10 +111,13 @@ Friend Module Main
 
         Scripts_Lst = File.ReadAllLines(DatFiles.CheckFile(scriptsLstPath), System.Text.Encoding.Default)
         For n As Integer = 0 To UBound(Scripts_Lst)
-            splt = Scripts_Lst(n).Split("#"c)
-            splt = splt(0).Split(";"c)
-            Scripts_Lst(n) = String.Format("{0} {1} - {2}", splt(0).TrimEnd.PadRight(14),
-                                          ("[" & (n + 1) & "]").PadRight(6), splt(1).Trim)
+            Dim last = Scripts_Lst(n).LastIndexOf("#"c)
+            If (last > 0) Then Scripts_Lst(n) = Scripts_Lst(n).Remove(last)
+            splt = Scripts_Lst(n).Split(";"c)
+            If (splt.Length > 1) Then
+                Dim tmp As String = String.Format("[{0}]", (n + 1))
+                Scripts_Lst(n) = String.Format("{0} {1} - {2}", splt(0).TrimEnd.PadRight(14), tmp.PadLeft(9), splt(1).Trim)
+            End If
         Next
     End Sub
 
@@ -171,15 +173,25 @@ Friend Module Main
                 Critter_LST(n).proFile = lstfile(n)
                 Critter_LST(n).crtName = Messages.GetNameObject(ProFiles.GetProCritNameID(Critter_LST(n).proFile))
                 If Critter_LST(n).crtName = String.Empty Then Critter_LST(n).crtName = "<NoName>"
-                Dim proIsEdit As Boolean = False
-                Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_CRITTERS & Critter_LST(n).proFile))
+
+                Dim attrLabel As String = String.Empty
+                Dim proAttr As Status = ProtoCheckFile(Critter_LST(n).proFile, 416, attrLabel)
+
                 If showFID Then
-                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n).ToString, GetFID(n).ToString})) 'FID
+                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, (&H1000001 + n).ToString, GetFID(n).ToString})) 'FID
                 Else
-                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, rOnly, (&H1000001 + n).ToString}))
+                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, (&H1000001 + n).ToString}))
                 End If
                 .ListView1.Items(n).Tag = n 'запись индекса(pid) криттера в critters.lst
-                If proIsEdit Then .ListView1.Items(n).ForeColor = Color.DarkBlue
+
+                If proAttr = Status.IsModFolder Then
+                    .ListView1.Items(n).ForeColor = Color.DarkBlue
+                ElseIf proAttr = Status.IsBadFile Then
+                    .ListView1.Items(n).ForeColor = Color.Red
+                ElseIf proAttr = Status.NotExist Then
+                    .ListView1.Items(n).ForeColor = Color.DarkGray
+                End If
+
                 Progress_Form.ProgressBar1.Value = n
             Next
             .ListView1.EndUpdate()
@@ -213,11 +225,20 @@ Friend Module Main
             For n = 0 To UBound(Items_LST)
                 Items_LST(n).itemName = Messages.GetNameObject(ProFiles.GetProItemsNameID(Items_LST(n).proFile, n))
                 If Items_LST(n).itemName = String.Empty Then Items_LST(n).itemName = "<NoName>"
-                Dim proIsEdit As Boolean = False
-                Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
-                CreateListItem(n, rOnly, showPID)
+
+                Dim attrLabel As String = String.Empty
+                Dim proAttr As Status = ProtoCheckFile(Items_LST(n).proFile, Prototypes.GetSizeProByType(Items_LST(n).itemType), attrLabel)
+                CreateListItem(n, attrLabel, showPID)
                 .ListView2.Items(n).Tag = n 'запись индекса(pid) итема из item.lst
-                If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue
+
+                If proAttr = Status.IsModFolder Then
+                    .ListView2.Items(n).ForeColor = Color.DarkBlue
+                ElseIf proAttr = Status.IsBadFile Then
+                    .ListView2.Items(n).ForeColor = Color.Red
+                ElseIf proAttr = Status.NotExist Then
+                    .ListView2.Items(n).ForeColor = Color.DarkGray
+                End If
+
                 If Items_LST(n).itemType = ItemType.Ammo Then
                     tempList0.Add(Items_LST(n).itemName)
                     tempList1.Add(n + 1)
@@ -285,20 +306,30 @@ Friend Module Main
 
             Dim showPID As Boolean = IsShowPID()
             For n As Integer = 0 To UBound(Items_LST)
-                Dim proIsEdit As Boolean = False
-                Dim rOnly As String = CheckProFileRO(proIsEdit, (PROTO_ITEMS & Items_LST(n).proFile))
-                If (rOnly = String.Empty AndAlso proIsEdit) Then rOnly = "*"
+
+                Dim attrLabel As String
+                Dim proAttr As Status = ProtoCheckFile(Items_LST(n).proFile, Prototypes.GetSizeProByType(Items_LST(n).itemType), attrLabel)
+                If (attrLabel = String.Empty AndAlso proAttr = Status.IsModFolder) Then attrLabel = "*" '???
+
                 If filter <> ItemType.Unknown Then
                     If Items_LST(n).itemType = filter OrElse (filter = ItemType.Misc And Items_LST(n).itemType = ItemType.Key) Then
-                        CreateListItem(n, rOnly, showPID)
+                        CreateListItem(n, attrLabel, showPID)
                         .ListView2.Items(x).Tag = n 'указатель индекса(pid) итема в item.lst
-                        If proIsEdit Then .ListView2.Items(x).ForeColor = Color.DarkBlue
+                        If proAttr = Status.IsModFolder Then
+                            .ListView2.Items(x).ForeColor = Color.DarkBlue
+                        ElseIf proAttr = Status.IsBadFile Then
+                            .ListView2.Items(x).ForeColor = Color.Red
+                        End If
                         x += 1
                     End If
                 Else
-                    CreateListItem(n, rOnly, showPID)
+                    CreateListItem(n, attrLabel, showPID)
                     .ListView2.Items(n).Tag = n 'указатель индекса(pid) итема в item.lst
-                    If proIsEdit Then .ListView2.Items(n).ForeColor = Color.DarkBlue
+                    If proAttr = Status.IsModFolder Then
+                        .ListView2.Items(n).ForeColor = Color.DarkBlue
+                    ElseIf proAttr = Status.IsBadFile Then
+                        .ListView2.Items(n).ForeColor = Color.Red
+                    End If
                 End If
             Next
             .ListView2.EndUpdate()
@@ -315,7 +346,7 @@ Friend Module Main
         Return result
     End Function
 
-    Friend Sub CreateListItem(ByRef n As Integer, ByRef rOnly As String, ByRef showPID As Boolean)
+    Friend Sub CreateListItem(ByVal n As Integer, ByVal rOnly As String, ByVal showPID As Boolean)
         If showPID Then
             Dim pid As String = (n + 1).ToString.PadLeft(8, "0"c)
             Main_Form.ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly, pid}))
@@ -323,20 +354,6 @@ Friend Module Main
             Main_Form.ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
         End If
     End Sub
-
-    ' Проверяет профайл итема на атрибут чтения и ставит соответствующие метки в листе
-    Private Function CheckProFileRO(ByRef exists As Boolean, ByVal pFile As String) As String
-        Dim path As String = SaveMOD_Path & pFile
-
-        If File.Exists(path) Then
-            exists = True
-            If (File.GetAttributes(path) And &H1) = FileAttributes.ReadOnly Then
-                Return "R/O"
-            End If
-        End If
-
-        Return String.Empty
-    End Function
 
     'Поиск индекса предмета в списке ListView
     Friend Function LW_SearhItemIndex(ByVal indx As Integer, ByVal LW As ListView) As Integer
@@ -429,10 +446,15 @@ Friend Module Main
         Teams.Sort()
     End Sub
 
-    Friend Sub PrintLog(ByVal textLog As String)
-        Main_Form.TextBox1.AppendText(textLog & vbLf)
+    Friend Sub PrintLog(ByVal textLog As String, Optional ByVal newLine As Boolean = True)
+        If newLine Then
+            Main_Form.TextBox1.AppendText(textLog & vbLf)
+        Else
+            Main_Form.TextBox1.AppendText(textLog)
+        End If
         On Error Resume Next ' for wine on Lunix
         Main_Form.TextBox1.ScrollToCaret()
+        'On Error GoTo -1
     End Sub
 
 End Module

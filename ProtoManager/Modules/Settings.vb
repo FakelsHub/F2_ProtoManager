@@ -3,6 +3,8 @@ Imports System.Text
 
 Friend Module Settings
 
+    Private configMap As Dictionary(Of String, String)
+
     Friend ReadOnly WorkAppDIR As String = Application.StartupPath
     Friend ReadOnly Cache_Patch As String = WorkAppDIR & "\Cache"
 
@@ -14,16 +16,16 @@ Friend Module Settings
     Friend ReadOnly defaultHEX As String = WorkAppDIR & "\hex\frhed.exe"
 
     Friend gPath, sPath As String
+    Friend msgLangPath As String = "english"
 
     ' Program sets
     Friend SplitSize As Integer = -1 'default size
-    Friend txtWin As Boolean
-    Friend txtLvCp As Boolean
-    Friend proRO As Boolean
-    Friend cCache As Boolean
-    Friend cArtCache As Boolean
-    Friend ExtractBack As Boolean
-    Friend HoverSelect As Boolean
+    Friend txtWin As Boolean = True
+    Friend txtLvCp As Boolean = False
+    Friend proRO As Boolean = True
+    Friend cCache As Boolean = True
+    Friend cArtCache As Boolean = False
+    Friend HoverSelect As Boolean = True
 
     Friend ShowAIPacket As Boolean = True
     Friend SortedAIPacket As Boolean
@@ -48,44 +50,13 @@ Friend Module Settings
 
     'Load from ini
     Friend Sub Get_Config()
-        Dim strIni As String = String.Empty
         Dim temp() As String
-
         Dim ifile As StreamReader = File.OpenText(WorkAppDIR & "\config.ini")
+        configMap = New Dictionary(Of String, String)
         Try
             Do Until ifile.EndOfStream
-                strIni = ifile.ReadLine
-                Select Case strIni
-                    Case "[Path]"
-                        Game_Path = ifile.ReadLine.Substring(11).Trim
-                        SaveMOD_Path = ifile.ReadLine.Substring(8).Trim
-                        HEX_Path = ifile.ReadLine.Substring(8).Trim
-                    Case "[Option]"
-                        proRO = CBool(ifile.ReadLine.Substring(9))
-                        txtWin = CBool(ifile.ReadLine.Substring(7))
-                        txtLvCp = CBool(ifile.ReadLine.Substring(6))
-                        cCache = CBool(ifile.ReadLine.Substring(11))
-                        cArtCache = CBool(ifile.ReadLine.Substring(14))
-                        ExtractBack = CBool(ifile.ReadLine.Substring(11)) 'Background=
-                        HoverSelect = CBool(ifile.ReadLine.Substring(12))
-                        CalcStats.SetFormula(Convert.ToInt32(ifile.ReadLine.Substring(12)))
-                    Case "[Size]"
-                        SplitSize = CInt(ifile.ReadLine.Substring(10))
-                        temp = Split(ifile.ReadLine.Substring(9), ",") ' ColumnIt
-                        Dim i As Integer = 0
-                        For Each size As String In temp
-                            ColumnItemSize(i) = CInt(size.Trim())
-                            i += 1
-                            If i > 4 Then Exit For
-                        Next
-                        temp = Split(ifile.ReadLine.Substring(9), ",") ' ColumnCr
-                        i = 0
-                        For Each size As String In temp
-                            ColumnCritterSize(i) = CInt(size.Trim())
-                            i += 1
-                            If i > 4 Then Exit For
-                        Next
-                End Select
+                temp = Split(ifile.ReadLine, "=")
+                If temp.Length > 1 Then configMap.Add(temp(0).Trim, temp(1).Trim)
             Loop
         Catch ex As Exception
             GoTo SetDefConf
@@ -93,15 +64,54 @@ Friend Module Settings
             ifile.Close()
         End Try
 
+        Dim strIni As String = String.Empty
+        If (configMap.TryGetValue("CommonPath", strIni) = False) Then GoTo SetDefConf
+        Game_Path = strIni
         If Game_Path = String.Empty Then GoTo SetDefConf
         GameDATA_Path = Game_Path & DIR_DATA
+
+        If (configMap.TryGetValue("ModPath", strIni) = False) Then GoTo SetDefConf
+        SaveMOD_Path = strIni
         If SaveMOD_Path = String.Empty Then SaveMOD_Path = GameDATA_Path
+
+        If (configMap.TryGetValue("HexPath", strIni)) Then HEX_Path = strIni
+        If (configMap.TryGetValue("LangPath", strIni)) Then msgLangPath = strIni
+
+        If (configMap.TryGetValue("ReadOnly", strIni)) Then proRO = CBool(strIni)
+        If (configMap.TryGetValue("MsgWIN", strIni)) Then txtWin = CBool(strIni)
+        If (configMap.TryGetValue("MsgLC", strIni)) Then txtLvCp = CBool(strIni)
+        If (configMap.TryGetValue("ClearCache", strIni)) Then cCache = CBool(strIni)
+        If (configMap.TryGetValue("ClearArtCache", strIni)) Then cArtCache = CBool(strIni)
+        If (configMap.TryGetValue("HoverSelect", strIni)) Then HoverSelect = CBool(strIni)
+        If (configMap.TryGetValue("StatFormula", strIni)) Then CalcStats.SetFormula(Convert.ToInt32(strIni))
+
+        If (configMap.TryGetValue("SplitSize", strIni)) Then SplitSize = CInt(strIni)
+        Dim i As Integer = 0
+        If (configMap.TryGetValue("ColumnIt", strIni)) Then
+            temp = Split(strIni, ",")
+            For Each size As String In temp
+                ColumnItemSize(i) = CInt(size.Trim())
+                i += 1
+                If i > 4 Then Exit For
+            Next
+        End If
+        If (configMap.TryGetValue("ColumnCr", strIni)) Then
+            temp = Split(strIni, ",")
+            i = 0
+            For Each size As String In temp
+                ColumnCritterSize(i) = CInt(size.Trim())
+                i += 1
+                If i > 4 Then Exit For
+            Next
+        End If
+
         gPath = Game_Path
         sPath = SaveMOD_Path
+
+        Messages.SetMessageLangPath()
         Exit Sub
 
 SetDefConf:
-        proRO = True : txtWin = True : cCache = True : ExtractBack = True
         Setting_Form.fRun = True
         Setting_Form.settingExit = True
         SplashScreen.TopMost = False
@@ -116,6 +126,7 @@ SetDefConf:
         AppSetting.Add("CommonPath=" & gPath)
         AppSetting.Add("ModPath=" & sPath)
         AppSetting.Add("HexPath=" & HEX_Path)
+        AppSetting.Add("LangPath=" & msgLangPath)
         AppSetting.Add(String.Empty)
         AppSetting.Add("[Option]")
         AppSetting.Add("ReadOnly=" & proRO)
@@ -123,7 +134,7 @@ SetDefConf:
         AppSetting.Add("MsgLC=" & txtLvCp)
         AppSetting.Add("ClearCache=" & cCache)
         AppSetting.Add("ClearArtCache=" & cArtCache)
-        AppSetting.Add("Background=" & ExtractBack)
+        AppSetting.Add("Background=")
         AppSetting.Add("HoverSelect=" & HoverSelect)
         AppSetting.Add("StatFormula=" & CalcStats.GetFormula().ToString)
         AppSetting.Add(String.Empty)

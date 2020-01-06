@@ -4,32 +4,51 @@ Imports System.IO
 Friend Class ThumbnailImage
     'Implements IDisposable
 
+    Private Structure XYSize
+        Friend xLocShift, yLocShift, width, height As Integer
+
+        Friend Sub New(ByVal x As Integer, ByVal y As Integer, ByVal w As Integer, ByVal h As Integer)
+            xLocShift = x
+            yLocShift = y
+            width = w
+            height = h
+        End Sub
+    End Structure
+
+    Private Structure ItemFRMName
+        Friend frmName As String
+        Friend IsInventory As Boolean
+    End Structure
+
     Friend Shared InventImage As Dictionary(Of String, Image) = New Dictionary(Of String, Image)
     Friend Shared ItemsImage As Dictionary(Of String, Image) = New Dictionary(Of String, Image)
     Friend Shared CrittersImage As Dictionary(Of String, Image) = New Dictionary(Of String, Image)
 
-    Private Shared imageFid As List(Of String)
+    Private Shared itemsFidName() As ItemFRMName
+    Private Shared crittersFidName() As String
 
     Friend Shared Sub GetCrittersImages()
 
-        imageFid = New List(Of String)
+        Dim extractFiles As List(Of String) = New List(Of String)
 
         Dim count As Integer = Critter_LST.Length - 1
+        ReDim crittersFidName(count)
+
         For n As Integer = 0 To count
-            GetCritterImage(n)
+            GetCritterImage(n, extractFiles)
         Next
 
-        If imageFid.Count > 0 Then
-            Main.PrintLog("Unpacking frm files....")
-            Progress_Form.ShowProgressBar(imageFid.Count)
+        If extractFiles.Count > 0 Then
+            Main.PrintLog("Extraction frm files....")
+            Progress_Form.ShowProgressBar(extractFiles.Count)
 
-            DatFiles.UnpackedFilesByList(imageFid.ToArray(), Game_Path & CritterDAT, "cache\\temp\\")
+            DatFiles.UnpackedFilesByList(extractFiles.ToArray(), Game_Path & CritterDAT, "cache\\temp\\")
 
             Main.PrintLog("Done" & vbCrLf & "Converting frm files.")
             Application.DoEvents()
 
             Directory.CreateDirectory(Cache_Patch & ART_CRITTERS)
-            For Each image As String In imageFid
+            For Each image As String In extractFiles
                 Shell(WorkAppDIR & "\frm2gif.exe -p color.pal .\cache\temp\" & image, AppWinStyle.Hide, True)
                 Dim iFile As String = image.Remove(image.Length - 4)
                 Dim scrFile As String = Cache_Patch & "\temp\" & iFile & "_sw.gif"
@@ -46,41 +65,45 @@ Friend Class ThumbnailImage
 
     End Sub
 
-    Shared Sub GetCritterImage(ByVal pNum As Integer)
+    Private Shared Sub GetCritterImage(ByVal pNum As Integer, ByVal extractFiles As List(Of String))
 
         Dim iName As String = ProFiles.GetCritterFID(pNum)
         If iName Is Nothing Then Exit Sub
 
-        If CrittersImage.ContainsKey(iName) Then Exit Sub
+        If CrittersImage.ContainsKey(iName) Then GoTo setImage
 
         Dim pathF As String = ART_CRITTERS & iName & "aa.frm"
         If Not CheckDirFile(pathF, False) AndAlso Not (File.Exists(Cache_Patch & Path.ChangeExtension(pathF, ".gif"))) Then
             pathF = pathF.Substring(1)
-            If imageFid.Contains(pathF) = False Then
-                imageFid.Add(pathF)
+            If extractFiles.Contains(pathF) = False Then
+                extractFiles.Add(pathF)
             End If
         End If
+setImage:
+        crittersFidName(pNum) = iName
     End Sub
 
     Friend Shared Sub GetItemsImages()
 
-        imageFid = New List(Of String)
+        Dim extractFiles As List(Of String) = New List(Of String)
 
         Dim count As Integer = Items_LST.Length - 1
+        ReDim itemsFidName(count)
+
         For n As Integer = 0 To count
-            GetItemImages(n)
+            GetItemImages(n, extractFiles)
         Next
 
-        If imageFid.Count > 0 Then
-            Main.PrintLog("Unpacking frm files....")
-            Progress_Form.ShowProgressBar(imageFid.Count)
+        If extractFiles.Count > 0 Then
+            Main.PrintLog("Extraction frm files....")
+            Progress_Form.ShowProgressBar(extractFiles.Count)
 
-            DatFiles.UnpackedFilesByList(imageFid.ToArray(), Game_Path & MasterDAT)
+            DatFiles.UnpackedFilesByList(extractFiles.ToArray(), Game_Path & MasterDAT)
 
             Main.PrintLog("Done" & vbCrLf & "Converting frm files.")
             Application.DoEvents()
 
-            For Each image As String In imageFid
+            For Each image As String In extractFiles
                 Shell(WorkAppDIR & "\frm2gif.exe -p color.pal .\cache\" & image, AppWinStyle.Hide, True)
                 Progress_Form.ProgressBar1.Value += 1
             Next
@@ -93,28 +116,27 @@ Friend Class ThumbnailImage
 
     End Sub
 
-    Shared Sub GetItemImages(ByVal pNum As Integer)
-
+    Private Shared Sub GetItemImages(ByVal pNum As Integer, ByVal extractFiles As List(Of String))
         Dim Inventory As Boolean = True
         Dim iName As String = ProFiles.GetItemInvenFID(pNum, Inventory)
         If iName Is Nothing Then Exit Sub
 
         Dim pathF As String
         If Inventory Then
-            If InventImage.ContainsKey(iName.Remove(iName.Length - 4)) Then Exit Sub
+            If InventImage.ContainsKey(iName) Then GoTo setImage
             pathF = ART_INVEN & iName
         Else
-            If ItemsImage.ContainsKey(iName.Remove(iName.Length - 4)) Then Exit Sub
+            If ItemsImage.ContainsKey(iName) Then GoTo setImage
             pathF = ART_ITEMS & iName
         End If
 
         If Not CheckDirFile(pathF, False) AndAlso Not (File.Exists(Cache_Patch & Path.ChangeExtension(pathF, ".gif"))) Then
             pathF = pathF.Substring(1)
-            If imageFid.Contains(pathF) = False Then
-                imageFid.Add(pathF)
-            End If
+            If extractFiles.Contains(pathF) = False Then extractFiles.Add(pathF)
         End If
-
+setImage:
+        itemsFidName(pNum).frmName = iName
+        itemsFidName(pNum).IsInventory = Inventory
     End Sub
 
     ''' <summary>
@@ -123,18 +145,17 @@ Friend Class ThumbnailImage
     Friend Shared Function GetDrawItemImage(ByVal pNum As Integer) As Image
         Dim img As Image = Nothing
 
-        Dim pathF As String = Cache_Patch
-        Dim Inventory As Boolean = True
-
-        Dim iName As String = ProFiles.GetItemInvenFID(pNum, Inventory)
+        Dim iName As String = itemsFidName(pNum).frmName
         If iName Is Nothing Then Return img
-        iName = iName.Remove(iName.Length - 4)
 
-        If Inventory Then
+        Dim pathF As String = Cache_Patch
+
+        If itemsFidName(pNum).IsInventory Then
             If InventImage.TryGetValue(iName, img) = False Then
-                pathF &= ART_INVEN & iName & ".gif"
+                Dim name = iName.Remove(iName.Length - 4)
+                pathF &= ART_INVEN & name & ".gif"
                 If Not File.Exists(pathF) Then
-                    DatFiles.ItemFrmGif("inven\", iName)
+                    DatFiles.ItemFrmGif("inven\", name)
                 End If
                 If File.Exists(pathF) Then
                     img = Image.FromFile(pathF)
@@ -146,9 +167,10 @@ Friend Class ThumbnailImage
             End If
         Else
             If ItemsImage.TryGetValue(iName, img) = False Then
-                pathF &= ART_ITEMS & iName & ".gif"
+                Dim name = iName.Remove(iName.Length - 4)
+                pathF &= ART_ITEMS & name & ".gif"
                 If Not File.Exists(pathF) Then
-                    DatFiles.ItemFrmGif("items\", iName)
+                    DatFiles.ItemFrmGif("items\", name)
                 End If
                 If File.Exists(pathF) Then
                     img = Image.FromFile(pathF)
@@ -166,7 +188,7 @@ Friend Class ThumbnailImage
         Dim img As Image = Nothing
         Dim pathF As String = Cache_Patch
 
-        Dim iName As String = ProFiles.GetCritterFID(pNum)
+        Dim iName As String = crittersFidName(pNum)
         If iName Is Nothing Then Return img
 
         If CrittersImage.TryGetValue(iName, img) = False Then
@@ -180,17 +202,6 @@ Friend Class ThumbnailImage
 
         Return img
     End Function
-
-    Private Structure XYSize
-        Friend xLocShift, yLocShift, width, height As Integer
-
-        Friend Sub New(ByVal x As Integer, ByVal y As Integer, ByVal w As Integer, ByVal h As Integer)
-            xLocShift = x
-            yLocShift = y
-            width = w
-            height = h
-        End Sub
-    End Structure
 
     Private Shared Function FitImage(ByVal dstWidth As Integer, ByVal dstHeight As Integer, ByVal imgWidth As Integer, ByVal imgHeight As Integer) As XYSize
         Dim xLocShift, yLocShift, w, h As Integer
@@ -247,7 +258,7 @@ Friend Class ThumbnailImage
         e.Graphics.DrawString(customText, scrFont, typeColor, e.Bounds.Location)
 
         ' Draw marker
-        If isEdit Then e.Graphics.FillEllipse(Brushes.OrangeRed, e.Bounds.X + e.Bounds.Width - 12, e.Bounds.Y + 5, 6, 6)
+        If isEdit Then e.Graphics.FillEllipse(Brushes.RoyalBlue, e.Bounds.X + e.Bounds.Width - 12, e.Bounds.Y + 5, 6, 6)
 
         ' Draw box
         Dim rectBox As Rectangle = New Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1)

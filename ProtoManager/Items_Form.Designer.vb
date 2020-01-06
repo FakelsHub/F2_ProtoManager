@@ -2398,7 +2398,7 @@ Partial Class Items_Form
         'ComboBox9
         '
         Me.ComboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox9.DropDownWidth = 600
+        Me.ComboBox9.DropDownWidth = 675
         Me.ComboBox9.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.ComboBox9.Items.AddRange(New Object() {"None"})
         Me.ComboBox9.Location = New System.Drawing.Point(6, 19)

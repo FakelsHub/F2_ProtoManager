@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports Microsoft.VisualBasic.FileIO
+
 Imports DATLib
 
 Module DatFiles
@@ -38,8 +39,9 @@ Module DatFiles
     'Friend Const proCritMsgPath As String = "\Text\English\Game\pro_crit.msg"
     'Friend Const proItemMsgPath As String = "\Text\English\Game\pro_item.msg"
 
+
     Friend Sub OpenDatFiles()
-        Dim message As String
+        Dim message As String = String.Empty
         If (DATManage.OpenDatFile(Game_Path & MasterDAT, message) = False) Then
             MsgBox(message)
         End If
@@ -47,7 +49,7 @@ Module DatFiles
     End Sub
 
     Friend Sub UnpackedFilesByList(ByRef files As String(), ByRef datPath As String, Optional ByVal unpackPath As String = "cache\")
-        DATManage.UnpackFileList(unpackPath, files, datPath)
+        DATManage.ExtractFileList(unpackPath, files, datPath)
     End Sub
 
     ''' <summary>
@@ -75,7 +77,13 @@ Module DatFiles
             End If
         Else
             fPath = String.Concat(Cache_Patch, pFile)
-            If unpack AndAlso Not (File.Exists(fPath)) Then UnPackFile(pFile, сDat)
+            If (File.Exists(fPath) = False) Then
+                If unpack Then
+                    UnPackFile(pFile, сDat)
+                Else
+                    fPath = Nothing
+                End If
+            End If
             Return If(full, fPath, Cache_Patch)
         End If
     End Function
@@ -108,30 +116,35 @@ Module DatFiles
     End Function
 
     ''' <summary>
-    ''' Проверить содержится ли указанный файл в кэш папке,
-    ''' если его нет то извлечь его.
+    ''' Проверить содержится ли указанный файл в кэш папке, если его нет то извлечь его.
     ''' </summary>
     Friend Function UnDatFile(ByVal pFile As String, ByVal size As Integer) As Boolean
         Dim cPathFile As String = Cache_Patch & pFile
 
         If File.Exists(cPathFile) AndAlso FileSystem.GetFileInfo(cPathFile).Length = size Then Return True
-        UnPackFile(pFile)
-        If File.Exists(cPathFile) Then Return True 'successfully unpack
 
-        Return False
+        Return UnPackFile(pFile)
     End Function
 
-    'Извлечь требуемый файл в кэш папку
-    Private Sub UnPackFile(ByVal pFile As String, Optional ByVal сDat As Boolean = False)
-        Main.PrintLog("Extracting file: " & pFile)
+    ''' <summary>
+    ''' Извлечь требуемый файл в кэш папку
+    ''' </summary>
+    ''' <param name="pFile"></param>
+    ''' <param name="сDat"></param>
+    Private Function UnPackFile(ByVal pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
+        Main.PrintLog("Extracting file: " & pFile, False)
         Dim fileDAT As String
         If сDat Then
             fileDAT = CritterDAT
         Else
             fileDAT = MasterDAT
         End If
-        DATManage.UnPackFile("cache\", pFile.Remove(0, 1), Game_Path & fileDAT)
-    End Sub
+
+        Dim result = DATManage.ExtractFile("cache\", pFile.Remove(0, 1), Game_Path & fileDAT)
+        Main.PrintLog(If(result, String.Empty, " - Failed!"))
+
+        Return result
+    End Function
 
     ''' <summary>
     ''' Получить frm файл криттера в gif формате

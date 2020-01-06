@@ -3,10 +3,14 @@ Imports System.Text
 
 Friend Module Messages
 
-    Private Const TEXT_GAME As String = "\Text\English\Game\"
+    Private TEXT_GAME As String = "\Text\English\Game\"
 
     'Содержимое считанного msg файла
     Friend MSG_DATATEXT() As String
+
+    Friend Sub SetMessageLangPath()
+        TEXT_GAME = String.Format("\Text\{0}\Game\", Settings.msgLangPath)
+    End Sub
 
     Friend Sub SaveMSGFile(ByVal msgFile As String)
         Dim savePath As String = SaveMOD_Path & TEXT_GAME
@@ -41,7 +45,7 @@ Friend Module Messages
         Return String.Empty
     End Function
 
-    'Возвращает параметры из строки формата Msg  
+    'Возвращает параметры из строки формата Msg
     Friend Function GetParamMsg(ByRef str As String, Optional ByRef strValue As Boolean = False) As String
         If str.Length < 2 Then Return Nothing
         Dim n As Integer

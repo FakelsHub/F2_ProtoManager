@@ -145,6 +145,7 @@ Friend Class Main_Form
         ListView2.Items(ListView2.Items.Count - 1).SubItems.Add("N/A")
         ListView2.Items(ListView2.Items.Count - 1).Selected = True
         ListView2.Items(ListView2.Items.Count - 1).Tag = pCont
+        ListView2.Items(ListView2.Items.Count - 1).ForeColor = Color.Green
         ListView2.EnsureVisible(ListView2.Items.Count - 1)
         ListView2.EndUpdate()
 
@@ -164,8 +165,10 @@ Friend Class Main_Form
                     'Log
                     Main.PrintLog("Delete Pro: " & dProFile)
                 End If
+
                 Dim pCont As Integer = UBound(Items_LST)
                 If CInt(focusedItem.Tag) = pCont Then
+                    ListView2.Items.RemoveAt(focusedItem.Index)
                     Array.Resize(Items_LST, pCont)
 
                     'save to lst file
@@ -175,13 +178,12 @@ Friend Class Main_Form
                         lst(n) = Items_LST(n).proFile
                     Next
                     File.WriteAllLines(SaveMOD_Path & itemsLstPath, lst)
-                    ListView2.Items.RemoveAt(focusedItem.Index)
 
                     'Log
                     Main.PrintLog("Update: " & SaveMOD_Path & itemsLstPath)
                 Else
                     ListView2.Items.Item(focusedItem.Index).SubItems(3).Text = "?"
-                    ListView2.Items.Item(focusedItem.Index).ForeColor = Color.OrangeRed
+                    ListView2.Items.Item(focusedItem.Index).ForeColor = Color.DarkGray
                 End If
             Else
                 'del file
@@ -194,8 +196,8 @@ Friend Class Main_Form
                     'Log
                     Main.PrintLog("Delete Pro: " & dProFile)
                 End If
-                Dim pCont As Integer = UBound(Critter_LST)
 
+                Dim pCont As Integer = UBound(Critter_LST)
                 If CInt(focusedItem.Tag) = pCont Then
                     ListView1.Items.RemoveAt(focusedItem.Index)
                     Array.Resize(Critter_LST, pCont)
@@ -212,7 +214,7 @@ Friend Class Main_Form
                     Main.PrintLog("Update: " & SaveMOD_Path & crittersLstPath)
                 Else
                     ListView1.Items.Item(focusedItem.Index).SubItems(2).Text = "?"
-                    ListView1.Items.Item(focusedItem.Index).ForeColor = Color.OrangeRed
+                    ListView1.Items.Item(focusedItem.Index).ForeColor = Color.DarkGray
                 End If
             End If
         End If
@@ -313,10 +315,18 @@ Friend Class Main_Form
     Private Sub ToolStripButton9_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton9.Click
         If TabControl1.SelectedIndex = 1 Then
             Main.CreateCritterList()
+            If onlyOnceCritter AndAlso ListView1.View = View.Tile Then
+                ThumbnailImage.GetCrittersImages()
+                ListView1.Refresh()
+            End If
         Else
             ClearFilter()
             fAllToolStripMenuItem1.Checked = True
             Main.CreateItemsList()
+            If onlyOnceItem AndAlso ListView2.View = View.Tile Then
+                ThumbnailImage.GetItemsImages()
+                ListView2.Refresh()
+            End If
         End If
 
         Main.GetScriptLst()
@@ -432,13 +442,11 @@ Friend Class Main_Form
     End Sub
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
-        'On Error Resume Next
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.Item.Tag).proFile, , , False)
         ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + CInt(e.Item.Tag)
     End Sub
 
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
-        'On Error Resume Next
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(e.Item.Tag).proFile, , , False)
         ToolStripStatusLabel2.Text = "Item PID: " & (CInt(e.Item.Tag) + 1).ToString.PadLeft(8, "0"c)
     End Sub
@@ -557,7 +565,7 @@ Friend Class Main_Form
         Dim cpath As String
 
         If TabControl1.SelectedIndex = 1 Then
-            Dim pIndx As Integer = ListView1.FocusedItem.Tag
+            Dim pIndx As Integer = CInt(ListView1.FocusedItem.Tag)
             Dim pFile As String = Critter_LST(pIndx).proFile
 
             cpath = DatFiles.CheckFile(PROTO_CRITTERS & pFile, False)
@@ -577,15 +585,11 @@ Friend Class Main_Form
         Process.Start("explorer", link.Text)
     End Sub
 
-    Private Sub Main_Form_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Resize
-        TextBox1.Height = Me.Height / 4
-    End Sub
-
     Private Sub TextEditProFileToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TextEditProFileToolStripMenuItem.Click
         If TabControl1.SelectedIndex = 1 Then
-            Create_TxtEditForm(ListView1.FocusedItem.Tag, 0)
+            Create_TxtEditForm(CInt(ListView1.FocusedItem.Tag), 0)
         Else
-            Create_TxtEditForm(ListView2.FocusedItem.Tag, 1)
+            Create_TxtEditForm(CInt(ListView2.FocusedItem.Tag), 1)
         End If
     End Sub
 

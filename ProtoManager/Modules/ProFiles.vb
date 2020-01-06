@@ -6,6 +6,13 @@ Imports Prototypes
 
 Module ProFiles
 
+    Friend Enum Status
+        NotExist
+        IsNormal
+        IsModFolder
+        IsBadFile
+    End Enum
+
     ''' <summary>
     ''' Возвращает имя Frm файла для инвентаря(ivent), или имя FID предмета, если файл для инвентаря не определен.  
     ''' </summary>
@@ -27,14 +34,18 @@ Module ProFiles
 
         Dim lstName As String
         If iFID > -1 Then
-            iFID -= &H7000000
-            lstName = Iven_FRM(iFID)
+            iFID = iFID And (Not &H7000000)
+            lstName = Iven_FRM.ElementAtOrDefault(iFID)
         Else
             If FID = -1 Then Return Nothing
-            lstName = Items_FRM(FID)
+            lstName = Items_FRM.ElementAtOrDefault(FID)
             Inventory = False
         End If
 
+        If lstName Is Nothing Then
+            Main.PrintLog("Invalid FID number of the prototype file: " & PROTO_ITEMS & Items_LST(nPro).proFile)
+            Return lstName
+        End If
         Return lstName.ToLower
     End Function
 
@@ -60,7 +71,7 @@ Module ProFiles
     ''' <summary>
     ''' Возвращает номер Description ID из про-файла предмета, и его тип.
     ''' </summary>
-    Friend Function GetProItemsNameID(ByRef ProFile As String, ByRef n As Integer) As Integer
+    Friend Function GetProItemsNameID(ByRef ProFile As String, ByVal n As Integer) As Integer
         Dim NameID As Integer
         Dim TypeID As Integer = -1
 
@@ -89,6 +100,36 @@ Module ProFiles
         End If
 
         Return ReverseBytes(NameID)
+    End Function
+
+    ''' <summary>
+    ''' Проверяет прото файл на соответствие размера и установленного атрибута только-чтения
+    ''' </summary>
+    ''' <param name="proFile"></param>
+    ''' <param name="size"></param>
+    ''' <param name="fileAttr"></param>
+    ''' <returns>Возвращает результат проверки</returns>
+    Friend Function ProtoCheckFile(ByVal proFile As String, ByVal size As Integer, ByRef fileAttr As String) As Status
+        Dim cPath As String
+        If size <> 416 Then '415
+            cPath = DatFiles.CheckFile(PROTO_ITEMS & proFile, unpack:=False)
+        Else
+            cPath = DatFiles.CheckFile(PROTO_CRITTERS & proFile, unpack:=False)
+            If CalcStats.GetFormula = CalcStats.FormulaType.Fallout1 Then size -= 4
+        End If
+        If cPath = Nothing Then Return Status.NotExist
+
+        Dim pro As New FileInfo(cPath)
+        'If pro.Exists = False Then Return Status.NotExist
+
+        If pro.Length <> size Then ' check valid size
+            fileAttr = "BAD!"
+            Return Status.IsBadFile
+        ElseIf pro.DirectoryName.StartsWith(SaveMOD_Path) Then
+            If (pro.IsReadOnly) Then fileAttr = "R/O"
+            Return Status.IsModFolder
+        End If
+        Return Status.IsNormal
     End Function
 
     ''' <summary>

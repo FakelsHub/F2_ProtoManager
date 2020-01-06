@@ -135,7 +135,7 @@ Partial Class Main_Form
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 599)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(850, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(949, 22)
         Me.StatusStrip1.TabIndex = 1
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -147,7 +147,7 @@ Partial Class Main_Form
                     Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.ToolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(605, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(704, 17)
         Me.ToolStripStatusLabel1.Spring = True
         Me.ToolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -168,7 +168,7 @@ Partial Class Main_Form
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.ToolStrip1.Size = New System.Drawing.Size(850, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(949, 25)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -356,21 +356,21 @@ Partial Class Main_Form
         Me.Fallout2ToolStripMenuItem.CheckOnClick = True
         Me.Fallout2ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Fallout2ToolStripMenuItem.Name = "Fallout2ToolStripMenuItem"
-        Me.Fallout2ToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.Fallout2ToolStripMenuItem.Size = New System.Drawing.Size(126, 22)
         Me.Fallout2ToolStripMenuItem.Text = "Fallout 2"
         '
         'Fallout1ToolStripMenuItem
         '
         Me.Fallout1ToolStripMenuItem.CheckOnClick = True
         Me.Fallout1ToolStripMenuItem.Name = "Fallout1ToolStripMenuItem"
-        Me.Fallout1ToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.Fallout1ToolStripMenuItem.Size = New System.Drawing.Size(126, 22)
         Me.Fallout1ToolStripMenuItem.Text = "Fallout 1"
         '
         'FromSfallToolStripMenuItem
         '
         Me.FromSfallToolStripMenuItem.Enabled = False
         Me.FromSfallToolStripMenuItem.Name = "FromSfallToolStripMenuItem"
-        Me.FromSfallToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.FromSfallToolStripMenuItem.Size = New System.Drawing.Size(126, 22)
         Me.FromSfallToolStripMenuItem.Text = "Custom"
         '
         'AttrReadOnlyToolStripMenuItem
@@ -555,7 +555,7 @@ Partial Class Main_Form
         Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
         Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(64, 20)
+        Me.ToolStripButton1.Size = New System.Drawing.Size(64, 22)
         Me.ToolStripButton1.Text = "Search:"
         Me.ToolStripButton1.ToolTipText = "Continue Search [F3]"
         '
@@ -678,7 +678,7 @@ Partial Class Main_Form
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.ShowToolTips = True
-        Me.TabControl1.Size = New System.Drawing.Size(242, 574)
+        Me.TabControl1.Size = New System.Drawing.Size(324, 574)
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
         Me.TabControl1.TabIndex = 5
         Me.TabControl1.Visible = False
@@ -690,7 +690,7 @@ Partial Class Main_Form
         Me.TabPage2.Location = New System.Drawing.Point(4, 23)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(0, 2, 4, 2)
-        Me.TabPage2.Size = New System.Drawing.Size(234, 547)
+        Me.TabPage2.Size = New System.Drawing.Size(316, 547)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Items"
         Me.TabPage2.ToolTipText = "Prototypes Items"
@@ -715,7 +715,7 @@ Partial Class Main_Form
         Me.ListView2.MultiSelect = False
         Me.ListView2.Name = "ListView2"
         Me.ListView2.ShowItemToolTips = True
-        Me.ListView2.Size = New System.Drawing.Size(230, 543)
+        Me.ListView2.Size = New System.Drawing.Size(312, 543)
         Me.ListView2.TabIndex = 10
         Me.ListView2.TileSize = New System.Drawing.Size(1, 1)
         Me.ListView2.UseCompatibleStateImageBehavior = False
@@ -742,7 +742,7 @@ Partial Class Main_Form
         '
         Me.ColumnHeader7.Text = "Attr"
         Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader7.Width = 30
+        Me.ColumnHeader7.Width = 50
         '
         'TabPage1
         '
@@ -751,7 +751,7 @@ Partial Class Main_Form
         Me.TabPage1.Location = New System.Drawing.Point(4, 23)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(0, 2, 4, 2)
-        Me.TabPage1.Size = New System.Drawing.Size(234, 547)
+        Me.TabPage1.Size = New System.Drawing.Size(316, 547)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Critters"
         Me.TabPage1.ToolTipText = "Prototypes Critter"
@@ -775,7 +775,7 @@ Partial Class Main_Form
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(230, 543)
+        Me.ListView1.Size = New System.Drawing.Size(312, 543)
         Me.ListView1.TabIndex = 9
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -796,7 +796,7 @@ Partial Class Main_Form
         '
         Me.ColumnHeader8.Text = "Attr"
         Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader8.Width = 30
+        Me.ColumnHeader8.Width = 50
         '
         'ColumnHeader6
         '
@@ -825,18 +825,18 @@ Partial Class Main_Form
         Me.SplitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.SplitContainer1.Panel2.Controls.Add(Me.TabControl1)
         Me.SplitContainer1.Panel2MinSize = 240
-        Me.SplitContainer1.Size = New System.Drawing.Size(850, 574)
-        Me.SplitContainer1.SplitterDistance = 604
+        Me.SplitContainer1.Size = New System.Drawing.Size(949, 574)
+        Me.SplitContainer1.SplitterDistance = 621
         Me.SplitContainer1.TabIndex = 7
         '
         'Label3
         '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.Label3.Location = New System.Drawing.Point(0, 458)
+        Me.Label3.Location = New System.Drawing.Point(3, 301)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(38, 16)
         Me.Label3.TabIndex = 2
@@ -845,19 +845,20 @@ Partial Class Main_Form
         '
         'TextBox1
         '
+        Me.TextBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TextBox1.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox1.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.TextBox1.DetectUrls = False
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.TextBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.TextBox1.Location = New System.Drawing.Point(0, 474)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 320)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
         Me.TextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
         Me.TextBox1.ShortcutsEnabled = False
         Me.TextBox1.ShowSelectionMargin = True
-        Me.TextBox1.Size = New System.Drawing.Size(604, 100)
+        Me.TextBox1.Size = New System.Drawing.Size(612, 250)
         Me.TextBox1.TabIndex = 1
         Me.TextBox1.TabStop = False
         Me.TextBox1.Text = ""
@@ -865,15 +866,16 @@ Partial Class Main_Form
         '
         'GroupBox1
         '
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox1.Controls.Add(Me.LinkLabel2)
         Me.GroupBox1.Controls.Add(Me.LinkLabel1)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 0)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(604, 62)
+        Me.GroupBox1.Size = New System.Drawing.Size(612, 62)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         '
@@ -913,13 +915,14 @@ Partial Class Main_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(850, 621)
+        Me.ClientSize = New System.Drawing.Size(949, 621)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.DoubleBuffered = True
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.IsMdiContainer = True
+        Me.MinimumSize = New System.Drawing.Size(600, 450)
         Me.Name = "Main_Form"
         Me.Text = "Proto Manager v"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized

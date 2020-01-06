@@ -693,7 +693,7 @@ Friend Class Items_Form
     Private Sub Restore(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         Dim tPatch As String = cPath
 
-        If DatFiles.UnDatFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, ItemTypesProLen(Items_LST(iLST_Index).itemType)) Then
+        If DatFiles.UnDatFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, Prototypes.GetSizeProByType(Items_LST(iLST_Index).itemType)) Then
             Button6.Enabled = True
             frmReady = False
             ReloadPro = True

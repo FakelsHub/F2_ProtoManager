@@ -21,17 +21,18 @@ Friend Class Setting_Form
         Settings.txtLvCp = RadioButton3.Checked
         Settings.proRO = CheckBox2.Checked
         Settings.cCache = CheckBox3.Checked
-        Settings.ExtractBack = CheckBox1.Checked
+        'Settings.ExtractBack = CheckBox1.Checked
+        Settings.msgLangPath = tbMsgLang.Text
 
-        If TextBox1.Text <> String.Empty AndAlso (File.Exists(TextBox1.Text & MasterDAT) OrElse Directory.Exists(TextBox1.Text & MasterDAT)) Then
-            TextBox2.Text = TextBox2.Text.Trim
-            If TextBox2.Text = String.Empty Then
-                TextBox2.Text = TextBox1.Text & DIR_DATA
+        If tbMainPath.Text <> String.Empty AndAlso (File.Exists(tbMainPath.Text & MasterDAT) OrElse Directory.Exists(tbMainPath.Text & MasterDAT)) Then
+            tbModDataPath.Text = tbModDataPath.Text.Trim
+            If tbModDataPath.Text = String.Empty Then
+                tbModDataPath.Text = tbMainPath.Text & DIR_DATA
             End If
             If fRun Then
-                Game_Path = TextBox1.Text
+                Game_Path = tbMainPath.Text
                 GameDATA_Path = Game_Path & DIR_DATA
-                SaveMOD_Path = TextBox2.Text
+                SaveMOD_Path = tbModDataPath.Text
             ElseIf pathChange Then
                 File.Delete(Cache_Patch & "\cache.id")
                 If MsgBox("New paths will take effect after restarting editor." & vbLf & "Restart the editor now?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
@@ -39,8 +40,8 @@ Friend Class Setting_Form
                 End If
             End If
             settingExit = False
-            Settings.gPath = TextBox1.Text
-            Settings.sPath = TextBox2.Text
+            Settings.gPath = tbMainPath.Text
+            Settings.sPath = tbModDataPath.Text
             Settings.Save_Config()
             pathChange = False
             Me.Hide()
@@ -48,6 +49,8 @@ Friend Class Setting_Form
                 Main_Form.Dispose()
                 Application.Exit()
                 Application.Restart()
+            Else
+                Messages.SetMessageLangPath()
             End If
         Else
             MsgBox("The master.dat file or folder can not be found. Set the path to folder game Fallout 2.")
@@ -56,20 +59,24 @@ Friend Class Setting_Form
 
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         FolderBrowserDialog1.Description = "Select the folder where the files are located and Master.dat Critter.dat"
-        FolderBrowserDialog1.ShowDialog()
-        If FolderBrowserDialog1.SelectedPath <> String.Empty Then
-            TextBox1.Text = FolderBrowserDialog1.SelectedPath
-            If TextBox2.Text.Trim = String.Empty And TextBox1.Text <> String.Empty Then
-                TextBox2.Text = TextBox1.Text & DIR_DATA
+        If (tbMainPath.Text <> String.Empty) Then FolderBrowserDialog1.SelectedPath = tbMainPath.Text
+
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.OK AndAlso FolderBrowserDialog1.SelectedPath <> String.Empty Then
+            tbMainPath.Text = FolderBrowserDialog1.SelectedPath
+            If tbModDataPath.Text.Trim = String.Empty And tbMainPath.Text <> String.Empty Then
+                tbModDataPath.Text = tbMainPath.Text & DIR_DATA
             End If
         End If
     End Sub
 
     Private Sub Button2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button2.Click
         FolderBrowserDialog1.Description = "Select the folder in which the editor will save the edited file"
+        If (tbModDataPath.Text <> String.Empty) Then FolderBrowserDialog1.SelectedPath = tbModDataPath.Text
+
         FolderBrowserDialog1.ShowNewFolderButton = True
-        FolderBrowserDialog1.ShowDialog()
-        If FolderBrowserDialog1.SelectedPath <> String.Empty Then TextBox2.Text = FolderBrowserDialog1.SelectedPath
+        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If FolderBrowserDialog1.SelectedPath <> String.Empty Then tbModDataPath.Text = FolderBrowserDialog1.SelectedPath
+        End If
         FolderBrowserDialog1.ShowNewFolderButton = False
     End Sub
 
@@ -79,18 +86,19 @@ Friend Class Setting_Form
     End Sub
 
     Private Sub Setting_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        If TextBox1.Text = String.Empty Then TextBox1.Text = Game_Path
-        If TextBox2.Text = String.Empty Then TextBox2.Text = SaveMOD_Path
+        If tbMainPath.Text = String.Empty Then tbMainPath.Text = Game_Path
+        If tbModDataPath.Text = String.Empty Then tbModDataPath.Text = SaveMOD_Path
         If HEX_Path <> String.Empty Then
             TextBox3.Enabled = True
             TextBox3.Text = HEX_Path
         End If
 
-        RadioButton2.Checked = Not txtWin
-        RadioButton3.Checked = txtLvCp
-        CheckBox2.Checked = proRO
-        CheckBox3.Checked = cCache
-        CheckBox1.Checked = ExtractBack
+        RadioButton2.Checked = Not Settings.txtWin
+        RadioButton3.Checked = Settings.txtLvCp
+        CheckBox2.Checked = Settings.proRO
+        CheckBox3.Checked = Settings.cCache
+        'CheckBox1.Checked = ExtractBack
+        tbMsgLang.Text = Settings.msgLangPath
         pathChange = False
     End Sub
 
@@ -100,7 +108,8 @@ Friend Class Setting_Form
         Me.Hide()
 
         If pathChange Then
-            TextBox2.Text = SaveMOD_Path
+            tbMainPath.Text = Game_Path
+            tbModDataPath.Text = SaveMOD_Path
         End If
     End Sub
 
@@ -108,8 +117,8 @@ Friend Class Setting_Form
         Clear_Art_Cache()
     End Sub
 
-    Private Sub TextBox1_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBox1.TextChanged, TextBox2.TextChanged
-        If TextBox1.Text.Trim.ToLower <> Game_Path.ToLower OrElse TextBox2.Text.Trim.ToLower <> SaveMOD_Path.ToLower Then pathChange = True
+    Private Sub TextBox1_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbMainPath.TextChanged, tbModDataPath.TextChanged
+        If tbMainPath.Text.Trim.ToLower <> Game_Path.ToLower OrElse tbModDataPath.Text.Trim.ToLower <> SaveMOD_Path.ToLower Then pathChange = True
     End Sub
 
     Private Sub Button4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button4.Click
