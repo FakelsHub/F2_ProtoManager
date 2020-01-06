@@ -16,13 +16,18 @@ Public NotInheritable Class SplashScreen
         Label1.Visible = True
         ProgressBar1.Visible = True
         Application.DoEvents()
+#If DEBUG Then
+        Main.Main()
+#Else
         Try
             Main.Main()
         Catch ex As Exception
             File.WriteAllText("error.log", ex.StackTrace)
+            File.AppendAllText("error.log", ex.Message)
             MsgBox(ex.Message)
             ControlShow()
         End Try
+#End If
     End Sub
 
     Private Sub ControlShow()

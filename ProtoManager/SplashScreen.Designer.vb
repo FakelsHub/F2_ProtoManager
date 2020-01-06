@@ -40,7 +40,7 @@ Partial Class SplashScreen
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(530, 15)
         Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Loading..."
+        Me.Label1.Text = "Loading DAT files..."
         Me.Label1.Visible = False
         '
         'ProgressBar1
@@ -66,8 +66,9 @@ Partial Class SplashScreen
         'Button1
         '
         Me.Button1.BackColor = System.Drawing.Color.Transparent
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button1.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Button1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(190, Byte), Integer), CType(CType(110, Byte), Integer))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.Location = New System.Drawing.Point(18, 72)
         Me.Button1.Name = "Button1"
@@ -82,8 +83,9 @@ Partial Class SplashScreen
         'Button2
         '
         Me.Button2.BackColor = System.Drawing.Color.Transparent
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button2.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Button2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(190, Byte), Integer), CType(CType(110, Byte), Integer))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.Location = New System.Drawing.Point(18, 43)
         Me.Button2.Name = "Button2"
@@ -98,8 +100,9 @@ Partial Class SplashScreen
         'Button3
         '
         Me.Button3.BackColor = System.Drawing.Color.Transparent
+        Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button3.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Button3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(190, Byte), Integer), CType(CType(110, Byte), Integer))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.Location = New System.Drawing.Point(18, 101)
         Me.Button3.Name = "Button3"
