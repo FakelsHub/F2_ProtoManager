@@ -42,10 +42,14 @@ Module DatFiles
 
     Friend Sub OpenDatFiles()
         Dim message As String = String.Empty
-        If (DATManage.OpenDatFile(Game_Path & MasterDAT, message) = False) Then
-            MsgBox(message)
+        If File.Exists(Game_Path & MasterDAT) Then
+            If (DATManage.OpenDatFile(Game_Path & MasterDAT, message) = False) Then
+                MsgBox(message)
+            End If
         End If
-        DATManage.OpenDatFile(Game_Path & CritterDAT, message)
+        If File.Exists(Game_Path & CritterDAT) Then
+            DATManage.OpenDatFile(Game_Path & CritterDAT, message)
+        End If
     End Sub
 
     Friend Sub UnpackedFilesByList(ByRef files As String(), ByRef datPath As String, Optional ByVal unpackPath As String = "cache\")
