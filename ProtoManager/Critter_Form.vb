@@ -46,7 +46,7 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub Critter_Form_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
-        If PictureBox1.Image IsNot Nothing Then PictureBox1.Image.Dispose()
+        If pbCritterFID.Image IsNot Nothing Then pbCritterFID.Image.Dispose()
         If PictureBox2.Image IsNot Nothing Then PictureBox2.Image.Dispose()
         Me.Dispose()
         Main_Form.Focus()
@@ -650,18 +650,19 @@ Friend Class Critter_Form
         Dim fileFrm As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
         If Not File.Exists(fileFrm) Then DatFiles.CritterFrmGif(frm)
 
-        Dim img As Image = My.Resources.RESERVAA 'BadFrm
+        Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
         If File.Exists(fileFrm) Then
-            img = Image.FromFile(fileFrm)
-            If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
-                PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
+            img = New Bitmap(fileFrm)
+            If img.Width > pbCritterFID.Size.Width OrElse img.Size.Height > pbCritterFID.Size.Height Then
+                If img.GetFrameCount(Imaging.FrameDimension.Time) = 1 Then img.MakeTransparent(Color.White)
+                pbCritterFID.SizeMode = PictureBoxSizeMode.Zoom
             Else
-                PictureBox1.SizeMode = PictureBoxSizeMode.CenterImage
+                pbCritterFID.SizeMode = PictureBoxSizeMode.CenterImage
             End If
             If TabStatsView Then Button6.Enabled = True
         End If
-        PictureBox1.Image = img
 
+        pbCritterFID.Image = img
     End Sub
 
     Private Sub InitFormData()

@@ -194,9 +194,9 @@ Friend Class Items_Form
         ComboBox4.SelectedIndex = WeaponItem.AnimCode
         ComboBox5.SelectedIndex = WeaponItem.DmgType
 
-        SetSoundID(WeaponItem.wSoundID, ComboBox6)
-        'For n As SByte = 0 To ComboBox6.Items.Count - 1
-        '    If CChar(ComboBox6.Items(n)) = Chr(WeaponItem.wSoundID) Then ComboBox6.SelectedIndex = n
+        SetSoundID(WeaponItem.wSoundID, cmbWeaponSoundID)
+        'For n As SByte = 0 To cmbWeaponSoundID.Items.Count - 1
+        '    If CChar(cmbWeaponSoundID.Items(n)) = Chr(WeaponItem.wSoundID) Then cmbWeaponSoundID.SelectedIndex = n
         'Next
 
         If WeaponItem.ProjPID <> -1 Then
@@ -304,7 +304,7 @@ Friend Class Items_Form
         On Error Resume Next
 
         NumericUpDown32.Value = ContanerItem.MaxSize
-        CheckBox15.Checked = ContanerItem.OpenFlags And &H1
+        CheckBox15.Checked = CBool(ContanerItem.OpenFlags And &H1)
         GroupBox25.Enabled = True
     End Sub
 
@@ -354,19 +354,20 @@ Friend Class Items_Form
     Private Sub ComboBox1_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         Dim frm As String = GetImageName(ComboBox1.SelectedItem.ToString, ".")
 
-        Dim img As Image = My.Resources.RESERVAA 'BadFrm
+        Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_ITEMS & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("items\", frm)
             If File.Exists(pfile) Then
                 Try
-                    img = Image.FromFile(pfile)
+                    img = New Bitmap(pfile)
                 Catch ex As Exception
                     Main.PrintLog("Error frm convert: " + pfile)
                 End Try
 
                 If img.Width > PictureBox1.Size.Width OrElse img.Size.Height > PictureBox1.Size.Height Then
                     PictureBox1.BackgroundImageLayout = ImageLayout.Zoom
+                    img.MakeTransparent(Color.White)
                 Else
                     PictureBox1.BackgroundImageLayout = ImageLayout.Center
                 End If
@@ -383,24 +384,25 @@ Friend Class Items_Form
         Dim frm As String = ComboBox2.SelectedItem.ToString
 
         If frm = "None" Then
-            PictureBox4.BackgroundImage = Nothing
+            PictureBox4.BackgroundImage.Dispose() ' = Nothing
             If frmReady Then Button6.Enabled = True
             Exit Sub
         End If
 
-        Dim img As Image = My.Resources.RESERVAA 'BadFrm
+        Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
         frm = GetImageName(frm, ".")
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_INVEN & frm & ".gif"
             If Not File.Exists(pfile) Then ItemFrmGif("inven\", frm)
             If File.Exists(pfile) Then
                 Try
-                    img = Image.FromFile(pfile)
+                    img = New Bitmap(pfile)
                 Catch ex As Exception
                     Main.PrintLog("Error frm convert: " + pfile)
                 End Try
                 If img.Width > PictureBox4.Size.Width Then
                     PictureBox4.BackgroundImageLayout = ImageLayout.Zoom
+                    img.MakeTransparent(Color.White)
                 Else
                     PictureBox4.BackgroundImageLayout = ImageLayout.Center
                 End If
@@ -408,7 +410,7 @@ Friend Class Items_Form
             Else
                 Main.PrintLog("Error frm convert: " + pfile)
             End If
-            If ThumbnailImage.InventImage.ContainsKey(frm) = False Then ThumbnailImage.InventImage.Add(frm, img.Clone)
+            If ThumbnailImage.InventImage.ContainsKey(frm) = False Then ThumbnailImage.InventImage.Add(frm, CType(img.Clone, Image))
         End If
         PictureBox4.BackgroundImage = img
     End Sub
@@ -419,18 +421,28 @@ Friend Class Items_Form
         Dim frmFile As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
         If Not File.Exists(frmFile) Then DatFiles.CritterFrmGif(frm)
 
-        Dim img As Image = My.Resources.RESERVAA 'BadFrm
+        Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
+
+        Dim pbox As PictureBox
+        If CInt(CType(sender, ComboBox).Tag) = Gender.Male Then
+            pbox = PictureBox2
+        Else
+            pbox = PictureBox3
+        End If
+
         If File.Exists(frmFile) Then
-            img = Image.FromFile(frmFile)
+            img = New Bitmap(frmFile)
+            If img.Height > pbox.Size.Height OrElse img.Width > pbox.Size.Width Then
+                If img.GetFrameCount(Imaging.FrameDimension.Time) = 1 Then img.MakeTransparent(Color.White)
+                pbox.SizeMode = PictureBoxSizeMode.Zoom
+            Else
+                pbox.SizeMode = PictureBoxSizeMode.CenterImage
+            End If
+
             If frmReady Then Button6.Enabled = True
         End If
 
-        If CInt(CType(sender, ComboBox).Tag) = Gender.Male Then
-            PictureBox2.Image = img
-        Else
-            PictureBox3.Image = img
-        End If
-
+        pbox.Image = img
     End Sub
 
     Private Function GetImageName(ByVal frm As String, ByVal symbol As String) As String
@@ -509,7 +521,7 @@ Friend Class Items_Form
                 WeaponItem.MaxAmmo = NumericUpDown11.Value
                 WeaponItem.AnimCode = ComboBox4.SelectedIndex
                 WeaponItem.DmgType = ComboBox5.SelectedIndex
-                WeaponItem.wSoundID = GetSoundID(ComboBox6.Text)
+                WeaponItem.wSoundID = GetSoundID(cmbWeaponSoundID.Text)
 
                 If ComboBox10.SelectedIndex > 0 Then WeaponItem.ProjPID = ComboBox10.SelectedIndex + &H5000000 Else WeaponItem.ProjPID = &HFFFFFFFF
                 If ComboBox11.SelectedIndex > 0 Then WeaponItem.Perk = ComboBox11.SelectedIndex - 1 Else WeaponItem.Perk = &HFFFFFFFF
@@ -667,10 +679,18 @@ Friend Class Items_Form
         If frmReady Then Button6.Enabled = True
     End Sub
 
-    Private Sub SaveEnable2(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox5.SelectedIndexChanged, ComboBox6.SelectedIndexChanged, _
+    Private Sub SaveEnable1(ByVal sender As ComboBox, ByVal e As EventArgs) Handles cmbWeaponSoundID.TextChanged, ComboBox3.TextChanged
+        If frmReady Then
+            If sender.Text <> String.Empty Then
+                Button6.Enabled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub SaveEnable2(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox5.SelectedIndexChanged, _
         ComboBox4.SelectedIndexChanged, ComboBox15.SelectedIndexChanged, ComboBox14.SelectedIndexChanged, ComboBox13.SelectedIndexChanged, ComboBox12.SelectedIndexChanged, _
         ComboBox11.SelectedIndexChanged, ComboBox10.SelectedIndexChanged, ComboBox18.SelectedIndexChanged, ComboBox9.SelectedIndexChanged, ComboBox8.SelectedIndexChanged, _
-        ComboBox3.SelectedIndexChanged, ComboBox25.SelectedIndexChanged, ComboBox24.SelectedIndexChanged, ComboBox23.SelectedIndexChanged, ComboBox22.SelectedIndexChanged, _
+        ComboBox25.SelectedIndexChanged, ComboBox24.SelectedIndexChanged, ComboBox23.SelectedIndexChanged, ComboBox22.SelectedIndexChanged, _
         ComboBox21.SelectedIndexChanged, ComboBox20.SelectedIndexChanged, ComboBox19.SelectedIndexChanged
         '
         If frmReady Then Button6.Enabled = True
@@ -744,7 +764,7 @@ Friend Class Items_Form
                         If (WeaponItem.AmmoPID = 0) Then WeaponItem.AmmoPID = -1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage1)
-                    If (WeaponItem.wSoundID = 0) Then ComboBox6.SelectedIndex = 0
+                    If (WeaponItem.wSoundID = 0) Then cmbWeaponSoundID.SelectedIndex = 0
                 Case ItemType.Ammo
                     CommonItem.ObjType = ItemType.Ammo
                     If frmReady Then
@@ -873,7 +893,11 @@ Friend Class Items_Form
     Private Function GetSoundID(ByVal sound As String) As Byte
         Dim pos As Integer = sound.IndexOf(" "c)
         If pos <> -1 Then sound = sound.Remove(pos)
-        Return Convert.ToByte(sound)
+        Dim value As Byte = 0
+        If (Byte.TryParse(sound, value) = False) Then
+            MessageBox.Show(String.Format("Using an invalid value '{0}' for the SoundID parameter.", sound), "Error SoundID", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+        Return value
     End Function
 
     Private Sub cbBigGun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.Click
@@ -883,4 +907,5 @@ Friend Class Items_Form
     Private Sub cbEnergyGun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cbEnergyGun.Click
         If cbEnergyGun.Checked Then cbBigGun.Checked = False
     End Sub
+
 End Class

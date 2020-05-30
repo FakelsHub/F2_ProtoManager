@@ -59,12 +59,13 @@ Partial Class Items_Form
         Me.Label5 = New System.Windows.Forms.Label()
         Me.NumericUpDown4 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.Label59 = New System.Windows.Forms.Label()
         Me.ComboBox4 = New System.Windows.Forms.ComboBox()
         Me.ComboBox10 = New System.Windows.Forms.ComboBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label60 = New System.Windows.Forms.Label()
-        Me.ComboBox6 = New System.Windows.Forms.ComboBox()
+        Me.cmbWeaponSoundID = New System.Windows.Forms.ComboBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.ComboBox11 = New System.Windows.Forms.ComboBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -435,7 +436,7 @@ Partial Class Items_Form
         Me.Label61.AutoSize = True
         Me.Label61.Location = New System.Drawing.Point(129, 17)
         Me.Label61.Name = "Label61"
-        Me.Label61.Size = New System.Drawing.Size(73, 14)
+        Me.Label61.Size = New System.Drawing.Size(72, 14)
         Me.Label61.TabIndex = 1
         Me.Label61.Text = "Damage Type"
         '
@@ -568,7 +569,7 @@ Partial Class Items_Form
         Me.Label15.AutoSize = True
         Me.Label15.Location = New System.Drawing.Point(62, 62)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(60, 14)
+        Me.Label15.Size = New System.Drawing.Size(59, 14)
         Me.Label15.TabIndex = 1
         Me.Label15.Text = "Max Ammo"
         '
@@ -709,17 +710,31 @@ Partial Class Items_Form
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.Button7)
         Me.GroupBox3.Controls.Add(Me.Label59)
         Me.GroupBox3.Controls.Add(Me.ComboBox4)
         Me.GroupBox3.Controls.Add(Me.ComboBox10)
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.Label60)
-        Me.GroupBox3.Controls.Add(Me.ComboBox6)
+        Me.GroupBox3.Controls.Add(Me.cmbWeaponSoundID)
         Me.GroupBox3.Location = New System.Drawing.Point(270, 6)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(149, 153)
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
+        '
+        'Button7
+        '
+        Me.Button7.Enabled = False
+        Me.Button7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Button7.ForeColor = System.Drawing.Color.DarkGreen
+        Me.Button7.Location = New System.Drawing.Point(121, 121)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(22, 22)
+        Me.Button7.TabIndex = 22
+        Me.Button7.Text = "►"
+        Me.ToolTip1.SetToolTip(Me.Button7, "Play Sound")
+        Me.Button7.UseVisualStyleBackColor = True
         '
         'Label59
         '
@@ -770,16 +785,15 @@ Partial Class Items_Form
         Me.Label60.TabIndex = 1
         Me.Label60.Text = "Sound ID "
         '
-        'ComboBox6
+        'cmbWeaponSoundID
         '
-        Me.ComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox6.FormattingEnabled = True
-        Me.ComboBox6.Items.AddRange(New Object() {"48 (0)", "49 (1)", "50 (2)", "51 (3)", "52 (4)", "53 (5)", "54 (6)", "55 (7)", "56 (8)", "57 (9)", "65 (A)", "66 (B)", "67 (C)", "68 (D)", "69 (E)", "70 (F)", "71 (G)", "72 (H)", "73 (I)", "74 (J)", "75 (K)", "76 (L)", "77 (M)", "78 (N)", "79 (O)", "80 (P)", "81 (Q)", "82 (R)", "83 (S)", "84 (T)", "85 (U)", "86 (V)", "87 (W)", "88 (X)", "89 (Y)", "90 (Z)", "33 (!)", "64 (@)", "35 (#)", "36 ($)", "95 (_)"})
-        Me.ComboBox6.Location = New System.Drawing.Point(6, 121)
-        Me.ComboBox6.MaxDropDownItems = 10
-        Me.ComboBox6.Name = "ComboBox6"
-        Me.ComboBox6.Size = New System.Drawing.Size(137, 22)
-        Me.ComboBox6.TabIndex = 21
+        Me.cmbWeaponSoundID.FormattingEnabled = True
+        Me.cmbWeaponSoundID.Items.AddRange(New Object() {"48 (0)", "49 (1)", "50 (2)", "51 (3)", "52 (4)", "53 (5)", "54 (6)", "55 (7)", "56 (8)", "57 (9)", "65 (A)", "66 (B)", "67 (C)", "68 (D)", "69 (E)", "70 (F)", "71 (G)", "72 (H)", "73 (I)", "74 (J)", "75 (K)", "76 (L)", "77 (M)", "78 (N)", "79 (O)", "80 (P)", "81 (Q)", "82 (R)", "83 (S)", "84 (T)", "85 (U)", "86 (V)", "87 (W)", "88 (X)", "89 (Y)", "90 (Z)", "33 (!)", "64 (@)", "35 (#)", "36 ($)", "95 (_)"})
+        Me.cmbWeaponSoundID.Location = New System.Drawing.Point(6, 121)
+        Me.cmbWeaponSoundID.MaxDropDownItems = 10
+        Me.cmbWeaponSoundID.Name = "cmbWeaponSoundID"
+        Me.cmbWeaponSoundID.Size = New System.Drawing.Size(109, 22)
+        Me.cmbWeaponSoundID.TabIndex = 21
         '
         'Label11
         '
@@ -875,6 +889,8 @@ Partial Class Items_Form
         Me.cbEnergyGun.Size = New System.Drawing.Size(83, 18)
         Me.cbEnergyGun.TabIndex = 30
         Me.cbEnergyGun.Text = "Energy Gun"
+        Me.ToolTip1.SetToolTip(Me.cbEnergyGun, "Указывает движку игры, принудительно использовать навык ""Энергетическое оружие"" д" &
+        "ля оружия.")
         Me.cbEnergyGun.UseVisualStyleBackColor = True
         '
         'cbTwoHand
@@ -883,7 +899,7 @@ Partial Class Items_Form
         Me.cbTwoHand.BackColor = System.Drawing.Color.Transparent
         Me.cbTwoHand.Location = New System.Drawing.Point(76, 17)
         Me.cbTwoHand.Name = "cbTwoHand"
-        Me.cbTwoHand.Size = New System.Drawing.Size(76, 18)
+        Me.cbTwoHand.Size = New System.Drawing.Size(75, 18)
         Me.cbTwoHand.TabIndex = 28
         Me.cbTwoHand.Text = "Two Hand"
         Me.cbTwoHand.UseVisualStyleBackColor = False
@@ -896,6 +912,7 @@ Partial Class Items_Form
         Me.cbBigGun.Size = New System.Drawing.Size(64, 18)
         Me.cbBigGun.TabIndex = 29
         Me.cbBigGun.Text = "Big Gun"
+        Me.ToolTip1.SetToolTip(Me.cbBigGun, "Оружие будет использовать навык ""Тяжелое оружие"".")
         Me.cbBigGun.UseVisualStyleBackColor = True
         '
         'TabPage2
@@ -969,10 +986,10 @@ Partial Class Items_Form
         'PictureBox3
         '
         Me.PictureBox3.BackColor = System.Drawing.Color.SteelBlue
-        Me.PictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox3.Location = New System.Drawing.Point(112, 33)
+        Me.PictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox3.Location = New System.Drawing.Point(111, 33)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(100, 107)
+        Me.PictureBox3.Size = New System.Drawing.Size(102, 108)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox3.TabIndex = 21
         Me.PictureBox3.TabStop = False
@@ -991,10 +1008,10 @@ Partial Class Items_Form
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.SteelBlue
-        Me.PictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox2.Location = New System.Drawing.Point(6, 33)
+        Me.PictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox2.Location = New System.Drawing.Point(5, 33)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(100, 107)
+        Me.PictureBox2.Size = New System.Drawing.Size(102, 108)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox2.TabIndex = 21
         Me.PictureBox2.TabStop = False
@@ -1013,7 +1030,7 @@ Partial Class Items_Form
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label16.Location = New System.Drawing.Point(23, 17)
+        Me.Label16.Location = New System.Drawing.Point(30, 17)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(52, 14)
         Me.Label16.TabIndex = 3
@@ -2018,7 +2035,7 @@ Partial Class Items_Form
         Me.Label49.AutoSize = True
         Me.Label49.Location = New System.Drawing.Point(152, 17)
         Me.Label49.Name = "Label49"
-        Me.Label49.Size = New System.Drawing.Size(66, 14)
+        Me.Label49.Size = New System.Drawing.Size(65, 14)
         Me.Label49.TabIndex = 1
         Me.Label49.Text = "Power Type"
         '
@@ -2094,7 +2111,7 @@ Partial Class Items_Form
         Me.Label45.AutoSize = True
         Me.Label45.Location = New System.Drawing.Point(213, 17)
         Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(55, 14)
+        Me.Label45.Size = New System.Drawing.Size(54, 14)
         Me.Label45.TabIndex = 3
         Me.Label45.Text = "DR Adjust"
         '
@@ -2103,7 +2120,7 @@ Partial Class Items_Form
         Me.Label43.AutoSize = True
         Me.Label43.Location = New System.Drawing.Point(149, 17)
         Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(56, 14)
+        Me.Label43.Size = New System.Drawing.Size(55, 14)
         Me.Label43.TabIndex = 3
         Me.Label43.Text = "AC Adjust"
         '
@@ -2323,7 +2340,7 @@ Partial Class Items_Form
         Me.CheckBox10.Enabled = False
         Me.CheckBox10.Location = New System.Drawing.Point(6, 94)
         Me.CheckBox10.Name = "CheckBox10"
-        Me.CheckBox10.Size = New System.Drawing.Size(45, 18)
+        Me.CheckBox10.Size = New System.Drawing.Size(44, 18)
         Me.CheckBox10.TabIndex = 35
         Me.CheckBox10.Text = "Talk"
         Me.CheckBox10.UseVisualStyleBackColor = True
@@ -2760,11 +2777,11 @@ Partial Class Items_Form
         '
         Me.Label57.AutoSize = True
         Me.Label57.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label57.Location = New System.Drawing.Point(29, 16)
+        Me.Label57.Location = New System.Drawing.Point(29, 13)
         Me.Label57.Name = "Label57"
-        Me.Label57.Size = New System.Drawing.Size(71, 14)
+        Me.Label57.Size = New System.Drawing.Size(78, 14)
         Me.Label57.TabIndex = 0
-        Me.Label57.Text = "Inventar FID"
+        Me.Label57.Text = "Inventory FID"
         '
         'ComboBox2
         '
@@ -2796,7 +2813,7 @@ Partial Class Items_Form
         '
         Me.Label44.AutoSize = True
         Me.Label44.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Label44.Location = New System.Drawing.Point(157, 16)
+        Me.Label44.Location = New System.Drawing.Point(158, 13)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(67, 14)
         Me.Label44.TabIndex = 0
@@ -2816,10 +2833,10 @@ Partial Class Items_Form
         '
         Me.PictureBox4.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.PictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox4.Location = New System.Drawing.Point(6, 33)
+        Me.PictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox4.Location = New System.Drawing.Point(5, 30)
         Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(120, 118)
+        Me.PictureBox4.Size = New System.Drawing.Size(122, 122)
         Me.PictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox4.TabIndex = 0
         Me.PictureBox4.TabStop = False
@@ -2828,10 +2845,10 @@ Partial Class Items_Form
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.SteelBlue
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox1.Location = New System.Drawing.Point(132, 33)
+        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox1.Location = New System.Drawing.Point(131, 30)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(120, 118)
+        Me.PictureBox1.Size = New System.Drawing.Size(122, 122)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
@@ -3129,7 +3146,7 @@ Partial Class Items_Form
     Friend WithEvents Label61 As System.Windows.Forms.Label
     Friend WithEvents Label59 As System.Windows.Forms.Label
     Friend WithEvents ComboBox5 As System.Windows.Forms.ComboBox
-    Friend WithEvents ComboBox6 As System.Windows.Forms.ComboBox
+    Friend WithEvents cmbWeaponSoundID As System.Windows.Forms.ComboBox
     Friend WithEvents ComboBox4 As System.Windows.Forms.ComboBox
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
     Friend WithEvents Label58 As System.Windows.Forms.Label
@@ -3287,4 +3304,5 @@ Partial Class Items_Form
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label54 As System.Windows.Forms.Label
     Friend WithEvents cbEnergyGun As System.Windows.Forms.CheckBox
+    Friend WithEvents Button7 As System.Windows.Forms.Button
 End Class

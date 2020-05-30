@@ -317,7 +317,7 @@ Partial Class Critter_Form
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.pbCritterFID = New System.Windows.Forms.PictureBox()
         Me.tbFrmID = New System.Windows.Forms.TextBox()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
@@ -420,7 +420,7 @@ Partial Class Critter_Form
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbCritterFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox19.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -2185,7 +2185,7 @@ Partial Class Critter_Form
         'Label125
         '
         Me.Label125.AutoSize = True
-        Me.Label125.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.Label125.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label125.Location = New System.Drawing.Point(6, 16)
         Me.Label125.Name = "Label125"
         Me.Label125.Size = New System.Drawing.Size(217, 14)
@@ -2195,7 +2195,7 @@ Partial Class Critter_Form
         'Label124
         '
         Me.Label124.AutoSize = True
-        Me.Label124.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.Label124.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label124.Location = New System.Drawing.Point(6, 33)
         Me.Label124.Name = "Label124"
         Me.Label124.Size = New System.Drawing.Size(249, 14)
@@ -2235,15 +2235,15 @@ Partial Class Critter_Form
         'ColumnHeader1
         '
         Me.ColumnHeader1.Text = "Armor Param"
-        Me.ColumnHeader1.Width = 125
+        Me.ColumnHeader1.Width = 141
         '
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.SteelBlue
-        Me.PictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox2.Location = New System.Drawing.Point(29, 19)
+        Me.PictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox2.Location = New System.Drawing.Point(28, 15)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(100, 100)
+        Me.PictureBox2.Size = New System.Drawing.Size(110, 106)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox2.TabIndex = 1
         Me.PictureBox2.TabStop = False
@@ -3561,8 +3561,8 @@ Partial Class Critter_Form
         Me.CheckBox18.Size = New System.Drawing.Size(52, 18)
         Me.CheckBox18.TabIndex = 0
         Me.CheckBox18.Text = "Ages"
-        Me.ToolTip1.SetToolTip(Me.CheckBox18, "The dead body does not disappear with time." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Мертвое тело не исчезает со времене" & _
-                "м.)")
+        Me.ToolTip1.SetToolTip(Me.CheckBox18, "The dead body does not disappear with time." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Мертвое тело не исчезает со времене" &
+        "м.)")
         Me.CheckBox18.UseVisualStyleBackColor = True
         '
         'CheckBox14
@@ -3622,7 +3622,7 @@ Partial Class Critter_Form
         Me.CheckBox10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.CheckBox10.Location = New System.Drawing.Point(6, 87)
         Me.CheckBox10.Name = "CheckBox10"
-        Me.CheckBox10.Size = New System.Drawing.Size(45, 18)
+        Me.CheckBox10.Size = New System.Drawing.Size(44, 18)
         Me.CheckBox10.TabIndex = 0
         Me.CheckBox10.Text = "Talk"
         Me.CheckBox10.UseVisualStyleBackColor = True
@@ -3787,7 +3787,7 @@ Partial Class Critter_Form
         Me.Label60.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label60.Location = New System.Drawing.Point(6, 60)
         Me.Label60.Name = "Label60"
-        Me.Label60.Size = New System.Drawing.Size(47, 14)
+        Me.Label60.Size = New System.Drawing.Size(46, 14)
         Me.Label60.TabIndex = 1
         Me.Label60.Text = "Kill Type"
         '
@@ -3808,7 +3808,7 @@ Partial Class Critter_Form
         Me.Label61.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label61.Location = New System.Drawing.Point(159, 16)
         Me.Label61.Name = "Label61"
-        Me.Label61.Size = New System.Drawing.Size(73, 14)
+        Me.Label61.Size = New System.Drawing.Size(72, 14)
         Me.Label61.TabIndex = 1
         Me.Label61.Text = "Damage Type"
         '
@@ -3818,7 +3818,7 @@ Partial Class Critter_Form
         Me.Label59.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label59.Location = New System.Drawing.Point(6, 16)
         Me.Label59.Name = "Label59"
-        Me.Label59.Size = New System.Drawing.Size(59, 14)
+        Me.Label59.Size = New System.Drawing.Size(58, 14)
         Me.Label59.TabIndex = 1
         Me.Label59.Text = "Body Type"
         '
@@ -3872,7 +3872,7 @@ Partial Class Critter_Form
         Me.Label58.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label58.Location = New System.Drawing.Point(11, 57)
         Me.Label58.Name = "Label58"
-        Me.Label58.Size = New System.Drawing.Size(73, 14)
+        Me.Label58.Size = New System.Drawing.Size(72, 14)
         Me.Label58.TabIndex = 1
         Me.Label58.Text = "Team Number"
         '
@@ -4104,7 +4104,7 @@ Partial Class Critter_Form
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.ComboBox1)
-        Me.GroupBox4.Controls.Add(Me.PictureBox1)
+        Me.GroupBox4.Controls.Add(Me.pbCritterFID)
         Me.GroupBox4.Controls.Add(Me.tbFrmID)
         Me.GroupBox4.Controls.Add(Me.Label44)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
@@ -4125,23 +4125,23 @@ Partial Class Critter_Form
         Me.ComboBox1.Size = New System.Drawing.Size(110, 22)
         Me.ComboBox1.TabIndex = 1
         '
-        'PictureBox1
+        'pbCritterFID
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.SteelBlue
-        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 37)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(100, 100)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.pbCritterFID.BackColor = System.Drawing.Color.SteelBlue
+        Me.pbCritterFID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbCritterFID.Location = New System.Drawing.Point(6, 34)
+        Me.pbCritterFID.Name = "pbCritterFID"
+        Me.pbCritterFID.Size = New System.Drawing.Size(110, 104)
+        Me.pbCritterFID.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbCritterFID.TabIndex = 0
+        Me.pbCritterFID.TabStop = False
         '
         'tbFrmID
         '
         Me.tbFrmID.BackColor = System.Drawing.SystemColors.Control
         Me.tbFrmID.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.tbFrmID.ForeColor = System.Drawing.Color.DarkRed
-        Me.tbFrmID.Location = New System.Drawing.Point(50, 13)
+        Me.tbFrmID.Location = New System.Drawing.Point(50, 11)
         Me.tbFrmID.Name = "tbFrmID"
         Me.tbFrmID.ReadOnly = True
         Me.tbFrmID.Size = New System.Drawing.Size(62, 20)
@@ -4154,7 +4154,7 @@ Partial Class Critter_Form
         Me.Label44.AutoSize = True
         Me.Label44.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label44.ForeColor = System.Drawing.Color.DarkRed
-        Me.Label44.Location = New System.Drawing.Point(6, 16)
+        Me.Label44.Location = New System.Drawing.Point(6, 14)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(45, 14)
         Me.Label44.TabIndex = 2
@@ -4363,7 +4363,7 @@ Partial Class Critter_Form
         Me.GroupBox12.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbCritterFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
         Me.ResumeLayout(False)
@@ -4467,7 +4467,7 @@ Partial Class Critter_Form
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbCritterFID As System.Windows.Forms.PictureBox
     Friend WithEvents Label44 As System.Windows.Forms.Label
     Friend WithEvents Label54 As System.Windows.Forms.Label
     Friend WithEvents Label53 As System.Windows.Forms.Label
