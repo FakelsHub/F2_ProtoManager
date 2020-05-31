@@ -2,7 +2,7 @@
 
 Public Class AI_TextForm
 
-    Private path As String
+    Private pathAI As String
     Private aiCustom As Boolean
 
     Private buffer As List(Of String)
@@ -18,7 +18,7 @@ Public Class AI_TextForm
         Me.ePacketID = ePacketID
         Me.ownerSaveButton = ownerSaveButton
         Me.aiCustom = aiCustom
-        Me.path = path
+        Me.pathAI = path
 
         buffer = File.ReadAllLines(path).ToList
         Dim str As String = String.Empty
@@ -47,9 +47,15 @@ Public Class AI_TextForm
     Private Sub Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         buffer.RemoveRange(sPacketID, (ePacketID - sPacketID))
         buffer.InsertRange(sPacketID, Split(RichTextBox1.Text, vbLf).ToList)
+
         ' save to file
-        Dim sFile As String = If(aiCustom, path, SaveMOD_Path & AI.AIFILE)
+        Dim sFile As String = If(aiCustom, pathAI, SaveMOD_Path & AI.AIFILE)
+
+        Dim dir = Path.GetDirectoryName(sFile)
+        If (Directory.Exists(dir) = False) Then Directory.CreateDirectory(dir)
+
         File.WriteAllLines(sFile, buffer)
+
         change = True
         'Log
         Main.PrintLog("Save AI: " & sFile)

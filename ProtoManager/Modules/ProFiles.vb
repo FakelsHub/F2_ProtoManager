@@ -388,27 +388,24 @@ Module ProFiles
         FileClose(fFile)
     End Sub
 
-    Friend Sub ReverseLoadData(Of T As Structure)(ByRef buffer() As Integer, ByRef Struct As T)
+    Friend Sub ReverseLoadData(Of T As Structure)(ByRef buffer() As Integer, ByRef struct As T)
         For n = 0 To buffer.Length - 1
             buffer(n) = ReverseBytes(buffer(n))
         Next
-        Struct = fnBytesToStruct(buffer, Struct.GetType)
+        struct = CType(ConvertBytesToStruct(buffer, struct.GetType), T)
     End Sub
 
-    Friend Function ReverseSaveData(ByVal Struct As Object, ByVal isize As Integer) As Integer()
-        Dim bsize As Integer = Marshal.SizeOf(Struct)
-        Dim bytes(bsize - 1) As Byte
+    Friend Function ReverseSaveData(ByVal struct As Object, ByVal isize As Integer) As Integer()
+        Dim bSize As Integer = Marshal.SizeOf(struct)
+        Dim bytes(bSize - 1) As Byte
         Dim buffer(isize - 1) As Integer
 
-        fnStructToBytes(bytes, bsize, Struct)
-        For n = 0 To bytes.Length - 1 Step 4
-            If (n / 4) >= buffer.Length Then Exit For
-            Dim value As Integer = BitConverter.ToInt32(bytes, n)
-            If value = 0 OrElse value = -1 Then
-                buffer(n / 4) = value
-                Continue For
-            End If
-            buffer(n / 4) = ((bytes(n) And &HFF) << 24) + ((bytes(n + 1) And &HFF) << 16) + ((bytes(n + 2) And &HFF) << 8) + (bytes(n + 3) And &HFF)
+        ConvertStructToBytes(bytes, bSize, struct)
+        Array.Reverse(bytes)
+
+        For n As Integer = 0 To buffer.Length - 1
+            bSize -= 4
+            buffer(n) = BitConverter.ToInt32(bytes, bSize)
         Next
 
         Return buffer
@@ -417,33 +414,34 @@ Module ProFiles
     ''' <summary>
     ''' Инвертирует значение в BigEndian и обратно.
     ''' </summary>
-    Friend Function ReverseBytes(ByVal Value As Integer) As Integer
-        If Value = 0 OrElse Value = -1 Then Return Value
-        Dim bytes() As Byte = BitConverter.GetBytes(Value)
-        Array.Reverse(bytes)
-        Return BitConverter.ToInt32(bytes, 0)
-        'Return (Value And &HFF) << 24 Or (Value And &HFF00) << 8 Or (Value And &HFF0000) >> 8 Or (Value And &HFF000000) >> 24
+    Friend Function ReverseBytes(ByVal value As Integer) As Integer
+        If value = 0 OrElse value = &HFFFFFFFF Then Return value
+
+        Return (value << 24) Or
+               (value And &HFF00) << 8 Or
+               (value And &HFF0000) >> 8 Or
+               (value >> 24) And &HFF
     End Function
 
     ''' <summary>
     ''' Преобразовывает структуру в массив.
     ''' </summary>
-    Private Function fnStructToBytes(ByRef bytes() As Byte, ByVal bsize As Integer, ByVal Struct As Object) As Byte()
-        Dim Ptr As IntPtr = Marshal.AllocHGlobal(bsize)
-        Marshal.StructureToPtr(Struct, Ptr, False)
-        Marshal.Copy(Ptr, bytes, 0, bsize)
-        Marshal.FreeHGlobal(Ptr)
+    Private Function ConvertStructToBytes(ByRef bytes() As Byte, ByVal bSize As Integer, ByVal struct As Object) As Byte()
+        Dim ptr As IntPtr = Marshal.AllocHGlobal(bSize)
+        Marshal.StructureToPtr(struct, ptr, False)
+        Marshal.Copy(ptr, bytes, 0, bSize)
+        Marshal.FreeHGlobal(ptr)
         Return bytes
     End Function
 
     ''' <summary>
     ''' Преобразовывает массив в структуру.
     ''' </summary>
-    Private Function fnBytesToStruct(ByVal Buff() As Integer, ByVal StrcType As Type) As Object
-        Dim MyGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)
-        Dim Obj As Object = Marshal.PtrToStructure(MyGC.AddrOfPinnedObject, StrcType)
-        MyGC.Free()
-        Return Obj
+    Private Function ConvertBytesToStruct(ByVal Buff() As Integer, ByVal strcType As Type) As Object
+        Dim mGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)
+        Dim obj As Object = Marshal.PtrToStructure(mGC.AddrOfPinnedObject, strcType)
+        mGC.Free()
+        Return obj
     End Function
 
 End Module

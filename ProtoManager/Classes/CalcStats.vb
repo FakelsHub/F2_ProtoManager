@@ -8,9 +8,9 @@
 
     Private Shared formula As FormulaType = FormulaType.Fallout2
 
-    Friend Shared Function SetFormula(ByVal type As FormulaType)
+    Friend Shared Sub SetFormula(ByVal type As FormulaType)
         formula = type
-    End Function
+    End Sub
 
     Friend Shared Function GetFormula() As Integer
         Return formula
