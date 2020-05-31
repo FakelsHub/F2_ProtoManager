@@ -908,4 +908,31 @@ Friend Class Items_Form
         If cbEnergyGun.Checked Then cbBigGun.Checked = False
     End Sub
 
+    Dim num As Byte = 1
+    Dim sec As Byte = 1
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Dim sID As Char = Convert.ToChar(GetSoundID(cmbWeaponSoundID.Text))
+
+        Dim fileFormat As String = String.Format("\sound\sfx\WA{0}{1}XXX{2}.acm", sID, If(sec = 1, "1", "2"), If(num = 1, "1", "2"))
+
+        If sec = 2 AndAlso num = 2 Then
+            num = 1
+            sec = 1
+        ElseIf sec = 1 AndAlso num = 1 Then
+            num = 2 ' s1 n2
+        ElseIf num = 2 Then
+            sec = 2
+            num = 1
+        ElseIf sec = 2 Then
+            num = 2 ' s2 n2
+        End If
+
+        Dim sfxPathFile = DatFiles.ExtractSFX(fileFormat)
+        If (sfxPathFile = Nothing) Then Return
+
+        Dim snd = New Media.SoundPlayer(sfxPathFile)
+        snd.Play()
+    End Sub
+
 End Class

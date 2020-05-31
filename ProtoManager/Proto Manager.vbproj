@@ -44,8 +44,7 @@
     <DocumentationFile>ProtoManager.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <WarningsAsErrors>42017,42018,42019,42024,42032,42036,42099</WarningsAsErrors>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -58,8 +57,7 @@
     <DocumentationFile>ProtoManager.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <WarningsAsErrors>42017,42018,42019,42024,42032,42036,42099</WarningsAsErrors>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
@@ -336,8 +334,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="frm2gif.exe" />
+    <None Include="frm2gif.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="template\defaultAI.txt" />
+    <None Include="acm2wav.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\pmicon32.ico" />
     <None Include="Resources\splash.png" />
     <None Include="Resources\error.png" />

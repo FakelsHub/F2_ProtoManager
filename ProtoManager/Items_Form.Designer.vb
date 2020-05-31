@@ -725,15 +725,14 @@ Partial Class Items_Form
         '
         'Button7
         '
-        Me.Button7.Enabled = False
         Me.Button7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button7.ForeColor = System.Drawing.Color.DarkGreen
+        Me.Button7.ForeColor = System.Drawing.Color.Green
         Me.Button7.Location = New System.Drawing.Point(121, 121)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(22, 22)
         Me.Button7.TabIndex = 22
         Me.Button7.Text = "►"
-        Me.ToolTip1.SetToolTip(Me.Button7, "Play Sound")
+        Me.ToolTip1.SetToolTip(Me.Button7, "Play Attack Sound")
         Me.Button7.UseVisualStyleBackColor = True
         '
         'Label59

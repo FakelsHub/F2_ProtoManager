@@ -172,4 +172,8 @@ SetDefConf:
         Directory.Delete(Cache_Patch & "\art", True)
     End Sub
 
+    Friend Sub Clear_Sound_Cache()
+        If Directory.Exists("cache\sound\") Then Directory.Delete("cache\sound\", True)
+    End Sub
+
 End Module

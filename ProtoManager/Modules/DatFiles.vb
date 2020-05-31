@@ -92,6 +92,49 @@ Module DatFiles
         End If
     End Function
 
+    Friend Function GetFilePath(ByRef pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
+        'Check save folder
+        Dim fPath As String = String.Concat(SaveMOD_Path, pFile)
+        If File.Exists(fPath) Then
+            pFile = fPath
+            Return True
+        End If
+
+        'Check data folder
+        fPath = String.Concat(GameDATA_Path & pFile)
+        If File.Exists(fPath) Then
+            pFile = fPath
+            Return True
+        End If
+
+        'Check .dat folder
+        Dim fmDat As String = String.Concat(Game_Path, MasterDAT, pFile)
+        Dim fcDat As String = String.Concat(Game_Path, CritterDAT, pFile)
+        If File.Exists(fmDat) OrElse File.Exists(fcDat) Then
+            If сDat Then
+                pFile = fcDat
+                Return True
+            Else
+                pFile = fmDat
+                Return True
+            End If
+        Else
+            'Check cache folder and extract
+            fPath = String.Concat(Cache_Patch, pFile)
+            If File.Exists(fPath) Then
+                pFile = fPath
+                Return True
+            Else
+                If UnPackFile(fPath, сDat) Then
+                    pFile = Nothing 'указать что фал был извлечен и находится в кеше
+                    Return True
+                End If
+            End If
+        End If
+
+        Return False
+    End Function
+
     Friend Function CheckDirFile(ByVal pFile As String, ByVal cache As Boolean, Optional ByVal сDat As Boolean = False) As Boolean
         'Check save folder
         Dim fPath As String = String.Concat(SaveMOD_Path, pFile)
@@ -220,7 +263,27 @@ Module DatFiles
 
         FileSystem.CopyFile(cPath, WorkAppDIR & checkFile, True)
         File.SetAttributes(WorkAppDIR & checkFile, FileAttributes.Normal)
-        Shell(WorkAppDIR & "\frm2gif.exe -p color.pal ." & checkFile, AppWinStyle.Hide, True)
+        Shell(WorkAppDIR & "\frm2gif.exe -p color.pal ." & checkFile, AppWinStyle.Hide, True, 2000)
     End Sub
+
+    Friend Function ExtractSFX(sfxFile As String) As String
+        Dim cfilePath = String.Concat(Cache_Patch, sfxFile)
+        If GetFilePath(sfxFile) = False Then Return Nothing 'file not found
+
+        If (sfxFile <> Nothing) Then
+            Directory.CreateDirectory(Path.GetDirectoryName(cfilePath))
+            File.Copy(sfxFile, cfilePath, True) ' копирует asm файл в кеш папку
+        End If
+
+        Shell(WorkAppDIR & "\acm2wav.exe """ & cfilePath & """ -m", AppWinStyle.Hide, True, 5000) ' конвертирует acm в корневую папку программы
+
+        cfilePath = Path.ChangeExtension(cfilePath, "wav")
+        Dim sfxWavFile = Path.GetFileName(cfilePath)
+
+        File.Copy(sfxWavFile, cfilePath, True) ' копирует wav файл в кеш папку
+        File.Delete(sfxWavFile)
+
+        Return cfilePath
+    End Function
 
 End Module

@@ -38,6 +38,8 @@ Friend Class Main_Form
     End Sub
 
     Private Sub Main_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        Settings.Clear_Sound_Cache()
+
         Timer1.Start()
         TabControl1.Visible = True
         SplitContainer1.SplitterDistance = If(SplitSize = -1, Me.Width - 350, SplitSize)
@@ -63,9 +65,10 @@ Friend Class Main_Form
             Application.Exit()
             ThumbnailImage.Dispose()
             If cCache Then
-                Clear_Cache()
+                Settings.Clear_Cache()
+                Settings.Clear_Sound_Cache()
             ElseIf cArtCache Then
-                Clear_Art_Cache()
+                Settings.Clear_Art_Cache()
             End If
             File.Delete("iImage.lst")
             File.Delete("iProto.lst")
@@ -240,7 +243,7 @@ Friend Class Main_Form
 
     'поиск ключевого слова
     Private Sub Find(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton1.Click, FindToolStripMenuItem.Click
-        If ToolStripTextBox1.Text <> Nothing Then
+        If tstbSearchText.Text <> Nothing Then
             Dim LIST_VIEW As ListView
             If TabControl1.SelectedIndex = 0 Then
                 LIST_VIEW = ListView2
@@ -251,8 +254,13 @@ Friend Class Main_Form
             Dim n As Integer = If(LIST_VIEW.FocusedItem IsNot Nothing, LIST_VIEW.FocusedItem.Index + 1, 0)
             If n >= LIST_VIEW.Items.Count Then n = 0
             If SearhLW(n, LIST_VIEW) >= LIST_VIEW.Items.Count Then
-                If SearhLW(0, LIST_VIEW) >= LIST_VIEW.Items.Count Then Exit Sub
+                If SearhLW(0, LIST_VIEW) >= LIST_VIEW.Items.Count Then
+                    tstbSearchText.BackColor = Color.MistyRose
+                    Exit Sub
+                End If
             End If
+
+            tstbSearchText.BackColor = SystemColors.Info
 
             If LIST_VIEW.View = View.Details Then
                 Dim pos As Point = LIST_VIEW.FocusedItem.Position
@@ -269,21 +277,24 @@ Friend Class Main_Form
 
     Private Function SearhLW(ByRef n As Integer, ByRef LIST_VIEW As ListView) As Integer
         For n = n To LIST_VIEW.Items.Count - 1
-            If LIST_VIEW.Items(n).Text.IndexOf(ToolStripTextBox1.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
+            If LIST_VIEW.Items(n).Text.IndexOf(tstbSearchText.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
                 LIST_VIEW.Items.Item(n).Selected = True
                 LIST_VIEW.Items.Item(n).Focused = True
                 Exit For
             End If
         Next
-
         Return n
     End Function
 
-    Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ToolStripTextBox1.KeyDown
+    Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles tstbSearchText.KeyDown
         If e.KeyData = Keys.Enter Then
             e.SuppressKeyPress = True
             Find(sender, Nothing)
         End If
+    End Sub
+
+    Private Sub tstbSearchText_TextChanged(sender As Object, e As EventArgs) Handles tstbSearchText.TextChanged
+        tstbSearchText.BackColor = SystemColors.Info
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
@@ -644,7 +655,7 @@ Friend Class Main_Form
                 .Columns.Add("iPid", "PID", If(ColumnItemSize(4) > 15, ColumnItemSize(4), 65), HorizontalAlignment.Center, 0)
             End If
             For Each item As ListViewItem In .Items
-                item.SubItems.Add((item.Tag + 1).ToString.PadLeft(8, "0"c))
+                item.SubItems.Add((CInt(item.Tag) + 1).ToString.PadLeft(8, "0"c))
             Next
             .EndUpdate()
         End With
@@ -705,5 +716,17 @@ Friend Class Main_Form
         End If
     End Sub
 #End Region
+
+    Private Sub ShowCurrentKeybordLanguage()
+        ToolStripLabel1.Text = InputLanguage.CurrentInputLanguage.Culture.TwoLetterISOLanguageName.ToUpper
+    End Sub
+
+    Private Sub Main_Form_InputLanguageChanged(sender As Object, e As InputLanguageChangedEventArgs) Handles MyBase.InputLanguageChanged
+        ShowCurrentKeybordLanguage()
+    End Sub
+
+    Private Sub Main_Form_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+        ShowCurrentKeybordLanguage()
+    End Sub
 
 End Class
