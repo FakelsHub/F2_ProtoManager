@@ -928,7 +928,7 @@ Friend Class Items_Form
             num = 2 ' s2 n2
         End If
 
-        Dim sfxPathFile = DatFiles.ExtractSFX(fileFormat)
+        Dim sfxPathFile = DatFiles.ExtractSFXFile(fileFormat)
         If (sfxPathFile = Nothing) Then Return
 
         Dim snd = New Media.SoundPlayer(sfxPathFile)

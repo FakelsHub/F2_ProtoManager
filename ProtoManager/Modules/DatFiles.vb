@@ -92,7 +92,7 @@ Module DatFiles
         End If
     End Function
 
-    Friend Function GetFilePath(ByRef pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
+    Friend Function GetFileAndPath(ByRef pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
         'Check save folder
         Dim fPath As String = String.Concat(SaveMOD_Path, pFile)
         If File.Exists(fPath) Then
@@ -122,13 +122,11 @@ Module DatFiles
             'Check cache folder and extract
             fPath = String.Concat(Cache_Patch, pFile)
             If File.Exists(fPath) Then
-                pFile = fPath
+                pFile = Nothing 'указать что файл находится в кеше
                 Return True
-            Else
-                If UnPackFile(fPath, сDat) Then
-                    pFile = Nothing 'указать что фал был извлечен и находится в кеше
-                    Return True
-                End If
+            ElseIf UnPackFile(pFile, сDat) Then
+                pFile = Nothing 'указать что файл был извлечен и находится в кеше
+                Return True
             End If
         End If
 
@@ -215,7 +213,7 @@ Module DatFiles
         Else
             FileSystem.MoveFile(WorkAppDIR & ART_CRITTERS & FrmFile & "aa_sw.gif", Cache_Patch & gifFile)
         End If
-        On Error GoTo -1
+        On Error GoTo - 1
         Directory.Delete(artDir, True)
     End Sub
 
@@ -241,7 +239,7 @@ Module DatFiles
         Else
             FileSystem.MoveFile(artDir & FrmFile & "_ne.gif", Cache_Patch & gifFile)
         End If
-        On Error GoTo -1
+        On Error GoTo - 1
         Directory.Delete(artDir, True)
     End Sub
 
@@ -266,13 +264,13 @@ Module DatFiles
         Shell(WorkAppDIR & "\frm2gif.exe -p color.pal ." & checkFile, AppWinStyle.Hide, True, 2000)
     End Sub
 
-    Friend Function ExtractSFX(sfxFile As String) As String
+    Friend Function ExtractSFXFile(sfxFile As String) As String
         Dim cfilePath = String.Concat(Cache_Patch, sfxFile)
-        If GetFilePath(sfxFile) = False Then Return Nothing 'file not found
+        If GetFileAndPath(sfxFile) = False Then Return Nothing 'file not found
 
         If (sfxFile <> Nothing) Then
             Directory.CreateDirectory(Path.GetDirectoryName(cfilePath))
-            File.Copy(sfxFile, cfilePath, True) ' копирует asm файл в кеш папку
+            File.Copy(sfxFile, cfilePath, True) ' копирует acm файл в кеш папку
         End If
 
         Shell(WorkAppDIR & "\acm2wav.exe """ & cfilePath & """ -m", AppWinStyle.Hide, True, 5000) ' конвертирует acm в корневую папку программы

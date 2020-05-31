@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 ' Проверьте значения атрибутов сборки
 
 <Assembly: AssemblyTitle("Proto files editor for Fallout 1/2")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("2008 - 2019")> 
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("2008 - 2020")>
 <Assembly: AssemblyProduct("Proto Manager")> 
 <Assembly: AssemblyCopyright("Fakels (aka Mr.Stalin)")> 
 <Assembly: AssemblyTrademark("")> 
@@ -33,7 +33,7 @@ Imports System.Runtime.InteropServices
 ' используя "*", как показано ниже:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.2.0.0")> 
-<Assembly: AssemblyFileVersion("1.2.0.0")> 
+<Assembly: AssemblyVersion("1.2.1.0")>
+<Assembly: AssemblyFileVersion("1.2.1.0")>
 
 <Assembly: NeutralResourcesLanguageAttribute("ru")> 
