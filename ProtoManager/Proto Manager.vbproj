@@ -41,7 +41,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ProtoManager.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>42017,42018,42019,42024,42032,42036,42099</WarningsAsErrors>
@@ -54,7 +55,8 @@
     <DefineTrace>false</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ProtoManager.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>42017,42018,42019,42024,42032,42036,42099</WarningsAsErrors>
@@ -140,6 +142,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Classes\CalcStats.vb" />
+    <Compile Include="Classes\Enums.vb" />
     <Compile Include="Classes\Comparer.vb" />
     <Compile Include="Classes\ThumbnailImage.vb" />
     <Compile Include="MassCreate.Designer.vb">

@@ -225,9 +225,9 @@ SaveRetry:
             Case "Size"
                 Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H20000000)
         End Select
     End Sub
 
@@ -254,9 +254,9 @@ SaveRetry:
             Case "Size"
                 Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H20000000)
         End Select
     End Sub
 
@@ -289,9 +289,9 @@ SaveRetry:
             Case "Size"
                 Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H20000000)
         End Select
     End Sub
 
@@ -346,9 +346,9 @@ SaveRetry:
             Case "Size"
                 Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H20000000)
         End Select
     End Sub
 
@@ -371,9 +371,9 @@ SaveRetry:
             Case "Size"
                 Table(n) &= spr & CommonItem.Size
             Case "Shoot Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H80000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H80000000)
             Case "Light Thru [Flag]"
-                Table(n) &= spr & CBool(CommonItem.Falgs And &H20000000)
+                Table(n) &= spr & CBool(CommonItem.Flags And &H20000000)
         End Select
     End Sub
 
@@ -546,15 +546,15 @@ SaveRetry:
                             CommonItem.Size = CInt(Table_Value(n, m))
                         Case "Shoot Thru [Flag]"
                             If Table_Value(n, m) = "True" Then
-                                CommonItem.Falgs = CommonItem.Falgs Or &H80000000
+                                CommonItem.Flags = CommonItem.Flags Or &H80000000
                             Else
-                                CommonItem.Falgs = CommonItem.Falgs And (Not (&H80000000))
+                                CommonItem.Flags = CommonItem.Flags And (Not (&H80000000))
                             End If
                         Case "Light Thru [Flag]"
                             If Table_Value(n, m) = "True" Then
-                                CommonItem.Falgs = CommonItem.Falgs Or &H20000000
+                                CommonItem.Flags = CommonItem.Flags Or &H20000000
                             Else
-                                CommonItem.Falgs = CommonItem.Falgs And (Not (&H20000000))
+                                CommonItem.Flags = CommonItem.Flags And (Not (&H20000000))
                             End If
                             'weapon
                         Case "Min Strength"

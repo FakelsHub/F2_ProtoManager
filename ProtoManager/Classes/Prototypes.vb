@@ -173,8 +173,8 @@
         Public FrmID As Integer
         Public LightDis As Integer
         Public LightInt As Integer
-        Public Falgs As Integer
-        Public FalgsExt As Integer
+        Public Flags As Integer
+        Public FlagsExt As Integer
         Public ScriptID As Integer
         Public ObjType As Integer
         Public MaterialID As Integer

@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Text
 
 Imports Prototypes
+Imports Enums
 
 Friend Class Items_Form
 
@@ -12,9 +13,9 @@ Friend Class Items_Form
     End Enum
 
     Private Enum WeaponType As Integer
-        Big = &H100
-        TwoHand = &H200
-        Energy = &H400
+        Big = FlagsExt.BigGun
+        TwoHand = FlagsExt.TwoHand
+        Energy = FlagsExt.Energy
     End Enum
 
     Private CommonItem As CmItemPro
@@ -152,29 +153,30 @@ Friend Class Items_Form
         NumericUpDown39.Value = CommonItem.Size
         NumericUpDown64.Value = CommonItem.DescID
         'Flags
-        CheckBox1.Checked = CommonItem.Falgs And &H8
-        CheckBox2.Checked = CommonItem.Falgs And &H10
-        CheckBox3.Checked = CommonItem.Falgs And &H800
-        CheckBox4.Checked = CommonItem.Falgs And &H80000000
-        CheckBox5.Checked = CommonItem.Falgs And &H20000000
+        CheckBox1.Checked = CommonItem.Flags And &H8
+        CheckBox2.Checked = CommonItem.Flags And &H10
+        CheckBox3.Checked = CommonItem.Flags And &H800
+        CheckBox4.Checked = CommonItem.Flags And &H80000000
+        CheckBox5.Checked = CommonItem.Flags And &H20000000
         'CheckBox12.Checked = CommonItem.Falgs And &H20
-        CheckBox24.Checked = CommonItem.Falgs And &H1000
+        CheckBox24.Checked = CommonItem.Flags And &H1000
 
-        CheckBox6.Checked = CommonItem.Falgs And &H8000
+        CheckBox6.Checked = CommonItem.Flags And &H8000
         If Not CheckBox6.Checked Then
-            RadioButton1.Checked = CommonItem.Falgs And &H10000
-            RadioButton4.Checked = CommonItem.Falgs And &H20000
-            RadioButton2.Checked = CommonItem.Falgs And &H40000
-            RadioButton5.Checked = CommonItem.Falgs And &H80000
-            RadioButton3.Checked = CommonItem.Falgs And &H4000
+            RadioButton1.Checked = CommonItem.Flags And &H10000
+            RadioButton4.Checked = CommonItem.Flags And &H20000
+            RadioButton2.Checked = CommonItem.Flags And &H40000
+            RadioButton5.Checked = CommonItem.Flags And &H80000
+            RadioButton3.Checked = CommonItem.Flags And &H4000
         End If
 
-        CheckBox7.Checked = CommonItem.FalgsExt And &H800
-        CheckBox8.Checked = CommonItem.FalgsExt And &H1000
-        CheckBox9.Checked = CommonItem.FalgsExt And &H2000
-        'CheckBox10.Checked = CommonItem.FalgsExt And &H4000
-        CheckBox11.Checked = CommonItem.FalgsExt And &H8000
-        CheckBox13.Checked = CommonItem.FalgsExt And &H800000
+        cbUse.Checked = CBool(CommonItem.FlagsExt And FlagsExt.Use)
+        cbUseOn.Checked = CBool(CommonItem.FlagsExt And FlagsExt.UseOn)
+        cbLook.Checked = CBool(CommonItem.FlagsExt And FlagsExt.Look)
+        'CheckBox10.Checked = CBool(CommonItem.FalgsExt And FlagsExt.Talk)
+        cbPickup.Checked = CBool(CommonItem.FlagsExt And FlagsExt.PickUp)
+        cbHiddenItem.Checked = CBool(CommonItem.FlagsExt And FlagsExt.HiddenItem)
+
     End Sub
 
     Private Sub SetWeaponValue_Form()
@@ -224,11 +226,11 @@ Friend Class Items_Form
             ComboBox13.SelectedIndex = 0
         End If
 
-        ComboBox14.SelectedIndex = CommonItem.FalgsExt And &HF
-        ComboBox15.SelectedIndex = (CommonItem.FalgsExt >> 4) And &HF
-        cbBigGun.Checked = CommonItem.FalgsExt And WeaponType.Big
-        cbTwoHand.Checked = CommonItem.FalgsExt And WeaponType.TwoHand
-        cbEnergyGun.Checked = CommonItem.FalgsExt And WeaponType.Energy
+        ComboBox14.SelectedIndex = CommonItem.FlagsExt And &HF
+        ComboBox15.SelectedIndex = (CommonItem.FlagsExt >> 4) And &HF
+        cbBigGun.Checked = CommonItem.FlagsExt And WeaponType.Big
+        cbTwoHand.Checked = CommonItem.FlagsExt And WeaponType.TwoHand
+        cbEnergyGun.Checked = CommonItem.FlagsExt And WeaponType.Energy
 
         lblWeaponScore.Text = CalcStats.WeaponScore(WeaponItem)
 
@@ -371,7 +373,7 @@ Friend Class Items_Form
                 Else
                     PictureBox1.BackgroundImageLayout = ImageLayout.Center
                 End If
-                If frmReady Then Button6.Enabled = True
+                If frmReady Then btnSave.Enabled = True
             Else
                 Main.PrintLog("Error frm convert: " + pfile)
             End If
@@ -385,7 +387,7 @@ Friend Class Items_Form
 
         If frm = "None" Then
             PictureBox4.BackgroundImage.Dispose() ' = Nothing
-            If frmReady Then Button6.Enabled = True
+            If frmReady Then btnSave.Enabled = True
             Exit Sub
         End If
 
@@ -406,7 +408,7 @@ Friend Class Items_Form
                 Else
                     PictureBox4.BackgroundImageLayout = ImageLayout.Center
                 End If
-                If frmReady Then Button6.Enabled = True
+                If frmReady Then btnSave.Enabled = True
             Else
                 Main.PrintLog("Error frm convert: " + pfile)
             End If
@@ -439,7 +441,7 @@ Friend Class Items_Form
                 pbox.SizeMode = PictureBoxSizeMode.CenterImage
             End If
 
-            If frmReady Then Button6.Enabled = True
+            If frmReady Then btnSave.Enabled = True
         End If
 
         pbox.Image = img
@@ -455,7 +457,7 @@ Friend Class Items_Form
     End Function
 
     'Save to Pro
-    Private Sub Save_Pro(ByVal sender As Object, ByVal e As EventArgs) Handles Button6.Click
+    Private Sub Save_Pro(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
         'Common
         CommonItem.FrmID = ComboBox1.SelectedIndex
         If ComboBox2.SelectedIndex > 0 Then CommonItem.InvFID = (ComboBox2.SelectedIndex - 1) + &H7000000 Else CommonItem.InvFID = &HFFFFFFFF
@@ -471,7 +473,7 @@ Friend Class Items_Form
         CommonItem.Size = NumericUpDown39.Value
         CommonItem.DescID = NumericUpDown64.Value
         'Flags
-        Dim flags As Integer = CommonItem.Falgs
+        Dim flags As Integer = CommonItem.Flags
         If CheckBox1.Checked Then flags = flags Or &H8 Else flags = flags And (Not &H8)
         If CheckBox2.Checked Then flags = flags Or &H10 Else flags = flags And (Not &H10)
         If CheckBox3.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
@@ -495,16 +497,16 @@ Friend Class Items_Form
                 flags = flags Or &H4000
             End If
         End If
-        CommonItem.Falgs = flags
+        CommonItem.Flags = flags
 
-        flags = CommonItem.FalgsExt
-        If CheckBox7.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
-        If CheckBox8.Checked Then flags = flags Or &H1000 Else flags = flags And (Not &H1000)
-        If CheckBox9.Checked Then flags = flags Or &H2000 Else flags = flags And (Not &H2000)
+        flags = CommonItem.FlagsExt
+        If cbUse.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
+        If cbUseOn.Checked Then flags = flags Or &H1000 Else flags = flags And (Not &H1000)
+        If cbLook.Checked Then flags = flags Or &H2000 Else flags = flags And (Not &H2000)
         'If CheckBox10.Checked Then flags = flags Or &H4000 Else flags = flags And (Not &H4000)
-        If CheckBox11.Checked Then flags = flags Or &H8000 Else flags = flags And (Not &H8000)
-        If CheckBox13.Checked Then flags = flags Or &H800000 Else flags = flags And Not (&H800000)
-        CommonItem.FalgsExt = flags
+        If cbPickup.Checked Then flags = flags Or &H8000 Else flags = flags And (Not &H8000)
+        If cbHiddenItem.Checked Then flags = flags Or FlagsExt.HiddenItem Else flags = flags And Not (FlagsExt.HiddenItem)
+        CommonItem.FlagsExt = flags
 
         Select Case ComboBox7.SelectedIndex
             Case ItemType.Weapon
@@ -527,12 +529,12 @@ Friend Class Items_Form
                 If ComboBox11.SelectedIndex > 0 Then WeaponItem.Perk = ComboBox11.SelectedIndex - 1 Else WeaponItem.Perk = &HFFFFFFFF
                 WeaponItem.Caliber = ComboBox12.SelectedIndex
                 If ComboBox13.SelectedIndex > 0 Then WeaponItem.AmmoPID = AmmoPID(ComboBox13.SelectedIndex - 1) Else WeaponItem.AmmoPID = &HFFFFFFFF
-                flags = CommonItem.FalgsExt And &HFFFFFF00
+                flags = CommonItem.FlagsExt And &HFFFFFF00
                 flags = flags Or ComboBox15.SelectedIndex << 4 Or ComboBox14.SelectedIndex
                 If cbBigGun.Checked Then flags = flags Or WeaponType.Big Else flags = flags And (Not WeaponType.Big)
                 If cbTwoHand.Checked Then flags = flags Or WeaponType.TwoHand Else flags = flags And (Not WeaponType.TwoHand)
                 If cbEnergyGun.Checked Then flags = flags Or WeaponType.Energy Else flags = flags And (Not WeaponType.Energy)
-                CommonItem.FalgsExt = flags
+                CommonItem.FlagsExt = flags
                 'Save
                 SubSave_Pro(ItemType.Weapon)
             Case ItemType.Armor
@@ -617,7 +619,7 @@ Friend Class Items_Form
         End If
 
         cPath = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, False)
-        Button6.Enabled = False
+        btnSave.Enabled = False
     End Sub
 
     Private Sub SubSave_Pro(ByVal iType As Integer)
@@ -659,7 +661,7 @@ Friend Class Items_Form
             RadioButton3.Checked = False
             RadioButton4.Checked = False
             RadioButton5.Checked = False
-            Button6.Enabled = True
+            btnSave.Enabled = True
             frmReady = True
         End If
     End Sub
@@ -676,13 +678,13 @@ Friend Class Items_Form
         NumericUpDown19.ValueChanged, NumericUpDown18.ValueChanged, NumericUpDown17.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown15.ValueChanged, _
         NumericUpDown14.ValueChanged, NumericUpDown13.ValueChanged, NumericUpDown1.ValueChanged, NumericUpDown26.ValueChanged
         '
-        If frmReady Then Button6.Enabled = True
+        If frmReady Then btnSave.Enabled = True
     End Sub
 
     Private Sub SaveEnable1(ByVal sender As ComboBox, ByVal e As EventArgs) Handles cmbWeaponSoundID.TextChanged, ComboBox3.TextChanged
         If frmReady Then
             If sender.Text <> String.Empty Then
-                Button6.Enabled = True
+                btnSave.Enabled = True
             End If
         End If
     End Sub
@@ -693,19 +695,19 @@ Friend Class Items_Form
         ComboBox25.SelectedIndexChanged, ComboBox24.SelectedIndexChanged, ComboBox23.SelectedIndexChanged, ComboBox22.SelectedIndexChanged, _
         ComboBox21.SelectedIndexChanged, ComboBox20.SelectedIndexChanged, ComboBox19.SelectedIndexChanged
         '
-        If frmReady Then Button6.Enabled = True
+        If frmReady Then btnSave.Enabled = True
     End Sub
 
-    Private Sub SaveEnable3(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.CheckedChanged, cbEnergyGun.CheckedChanged, cbTwoHand.CheckedChanged, CheckBox9.CheckedChanged, _
-        CheckBox8.CheckedChanged, CheckBox7.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox24.CheckedChanged, CheckBox2.CheckedChanged, _
-        CheckBox15.CheckedChanged, CheckBox13.CheckedChanged, CheckBox11.CheckedChanged, CheckBox1.CheckedChanged
+    Private Sub SaveEnable3(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.CheckedChanged, cbEnergyGun.CheckedChanged, cbTwoHand.CheckedChanged, cbLook.CheckedChanged, _
+        cbUseOn.CheckedChanged, cbUse.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox24.CheckedChanged, CheckBox2.CheckedChanged, _
+        CheckBox15.CheckedChanged, cbHiddenItem.CheckedChanged, cbPickup.CheckedChanged, CheckBox1.CheckedChanged
         '
-        If frmReady Then Button6.Enabled = True
+        If frmReady Then btnSave.Enabled = True
     End Sub
 
     Private Sub SaveEnable4(ByVal sender As Object, ByVal e As EventArgs) Handles RadioButton2.CheckedChanged, RadioButton5.CheckedChanged, RadioButton4.CheckedChanged, RadioButton3.CheckedChanged, RadioButton1.CheckedChanged
         If frmReady Then
-            Button6.Enabled = True
+            btnSave.Enabled = True
             CheckBox6.Checked = False
         End If
     End Sub
@@ -714,7 +716,7 @@ Friend Class Items_Form
         Dim tPatch As String = cPath
 
         If DatFiles.UnDatFile(PROTO_ITEMS & Items_LST(iLST_Index).proFile, Prototypes.GetSizeProByType(Items_LST(iLST_Index).itemType)) Then
-            Button6.Enabled = True
+            btnSave.Enabled = True
             frmReady = False
             ReloadPro = True
             cPath = Cache_Patch
@@ -735,7 +737,7 @@ Friend Class Items_Form
         Items_Form_Load(Nothing, Nothing)
         ReloadPro = False
         Button2.Enabled = False
-        Button6.Enabled = False
+        btnSave.Enabled = False
     End Sub
 
     Private Sub ComboBox7_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox7.SelectedIndexChanged
@@ -785,7 +787,7 @@ Friend Class Items_Form
             End Select
 
             If frmReady Then
-                CommonItem.FalgsExt = CommonItem.FalgsExt And &HCFFFFF
+                CommonItem.FlagsExt = CommonItem.FlagsExt And &HCFFFFF
                 frmReady = False
                 Select Case ComboBox7.SelectedIndex
                     Case ItemType.Weapon
@@ -805,7 +807,7 @@ Friend Class Items_Form
             End If
 
             TabControl1.SelectTab(0)
-            Button6.Enabled = True
+            btnSave.Enabled = True
             TabControl1.Visible = True
         ElseIf frmReady Then
             frmReady = False
@@ -835,7 +837,7 @@ Friend Class Items_Form
     End Sub
 
     Private Sub Items_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If Button6.Enabled Then
+        If btnSave.Enabled Then
             Dim btn As MsgBoxResult = MsgBox("Save changes to Pro file?", MsgBoxStyle.YesNoCancel, "Attention!")
             If btn = MsgBoxResult.Yes Then
                 Save_Pro(sender, e)
@@ -858,8 +860,8 @@ Friend Class Items_Form
         If frmReady Then Main_Form.ToolStripStatusLabel1.Text = cPath & PROTO_ITEMS & Items_LST(iLST_Index).proFile
     End Sub
 
-    Private Sub Button6_EnabledChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Button6.EnabledChanged
-        If Button6.Enabled Then Button2.Enabled = True
+    Private Sub Button6_EnabledChanged(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.EnabledChanged
+        If btnSave.Enabled Then Button2.Enabled = True
     End Sub
 
     Private Sub NumericUpDown_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles NumericUpDown1.KeyPress, NumericUpDown9.KeyPress, NumericUpDown8.KeyPress,
@@ -871,7 +873,7 @@ Friend Class Items_Form
         NumericUpDown26.KeyPress, NumericUpDown25.KeyPress, NumericUpDown24.KeyPress, NumericUpDown23.KeyPress, NumericUpDown22.KeyPress, NumericUpDown21.KeyPress,
         NumericUpDown20.KeyPress, NumericUpDown2.KeyPress, NumericUpDown19.KeyPress, NumericUpDown18.KeyPress, NumericUpDown17.KeyPress, NumericUpDown16.KeyPress,
         NumericUpDown15.KeyPress, NumericUpDown14.KeyPress, NumericUpDown13.KeyPress, NumericUpDown12.KeyPress, NumericUpDown11.KeyPress, NumericUpDown10.KeyPress
-        If (Char.IsDigit(e.KeyChar)) Then Button6.Enabled = True
+        If (Char.IsDigit(e.KeyChar)) Then btnSave.Enabled = True
     End Sub
 
     'Private Sub Items_Form_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown

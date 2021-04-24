@@ -133,6 +133,10 @@
 5. Файлы из архивов Master.dat и Critter.dat
 
 История изменений:
+v.1.2.2 (2021)
+----------------
+- Исправлено неправильное значение для флага "Hidden Item".
+
 v.1.2.1 (2020)
 ----------------
 - Добавлена кнопка для проигрывания звуковых эффектов атаки для оружия.
@@ -253,8 +257,8 @@ v.0.2a
   <data name="PictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEgAA
-        CxIB0t1+/AAAHIZJREFUeF6lmgmc3VV1x29mz+z7vr8382afzExmSWbf90kCSTAKCrIoZROoHwuWCoEi
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEQAA
+        CxEBf2RfkQAAHIZJREFUeF6lmgmc3VV1x29mz+z7vr8382afzExmSWbf90kCSTAKCrIoZROoHwuWCoEi
         m6AWF2RRwQ1cClatFRXUUhKwtbggFiWAEIJo5aFUKsvp+d43Z+afOJNKO5/P73Pv/+7nd84999z7xskD
         DYpqJ99vdvLIcLz8oHaPfC/5Drm78ImX72qN/vr2ruihT7VGD30atESfDeJTzdHnPtOmaI3+SvOHbm2I
         PntbQ/Tgx+uiz3yiXhGJPv3xsM8f+mQk+ozmn74lpN912iYcfeqWsC9/9tZGTbWv9qf+lzfV+DbP6DhP

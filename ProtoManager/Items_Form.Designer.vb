@@ -18,7 +18,7 @@ Partial Class Items_Form
     Private components As System.ComponentModel.IContainer
 
     'Примечание: следующая процедура является обязательной для конструктора форм Windows Forms
-    'Для ее изменения используйте конструктор форм Windows Form.  
+    'Для ее изменения используйте конструктор форм Windows Form.
     'Не изменяйте ее в редакторе исходного кода.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
@@ -202,11 +202,11 @@ Partial Class Items_Form
         Me.TextBox30 = New System.Windows.Forms.TextBox()
         Me.TextBox29 = New System.Windows.Forms.TextBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.CheckBox11 = New System.Windows.Forms.CheckBox()
+        Me.cbPickup = New System.Windows.Forms.CheckBox()
         Me.CheckBox10 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox9 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox8 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox7 = New System.Windows.Forms.CheckBox()
+        Me.cbLook = New System.Windows.Forms.CheckBox()
+        Me.cbUseOn = New System.Windows.Forms.CheckBox()
+        Me.cbUse = New System.Windows.Forms.CheckBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown64 = New System.Windows.Forms.NumericUpDown()
         Me.Label58 = New System.Windows.Forms.Label()
@@ -218,7 +218,7 @@ Partial Class Items_Form
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.CheckBox24 = New System.Windows.Forms.CheckBox()
         Me.CheckBox5 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox13 = New System.Windows.Forms.CheckBox()
+        Me.cbHiddenItem = New System.Windows.Forms.CheckBox()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.RadioButton5 = New System.Windows.Forms.RadioButton()
         Me.RadioButton4 = New System.Windows.Forms.RadioButton()
@@ -256,7 +256,7 @@ Partial Class Items_Form
         Me.GroupBox19 = New System.Windows.Forms.GroupBox()
         Me.TextBox33 = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Button6 = New System.Windows.Forms.Button()
+        Me.btnSave = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -2309,11 +2309,11 @@ Partial Class Items_Form
         '
         'GroupBox6
         '
-        Me.GroupBox6.Controls.Add(Me.CheckBox11)
+        Me.GroupBox6.Controls.Add(Me.cbPickup)
         Me.GroupBox6.Controls.Add(Me.CheckBox10)
-        Me.GroupBox6.Controls.Add(Me.CheckBox9)
-        Me.GroupBox6.Controls.Add(Me.CheckBox8)
-        Me.GroupBox6.Controls.Add(Me.CheckBox7)
+        Me.GroupBox6.Controls.Add(Me.cbLook)
+        Me.GroupBox6.Controls.Add(Me.cbUseOn)
+        Me.GroupBox6.Controls.Add(Me.cbUse)
         Me.GroupBox6.Location = New System.Drawing.Point(226, 166)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(72, 143)
@@ -2323,13 +2323,13 @@ Partial Class Items_Form
         '
         'CheckBox11
         '
-        Me.CheckBox11.AutoSize = True
-        Me.CheckBox11.Location = New System.Drawing.Point(6, 118)
-        Me.CheckBox11.Name = "CheckBox11"
-        Me.CheckBox11.Size = New System.Drawing.Size(57, 18)
-        Me.CheckBox11.TabIndex = 36
-        Me.CheckBox11.Text = "Pickup"
-        Me.CheckBox11.UseVisualStyleBackColor = True
+        Me.cbPickup.AutoSize = True
+        Me.cbPickup.Location = New System.Drawing.Point(6, 118)
+        Me.cbPickup.Name = "CheckBox11"
+        Me.cbPickup.Size = New System.Drawing.Size(57, 18)
+        Me.cbPickup.TabIndex = 36
+        Me.cbPickup.Text = "Pickup"
+        Me.cbPickup.UseVisualStyleBackColor = True
         '
         'CheckBox10
         '
@@ -2346,34 +2346,34 @@ Partial Class Items_Form
         '
         'CheckBox9
         '
-        Me.CheckBox9.AutoSize = True
-        Me.CheckBox9.Cursor = System.Windows.Forms.Cursors.Default
-        Me.CheckBox9.Location = New System.Drawing.Point(6, 69)
-        Me.CheckBox9.Name = "CheckBox9"
-        Me.CheckBox9.Size = New System.Drawing.Size(49, 18)
-        Me.CheckBox9.TabIndex = 34
-        Me.CheckBox9.Text = "Look"
-        Me.CheckBox9.UseVisualStyleBackColor = True
+        Me.cbLook.AutoSize = True
+        Me.cbLook.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cbLook.Location = New System.Drawing.Point(6, 69)
+        Me.cbLook.Name = "CheckBox9"
+        Me.cbLook.Size = New System.Drawing.Size(49, 18)
+        Me.cbLook.TabIndex = 34
+        Me.cbLook.Text = "Look"
+        Me.cbLook.UseVisualStyleBackColor = True
         '
         'CheckBox8
         '
-        Me.CheckBox8.AutoSize = True
-        Me.CheckBox8.Location = New System.Drawing.Point(6, 44)
-        Me.CheckBox8.Name = "CheckBox8"
-        Me.CheckBox8.Size = New System.Drawing.Size(62, 18)
-        Me.CheckBox8.TabIndex = 33
-        Me.CheckBox8.Text = "Use On"
-        Me.CheckBox8.UseVisualStyleBackColor = True
+        Me.cbUseOn.AutoSize = True
+        Me.cbUseOn.Location = New System.Drawing.Point(6, 44)
+        Me.cbUseOn.Name = "CheckBox8"
+        Me.cbUseOn.Size = New System.Drawing.Size(62, 18)
+        Me.cbUseOn.TabIndex = 33
+        Me.cbUseOn.Text = "Use On"
+        Me.cbUseOn.UseVisualStyleBackColor = True
         '
         'CheckBox7
         '
-        Me.CheckBox7.AutoSize = True
-        Me.CheckBox7.Location = New System.Drawing.Point(6, 19)
-        Me.CheckBox7.Name = "CheckBox7"
-        Me.CheckBox7.Size = New System.Drawing.Size(45, 18)
-        Me.CheckBox7.TabIndex = 32
-        Me.CheckBox7.Text = "Use"
-        Me.CheckBox7.UseVisualStyleBackColor = True
+        Me.cbUse.AutoSize = True
+        Me.cbUse.Location = New System.Drawing.Point(6, 19)
+        Me.cbUse.Name = "CheckBox7"
+        Me.cbUse.Size = New System.Drawing.Size(45, 18)
+        Me.cbUse.TabIndex = 32
+        Me.cbUse.Text = "Use"
+        Me.cbUse.UseVisualStyleBackColor = True
         '
         'GroupBox8
         '
@@ -2467,7 +2467,7 @@ Partial Class Items_Form
         '
         Me.GroupBox5.Controls.Add(Me.CheckBox24)
         Me.GroupBox5.Controls.Add(Me.CheckBox5)
-        Me.GroupBox5.Controls.Add(Me.CheckBox13)
+        Me.GroupBox5.Controls.Add(Me.cbHiddenItem)
         Me.GroupBox5.Controls.Add(Me.GroupBox12)
         Me.GroupBox5.Controls.Add(Me.CheckBox4)
         Me.GroupBox5.Controls.Add(Me.CheckBox3)
@@ -2502,14 +2502,14 @@ Partial Class Items_Form
         '
         'CheckBox13
         '
-        Me.CheckBox13.AutoSize = True
-        Me.CheckBox13.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox13.Location = New System.Drawing.Point(106, 125)
-        Me.CheckBox13.Name = "CheckBox13"
-        Me.CheckBox13.Size = New System.Drawing.Size(81, 18)
-        Me.CheckBox13.TabIndex = 31
-        Me.CheckBox13.Text = "Hidden Item"
-        Me.CheckBox13.UseVisualStyleBackColor = False
+        Me.cbHiddenItem.AutoSize = True
+        Me.cbHiddenItem.BackColor = System.Drawing.Color.Transparent
+        Me.cbHiddenItem.Location = New System.Drawing.Point(106, 125)
+        Me.cbHiddenItem.Name = "CheckBox13"
+        Me.cbHiddenItem.Size = New System.Drawing.Size(81, 18)
+        Me.cbHiddenItem.TabIndex = 31
+        Me.cbHiddenItem.Text = "Hidden Item"
+        Me.cbHiddenItem.UseVisualStyleBackColor = False
         '
         'GroupBox12
         '
@@ -2901,18 +2901,18 @@ Partial Class Items_Form
         '
         'Button6
         '
-        Me.Button6.Enabled = False
-        Me.Button6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.Button6.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(622, 262)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(74, 40)
-        Me.Button6.TabIndex = 106
-        Me.Button6.Text = "Save Pro"
-        Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button6, "Save change data to Pro file.")
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.btnSave.Enabled = False
+        Me.btnSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.btnSave.ForeColor = System.Drawing.Color.OrangeRed
+        Me.btnSave.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.btnSave.Location = New System.Drawing.Point(622, 262)
+        Me.btnSave.Name = "Button6"
+        Me.btnSave.Size = New System.Drawing.Size(74, 40)
+        Me.btnSave.TabIndex = 106
+        Me.btnSave.Text = "Save Pro"
+        Me.btnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.ToolTip1.SetToolTip(Me.btnSave, "Save change data to Pro file.")
+        Me.btnSave.UseVisualStyleBackColor = True
         '
         'Button3
         '
@@ -2931,12 +2931,12 @@ Partial Class Items_Form
         '
         'Items_Form
         '
-        Me.AcceptButton = Me.Button6
+        Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Button3
         Me.ClientSize = New System.Drawing.Size(701, 348)
-        Me.Controls.Add(Me.Button6)
+        Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.GroupBox11)
         Me.Controls.Add(Me.GroupBox9)
@@ -3118,13 +3118,13 @@ Partial Class Items_Form
     Friend WithEvents TextBox30 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox29 As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
-    Friend WithEvents CheckBox13 As System.Windows.Forms.CheckBox
+    Friend WithEvents cbHiddenItem As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
-    Friend WithEvents CheckBox11 As System.Windows.Forms.CheckBox
+    Friend WithEvents cbPickup As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox10 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox9 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox8 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox7 As System.Windows.Forms.CheckBox
+    Friend WithEvents cbLook As System.Windows.Forms.CheckBox
+    Friend WithEvents cbUseOn As System.Windows.Forms.CheckBox
+    Friend WithEvents cbUse As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox9 As System.Windows.Forms.ComboBox
     Friend WithEvents NumericUpDown39 As System.Windows.Forms.NumericUpDown
@@ -3165,7 +3165,7 @@ Partial Class Items_Form
     Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
-    Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents Label44 As System.Windows.Forms.Label
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
