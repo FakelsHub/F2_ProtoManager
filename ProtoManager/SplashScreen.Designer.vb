@@ -40,7 +40,7 @@ Partial Class SplashScreen
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(530, 15)
         Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Loading DAT files..."
+        Me.Label1.Text = "Loading: Initialization..."
         Me.Label1.Visible = False
         '
         'ProgressBar1

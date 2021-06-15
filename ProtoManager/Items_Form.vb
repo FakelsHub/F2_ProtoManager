@@ -359,7 +359,7 @@ Friend Class Items_Form
         Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_ITEMS & frm & ".gif"
-            If Not File.Exists(pfile) Then ItemFrmGif("items\", frm)
+            If Not File.Exists(pfile) Then ItemFrmToGif("items\", frm)
             If File.Exists(pfile) Then
                 Try
                     img = New Bitmap(pfile)
@@ -395,7 +395,7 @@ Friend Class Items_Form
         frm = GetImageName(frm, ".")
         If frm IsNot Nothing Then
             Dim pfile As String = Cache_Patch & ART_INVEN & frm & ".gif"
-            If Not File.Exists(pfile) Then ItemFrmGif("inven\", frm)
+            If Not File.Exists(pfile) Then ItemFrmToGif("inven\", frm)
             If File.Exists(pfile) Then
                 Try
                     img = New Bitmap(pfile)
@@ -420,8 +420,8 @@ Friend Class Items_Form
     Private Sub GenderFID(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox17.SelectedIndexChanged, ComboBox16.SelectedIndexChanged
         Dim frm As String = CType(sender, ComboBox).SelectedItem.ToString
 
-        Dim frmFile As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
-        If Not File.Exists(frmFile) Then DatFiles.CritterFrmGif(frm)
+        Dim frmFile As String = Cache_Patch & ART_CRITTERS_PATH & frm & "aa.gif"
+        If Not File.Exists(frmFile) Then DatFiles.CritterFrmToGif(frm)
 
         Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
 

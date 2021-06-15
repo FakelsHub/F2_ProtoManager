@@ -47,7 +47,7 @@ Friend Class ThumbnailImage
             Main.PrintLog("Done" & vbCrLf & "Converting frm files.")
             Application.DoEvents()
 
-            Directory.CreateDirectory(Cache_Patch & ART_CRITTERS)
+            Directory.CreateDirectory(Cache_Patch & ART_CRITTERS_PATH)
             For Each image As String In extractFiles
                 Shell(WorkAppDIR & "\frm2gif.exe -p color.pal .\cache\temp\" & image, AppWinStyle.Hide, True)
                 Dim iFile As String = image.Remove(image.Length - 4)
@@ -72,7 +72,7 @@ Friend Class ThumbnailImage
 
         If CrittersImage.ContainsKey(iName) Then GoTo setImage
 
-        Dim pathF As String = ART_CRITTERS & iName & "aa.frm"
+        Dim pathF As String = ART_CRITTERS_PATH & iName & "aa.frm"
         If Not CheckDirFile(pathF, False) AndAlso Not (File.Exists(Cache_Patch & Path.ChangeExtension(pathF, ".gif"))) Then
             pathF = pathF.Substring(1)
             If extractFiles.Contains(pathF) = False Then
@@ -155,7 +155,7 @@ setImage:
                 Dim name = iName.Remove(iName.Length - 4)
                 pathF &= ART_INVEN & name & ".gif"
                 If Not File.Exists(pathF) Then
-                    DatFiles.ItemFrmGif("inven\", name)
+                    DatFiles.ItemFrmToGif("inven\", name)
                 End If
                 If File.Exists(pathF) Then
                     img = Image.FromFile(pathF)
@@ -170,7 +170,7 @@ setImage:
                 Dim name = iName.Remove(iName.Length - 4)
                 pathF &= ART_ITEMS & name & ".gif"
                 If Not File.Exists(pathF) Then
-                    DatFiles.ItemFrmGif("items\", name)
+                    DatFiles.ItemFrmToGif("items\", name)
                 End If
                 If File.Exists(pathF) Then
                     img = Image.FromFile(pathF)
@@ -192,9 +192,9 @@ setImage:
         If iName Is Nothing Then Return img
 
         If CrittersImage.TryGetValue(iName, img) = False Then
-            pathF &= ART_CRITTERS & iName & "aa.gif"
+            pathF &= ART_CRITTERS_PATH & iName & "aa.gif"
             If Not File.Exists(pathF) Then
-                DatFiles.CritterFrmGif(iName)
+                DatFiles.CritterFrmToGif(iName)
             End If
             If File.Exists(pathF) Then img = Image.FromFile(pathF)
             CrittersImage.Add(iName, img)

@@ -4,7 +4,7 @@ Public NotInheritable Class SplashScreen
 
     Private Sub SplashScreen_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
         Label3.Text &= My.Application.Info.Version.ToString
-        Settings.Get_Config()
+        Settings.ReadConfigFile()
         If Setting_Form.settingExit Then
             Application.Exit()
             Exit Sub

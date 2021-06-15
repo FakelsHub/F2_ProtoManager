@@ -31,31 +31,31 @@ Public Class AI_Form
         ComboBox0.Sorted = SortedAIPacket
 
         aiPath = DatFiles.CheckFile(AI.AIFILE)
-        AIPacket = AI.GetAll_AIPacket(aiPath)
+        AIPacket = AI.GetAllAIPackets(aiPath)
         aiCustom = False
     End Sub
 
     Friend Sub Initialize(ByVal numPacket As Integer)
         For Each i As ItemsLst In Items_LST
             If i.itemType = Prototypes.ItemType.Drugs Then
-                ToolStripComboBox1.Items.Add(String.Format("{0}| {1}", Strings.RSet(CInt(i.proFile.Remove(8, 4)), 3), i.itemName))
+                ToolStripComboBox1.Items.Add(String.Format("{0}| {1}", Strings.RSet(i.proFile.Remove(8, 4), 3), i.itemName))
             End If
         Next
 
         Dim tmpPath As String = DatFiles.CheckFile(AIGENMSG)
-        ComboBox8.Items.AddRange(AI.GetAll_AIPacket(tmpPath).Keys.ToArray)
+        ComboBox8.Items.AddRange(AI.GetAllAIPackets(tmpPath).Keys.ToArray)
         ComboBox8.Items.RemoveAt(ComboBox8.Items.Count - 1)
 
         tmpPath = DatFiles.CheckFile(AIBODYMSG)
-        ComboBox4.Items.AddRange(AI.GetAll_AIPacket(tmpPath).Keys.ToArray)
+        ComboBox4.Items.AddRange(AI.GetAllAIPackets(tmpPath).Keys.ToArray)
         ComboBox4.Items.RemoveAt(ComboBox4.Items.Count - 1)
 
         PacketList(Me) 'ComboBox0.Items.AddRange((From t In AI_Packet Take (AI_Packet.GetLength(1))).ToArray)
 
         If numPacket <> -1 Then
             For Each packet As String In AIPacket.Keys
-                If AI.GetIniParam(packet, "packet_num", aiPath) = numPacket Then
-                    ComboBox0.SelectedItem = If(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket, 3), packet), packet)
+                If INIFile.GetInt(packet, "packet_num", aiPath) = numPacket Then
+                    ComboBox0.SelectedItem = If(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket.ToString, 3), packet), packet)
                     Exit For
                 End If
             Next
@@ -95,13 +95,13 @@ Public Class AI_Form
 
         'chem_primary_desire
         ListView1.Items.Clear()
-        Dim drug_lst() As String = Split(AI.GetIniStringParam(Section, "chem_primary_desire", aiPath), ",")
+        Dim drug_lst() As String = Split(INIFile.GetString(Section, "chem_primary_desire", aiPath, AI.Unknown), ",")
         If drug_lst(0) <> AI.Unknown And drug_lst(0) <> "-1" Then
             Dim count As Integer = drug_lst.GetLength(0) - 1
             If count > 2 Then count = 2
             For i = 0 To count
                 If drug_lst(i).Length = 0 Then Continue For
-                ListView1.Items.Add(New ListViewItem({drug_lst(i), Items_LST(drug_lst(i) - 1).itemName}))
+                ListView1.Items.Add(New ListViewItem({drug_lst(i), Items_LST(CInt(drug_lst(i)) - 1).itemName}))
             Next
         Else
             ListView1.Items.Add(New ListViewItem({"-1", drug_lst(0)})) 'Unknown
@@ -152,8 +152,10 @@ Public Class AI_Form
                 Exit For
             End If
         Next
-        Dim pid As Integer = ToolStripComboBox1.Text.Remove(3)
-        ListView1.Items.Add(New ListViewItem({pid, Items_LST(pid - 1).itemName}))
+        Dim strPid = ToolStripComboBox1.Text.Remove(3)
+        Dim pid As Integer = CInt(strPid)
+
+        ListView1.Items.Add(New ListViewItem({strPid, Items_LST(pid - 1).itemName}))
         If ListView1.Items.Count > 2 Then
             AddDrugsToolStripMenuItem.Enabled = False
         End If
@@ -196,7 +198,7 @@ Public Class AI_Form
         End If
         '
         Try
-            AIPacket = AI.GetAll_AIPacket(aiPath)
+            AIPacket = AI.GetAllAIPackets(aiPath)
             PacketList(Me)
             ComboBox0.SelectedIndex = 0
         Catch ex As Exception
@@ -241,7 +243,7 @@ Public Class AI_Form
             If List.Length > 0 Then List &= ","
             List &= ic.Text
         Next
-        If List.Length > 0 Then AI.PutIniParam(Section, "chem_primary_desire", List, aiPath)
+        If List.Length > 0 Then INIFile.SetValue(Section, "chem_primary_desire", List, aiPath)
 
         SubSaveControl(Me, Section)
         SaveButton.Enabled = False
@@ -257,9 +259,9 @@ Public Class AI_Form
         Try
             For Each _control As Control In сntr.Controls
                 If TypeOf _control Is NumericUpDown Then
-                    _control.Text = AI.GetIniParam(Section, _control.Tag.ToString, aiPath)
+                    _control.Text = INIFile.GetInt(Section, _control.Tag.ToString, aiPath).ToString
                 ElseIf (TypeOf _control Is ComboBox) And _control.Tag IsNot Nothing Then
-                    KeyValue = AI.GetIniStringParam(Section, _control.Tag.ToString, aiPath)
+                    KeyValue = INIFile.GetString(Section, _control.Tag.ToString, aiPath, AI.Unknown)
                     If KeyValue = AI.Unknown Then _control.BackColor = Color.Linen Else _control.BackColor = SystemColors.Window
                     _control.Text = KeyValue
                 ElseIf TypeOf _control Is GroupBox Then
@@ -280,11 +282,11 @@ Public Class AI_Form
 
         For Each _control As Control In сntr.Controls
             If TypeOf _control Is NumericUpDown Then
-                result = AI.PutIniParam(Section, _control.Tag.ToString, _control.Text, aiPath)
+                result = INIFile.SetValue(Section, _control.Tag.ToString, _control.Text, aiPath)
 
             ElseIf (TypeOf _control Is ComboBox) And _control.Tag IsNot Nothing Then
                 If _control.Text = AI.Unknown Then Continue For
-                result = AI.PutIniParam(Section, _control.Tag.ToString, _control.Text, aiPath)
+                result = INIFile.SetValue(Section, _control.Tag.ToString, _control.Text, aiPath)
 
             ElseIf TypeOf _control Is GroupBox Then
                 SubSaveControl(_control, Section)
@@ -307,7 +309,7 @@ Public Class AI_Form
     Friend Shared Sub ReloadFile(ByVal owner As AI_Form, Optional ByVal ready As Boolean = True)
         If Not owner.aiCustom Then owner.aiPath = SaveMOD_Path & AI.AIFILE
         owner.AIPacket.Clear()
-        owner.AIPacket = AI.GetAll_AIPacket(owner.aiPath)
+        owner.AIPacket = AI.GetAllAIPackets(owner.aiPath)
 
         Dim indx = owner.ComboBox0.SelectedIndex
         PacketList(owner)
@@ -350,7 +352,7 @@ Public Class AI_Form
         Array.Resize(keys, keys.Count - 1)
         If frm.ShowPacketIDMenuItem.Checked Then
             For n = 0 To keys.Length - 1
-                keys(n) = String.Format("{0}| {1}", Strings.RSet(AI.GetIniParam(keys(n), "packet_num", frm.aiPath).ToString, 3), keys(n).ToString)
+                keys(n) = String.Format("{0}| {1}", Strings.RSet(INIFile.GetInt(keys(n), "packet_num", frm.aiPath).ToString, 3), keys(n).ToString)
             Next
         End If
         frm.ComboBox0.Items.AddRange(keys)
@@ -359,8 +361,8 @@ Public Class AI_Form
     Private Sub MoveItem(ByVal Direction As MoveDir)
         Try
             Dim selIndex As Integer = ListView1.FocusedItem.Index
-            Dim source As ListViewItem = ListView1.Items(selIndex).Clone
-            Dim dest As ListViewItem = ListView1.Items(selIndex + Direction).Clone
+            Dim source As ListViewItem = CType(ListView1.Items(selIndex).Clone, ListViewItem)
+            Dim dest As ListViewItem = CType(ListView1.Items(selIndex + Direction).Clone, ListViewItem)
             ListView1.Items(selIndex + Direction).Text = source.Text
             ListView1.Items(selIndex + Direction).SubItems(1).Text = source.SubItems(1).Text
             ListView1.Items(selIndex).Text = dest.Text
@@ -377,7 +379,7 @@ Public Class AI_Form
         Dim maxNumPacket As Integer = 0
         For Each k As String In keys
             If k = AI.endPackedID Then Continue For
-            Dim num As Integer = AI.GetIniParam(k, "packet_num", aiPath)
+            Dim num As Integer = INIFile.GetInt(k, "packet_num", aiPath)
             If num > maxNumPacket Then maxNumPacket = num
         Next
         maxNumPacket += 1
@@ -391,7 +393,7 @@ Public Class AI_Form
         End If
         File.AppendAllText(pathAI, vbCrLf & "[" & name & "]" & vbCrLf)
         File.AppendAllText(pathAI, My.Resources.defaultAI, System.Text.Encoding.Default)
-        AI.PutIniParam(name, "packet_num", maxNumPacket, pathAI)
+        INIFile.SetValue(name, "packet_num", maxNumPacket.ToString, pathAI)
         'Log
         Main.PrintLog("Save AI: " & pathAI)
 

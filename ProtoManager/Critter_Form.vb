@@ -599,7 +599,7 @@ Friend Class Critter_Form
                     InvFID = ProFiles.ReverseBytes(InvFID) - &H7000000
                     ProFile = Strings.Left(Iven_FRM(InvFID), RTrim(Iven_FRM(InvFID)).Length - 4)
                     If Not File.Exists(Cache_Patch & ART_INVEN & ProFile & ".gif") Then
-                        DatFiles.ItemFrmGif("inven\", ProFile)
+                        DatFiles.ItemFrmToGif("inven\", ProFile)
                     End If
                     PictureBox2.Image = Image.FromFile(Cache_Patch & ART_INVEN & ProFile & ".gif")
                 End If
@@ -647,8 +647,8 @@ Friend Class Critter_Form
         tbFrmID.Text = (ComboBox1.SelectedIndex + &H1000000)
 
         Dim frm As String = ComboBox1.SelectedItem
-        Dim fileFrm As String = Cache_Patch & ART_CRITTERS & frm & "aa.gif"
-        If Not File.Exists(fileFrm) Then DatFiles.CritterFrmGif(frm)
+        Dim fileFrm As String = Cache_Patch & ART_CRITTERS_PATH & frm & "aa.gif"
+        If Not File.Exists(fileFrm) Then DatFiles.CritterFrmToGif(frm)
 
         Dim img As Bitmap = My.Resources.RESERVAA 'BadFrm
         If File.Exists(fileFrm) Then

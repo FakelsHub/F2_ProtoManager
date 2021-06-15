@@ -111,8 +111,10 @@ Partial Class Main_Form
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.LinkLabel3 = New System.Windows.Forms.LinkLabel()
         Me.TextBox1 = New System.Windows.Forms.RichTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
@@ -551,7 +553,7 @@ Partial Class Main_Form
         '
         Me.tstbSearchText.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.tstbSearchText.AutoSize = False
-        Me.tstbSearchText.BackColor = System.Drawing.SystemColors.Info
+        Me.tstbSearchText.BackColor = System.Drawing.SystemColors.Window
         Me.tstbSearchText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.tstbSearchText.Name = "tstbSearchText"
         Me.tstbSearchText.Size = New System.Drawing.Size(220, 22)
@@ -601,7 +603,7 @@ Partial Class Main_Form
         Me.LinkLabel2.AutoSize = True
         Me.LinkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
         Me.LinkLabel2.LinkColor = System.Drawing.Color.GreenYellow
-        Me.LinkLabel2.Location = New System.Drawing.Point(115, 33)
+        Me.LinkLabel2.Location = New System.Drawing.Point(110, 9)
         Me.LinkLabel2.Name = "LinkLabel2"
         Me.LinkLabel2.Size = New System.Drawing.Size(24, 13)
         Me.LinkLabel2.TabIndex = 3
@@ -616,7 +618,7 @@ Partial Class Main_Form
         Me.LinkLabel1.DisabledLinkColor = System.Drawing.Color.FromArgb(CType(CType(133, Byte), Integer), CType(CType(133, Byte), Integer), CType(CType(133, Byte), Integer))
         Me.LinkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
         Me.LinkLabel1.LinkColor = System.Drawing.Color.GreenYellow
-        Me.LinkLabel1.Location = New System.Drawing.Point(115, 11)
+        Me.LinkLabel1.Location = New System.Drawing.Point(110, 28)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(24, 13)
         Me.LinkLabel1.TabIndex = 2
@@ -825,9 +827,11 @@ Partial Class Main_Form
         '
         Me.SplitContainer1.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(95, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.SplitContainer1.Panel1.Controls.Add(Me.LinkLabel2)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.LinkLabel3)
         Me.SplitContainer1.Panel1.Controls.Add(Me.LinkLabel1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.TextBox1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label2)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label3)
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label1)
         Me.SplitContainer1.Panel1MinSize = 250
         '
@@ -839,6 +843,20 @@ Partial Class Main_Form
         Me.SplitContainer1.Size = New System.Drawing.Size(999, 574)
         Me.SplitContainer1.SplitterDistance = 671
         Me.SplitContainer1.TabIndex = 7
+        '
+        'LinkLabel3
+        '
+        Me.LinkLabel3.ActiveLinkColor = System.Drawing.Color.Yellow
+        Me.LinkLabel3.AutoSize = True
+        Me.LinkLabel3.DisabledLinkColor = System.Drawing.Color.FromArgb(CType(CType(133, Byte), Integer), CType(CType(133, Byte), Integer), CType(CType(133, Byte), Integer))
+        Me.LinkLabel3.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
+        Me.LinkLabel3.LinkColor = System.Drawing.Color.GreenYellow
+        Me.LinkLabel3.Location = New System.Drawing.Point(110, 48)
+        Me.LinkLabel3.Name = "LinkLabel3"
+        Me.LinkLabel3.Size = New System.Drawing.Size(24, 13)
+        Me.LinkLabel3.TabIndex = 2
+        Me.LinkLabel3.TabStop = True
+        Me.LinkLabel3.Text = "n/a"
         '
         'TextBox1
         '
@@ -866,22 +884,33 @@ Partial Class Main_Form
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Gainsboro
-        Me.Label2.Location = New System.Drawing.Point(12, 33)
+        Me.Label2.Location = New System.Drawing.Point(12, 9)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(97, 13)
+        Me.Label2.Size = New System.Drawing.Size(88, 13)
         Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Current Save Path:"
+        Me.Label2.Text = "Save folder path:"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.Gainsboro
+        Me.Label3.Location = New System.Drawing.Point(12, 48)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(95, 13)
+        Me.Label3.TabIndex = 0
+        Me.Label3.Text = "Master folder path:"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Gainsboro
-        Me.Label1.Location = New System.Drawing.Point(12, 11)
+        Me.Label1.Location = New System.Drawing.Point(12, 28)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(92, 13)
+        Me.Label1.Size = New System.Drawing.Size(86, 13)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Fallout Data Path:"
+        Me.Label1.Text = "Data folder path:"
         '
         'OpenFileDialog1
         '
@@ -1019,4 +1048,6 @@ Partial Class Main_Form
     Friend WithEvents Fallout1ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents FromSfallToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripLabel1 As ToolStripLabel
+    Friend WithEvents LinkLabel3 As LinkLabel
+    Friend WithEvents Label3 As Label
 End Class

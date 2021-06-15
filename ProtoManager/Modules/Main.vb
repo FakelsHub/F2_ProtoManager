@@ -43,54 +43,73 @@ Friend Module Main
 
     'Initialization...
     Friend Sub Main()
-        Dim noRe, noId As Boolean
-
         DatFiles.OpenDatFiles()
 
-        If (File.Exists(Cache_Patch & "\cache.id") = False) Then noId = True
-        If cCache OrElse Setting_Form.fRun OrElse noId Then
-            If cCache OrElse noId Then Settings.Clear_Cache()
-
-            Dim pLST() As String = File.ReadAllLines(DatFiles.CheckFile(itemsLstPath))
-            For n = UBound(pLST) To 0 Step -1
-                pLST(n) = pLST(n).Trim
-                If pLST(n).Length > 0 Then
-                    pLST(n) = "proto\items\" & pLST(n)
-                    noRe = True
-                ElseIf noRe = False Then
-                    ReDim Preserve pLST(n - 1)
-                End If
-            Next
-            noRe = False
-
-            SplashScreen.ProgressBar1.Value += 10
-            SplashScreen.Label1.Text = "Loading: Extraction items Pro-files..."
-            Application.DoEvents()
-
-            DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
-            SplashScreen.ProgressBar1.Value += 40
-
-            pLST = File.ReadAllLines(DatFiles.CheckFile(crittersLstPath))
-            For n = 0 To UBound(pLST)
-                pLST(n) = pLST(n).Trim
-                If pLST(n).Length > 0 Then
-                    pLST(n) = "proto\critters\" & pLST(n)
-                    noRe = True
-                ElseIf noRe = False Then
-                    ReDim Preserve pLST(n - 1)
-                End If
-            Next
-
-            SplashScreen.Label1.Text = "Loading: Extraction critter Pro-files..."
-            Application.DoEvents()
-
-            DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
-            SplashScreen.ProgressBar1.Value += 40
-
-            File.Create(Cache_Patch & "\cache.id").Close()
+        cCache = Not (File.Exists(Cache_Patch & "\cache.id"))
+        If (cCache AndAlso Not Setting_Form.firstRun) Then
+            Settings.Clear_Cache()
         End If
 
-        Settings.SetEncoding()
+        Dim list() As String = File.ReadAllLines(DatFiles.CheckFile(itemsLstPath))
+        Dim listCount = UBound(list)
+        ReDim Items_LST(listCount)
+        Dim pLST(listCount) As String
+
+        Dim proCount = 0
+        For n = 0 To listCount
+            list(n) = list(n).Trim
+            If (list(n).Length > 0) Then
+                Items_LST(proCount).proFile = list(n)
+                If (cCache) Then pLST(proCount) = "proto\items\" & list(n)
+                proCount += 1
+                End If
+        Next
+        If (proCount - 1 <> listCount) Then ReDim Preserve Items_LST(proCount - 1)
+
+        list = File.ReadAllLines(DatFiles.CheckFile(crittersLstPath))
+        listCount = UBound(list)
+        ReDim Critter_LST(listCount)
+
+        If (cCache) Then ReDim Preserve pLST(proCount + listCount)
+        Dim count = 0
+        For n = 0 To listCount
+            list(n) = list(n).Trim
+            If (list(n).Length > 0) Then
+                Critter_LST(count).proFile = list(n)
+                If (cCache) Then
+                    pLST(proCount) = "proto\critters\" & list(n)
+                    proCount += 1
+                End If
+                count += 1
+            End If
+        Next
+        count -= 1
+        If (count <> listCount) Then
+            ReDim Preserve Critter_LST(count)
+            If (cCache) Then ReDim Preserve pLST(proCount - 1)
+        End If
+
+        If (cCache) Then
+            SplashScreen.ProgressBar1.Value += 20
+            SplashScreen.Label1.Text = "Loading: Extraction Pro-files..."
+            Application.DoEvents()
+
+            DatFiles.UnpackedFilesByList(pLST, Game_Path & MasterDAT)
+
+            SplashScreen.ProgressBar1.Value += 35
+            Application.DoEvents()
+
+            For i = DatFiles.extraMods.Count - 1 To 0 Step -1
+                If (DatFiles.extraMods(i).isDat AndAlso DatFiles.extraMods(i).isEnabled) Then
+                    DatFiles.UnpackedFilesByList(pLST, DatFiles.extraMods(i).filePath)
+                End If
+            Next
+            SplashScreen.ProgressBar1.Value += 35
+            Application.DoEvents()
+        End If
+
+        File.Create(Cache_Patch & "\cache.id").Close()
+
         GetCrittersLstFRM()
         CreateItemsList()
 
@@ -98,8 +117,8 @@ Friend Module Main
         Application.DoEvents()
         Main_Form.Show()
 
-        If Setting_Form.fRun Then
-            Setting_Form.fRun = False
+        If Setting_Form.firstRun Then
+            Setting_Form.firstRun = False
             AboutBox.ShowDialog()
         End If
     End Sub
@@ -122,15 +141,14 @@ Friend Module Main
     End Sub
 
     Private Function GetCrittersLstFRM() As Boolean
-
-        Try
-            Critters_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artCrittersLstPath, , True)))
-        Catch ex As DirectoryNotFoundException
+        Dim critterLstFile = DatFiles.CheckFile(artCrittersLstPath, , True)
+        If (File.Exists(critterLstFile) = False) Then
             MsgBox("Cannot open required file: \art\critter\critter.lst", MsgBoxStyle.Critical, "File Missing")
             Return True
-        End Try
+        End If
+        Critters_FRM = Misc.ClearEmptyLines(File.ReadAllLines(critterLstFile))
 
-        For i As Integer = 0 To Critters_FRM.Length - 1
+        For i As Integer = 0 To Critters_FRM.Count - 1
             Dim frm As String = Critters_FRM(i)
             Dim z As Integer = frm.IndexOf(","c)
             If z > 0 Then frm = frm.Remove(z)
@@ -142,20 +160,19 @@ Friend Module Main
 
     Friend Sub GetItemsLstFRM()
         If Items_FRM Is Nothing Then
-            Items_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artItemsLstPath)))
+            Items_FRM = Misc.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artItemsLstPath)))
         End If
 
         If Iven_FRM IsNot Nothing Then Return
-        Iven_FRM = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artInvenLstPath)))
+        Iven_FRM = Misc.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artInvenLstPath)))
     End Sub
 
     Friend Sub CreateCritterList()
+        Dim cCount As Integer = UBound(Critter_LST)
+
         Progress_Form.ShowProgressBar(0)
+        Progress_Form.ProgressBar1.Maximum = CInt(cCount / 2) + 1
 
-        Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(crittersLstPath)))
-        Dim cCount As Integer = UBound(lstfile)
-
-        Progress_Form.ProgressBar1.Maximum = cCount
         With Main_Form
             .ListView1.BeginUpdate()
             .ListView1.Items.Clear()
@@ -168,9 +185,8 @@ Friend Module Main
             End If
 
             Messages.GetMsgData("pro_crit.msg")
-            ReDim Critter_LST(cCount)
+
             For n = 0 To cCount
-                Critter_LST(n).proFile = lstfile(n)
                 Critter_LST(n).crtName = Messages.GetNameObject(ProFiles.GetProCritNameID(Critter_LST(n).proFile))
                 If Critter_LST(n).crtName = String.Empty Then Critter_LST(n).crtName = "<NoName>"
 
@@ -192,7 +208,7 @@ Friend Module Main
                     .ListView1.Items(n).ForeColor = Color.DarkGray
                 End If
 
-                Progress_Form.ProgressBar1.Value = n
+                If ((n Mod 2) <> 0) Then Progress_Form.ProgressBar1.Value += 1
             Next
             .ListView1.EndUpdate()
         End With
@@ -201,28 +217,24 @@ Friend Module Main
     End Sub
 
     Friend Sub CreateItemsList()
-        Dim tempList0 As List(Of String) = New List(Of String)()
-        Dim tempList1 As List(Of Integer) = New List(Of Integer)()
+        Dim nameList As List(Of String) = New List(Of String)
+        Dim pidList As List(Of Integer) = New List(Of Integer)
         Dim n As Integer
 
+        Dim itemProCount = UBound(Items_LST)
+
         Progress_Form.ShowProgressBar(0)
+        Progress_Form.ProgressBar1.Maximum = CInt(itemProCount / 2) + 1
+        'Application.DoEvents()
 
         Messages.GetMsgData("pro_item.msg")
-        Dim lstfile() As String = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(itemsLstPath)))
-        ReDim Items_LST(UBound(lstfile))
-        For n = 0 To UBound(lstfile)
-            Items_LST(n).proFile = lstfile(n)
-        Next
-
-        Progress_Form.ProgressBar1.Maximum = n
-        Application.DoEvents()
 
         With Main_Form
             .ListView2.BeginUpdate()
             .ListView2.Items.Clear()
 
             Dim showPID As Boolean = IsShowPID()
-            For n = 0 To UBound(Items_LST)
+            For n = 0 To itemProCount
                 Items_LST(n).itemName = Messages.GetNameObject(ProFiles.GetProItemsNameID(Items_LST(n).proFile, n))
                 If Items_LST(n).itemName = String.Empty Then Items_LST(n).itemName = "<NoName>"
 
@@ -240,15 +252,13 @@ Friend Module Main
                 End If
 
                 If Items_LST(n).itemType = ItemType.Ammo Then
-                    tempList0.Add(Items_LST(n).itemName)
-                    tempList1.Add(n + 1)
+                    nameList.Add(Items_LST(n).itemName)
+                    pidList.Add(n + 1)
                 End If
-                Progress_Form.ProgressBar1.Value = n
+                If ((n Mod 2) <> 0) Then Progress_Form.ProgressBar1.Value += 1
             Next
-            ReDim AmmoNAME(tempList0.Count - 1)
-            ReDim AmmoPID(tempList1.Count - 1)
-            tempList0.CopyTo(AmmoNAME)
-            tempList1.CopyTo(AmmoPID)
+            AmmoNAME = nameList.ToArray
+            AmmoPID = pidList.ToArray
 
             .ListView2.Visible = True
             .ListView2.EndUpdate()
@@ -260,14 +270,14 @@ Friend Module Main
     Private Sub GetItemsData()
         If Misc_NAME IsNot Nothing Then Return
 
-        Dim tempList As SortedList(Of Integer, String) = New SortedList(Of Integer, String)()
-
-        Misc_LST = ProFiles.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(miscLstPath)))
+        Misc_LST = Misc.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(miscLstPath)))
         Messages.GetMsgData("pro_misc.msg")
         ReDim Misc_NAME(UBound(Misc_LST))
         For n As Integer = 0 To UBound(Misc_LST)
             Misc_NAME(n) = Messages.GetNameObject((n + 1) * 100)
         Next
+
+        Dim cList As SortedList(Of Integer, String) = New SortedList(Of Integer, String)
 
         Messages.GetMsgData("proto.msg")
         Dim i As Integer = Messages.GetMSGLine(300)
@@ -276,12 +286,11 @@ Friend Module Main
             If MSG_DATATEXT(n).StartsWith("{") Then
                 Dim msgLine As Integer = Convert.ToInt32(Val(Messages.GetParamMsg(MSG_DATATEXT(n))))
                 If msgLine >= 350 Then Exit For
-                tempList.Add(msgLine, Messages.GetParamMsg(MSG_DATATEXT(n), True))
+                cList.Add(msgLine, Messages.GetParamMsg(MSG_DATATEXT(n), True))
             End If
         Next
-        ReDim CaliberNAME(tempList.Count - 1)
-        tempList.Values.CopyTo(CaliberNAME, 0)
-        tempList.Clear()
+        CaliberNAME = cList.Values.ToArray()
+        cList.Clear()
 
         Messages.GetMsgData("perk.msg")
         For Each line In MSG_DATATEXT
@@ -289,12 +298,11 @@ Friend Module Main
                 Dim msgLine As Integer = Convert.ToInt32(Val(GetParamMsg(line)))
                 If msgLine > 100 Then
                     If msgLine = 1101 Then Exit For
-                    tempList.Add(msgLine, Messages.GetParamMsg(line, True))
+                    cList.Add(msgLine, Messages.GetParamMsg(line, True))
                 End If
             End If
         Next
-        ReDim Perk_NAME(tempList.Count - 1)
-        tempList.Values.CopyTo(Perk_NAME, 0)
+        Perk_NAME = cList.Values.ToArray
     End Sub
 
     Friend Sub FilterCreateItemsList(ByVal filter As Integer)
@@ -448,11 +456,11 @@ Friend Module Main
 
     Friend Sub PrintLog(ByVal textLog As String, Optional ByVal newLine As Boolean = True)
         If newLine Then
-            Main_Form.TextBox1.AppendText(textLog & vbLf)
+            Main_Form.TextBox1.AppendText(Environment.NewLine & textLog)
         Else
             Main_Form.TextBox1.AppendText(textLog)
         End If
-        On Error Resume Next ' for wine on Lunix
+        On Error Resume Next ' fix for wine (Lunix)
         Main_Form.TextBox1.ScrollToCaret()
         'On Error GoTo -1
     End Sub

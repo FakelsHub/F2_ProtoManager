@@ -2,14 +2,13 @@
 Imports System.Text
 
 Friend Module Messages
-
-    Private TEXT_GAME As String = "\Text\English\Game\"
-
     'Содержимое считанного msg файла
     Friend MSG_DATATEXT() As String
 
-    Friend Sub SetMessageLangPath()
-        TEXT_GAME = String.Format("\Text\{0}\Game\", Settings.msgLangPath)
+    Private TEXT_GAME As String = "\text\english\game\"
+
+    Friend Sub SetMessageLangPath(ByRef language As String)
+        TEXT_GAME = String.Format("\text\{0}\game\", language)
     End Sub
 
     Friend Sub SaveMSGFile(ByVal msgFile As String)

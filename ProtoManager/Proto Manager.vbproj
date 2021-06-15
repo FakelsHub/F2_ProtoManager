@@ -45,8 +45,10 @@
     </DocumentationFile>
     <NoWarn>
     </NoWarn>
-    <WarningsAsErrors>42017,42018,42019,42024,42032,42036,42099</WarningsAsErrors>
+    <WarningsAsErrors>42017,42018,42019,42029,42031,42032,42036,42105,42106,42107,42353,42354,42355</WarningsAsErrors>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -59,9 +61,10 @@
     </DocumentationFile>
     <NoWarn>
     </NoWarn>
-    <WarningsAsErrors>42017,42018,42019,42024,42032,42036,42099</WarningsAsErrors>
+    <WarningsAsErrors>42017,42018,42019,42029,42031,42032,42036,42105,42106,42107,42353,42354,42355</WarningsAsErrors>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -88,13 +91,36 @@
     <ManifestKeyFile>Proto Manager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <WarningLevel>1</WarningLevel>
+    <DebugType>Full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>42017,42018,42019,42029,42031,42032,42036,42105,42106,42107,42353,42354,42355</WarningsAsErrors>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <Optimize>true</Optimize>
+    <WarningLevel>1</WarningLevel>
+    <DebugType>None</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>42017,42018,42019,42029,42031,42032,42036,42105,42106,42107,42353,42354,42355</WarningsAsErrors>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -144,6 +170,9 @@
     <Compile Include="Classes\CalcStats.vb" />
     <Compile Include="Classes\Enums.vb" />
     <Compile Include="Classes\Comparer.vb" />
+    <Compile Include="Classes\ExtraMod.vb" />
+    <Compile Include="Modules\GameConfig.vb" />
+    <Compile Include="Modules\INIFile.vb" />
     <Compile Include="Classes\ThumbnailImage.vb" />
     <Compile Include="MassCreate.Designer.vb">
       <DependentUpon>MassCreate.vb</DependentUpon>
@@ -154,6 +183,7 @@
     <Compile Include="Modules\DatFiles.vb" />
     <Compile Include="Modules\Messages.vb" />
     <Compile Include="Classes\Prototypes.vb" />
+    <Compile Include="Modules\Misc.vb" />
     <Compile Include="Modules\ProFiles.vb" />
     <Compile Include="Modules\Settings.vb" />
     <Compile Include="TxtEdit_Form.Designer.vb">
@@ -344,6 +374,8 @@
     <None Include="acm2wav.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\112_UpArrowShort_Green_16x16_72.png" />
+    <None Include="Resources\112_DownArrowShort_Green_16x16_72.png" />
     <Content Include="Resources\pmicon32.ico" />
     <None Include="Resources\splash.png" />
     <None Include="Resources\error.png" />

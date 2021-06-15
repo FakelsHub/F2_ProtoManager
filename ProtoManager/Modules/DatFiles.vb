@@ -5,6 +5,7 @@ Imports DATLib
 
 Module DatFiles
 
+    ' Example using zlib
     'Declare zlib functions "Compress" and "Uncompress" for compressing Byte Arrays
     '    <DllImport("zlib.DLL", EntryPoint:="compress")> _
     '    Private Function CompressByteArray(ByVal dest As Byte(), ByRef destLen As Integer, ByVal src As Byte(), ByVal srcLen As Integer) As Integer
@@ -15,18 +16,20 @@ Module DatFiles
     ' Leave function empty - DLLImport attribute forwards calls to UnCompressByteArray to Uncompress in zlib.dLL
     '   End Function
 
-    Friend Const MasterDAT As String = "\master.dat"
-    Friend Const CritterDAT As String = "\critter.dat"
-    Friend Const DIR_DATA As String = "\data" 'for test "\MyTestData"
+    ' текуший путь к master.dat и critter.dat
+    Friend MasterDAT As String = "master.dat"
+    Friend CritterDAT As String = "critter.dat"
 
-    Friend Const ART_CRITTERS As String = "\art\critters\"
+    Friend Const DEFAULT_DATA_DIR As String = "data"
+
+    Friend Const ART_CRITTERS_PATH As String = "\art\critters\"
     Friend Const ART_INVEN As String = "\art\inven\"
     Friend Const ART_ITEMS As String = "\art\items\"
 
     Friend Const PROTO_CRITTERS As String = "\proto\critters\"
     Friend Const PROTO_ITEMS As String = "\proto\items\"
 
-    ' to List path file
+    ' List path files
     Friend Const itemsLstPath As String = "\proto\items\items.lst"
     Friend Const crittersLstPath As String = "\proto\critters\critters.lst"
     Friend Const scriptsLstPath As String = "\scripts\scripts.lst"
@@ -39,6 +42,16 @@ Module DatFiles
     'Friend Const proCritMsgPath As String = "\Text\English\Game\pro_crit.msg"
     'Friend Const proItemMsgPath As String = "\Text\English\Game\pro_item.msg"
 
+    ' текущий список
+    Friend extraMods As List(Of ExtraModData) = New List(Of ExtraModData)
+
+    Friend Sub AddExtraMod(ByRef modFile As ExtraModData)
+        extraMods.Add(modFile)
+        If (modFile.isDat) Then
+            Dim message As String = String.Empty
+            DATManage.OpenDatFile(modFile.filePath, message)
+        End If
+    End Sub
 
     Friend Sub OpenDatFiles()
         Dim message As String = String.Empty
@@ -50,6 +63,9 @@ Module DatFiles
         If File.Exists(Game_Path & CritterDAT) Then
             DATManage.OpenDatFile(Game_Path & CritterDAT, message)
         End If
+        For Each el As ExtraModData In GameConfig.gcExtraMods
+            DatFiles.AddExtraMod(el)
+        Next
     End Sub
 
     Friend Sub UnpackedFilesByList(ByRef files As String(), ByRef datPath As String, Optional ByVal unpackPath As String = "cache\")
@@ -57,104 +73,155 @@ Module DatFiles
     End Sub
 
     ''' <summary>
-    ''' Проверить наличее файла и возвратить путь к нему, если такого файла не найдено то извлечь его из Dat архива.
+    ''' Проверить наличие файла и возвратить путь к нему, если такого файла не найдено то извлечь его из Dat архива.
     ''' full = false, возвращает короткий путь к файлу.
     ''' </summary>
-    Friend Function CheckFile(ByVal pFile As String, Optional ByVal full As Boolean = True,
+    Friend Function CheckFile(ByRef pFile As String, Optional ByVal full As Boolean = True,
                               Optional ByVal сDat As Boolean = False, Optional ByVal unpack As Boolean = True) As String
-        Dim fPath As String = String.Concat(SaveMOD_Path, pFile)
-        If File.Exists(fPath) Then
-            Return If(full, fPath, SaveMOD_Path)
-        End If
-        fPath = String.Concat(GameDATA_Path & pFile)
-        If File.Exists(fPath) Then
-            Return If(full, fPath, GameDATA_Path)
+        ' save folder
+        Dim filePath As String = String.Concat(SaveMOD_Path, pFile)
+        If File.Exists(filePath) Then
+            Return If(full, filePath, SaveMOD_Path)
         End If
 
-        Dim fmDat As String = String.Concat(Game_Path, MasterDAT, pFile)
-        Dim fcDat As String = String.Concat(Game_Path, CritterDAT, pFile)
-        If File.Exists(fmDat) OrElse File.Exists(fcDat) Then
-            If сDat Then
-                Return If(full, fcDat, String.Concat(Game_Path, CritterDAT)) 'папка
-            Else
-                Return If(full, fmDat, String.Concat(Game_Path, MasterDAT)) 'папка
+        ' data folder
+        If (Settings.saveIsEqualData = False) Then
+            filePath = String.Concat(GameDATA_Path & pFile)
+            If File.Exists(filePath) Then
+                Return If(full, filePath, GameDATA_Path)
             End If
-        Else
-            fPath = String.Concat(Cache_Patch, pFile)
-            If (File.Exists(fPath) = False) Then
-                If unpack Then
-                    UnPackFile(pFile, сDat)
-                Else
-                    fPath = Nothing
-                End If
-            End If
-            Return If(full, fPath, Cache_Patch)
         End If
+
+        ' проверка цепочки модов
+        For Each eMod In extraMods
+            If (eMod.isEnabled = False) Then Continue For
+            If (eMod.isDat) Then
+                If (UnDatFile(pFile, eMod)) Then
+                    filePath = String.Concat(Settings.Cache_Patch, pFile)
+                    Return If(full, filePath, Settings.Cache_Patch)
+                End If
+            Else
+                filePath = String.Concat(eMod.filePath, pFile)
+                If File.Exists(filePath) Then Return If(full, filePath, eMod.filePath)
+            End If
+        Next
+
+        ' папки master.dat и critter.dat
+        If (сDat) Then
+            filePath = String.Concat(Game_Path, CritterDAT, pFile)
+            If File.Exists(filePath) Then Return If(full, filePath, String.Concat(Game_Path, CritterDAT)) 'папка
+        Else
+            filePath = String.Concat(Game_Path, MasterDAT, pFile)
+            If File.Exists(filePath) Then Return If(full, filePath, String.Concat(Game_Path, MasterDAT)) 'папка
+        End If
+
+        ' кеш папка
+        filePath = String.Concat(Settings.Cache_Patch, pFile)
+        If (File.Exists(filePath) = False) Then
+            If unpack Then
+                DatGetFile(pFile, сDat) ' извлечение из master.dat или critter.dat
+            Else
+                filePath = Nothing
+            End If
+        End If
+        Return If(full, filePath, Settings.Cache_Patch)
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="pFile"></param>
+    ''' <param name="сDat"></param>
+    ''' <returns></returns>
     Friend Function GetFileAndPath(ByRef pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
         'Check save folder
-        Dim fPath As String = String.Concat(SaveMOD_Path, pFile)
-        If File.Exists(fPath) Then
-            pFile = fPath
+        Dim filePath As String = String.Concat(SaveMOD_Path, pFile)
+        If File.Exists(filePath) Then
+            pFile = filePath
             Return True
         End If
 
         'Check data folder
-        fPath = String.Concat(GameDATA_Path & pFile)
-        If File.Exists(fPath) Then
-            pFile = fPath
+        If (Settings.saveIsEqualData = False) Then
+            filePath = String.Concat(GameDATA_Path & pFile)
+            If File.Exists(filePath) Then
+                pFile = filePath
+                Return True
+            End If
+        End If
+
+        ' проверка цепочки модов
+        For Each eMod In extraMods
+            If (eMod.isEnabled = False) Then Continue For
+            If (eMod.isDat) Then
+                If (UnDatFile(pFile, eMod)) Then
+                    pFile = Nothing 'указать что файл был извлечен и находится в кеше
+                    Return True
+                End If
+            Else
+                filePath = String.Concat(eMod.filePath, pFile)
+                If File.Exists(filePath) Then
+                    pFile = filePath
+                    Return True
+                End If
+            End If
+        Next
+
+        'Check .dat folder
+        filePath = String.Concat(Game_Path, If(сDat, CritterDAT, MasterDAT), pFile)
+        If File.Exists(filePath) Then
+            pFile = filePath
             Return True
         End If
 
-        'Check .dat folder
-        Dim fmDat As String = String.Concat(Game_Path, MasterDAT, pFile)
-        Dim fcDat As String = String.Concat(Game_Path, CritterDAT, pFile)
-        If File.Exists(fmDat) OrElse File.Exists(fcDat) Then
-            If сDat Then
-                pFile = fcDat
-                Return True
-            Else
-                pFile = fmDat
-                Return True
-            End If
-        Else
-            'Check cache folder and extract
-            fPath = String.Concat(Cache_Patch, pFile)
-            If File.Exists(fPath) Then
-                pFile = Nothing 'указать что файл находится в кеше
-                Return True
-            ElseIf UnPackFile(pFile, сDat) Then
-                pFile = Nothing 'указать что файл был извлечен и находится в кеше
-                Return True
-            End If
+        'Check cache folder and extract
+        filePath = String.Concat(Settings.Cache_Patch, pFile)
+        If File.Exists(filePath) Then
+            pFile = Nothing 'указать что файл находится в кеше
+            Return True
+        ElseIf DatGetFile(pFile, сDat) Then
+            pFile = Nothing 'указать что файл был извлечен и находится в кеше
+            Return True
         End If
 
         Return False
     End Function
 
-    Friend Function CheckDirFile(ByVal pFile As String, ByVal cache As Boolean, Optional ByVal сDat As Boolean = False) As Boolean
+    ''' <summary>
+    ''' Проверяет физическое наличие файла в папке
+    ''' </summary>
+    ''' <param name="pFile"></param>
+    ''' <param name="cache">дополнительно проверка в кеше</param>
+    ''' <param name="сDat"></param>
+    ''' <returns></returns>
+    Friend Function CheckDirFile(ByRef pFile As String, ByVal cache As Boolean, Optional ByVal сDat As Boolean = False) As Boolean
         'Check save folder
-        Dim fPath As String = String.Concat(SaveMOD_Path, pFile)
-        If File.Exists(fPath) Then Return True
+        Dim filePath As String = String.Concat(SaveMOD_Path, pFile)
+        If File.Exists(filePath) Then Return True
 
         'Check data folder
-        fPath = String.Concat(GameDATA_Path & pFile)
-        If File.Exists(fPath) Then Return True
+        If (Settings.saveIsEqualData = False) Then
+            filePath = String.Concat(GameDATA_Path & pFile)
+            If File.Exists(filePath) Then Return True
+        End If
+
+        ' проверка цепочки модов
+        For Each eMod In extraMods
+            If (eMod.isEnabled = False OrElse eMod.isDat) Then Continue For
+            filePath = String.Concat(eMod.filePath, pFile)
+            If File.Exists(filePath) Then Return True
+        Next
 
         'Check .dat folder
-        Dim fmDat As String = String.Concat(Game_Path, MasterDAT, pFile)
-        Dim fcDat As String = String.Concat(Game_Path, CritterDAT, pFile)
-        If File.Exists(fmDat) OrElse File.Exists(fcDat) Then
-            If сDat Then
-                Return True
-            Else
-                Return True
-            End If
-        ElseIf cache Then
+        filePath = String.Concat(Game_Path, If(сDat, CritterDAT, MasterDAT), pFile)
+        If File.Exists(filePath) Then
+            Return True
+        End If
+
+        If cache Then
             'Check cache folder
-            fPath = String.Concat(Cache_Patch, pFile)
-            If File.Exists(fPath) Then Return True
+            filePath = String.Concat(Settings.Cache_Patch, pFile)
+            If File.Exists(filePath) Then Return True
         End If
 
         Return False
@@ -163,12 +230,22 @@ Module DatFiles
     ''' <summary>
     ''' Проверить содержится ли указанный файл в кэш папке, если его нет то извлечь его.
     ''' </summary>
-    Friend Function UnDatFile(ByVal pFile As String, ByVal size As Integer) As Boolean
-        Dim cPathFile As String = Cache_Patch & pFile
-
+    Friend Function UnDatFile(ByRef pFile As String, ByVal size As Integer) As Boolean
+        Dim cPathFile As String = Settings.Cache_Patch & pFile
         If File.Exists(cPathFile) AndAlso FileSystem.GetFileInfo(cPathFile).Length = size Then Return True
 
-        Return UnPackFile(pFile)
+        Return DatGetFile(pFile)
+    End Function
+
+    ''' <summary>
+    ''' Ивлекает файл из указанного dat файла
+    ''' </summary>
+    ''' <param name="pFile"></param>
+    ''' <param name="fileDAT"></param>
+    ''' <returns></returns>
+    Friend Function UnDatFile(ByRef pFile As String, ByRef dat As ExtraModData) As Boolean
+        If File.Exists(Settings.Cache_Patch & pFile) Then Return True
+        Return ExtraDatGetFile(pFile, dat)
     End Function
 
     ''' <summary>
@@ -176,26 +253,33 @@ Module DatFiles
     ''' </summary>
     ''' <param name="pFile"></param>
     ''' <param name="сDat"></param>
-    Private Function UnPackFile(ByVal pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
-        Main.PrintLog("Extracting file: " & pFile, False)
+    Private Function DatGetFile(ByRef pFile As String, Optional ByVal сDat As Boolean = False) As Boolean
         Dim fileDAT As String
         If сDat Then
             fileDAT = CritterDAT
+            Main.PrintLog("Extract Critter: " & pFile)
         Else
             fileDAT = MasterDAT
+            Main.PrintLog("Extract Master: " & pFile)
         End If
 
         Dim result = DATManage.ExtractFile("cache\", pFile.Remove(0, 1), Game_Path & fileDAT)
-        Main.PrintLog(If(result, String.Empty, " - Failed!"))
+        If (result = False) Then Main.PrintLog(" - Failed!", False)
 
+        Return result
+    End Function
+
+    Private Function ExtraDatGetFile(ByRef pFile As String, ByRef dat As ExtraModData) As Boolean
+        Dim result = DATManage.ExtractFile("cache\", pFile.Remove(0, 1), dat.filePath)
+        If (result) Then Main.PrintLog("Extract: " & dat.fileName & pFile)
         Return result
     End Function
 
     ''' <summary>
     ''' Получить frm файл криттера в gif формате
     ''' </summary>
-    Friend Sub CritterFrmGif(ByRef FrmFile As String)
-        Dim checkFile As String = ART_CRITTERS & FrmFile & "aa.frm"
+    Friend Sub CritterFrmToGif(ByRef FrmFile As String)
+        Dim checkFile As String = ART_CRITTERS_PATH & FrmFile & "aa.frm"
         Dim cPath As String = SaveMOD_Path & checkFile
 
         ExtractConvertFRM(cPath, checkFile, FrmFile & "aa", CritterDAT)
@@ -209,9 +293,9 @@ Module DatFiles
 
         On Error Resume Next
         If File.Exists(WorkAppDIR & gifFile) Then
-            FileSystem.MoveFile(WorkAppDIR & gifFile, Cache_Patch & gifFile)
+            FileSystem.MoveFile(WorkAppDIR & gifFile, Settings.Cache_Patch & gifFile)
         Else
-            FileSystem.MoveFile(WorkAppDIR & ART_CRITTERS & FrmFile & "aa_sw.gif", Cache_Patch & gifFile)
+            FileSystem.MoveFile(WorkAppDIR & ART_CRITTERS_PATH & FrmFile & "aa_sw.gif", Settings.Cache_Patch & gifFile)
         End If
         On Error GoTo - 1
         Directory.Delete(artDir, True)
@@ -220,7 +304,7 @@ Module DatFiles
     ''' <summary>
     ''' Получить frm файл предмета в gif формате
     ''' </summary>
-    Friend Sub ItemFrmGif(ByVal iPath As String, ByVal FrmFile As String)
+    Friend Sub ItemFrmToGif(ByRef iPath As String, ByRef FrmFile As String)
         Dim checkFile As String = "\art\" & iPath & FrmFile & ".frm"
         Dim cPath As String = SaveMOD_Path & checkFile
 
@@ -235,9 +319,9 @@ Module DatFiles
 
         On Error Resume Next
         If File.Exists(WorkAppDIR & gifFile) Then
-            FileSystem.MoveFile(WorkAppDIR & gifFile, Cache_Patch & gifFile)
+            FileSystem.MoveFile(WorkAppDIR & gifFile, Settings.Cache_Patch & gifFile)
         Else
-            FileSystem.MoveFile(artDir & FrmFile & "_ne.gif", Cache_Patch & gifFile)
+            FileSystem.MoveFile(artDir & FrmFile & "_ne.gif", Settings.Cache_Patch & gifFile)
         End If
         On Error GoTo - 1
         Directory.Delete(artDir, True)
@@ -246,26 +330,44 @@ Module DatFiles
     ''' <summary>
     ''' Преобразовать frm файл в gif формат
     ''' </summary>
-    Private Sub ExtractConvertFRM(ByVal cPath As String, ByVal checkFile As String, ByVal FrmFile As String, ByVal nameDAT As String)
-        If Not (File.Exists(cPath)) Then
-            cPath = GameDATA_Path & checkFile
-            If Not (File.Exists(cPath)) Then
-                cPath = Game_Path & nameDAT & checkFile
-                If Not (File.Exists(cPath)) Then
-                    'Извлечь требуемый файл
-                    Shell(WorkAppDIR & "\frm2gif.exe -d -f """ & Game_Path & nameDAT & """ -p color.pal " & FrmFile & ".frm", AppWinStyle.Hide, True, 2000)
-                    Exit Sub
+    Private Sub ExtractConvertFRM(ByRef cPath As String, ByRef checkFile As String, ByRef FrmFile As String, ByRef nameDAT As String)
+        If Not (File.Exists(cPath)) Then ' проверка save папки 
+            If (Settings.saveIsEqualData OrElse Not (File.Exists(GameDATA_Path & checkFile))) Then ' проверка data папки 
+                ' проверка цепочки модов
+                For Each eMod In extraMods
+                    If (eMod.isEnabled = False) Then Continue For
+                    If (eMod.isDat) Then
+                        If (DATManage.FileExists(checkFile, eMod.filePath)) Then
+                            ' Извлекает и конверирует требуемый файл
+                            Shell(WorkAppDIR & "\frm2gif.exe -d -f """ & eMod.filePath & """ -p color.pal " & FrmFile & ".frm", AppWinStyle.Hide, True, 2000)
+                            Exit Sub
+                        End If
+                    Else
+                        cPath = String.Concat(eMod.filePath, checkFile)
+                        If File.Exists(cPath) Then
+                            nameDAT = Nothing
+                            Exit For
+                        End If
+                    End If
+                Next
+                If (nameDAT IsNot Nothing) Then
+                    cPath = Game_Path & nameDAT & checkFile
+                    If Not (File.Exists(cPath)) Then
+                        'Извлекает и конверирует требуемый файл
+                        Shell(WorkAppDIR & "\frm2gif.exe -d -f """ & Game_Path & nameDAT & """ -p color.pal " & FrmFile & ".frm", AppWinStyle.Hide, True, 2000)
+                        Exit Sub
+                    End If
                 End If
             End If
         End If
-
+        ' копирует файл в папку программы
         FileSystem.CopyFile(cPath, WorkAppDIR & checkFile, True)
         File.SetAttributes(WorkAppDIR & checkFile, FileAttributes.Normal)
         Shell(WorkAppDIR & "\frm2gif.exe -p color.pal ." & checkFile, AppWinStyle.Hide, True, 2000)
     End Sub
 
-    Friend Function ExtractSFXFile(sfxFile As String) As String
-        Dim cfilePath = String.Concat(Cache_Patch, sfxFile)
+    Friend Function ExtractSFXFile(ByRef sfxFile As String) As String
+        Dim cfilePath = String.Concat(Settings.Cache_Patch, sfxFile)
         If GetFileAndPath(sfxFile) = False Then Return Nothing 'file not found
 
         If (sfxFile <> Nothing) Then

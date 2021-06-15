@@ -61,7 +61,7 @@ Friend Class Main_Form
 
     Private Sub Main_Form_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
         If e.CloseReason = CloseReason.UserClosing Then
-            Settings.Save_Config()
+            Settings.SaveConfigFile()
             Application.Exit()
             ThumbnailImage.Dispose()
             If cCache Then
@@ -591,7 +591,7 @@ Friend Class Main_Form
         End If
     End Sub
 
-    Private Sub LinkLabel_LinkClicked(ByVal sender As Object, ByVal e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked, LinkLabel2.LinkClicked
+    Private Sub LinkLabel_LinkClicked(ByVal sender As Object, ByVal e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked, LinkLabel2.LinkClicked, LinkLabel3.LinkClicked
         Dim link As LinkLabel = sender
         Process.Start("explorer", link.Text)
     End Sub

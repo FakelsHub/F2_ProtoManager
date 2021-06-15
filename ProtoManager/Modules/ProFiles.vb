@@ -201,23 +201,6 @@ Module ProFiles
     End Function
 
     ''' <summary>
-    ''' Удаляет пустые строки в конце массива и лишние пробелы в строке.
-    ''' </summary>
-    Friend Function ClearEmptyLines(ByVal lst As String()) As String()
-        Dim count As Integer = UBound(lst)
-
-        For n As Integer = 0 To count
-            lst(n) = lst(n).Trim
-        Next
-        For n As Integer = count To 0 Step -1
-            If lst(n).Length > 0 Then Exit For
-            ReDim Preserve lst(n - 1)
-        Next
-
-        Return lst
-    End Function
-
-    ''' <summary>
     ''' Сохраняет структуру криттера в pro-файл.
     ''' </summary>
     Friend Sub SaveCritterProData(ByVal proFile As String, ByRef CritterStruct As CritPro)
