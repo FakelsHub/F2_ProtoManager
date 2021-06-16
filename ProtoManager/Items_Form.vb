@@ -935,6 +935,8 @@ Friend Class Items_Form
 
         Dim snd = New Media.SoundPlayer(sfxPathFile)
         snd.Play()
+
+        Main.PrintLog("Playing Sound: " & Path.GetFileName(fileFormat))
     End Sub
 
 End Class

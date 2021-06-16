@@ -366,7 +366,7 @@ Module DatFiles
         Shell(WorkAppDIR & "\frm2gif.exe -p color.pal ." & checkFile, AppWinStyle.Hide, True, 2000)
     End Sub
 
-    Friend Function ExtractSFXFile(ByRef sfxFile As String) As String
+    Friend Function ExtractSFXFile(ByVal sfxFile As String) As String
         Dim cfilePath = String.Concat(Settings.Cache_Patch, sfxFile)
         If GetFileAndPath(sfxFile) = False Then Return Nothing 'file not found
 

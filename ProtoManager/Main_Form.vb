@@ -28,6 +28,7 @@ Friend Class Main_Form
         Me.Text &= String.Format("{0}.{1}.{2} - by {3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Copyright)
         LinkLabel1.Text = Settings.GameDATA_Path
         LinkLabel2.Text = Settings.SaveMOD_Path
+        LinkLabel3.Text = Path.GetFullPath(Settings.Game_Path + DatFiles.MasterDAT)
         SetFormSettings()
     End Sub
 
@@ -241,60 +242,93 @@ Friend Class Main_Form
         End If
     End Sub
 
+    Private Sub Find_Click(ByVal sender As Object, ByVal e As EventArgs) Handles FindToolStripMenuItem.Click
+        Find(sender, True)
+    End Sub
+
+    Private Sub BackwardFind_Click(sender As Object, e As EventArgs) Handles BackwardFindToolStripMenuItem.Click
+        Find(sender, False)
+    End Sub
+
     'поиск ключевого слова
-    Private Sub Find(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton1.Click, FindToolStripMenuItem.Click
+    Private Sub Find(ByVal sender As Object, ByRef isForward As Boolean)
         If tstbSearchText.Text <> Nothing Then
-            Dim LIST_VIEW As ListView
+            Dim lstView As ListView
             If TabControl1.SelectedIndex = 0 Then
-                LIST_VIEW = ListView2
+                lstView = ListView2
             Else
-                LIST_VIEW = ListView1
+                lstView = ListView1
             End If
 
-            Dim n As Integer = If(LIST_VIEW.FocusedItem IsNot Nothing, LIST_VIEW.FocusedItem.Index + 1, 0)
-            If n >= LIST_VIEW.Items.Count Then n = 0
-            If SearhLW(n, LIST_VIEW) >= LIST_VIEW.Items.Count Then
-                If SearhLW(0, LIST_VIEW) >= LIST_VIEW.Items.Count Then
-                    tstbSearchText.BackColor = Color.MistyRose
-                    Exit Sub
+            Dim n As Integer
+            If (isForward) Then
+                n = If(lstView.FocusedItem IsNot Nothing, lstView.FocusedItem.Index + 1, 0)
+                If n >= lstView.Items.Count Then n = 0
+
+                If SearchLW(n, lstView) = False Then
+                    If n = 0 OrElse SearchLW(0, lstView) = False Then
+                        tstbSearchText.BackColor = Color.MistyRose
+                        Exit Sub
+                    End If
+                End If
+            Else
+                n = If(lstView.FocusedItem IsNot Nothing, lstView.FocusedItem.Index, lstView.Items.Count)
+                If n = 0 Then n = lstView.Items.Count
+
+                If SearchLWBack(n, lstView) = False Then
+                    If n = lstView.Items.Count OrElse SearchLWBack(lstView.Items.Count, lstView) = False Then
+                        tstbSearchText.BackColor = Color.MistyRose
+                        Exit Sub
+                    End If
                 End If
             End If
 
-            tstbSearchText.BackColor = SystemColors.Info
+            tstbSearchText.BackColor = SystemColors.Window
 
-            If LIST_VIEW.View = View.Details Then
-                Dim pos As Point = LIST_VIEW.FocusedItem.Position
-                If pos.Y >= LIST_VIEW.Bounds.Size.Height Then
-                    LIST_VIEW.TopItem = LIST_VIEW.FocusedItem
+            If lstView.View = View.Details Then
+                Dim pos As Point = lstView.FocusedItem.Position
+                If pos.Y >= lstView.Bounds.Size.Height Then
+                    lstView.TopItem = lstView.FocusedItem
                 End If
             End If
             If Not (TypeOf sender Is ToolStripTextBox) Then
-                LIST_VIEW.Focus()
+                lstView.Focus()
             End If
-            LIST_VIEW.FocusedItem.EnsureVisible()
+            lstView.FocusedItem.EnsureVisible()
         End If
     End Sub
 
-    Private Function SearhLW(ByRef n As Integer, ByRef LIST_VIEW As ListView) As Integer
-        For n = n To LIST_VIEW.Items.Count - 1
-            If LIST_VIEW.Items(n).Text.IndexOf(tstbSearchText.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
-                LIST_VIEW.Items.Item(n).Selected = True
-                LIST_VIEW.Items.Item(n).Focused = True
-                Exit For
+    Private Function SearchLW(ByVal n As Integer, ByVal lstView As ListView) As Boolean
+        For i = n To lstView.Items.Count - 1
+            If lstView.Items(i).Text.IndexOf(tstbSearchText.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
+                lstView.Items.Item(i).Selected = True
+                lstView.Items.Item(i).Focused = True
+                Return True
             End If
         Next
-        Return n
+        Return False
+    End Function
+
+    Private Function SearchLWBack(ByVal n As Integer, ByVal lstView As ListView) As Boolean
+        For i = n - 1 To 0 Step -1
+            If lstView.Items(i).Text.IndexOf(tstbSearchText.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
+                lstView.Items.Item(i).Selected = True
+                lstView.Items.Item(i).Focused = True
+                Return True
+            End If
+        Next
+        Return False
     End Function
 
     Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles tstbSearchText.KeyDown
         If e.KeyData = Keys.Enter Then
             e.SuppressKeyPress = True
-            Find(sender, Nothing)
+            Find(sender, True)
         End If
     End Sub
 
     Private Sub tstbSearchText_TextChanged(sender As Object, e As EventArgs) Handles tstbSearchText.TextChanged
-        tstbSearchText.BackColor = SystemColors.Info
+        tstbSearchText.BackColor = SystemColors.Window
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
@@ -592,8 +626,8 @@ Friend Class Main_Form
     End Sub
 
     Private Sub LinkLabel_LinkClicked(ByVal sender As Object, ByVal e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked, LinkLabel2.LinkClicked, LinkLabel3.LinkClicked
-        Dim link As LinkLabel = sender
-        Process.Start("explorer", link.Text)
+        Dim link = CType(sender, LinkLabel)
+        If (link.Text <> "n/a") Then Process.Start("explorer", link.Text)
     End Sub
 
     Private Sub TextEditProFileToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TextEditProFileToolStripMenuItem.Click

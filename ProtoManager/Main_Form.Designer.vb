@@ -81,12 +81,12 @@ Partial Class Main_Form
         Me.fContainerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.fMiscToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripButton4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.tstbSearchText = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
         Me.FindToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackwardFindToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.LinkLabel2 = New System.Windows.Forms.LinkLabel()
         Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
@@ -164,7 +164,7 @@ Partial Class Main_Form
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripSeparator11, Me.ToolStripButton9, Me.ToolStripSeparator7, Me.ImageListingToolStripButton, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripButton10, Me.ToolStripSplitButton1, Me.ToolStripButton4, Me.ToolStripButton1, Me.tstbSearchText, Me.ToolStripLabel1, Me.ToolStripSeparator3, Me.ToolStripDropDownButton1})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton6, Me.ToolStripSeparator1, Me.AboutToolStripButton7, Me.ToolStripSeparator11, Me.ToolStripButton9, Me.ToolStripSeparator7, Me.ImageListingToolStripButton, Me.ToolStripButton11, Me.ToolStripSeparator6, Me.ToolStripSplitButton2, Me.ToolStripSeparator2, Me.ToolStripButton10, Me.ToolStripSplitButton1, Me.ToolStripButton4, Me.tstbSearchText, Me.ToolStripLabel1, Me.ToolStripSeparator3, Me.ToolStripDropDownButton1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
@@ -539,16 +539,6 @@ Partial Class Main_Form
         Me.ToolStripButton4.Name = "ToolStripButton4"
         Me.ToolStripButton4.Size = New System.Drawing.Size(6, 25)
         '
-        'ToolStripButton1
-        '
-        Me.ToolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
-        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(64, 22)
-        Me.ToolStripButton1.Text = "Search"
-        Me.ToolStripButton1.ToolTipText = "Continue Search [F3]"
-        '
         'tstbSearchText
         '
         Me.tstbSearchText.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -557,7 +547,7 @@ Partial Class Main_Form
         Me.tstbSearchText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.tstbSearchText.Name = "tstbSearchText"
         Me.tstbSearchText.Size = New System.Drawing.Size(220, 22)
-        Me.tstbSearchText.ToolTipText = "Search text"
+        Me.tstbSearchText.ToolTipText = "Find text." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "[F3] - Forward search." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "[Ctrl + F3] - Backward search."
         '
         'ToolStripLabel1
         '
@@ -568,6 +558,7 @@ Partial Class Main_Form
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
         Me.ToolStripLabel1.Size = New System.Drawing.Size(26, 22)
         Me.ToolStripLabel1.Text = "RU"
+        Me.ToolStripLabel1.ToolTipText = "Current keyboard layout."
         '
         'ToolStripSeparator3
         '
@@ -577,21 +568,28 @@ Partial Class Main_Form
         '
         'ToolStripDropDownButton1
         '
-        Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FindToolStripMenuItem})
+        Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FindToolStripMenuItem, Me.BackwardFindToolStripMenuItem})
         Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
-        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 22)
-        Me.ToolStripDropDownButton1.Text = "ToolStripDropDownButton1"
+        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(65, 22)
+        Me.ToolStripDropDownButton1.Text = "HotKesy"
         Me.ToolStripDropDownButton1.Visible = False
         '
         'FindToolStripMenuItem
         '
         Me.FindToolStripMenuItem.Name = "FindToolStripMenuItem"
         Me.FindToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3
-        Me.FindToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
-        Me.FindToolStripMenuItem.Text = "find"
+        Me.FindToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.FindToolStripMenuItem.Text = "Find"
+        '
+        'BackwardFindToolStripMenuItem
+        '
+        Me.BackwardFindToolStripMenuItem.Name = "BackwardFindToolStripMenuItem"
+        Me.BackwardFindToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.F3), System.Windows.Forms.Keys)
+        Me.BackwardFindToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.BackwardFindToolStripMenuItem.Text = "Backward Find"
         '
         'ToolTip1
         '
@@ -1015,7 +1013,6 @@ Partial Class Main_Form
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader8 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
     Friend WithEvents tstbSearchText As System.Windows.Forms.ToolStripTextBox
     Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ItemsTableToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -1050,4 +1047,5 @@ Partial Class Main_Form
     Friend WithEvents ToolStripLabel1 As ToolStripLabel
     Friend WithEvents LinkLabel3 As LinkLabel
     Friend WithEvents Label3 As Label
+    Friend WithEvents BackwardFindToolStripMenuItem As ToolStripMenuItem
 End Class
