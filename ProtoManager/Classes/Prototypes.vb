@@ -1,22 +1,4 @@
-﻿Class Prototypes
-
-    Friend Shared ReadOnly ItemTypesName() As String = {"Armor", "Container", "Drug", "Weapon", "Ammo", "Misc", "Key", "Unknown"}
-
-    Private Shared ReadOnly ItemTypesProLen() As Integer = {129, 65, 125, 122, 81, 69, 61, 0}
-
-    Friend Shared Function GetSizeProByType(ByVal type As ItemType) As Integer
-        Return ItemTypesProLen(type)
-    End Function
-
-    Enum DamageType As Integer
-        Normal
-        Laser
-        Fire
-        Plasma
-        Electrical
-        EMP
-        Explode
-    End Enum
+﻿NotInheritable Class Prototypes
 
     Enum ItemType As Integer
         Armor           '0x0 - Armor (броня)
@@ -28,6 +10,25 @@
         Key             '0x6 - Key (ключи)
         Unknown         '0x7...
     End Enum
+
+    Friend Shared ReadOnly ItemTypesName() As String = {"Armor", "Container", "Drug", "Weapon", "Ammo", "Misc", "Key", "Unknown"}
+
+    Private Shared ReadOnly ItemTypesProLen() As Integer = {129, 65, 125, 122, 81, 69, 61, 0}
+
+    Friend Shared Function GetSizeProByType(ByVal type As ItemType) As Integer
+        Return ItemTypesProLen(type)
+    End Function
+
+    'Enum DamageType As Integer
+    '    Normal
+    '    Laser
+    '    Fire
+    '    Plasma
+    '    Electrical
+    '    EMP
+    '    Explode
+    'End Enum
+
 
     'Data offset
     Friend Const offsetFrmID As Byte = &H8
@@ -184,6 +185,7 @@
         Public InvFID As Integer
         Public SoundID As Byte
     End Structure
+
     'Weapon
     Friend Const ItemWeaponLen As Integer = 16
     Structure WpItemPro
@@ -205,6 +207,7 @@
         Public MaxAmmo As Integer
         Public wSoundID As Byte
     End Structure
+
     'Armor
     Friend Const ItemArmorLen As Integer = 18
     Structure ArItemPro
@@ -227,6 +230,7 @@
         Public MaleFID As Integer
         Public FemaleFID As Integer
     End Structure
+
     'Ammo
     Friend Const ItemAmmoLen As Integer = 6
     Structure AmItemPro
@@ -237,11 +241,13 @@
         Public DamMult As Integer
         Public DamDiv As Integer
     End Structure
+
     'Key
     Friend Const ItemKeyLen As Integer = 1
     Structure kItemPro
         Public Unknown As Integer
     End Structure
+
     'Misc
     Friend Const ItemMiscLen As Integer = 3
     Structure McItemPro
@@ -249,12 +255,14 @@
         Public PowerType As Integer
         Public Charges As Integer
     End Structure
+
     'Container
     Friend Const ItemContLen As Integer = 2
     Structure CnItemPro
         Public MaxSize As Integer
         Public OpenFlags As Integer
     End Structure
+
     'Drugs
     Friend Const ItemDrugsLen As Integer = 17
     Structure DgItemPro

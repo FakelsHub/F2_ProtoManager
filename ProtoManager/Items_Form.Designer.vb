@@ -1065,11 +1065,14 @@ Partial Class Items_Form
         '
         'ComboBox18
         '
+        Me.ComboBox18.DropDownHeight = 120
         Me.ComboBox18.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox18.DropDownWidth = 200
         Me.ComboBox18.FormattingEnabled = True
+        Me.ComboBox18.IntegralHeight = False
         Me.ComboBox18.Items.AddRange(New Object() {"None"})
         Me.ComboBox18.Location = New System.Drawing.Point(277, 208)
-        Me.ComboBox18.MaxDropDownItems = 15
+        Me.ComboBox18.MaxDropDownItems = 20
         Me.ComboBox18.Name = "ComboBox18"
         Me.ComboBox18.Size = New System.Drawing.Size(142, 22)
         Me.ComboBox18.TabIndex = 67
@@ -2321,11 +2324,11 @@ Partial Class Items_Form
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Action"
         '
-        'CheckBox11
+        'cbPickup
         '
         Me.cbPickup.AutoSize = True
         Me.cbPickup.Location = New System.Drawing.Point(6, 118)
-        Me.cbPickup.Name = "CheckBox11"
+        Me.cbPickup.Name = "cbPickup"
         Me.cbPickup.Size = New System.Drawing.Size(57, 18)
         Me.cbPickup.TabIndex = 36
         Me.cbPickup.Text = "Pickup"
@@ -2344,32 +2347,32 @@ Partial Class Items_Form
         Me.CheckBox10.Text = "Talk"
         Me.CheckBox10.UseVisualStyleBackColor = True
         '
-        'CheckBox9
+        'cbLook
         '
         Me.cbLook.AutoSize = True
         Me.cbLook.Cursor = System.Windows.Forms.Cursors.Default
         Me.cbLook.Location = New System.Drawing.Point(6, 69)
-        Me.cbLook.Name = "CheckBox9"
+        Me.cbLook.Name = "cbLook"
         Me.cbLook.Size = New System.Drawing.Size(49, 18)
         Me.cbLook.TabIndex = 34
         Me.cbLook.Text = "Look"
         Me.cbLook.UseVisualStyleBackColor = True
         '
-        'CheckBox8
+        'cbUseOn
         '
         Me.cbUseOn.AutoSize = True
         Me.cbUseOn.Location = New System.Drawing.Point(6, 44)
-        Me.cbUseOn.Name = "CheckBox8"
+        Me.cbUseOn.Name = "cbUseOn"
         Me.cbUseOn.Size = New System.Drawing.Size(62, 18)
         Me.cbUseOn.TabIndex = 33
         Me.cbUseOn.Text = "Use On"
         Me.cbUseOn.UseVisualStyleBackColor = True
         '
-        'CheckBox7
+        'cbUse
         '
         Me.cbUse.AutoSize = True
         Me.cbUse.Location = New System.Drawing.Point(6, 19)
-        Me.cbUse.Name = "CheckBox7"
+        Me.cbUse.Name = "cbUse"
         Me.cbUse.Size = New System.Drawing.Size(45, 18)
         Me.cbUse.TabIndex = 32
         Me.cbUse.Text = "Use"
@@ -2500,12 +2503,12 @@ Partial Class Items_Form
         Me.CheckBox5.Text = "Light Thru"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
-        'CheckBox13
+        'cbHiddenItem
         '
         Me.cbHiddenItem.AutoSize = True
         Me.cbHiddenItem.BackColor = System.Drawing.Color.Transparent
         Me.cbHiddenItem.Location = New System.Drawing.Point(106, 125)
-        Me.cbHiddenItem.Name = "CheckBox13"
+        Me.cbHiddenItem.Name = "cbHiddenItem"
         Me.cbHiddenItem.Size = New System.Drawing.Size(81, 18)
         Me.cbHiddenItem.TabIndex = 31
         Me.cbHiddenItem.Text = "Hidden Item"
@@ -2899,14 +2902,14 @@ Partial Class Items_Form
         Me.TextBox33.TabIndex = 100
         Me.TextBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'Button6
+        'btnSave
         '
         Me.btnSave.Enabled = False
         Me.btnSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.OrangeRed
-        Me.btnSave.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.btnSave.Image = CType(resources.GetObject("btnSave.Image"), System.Drawing.Image)
         Me.btnSave.Location = New System.Drawing.Point(622, 262)
-        Me.btnSave.Name = "Button6"
+        Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(74, 40)
         Me.btnSave.TabIndex = 106
         Me.btnSave.Text = "Save Pro"

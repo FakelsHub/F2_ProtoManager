@@ -14,7 +14,7 @@ Module ProFiles
     End Enum
 
     ''' <summary>
-    ''' Возвращает имя Frm файла для инвентаря(ivent), или имя FID предмета, если файл для инвентаря не определен.  
+    ''' Возвращает имя Frm файла для инвентаря(ivent), или имя FID предмета, если файл для инвентаря не определен.
     ''' </summary>
     Friend Function GetItemInvenFID(ByVal nPro As Integer, ByRef Inventory As Boolean) As String
         Dim FID As Integer = -1
@@ -64,7 +64,7 @@ Module ProFiles
         File.Move("template", nProFile)
         If proRO Then File.SetAttributes(nProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
 
-        'Log 
+        'Log
         Main.PrintLog("Create Pro: " & nProFile)
     End Sub
 
@@ -287,6 +287,32 @@ Module ProFiles
     ''' <summary>
     ''' Сохраняет структуру предмета в pro-файл.
     ''' </summary>
+    Friend Sub SaveItemProData(ByVal pathProFile As String, ByVal itemType As ItemType, ByVal item As ItemPrototype)
+        If File.Exists(pathProFile) Then
+            File.SetAttributes(pathProFile, FileAttributes.Normal)
+            File.Delete(pathProFile) ' удаляем файл для перезаписи его размера.
+        End If
+
+        Select Case itemType
+            Case Prototypes.ItemType.Weapon
+                CType(item, WeaponItemObj).Save(pathProFile)
+            Case Prototypes.ItemType.Armor
+                CType(item, ArmorItemObj).Save(pathProFile)
+            Case Prototypes.ItemType.Drugs
+                CType(item, DrugsItemObj).Save(pathProFile)
+            Case Prototypes.ItemType.Ammo
+                CType(item, AmmoItemObj).Save(pathProFile)
+            Case Prototypes.ItemType.Misc
+                CType(item, MiscItemObj).Save(pathProFile)
+            Case Prototypes.ItemType.Container
+                CType(item, ContainerItemObj).Save(pathProFile)
+            Case Prototypes.ItemType.Key
+                CType(item, KeyItemObj).Save(pathProFile)
+        End Select
+
+        If proRO Then File.SetAttributes(pathProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+    End Sub
+
     Friend Sub SaveItemProData(ByVal PathProFile As String, ByVal iType As Integer,
                               ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro,
                               ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro,
@@ -378,6 +404,14 @@ Module ProFiles
         struct = CType(ConvertBytesToStruct(buffer, struct.GetType), T)
     End Sub
 
+    Friend Sub ReverseLoadData(Of T As Structure)(ByRef buffer() As Byte, ByRef struct As T)
+        ReverseBytes(buffer, buffer.Length)
+
+        Dim mGC As GCHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned)
+        struct = CType(Marshal.PtrToStructure(mGC.AddrOfPinnedObject, struct.GetType), T)
+        mGC.Free()
+    End Sub
+
     Friend Function ReverseSaveData(ByVal struct As Object, ByVal isize As Integer) As Integer()
         Dim bSize As Integer = Marshal.SizeOf(struct)
         Dim bytes(bSize - 1) As Byte
@@ -394,11 +428,19 @@ Module ProFiles
         Return buffer
     End Function
 
+    Friend Function SaveDataReverse(Of T As Structure)(ByVal struct As T) As Byte()
+        Dim bSize As Integer = Marshal.SizeOf(struct)
+        Dim buffer(bSize - 1) As Byte
+        ConvertStructToBytes(buffer, bSize, struct)
+        ReverseBytes(buffer, bSize And Not(&H3))
+        Return buffer
+    End Function
+
     ''' <summary>
     ''' Инвертирует значение в BigEndian и обратно.
     ''' </summary>
     Friend Function ReverseBytes(ByVal value As Integer) As Integer
-        If value = 0 OrElse value = &HFFFFFFFF Then Return value
+        If value = 0 OrElse value = -1 Then Return value
 
         Return (value << 24) Or
                (value And &HFF00) << 8 Or
@@ -426,5 +468,26 @@ Module ProFiles
         mGC.Free()
         Return obj
     End Function
+
+    Private Sub ReverseBytes(ByRef bytes() As Byte, ByVal length As Integer)
+        While (length > 0)
+            length -= 4
+            Array.Reverse(bytes, length, 4)
+        End While
+
+        'Dim n = 0
+        'Do
+        '    Dim i = n + 3       ' i = 3
+        '    Dim v As Byte = bytes(i)
+        '    bytes(i) = bytes(n) ' [3] <- [0]
+        '    bytes(n) = v        ' [0] <- [3]
+        '    i = n + 1           ' i = 1
+        '    n += 2              ' n = 2
+        '    v = bytes(n)
+        '    bytes(n) = bytes(i) ' [2] <- [1]
+        '    bytes(i) = v        ' [1] <- [2]
+        '    n += 2              ' n = 4
+        'Loop While (n < count)
+    End Sub
 
 End Module

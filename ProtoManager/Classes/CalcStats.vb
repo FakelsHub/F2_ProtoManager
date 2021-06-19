@@ -120,17 +120,4 @@
         Return If(formula, (20 + (3 * Luck)), (5 * Luck))
     End Function
 
-
-    Friend Shared Function ArmorScore(ByRef ArItem As Prototypes.ArItemPro) As Integer
-        Dim DT As Integer = ArItem.DTNormal + ArItem.DTLaser + ArItem.DTPlasma + ArItem.DTFire + ArItem.DTElectrical + ArItem.DTExplode + ArItem.DTEMP
-        Dim DR As Integer = ArItem.DRNormal + ArItem.DRLaser + ArItem.DRPlasma + ArItem.DRFire + ArItem.DRElectrical + ArItem.DRExplode + ArItem.DREMP
-        Return ArItem.AC + DT + DR
-    End Function
-
-    Friend Shared Function WeaponScore(ByRef WpItem As Prototypes.WpItemPro) As Integer
-        Dim Score As Integer = Math.Floor(Math.Abs(WpItem.MaxDmg - WpItem.MinDmg) / 2)
-        If (WpItem.Perk > 0) Then Score *= 5
-        Return Score
-    End Function
-
 End Class

@@ -15,7 +15,7 @@ Friend Module Main
 
     Structure ItemsLst
         Friend proFile As String
-        Friend itemType As Integer
+        Friend itemType As ItemType
         Friend itemName As String
     End Structure
 

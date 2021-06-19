@@ -242,7 +242,7 @@ Friend Class Main_Form
         End If
     End Sub
 
-    Private Sub Find_Click(ByVal sender As Object, ByVal e As EventArgs) Handles FindToolStripMenuItem.Click
+    Private Sub Find_Click(sender As Object, e As EventArgs) Handles FindToolStripMenuItem.Click
         Find(sender, True)
     End Sub
 
@@ -251,7 +251,7 @@ Friend Class Main_Form
     End Sub
 
     'поиск ключевого слова
-    Private Sub Find(ByVal sender As Object, ByRef isForward As Boolean)
+    Private Sub Find(sender As Object, isForward As Boolean)
         If tstbSearchText.Text <> Nothing Then
             Dim lstView As ListView
             If TabControl1.SelectedIndex = 0 Then
@@ -265,8 +265,8 @@ Friend Class Main_Form
                 n = If(lstView.FocusedItem IsNot Nothing, lstView.FocusedItem.Index + 1, 0)
                 If n >= lstView.Items.Count Then n = 0
 
-                If SearchLW(n, lstView) = False Then
-                    If n = 0 OrElse SearchLW(0, lstView) = False Then
+                If Misc.SearchLW(n, lstView, tstbSearchText.Text) = False Then
+                    If n = 0 OrElse Misc.SearchLW(0, lstView, tstbSearchText.Text) = False Then
                         tstbSearchText.BackColor = Color.MistyRose
                         Exit Sub
                     End If
@@ -275,8 +275,8 @@ Friend Class Main_Form
                 n = If(lstView.FocusedItem IsNot Nothing, lstView.FocusedItem.Index, lstView.Items.Count)
                 If n = 0 Then n = lstView.Items.Count
 
-                If SearchLWBack(n, lstView) = False Then
-                    If n = lstView.Items.Count OrElse SearchLWBack(lstView.Items.Count, lstView) = False Then
+                If Misc.SearchLWBack(n, lstView, tstbSearchText.Text) = False Then
+                    If n = lstView.Items.Count OrElse Misc.SearchLWBack(lstView.Items.Count, lstView, tstbSearchText.Text) = False Then
                         tstbSearchText.BackColor = Color.MistyRose
                         Exit Sub
                     End If
@@ -297,28 +297,6 @@ Friend Class Main_Form
             lstView.FocusedItem.EnsureVisible()
         End If
     End Sub
-
-    Private Function SearchLW(ByVal n As Integer, ByVal lstView As ListView) As Boolean
-        For i = n To lstView.Items.Count - 1
-            If lstView.Items(i).Text.IndexOf(tstbSearchText.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
-                lstView.Items.Item(i).Selected = True
-                lstView.Items.Item(i).Focused = True
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    Private Function SearchLWBack(ByVal n As Integer, ByVal lstView As ListView) As Boolean
-        For i = n - 1 To 0 Step -1
-            If lstView.Items(i).Text.IndexOf(tstbSearchText.Text.Trim, StringComparison.OrdinalIgnoreCase) <> -1 Then
-                lstView.Items.Item(i).Selected = True
-                lstView.Items.Item(i).Focused = True
-                Return True
-            End If
-        Next
-        Return False
-    End Function
 
     Private Sub ToolStripTextBox1_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles tstbSearchText.KeyDown
         If e.KeyData = Keys.Enter Then

@@ -167,10 +167,18 @@
     <Compile Include="AI_TextForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Classes\Prototypes\AmmoItem.vb" />
+    <Compile Include="Classes\Prototypes\ArmorItem.vb" />
     <Compile Include="Classes\CalcStats.vb" />
     <Compile Include="Classes\Enums.vb" />
     <Compile Include="Classes\Comparer.vb" />
     <Compile Include="Classes\ExtraMod.vb" />
+    <Compile Include="Classes\Prototypes\ContainerItem.vb" />
+    <Compile Include="Classes\Prototypes\DrugsItem.vb" />
+    <Compile Include="Classes\Prototypes\ItemPrototype.vb" />
+    <Compile Include="Classes\Prototypes\KeyItem.vb" />
+    <Compile Include="Classes\Prototypes\MiscItem.vb" />
+    <Compile Include="Classes\Prototypes\WeaponItem.vb" />
     <Compile Include="Modules\GameConfig.vb" />
     <Compile Include="Modules\INIFile.vb" />
     <Compile Include="Classes\ThumbnailImage.vb" />

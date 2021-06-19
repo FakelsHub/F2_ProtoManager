@@ -7,26 +7,8 @@ Imports Enums
 
 Friend Class Items_Form
 
-    Private Enum Gender As Integer
-        Female = 0
-        Male = 1
-    End Enum
+    Private itemObject As ItemPrototype
 
-    Private Enum WeaponType As Integer
-        Big = FlagsExt.BigGun
-        TwoHand = FlagsExt.TwoHand
-        Energy = FlagsExt.Energy
-    End Enum
-
-    Private CommonItem As CmItemPro
-    Private WeaponItem As WpItemPro
-    Private ArmorItem As ArItemPro
-    Private AmmoItem As AmItemPro
-    Private KeyItem As kItemPro
-    Private DrugItem As DgItemPro
-    Private MiscItem As McItemPro
-    Private ContanerItem As CnItemPro
-    '
     Private ReadOnly iLST_Index As Integer  'индекс предмета в lst файле
     Private frmReady As Boolean
     Private ReloadPro As Boolean
@@ -98,29 +80,61 @@ Friend Class Items_Form
 
         If cPath = Nothing Then cPath = DatFiles.CheckFile(ProFile, False)
         ProFile = cPath & ProFile
-        ProFiles.LoadItemProData(ProFile, Items_LST(iLST_Index).itemType, CommonItem, WeaponItem, ArmorItem, AmmoItem, DrugItem, MiscItem, ContanerItem, KeyItem)
+
+        Select Case Items_LST(iLST_Index).itemType
+            Case ItemType.Armor
+                itemObject = New ArmorItemObj(ProFile)
+                cType(itemObject, ArmorItemObj).Load()
+
+            Case ItemType.Container
+                itemObject = New ContainerItemObj(ProFile)
+                cType(itemObject, ContainerItemObj).Load()
+
+            Case ItemType.Drugs
+                itemObject = New DrugsItemObj(ProFile)
+                cType(itemObject, DrugsItemObj).Load()
+
+            Case ItemType.Weapon
+                itemObject = New WeaponItemObj(ProFile)
+                cType(itemObject, WeaponItemObj).Load()
+
+            Case ItemType.Ammo
+                itemObject = New AmmoItemObj(ProFile)
+                cType(itemObject, AmmoItemObj).Load()
+
+            Case ItemType.Misc
+                itemObject = New MiscItemObj(ProFile)
+                cType(itemObject, MiscItemObj).Load()
+
+            Case ItemType.Key
+                itemObject = New KeyItemObj(ProFile)
+                cType(itemObject, KeyItemObj).Load()
+        End Select
     End Sub
 
     Private Sub Items_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        SetCommonValue_Form()
+        SetCommonValue_Form(itemObject)
+        SetFormValues(Items_LST(iLST_Index).itemType)
+
         Me.Text = TextBox29.Text & " [" & Items_LST(iLST_Index).proFile & "]"
-
-        Select Case Items_LST(iLST_Index).itemType
-            Case ItemType.Weapon
-                SetWeaponValue_Form()
-            Case ItemType.Armor
-                SetArmorValue_Form()
-            Case ItemType.Ammo
-                SetAmmoValue_Form()
-            Case ItemType.Container
-                SetContanerValue_Form()
-            Case ItemType.Drugs
-                SetDrugsValue_Form()
-            Case ItemType.Misc
-                SetMiscValue_Form()
-        End Select
-
         frmReady = True
+    End Sub
+
+    Private Sub SetFormValues(iType as ItemType)
+         Select Case iType
+            Case ItemType.Weapon
+                SetWeaponValue_Form(CType(itemObject, WeaponItemObj))
+            Case ItemType.Armor
+                SetArmorValue_Form(CType(itemObject, ArmorItemObj))
+            Case ItemType.Ammo
+                SetAmmoValue_Form(CType(itemObject, AmmoItemObj))
+            Case ItemType.Container
+                SetContanerValue_Form(CType(itemObject, ContainerItemObj))
+            Case ItemType.Drugs
+                SetDrugsValue_Form(CType(itemObject, DrugsItemObj))
+            Case ItemType.Misc
+                SetMiscValue_Form(CType(itemObject, MiscItemObj))
+        End Select
     End Sub
 
     'Возвращает Имя или Описание предмета из msg файла
@@ -131,92 +145,81 @@ Friend Class Items_Form
         Return Messages.GetNameObject(NameID)
     End Function
 
-    Private Sub SetCommonValue_Form()
-        On Error Resume Next
+    Private Sub SetCommonValue_Form(item As ItemPrototype)
+        ComboBox7.SelectedIndex = item.ObjType
 
-        ComboBox7.SelectedIndex = CommonItem.ObjType
-        TextBox29.Text = GetNameItemMsg(CommonItem.DescID)
-        TextBox30.Text = GetNameItemMsg(CommonItem.DescID, True)
-        TextBox33.Text = CommonItem.ProtoID
+        TextBox29.Text = GetNameItemMsg(item.DescID)
+        TextBox30.Text = GetNameItemMsg(item.DescID, True)
+        TextBox33.Text = item.ProtoID.ToString()
         TextBox33.Text = StrDup(8 - Len(TextBox33.Text), "0") & TextBox33.Text
-        ComboBox1.SelectedIndex = CommonItem.FrmID
-        If CommonItem.InvFID <> -1 Then ComboBox2.SelectedIndex = 1 + (CommonItem.InvFID - &H7000000) Else ComboBox2.SelectedIndex = 0
-        ComboBox8.SelectedIndex = CommonItem.MaterialID
-        If CommonItem.ScriptID <> -1 Then ComboBox9.SelectedIndex = 1 + (CommonItem.ScriptID - &H3000000) Else ComboBox9.SelectedIndex = 0
-        '
-        SetSoundID(CommonItem.SoundID, ComboBox3)
-        '
-        NumericUpDown1.Value = CommonItem.Cost
-        NumericUpDown36.Value = CommonItem.LightDis
-        NumericUpDown37.Value = Math.Round(CommonItem.LightInt * 100 / &HFFFF)
-        NumericUpDown38.Value = CommonItem.Weight
-        NumericUpDown39.Value = CommonItem.Size
-        NumericUpDown64.Value = CommonItem.DescID
-        'Flags
-        CheckBox1.Checked = CommonItem.Flags And &H8
-        CheckBox2.Checked = CommonItem.Flags And &H10
-        CheckBox3.Checked = CommonItem.Flags And &H800
-        CheckBox4.Checked = CommonItem.Flags And &H80000000
-        CheckBox5.Checked = CommonItem.Flags And &H20000000
-        'CheckBox12.Checked = CommonItem.Falgs And &H20
-        CheckBox24.Checked = CommonItem.Flags And &H1000
 
-        CheckBox6.Checked = CommonItem.Flags And &H8000
+        ComboBox1.SelectedIndex = item.FrmID
+        ComboBox2.SelectedIndex = If ((item.InvFID <> -1), 1 + (item.InvFID - &H7000000), 0)
+        ComboBox8.SelectedIndex = item.MaterialID
+        ComboBox9.SelectedIndex = If ((item.ScriptID <> -1), 1 + (item.ScriptID - &H3000000), 0)
+        '
+        SetSoundID(item.SoundID, ComboBox3)
+        '
+        NumericUpDown1.Value = item.Cost
+        NumericUpDown36.Value = item.LightDis
+        NumericUpDown37.Value = CDec(Math.Round(item.LightInt * 100 / &HFFFF)) ' процент 0-100
+        NumericUpDown38.Value = item.Weight
+        NumericUpDown39.Value = item.Size
+        NumericUpDown64.Value = item.DescID
+
+        'Flags
+        CheckBox1.Checked = item.IsFlat
+        CheckBox2.Checked = item.IsNoBlock
+        CheckBox3.Checked = item.IsMultiHex
+        CheckBox4.Checked = item.IsShootThru
+        CheckBox5.Checked = item.IsLightThru
+        'CheckBox12.Checked = item.IsLighting
+        CheckBox24.Checked = item.IsNoHighlight
+
+        CheckBox6.Checked = item.IsTransNone
         If Not CheckBox6.Checked Then
-            RadioButton1.Checked = CommonItem.Flags And &H10000
-            RadioButton4.Checked = CommonItem.Flags And &H20000
-            RadioButton2.Checked = CommonItem.Flags And &H40000
-            RadioButton5.Checked = CommonItem.Flags And &H80000
-            RadioButton3.Checked = CommonItem.Flags And &H4000
+            RadioButton1.Checked = item.IsTransWall
+            RadioButton4.Checked = item.IsTransGlass
+            RadioButton2.Checked = item.IsTransSteam
+            RadioButton5.Checked = item.IsTransEnergy
+            RadioButton3.Checked = item.IsTransRed
         End If
 
-        cbUse.Checked = CBool(CommonItem.FlagsExt And FlagsExt.Use)
-        cbUseOn.Checked = CBool(CommonItem.FlagsExt And FlagsExt.UseOn)
-        cbLook.Checked = CBool(CommonItem.FlagsExt And FlagsExt.Look)
-        'CheckBox10.Checked = CBool(CommonItem.FalgsExt And FlagsExt.Talk)
-        cbPickup.Checked = CBool(CommonItem.FlagsExt And FlagsExt.PickUp)
-        cbHiddenItem.Checked = CBool(CommonItem.FlagsExt And FlagsExt.HiddenItem)
-
+        cbUse.Checked = item.IsUse
+        cbUseOn.Checked = item.IsUseOn
+        cbLook.Checked = item.IsLook
+        'CheckBox10.Checked = item.IsTalk
+        cbPickup.Checked = item.IsPickUp
+        cbHiddenItem.Checked = item.IsHiddenItem
     End Sub
 
-    Private Sub SetWeaponValue_Form()
-        On Error Resume Next
+    Private Sub SetWeaponValue_Form(weapon As WeaponItemObj)
+        NumericUpDown2.Value = weapon.MinDmg
+        NumericUpDown3.Value = weapon.MaxDmg
+        NumericUpDown4.Value = weapon.MaxRangeP
+        NumericUpDown5.Value = weapon.MaxRangeS
+        NumericUpDown6.Value = weapon.MinST
+        NumericUpDown7.Value = weapon.MPCostP
+        NumericUpDown8.Value = weapon.MPCostS
+        NumericUpDown9.Value = weapon.CritFail
+        NumericUpDown10.Value = weapon.Rounds
+        NumericUpDown11.Value = weapon.MaxAmmo
 
-        NumericUpDown2.Value = WeaponItem.MinDmg
-        NumericUpDown3.Value = WeaponItem.MaxDmg
-        NumericUpDown4.Value = WeaponItem.MaxRangeP
-        NumericUpDown5.Value = WeaponItem.MaxRangeS
-        NumericUpDown6.Value = WeaponItem.MinST
-        NumericUpDown7.Value = WeaponItem.MPCostP
-        NumericUpDown8.Value = WeaponItem.MPCostS
-        NumericUpDown9.Value = WeaponItem.CritFail
-        NumericUpDown10.Value = WeaponItem.Rounds
-        NumericUpDown11.Value = WeaponItem.MaxAmmo
+        ComboBox4.SelectedIndex = weapon.AnimCode
+        ComboBox5.SelectedIndex = weapon.DmgType
 
-        ComboBox4.SelectedIndex = WeaponItem.AnimCode
-        ComboBox5.SelectedIndex = WeaponItem.DmgType
-
-        SetSoundID(WeaponItem.wSoundID, cmbWeaponSoundID)
+        SetSoundID(weapon.wSoundID, cmbWeaponSoundID)
         'For n As SByte = 0 To cmbWeaponSoundID.Items.Count - 1
-        '    If CChar(cmbWeaponSoundID.Items(n)) = Chr(WeaponItem.wSoundID) Then cmbWeaponSoundID.SelectedIndex = n
+        '    If CChar(cmbWeaponSoundID.Items(n)) = Chr(weapon.wSoundID) Then cmbWeaponSoundID.SelectedIndex = n
         'Next
 
-        If WeaponItem.ProjPID <> -1 Then
-            ComboBox10.SelectedIndex = WeaponItem.ProjPID - &H5000000
-        Else
-            ComboBox10.SelectedIndex = 0
-        End If
-        If WeaponItem.Perk <> -1 Then
-            ComboBox11.SelectedIndex = WeaponItem.Perk + 1
-        Else
-            ComboBox11.SelectedIndex = 0
-        End If
+        ComboBox10.SelectedIndex = If ((weapon.ProjPID <> -1), weapon.ProjPID - &H5000000, 0)
+        ComboBox11.SelectedIndex = If ((weapon.Perk <> -1), weapon.Perk + 1, 0)
+        ComboBox12.SelectedIndex = weapon.Caliber
 
-        ComboBox12.SelectedIndex = WeaponItem.Caliber
-
-        If WeaponItem.AmmoPID <> -1 Then
-            Dim aPid As Integer = WeaponItem.AmmoPID
-            For n As SByte = 0 To UBound(AmmoPID)
+        If weapon.AmmoPID <> -1 Then
+            Dim aPid As Integer = weapon.AmmoPID
+            For n As Integer = 0 To UBound(AmmoPID)
                 If aPid = AmmoPID(n) Then
                     ComboBox13.SelectedIndex = n + 1
                     Exit For
@@ -226,61 +229,57 @@ Friend Class Items_Form
             ComboBox13.SelectedIndex = 0
         End If
 
-        ComboBox14.SelectedIndex = CommonItem.FlagsExt And &HF
-        ComboBox15.SelectedIndex = (CommonItem.FlagsExt >> 4) And &HF
-        cbBigGun.Checked = CommonItem.FlagsExt And WeaponType.Big
-        cbTwoHand.Checked = CommonItem.FlagsExt And WeaponType.TwoHand
-        cbEnergyGun.Checked = CommonItem.FlagsExt And WeaponType.Energy
+        ComboBox14.SelectedIndex = weapon.PrimaryAttackType
+        ComboBox15.SelectedIndex = weapon.SecondaryAttackType
 
-        lblWeaponScore.Text = CalcStats.WeaponScore(WeaponItem)
+        cbBigGun.Checked = weapon.IsBigGun
+        cbTwoHand.Checked = weapon.IsTwoHand
+        cbEnergyGun.Checked = weapon.IsEnergy
 
+        lblWeaponScore.Text = weapon.WeaponScore().ToString
     End Sub
 
-    Private Sub SetArmorValue_Form()
-        On Error Resume Next
+    Private Sub SetArmorValue_Form(armor As ArmorItemObj)
+        NumericUpDown12.Value = armor.AC
 
-        NumericUpDown12.Value = ArmorItem.AC
+        NumericUpDown56.Value = armor.DTNormal
+        NumericUpDown57.Value = armor.DTLaser
+        NumericUpDown58.Value = armor.DTFire
+        NumericUpDown59.Value = armor.DTPlasma
+        NumericUpDown60.Value = armor.DTElectrical
+        NumericUpDown61.Value = armor.DTEMP
+        NumericUpDown62.Value = armor.DTExplode
 
-        NumericUpDown56.Value = ArmorItem.DTNormal
-        NumericUpDown57.Value = ArmorItem.DTLaser
-        NumericUpDown58.Value = ArmorItem.DTFire
-        NumericUpDown59.Value = ArmorItem.DTPlasma
-        NumericUpDown60.Value = ArmorItem.DTElectrical
-        NumericUpDown61.Value = ArmorItem.DTEMP
-        NumericUpDown62.Value = ArmorItem.DTExplode
+        NumericUpDown71.Value = armor.DRNormal
+        NumericUpDown70.Value = armor.DRLaser
+        NumericUpDown69.Value = armor.DRFire
+        NumericUpDown68.Value = armor.DRPlasma
+        NumericUpDown67.Value = armor.DRElectrical
+        NumericUpDown65.Value = armor.DREMP
+        NumericUpDown63.Value = armor.DRExplode
 
-        NumericUpDown71.Value = ArmorItem.DRNormal
-        NumericUpDown70.Value = ArmorItem.DRLaser
-        NumericUpDown69.Value = ArmorItem.DRFire
-        NumericUpDown68.Value = ArmorItem.DRPlasma
-        NumericUpDown67.Value = ArmorItem.DRElectrical
-        NumericUpDown65.Value = ArmorItem.DREMP
-        NumericUpDown63.Value = ArmorItem.DRExplode
+        ComboBox16.SelectedIndex = armor.MaleFID - &H1000000
+        ComboBox17.SelectedIndex = armor.FemaleFID - &H1000000
 
-        ComboBox16.SelectedIndex = ArmorItem.MaleFID - &H1000000
-        ComboBox17.SelectedIndex = ArmorItem.FemaleFID - &H1000000
+        ComboBox18.SelectedIndex = If ((armor.Perk <> -1), armor.Perk + 1, 0)
 
-        If ArmorItem.Perk <> -1 Then ComboBox18.SelectedIndex = ArmorItem.Perk + 1 Else ComboBox18.SelectedIndex = 0
-
-        lblArmorScore.Text = CalcStats.ArmorScore(ArmorItem)
+        lblArmorScore.Text = armor.ArmorScore().ToString
     End Sub
 
-    Private Sub SetAmmoValue_Form()
-        On Error Resume Next
-
-        ComboBox23.SelectedIndex = AmmoItem.Caliber
-        NumericUpDown26.Value = AmmoItem.Quantity
-        NumericUpDown27.Value = AmmoItem.ACAdjust
-        NumericUpDown28.Value = AmmoItem.DRAdjust
-        NumericUpDown29.Value = AmmoItem.DamMult
-        NumericUpDown30.Value = AmmoItem.DamDiv
+    Private Sub SetAmmoValue_Form(ammo As AmmoItemObj)
+        ComboBox23.SelectedIndex = ammo.Caliber
+        NumericUpDown26.Value = ammo.Quantity
+        NumericUpDown27.Value = ammo.ACAdjust
+        NumericUpDown28.Value = ammo.DRAdjust
+        NumericUpDown29.Value = ammo.DamMult
+        NumericUpDown30.Value = ammo.DamDiv
 
         GroupBox24.Enabled = False
     End Sub
 
-    Private Sub SetMiscValue_Form()
-        If MiscItem.PowerPID <> -1 Then
-            Dim Pid As Integer = MiscItem.PowerPID
+    Private Sub SetMiscValue_Form(item As MiscItemObj)
+        If item.PowerPID <> -1 Then
+            Dim Pid As Integer = item.PowerPID
             For n = 0 To UBound(AmmoPID)
                 If Pid = AmmoPID(n) Then
                     ComboBox24.SelectedIndex = n + 1
@@ -291,66 +290,43 @@ Friend Class Items_Form
             ComboBox24.SelectedIndex = 0
         End If
 
-        If (MiscItem.Charges >= 0) And (MiscItem.Charges <= 32000) Then
-            NumericUpDown31.Value = MiscItem.Charges
+        If (item.Charges >= 0) And (item.Charges <= 32000) Then
+            NumericUpDown31.Value = item.Charges
         Else
             NumericUpDown31.Value = -1
         End If
 
-        On Error Resume Next
-        ComboBox25.SelectedIndex = MiscItem.PowerType
+        ComboBox25.SelectedIndex = item.PowerType
         GroupBox23.Enabled = False
     End Sub
 
-    Private Sub SetContanerValue_Form()
-        On Error Resume Next
-
-        NumericUpDown32.Value = ContanerItem.MaxSize
-        CheckBox15.Checked = CBool(ContanerItem.OpenFlags And &H1)
+    Private Sub SetContanerValue_Form(item As ContainerItemObj)
+        NumericUpDown32.Value = item.MaxSize
+        CheckBox15.Checked = item.GetOpenFlag
         GroupBox25.Enabled = True
     End Sub
 
-    Private Sub SetDrugsValue_Form()
-        On Error Resume Next
+    Private Sub SetDrugsValue_Form(drugs As DrugsItemObj)
+        ComboBox19.SelectedIndex = If ((drugs.Stat0 <> -1), 2 + drugs.Stat0, 1)
+        ComboBox20.SelectedIndex = If ((drugs.Stat1 <> -1), 2 + drugs.Stat1, 1)
+        ComboBox21.SelectedIndex = If ((drugs.Stat2 <> -1), 2 + drugs.Stat2, 1)
 
-        If DrugItem.Stat0 <> -1 Then
-            ComboBox19.SelectedIndex = 2 + DrugItem.Stat0
-        Else
-            ComboBox19.SelectedIndex = 1
-        End If
+        NumericUpDown13.Value = drugs.iAmount0
+        NumericUpDown14.Value = drugs.iAmount1
+        NumericUpDown15.Value = drugs.iAmount2
+        NumericUpDown16.Value = drugs.fAmount0
+        NumericUpDown17.Value = drugs.fAmount1
+        NumericUpDown18.Value = drugs.fAmount2
+        NumericUpDown19.Value = drugs.sAmount0
+        NumericUpDown20.Value = drugs.sAmount1
+        NumericUpDown21.Value = drugs.sAmount2
+        NumericUpDown22.Value = drugs.Duration1
+        NumericUpDown23.Value = drugs.Duration2
 
-        If DrugItem.Stat1 <> -1 Then
-            ComboBox20.SelectedIndex = 2 + DrugItem.Stat1
-        Else
-            ComboBox20.SelectedIndex = 1
-        End If
+        ComboBox22.SelectedIndex = if ((drugs.W_Effect <> -1), 1 + drugs.W_Effect, 0)
 
-        If DrugItem.Stat2 <> -1 Then
-            ComboBox21.SelectedIndex = 2 + DrugItem.Stat2
-        Else
-            ComboBox21.SelectedIndex = 1
-        End If
-
-        NumericUpDown13.Value = DrugItem.iAmount0
-        NumericUpDown14.Value = DrugItem.iAmount1
-        NumericUpDown15.Value = DrugItem.iAmount2
-        NumericUpDown16.Value = DrugItem.fAmount0
-        NumericUpDown17.Value = DrugItem.fAmount1
-        NumericUpDown18.Value = DrugItem.fAmount2
-        NumericUpDown19.Value = DrugItem.sAmount0
-        NumericUpDown20.Value = DrugItem.sAmount1
-        NumericUpDown21.Value = DrugItem.sAmount2
-        NumericUpDown22.Value = DrugItem.Duration1
-        NumericUpDown23.Value = DrugItem.Duration2
-
-        If DrugItem.W_Effect <> -1 Then
-            ComboBox22.SelectedIndex = 1 + DrugItem.W_Effect
-        Else
-            ComboBox22.SelectedIndex = 0
-        End If
-
-        NumericUpDown24.Value = DrugItem.AddictionRate
-        NumericUpDown25.Value = DrugItem.W_Onset
+        NumericUpDown24.Value = drugs.AddictionRate
+        NumericUpDown25.Value = drugs.W_Onset
     End Sub
 
     Private Sub ComboBox1_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged
@@ -377,7 +353,7 @@ Friend Class Items_Form
             Else
                 Main.PrintLog("Error frm convert: " + pfile)
             End If
-            If ThumbnailImage.ItemsImage.ContainsKey(frm) = False Then ThumbnailImage.ItemsImage.Add(frm, img.Clone)
+            If ThumbnailImage.ItemsImage.ContainsKey(frm) = False Then ThumbnailImage.ItemsImage.Add(frm, CType(img.Clone, Image))
         End If
         PictureBox1.BackgroundImage = img
     End Sub
@@ -457,159 +433,166 @@ Friend Class Items_Form
     End Function
 
     'Save to Pro
-    Private Sub Save_Pro(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+    Private Sub SaveProto(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
         'Common
-        CommonItem.FrmID = ComboBox1.SelectedIndex
-        If ComboBox2.SelectedIndex > 0 Then CommonItem.InvFID = (ComboBox2.SelectedIndex - 1) + &H7000000 Else CommonItem.InvFID = &HFFFFFFFF
-        CommonItem.MaterialID = ComboBox8.SelectedIndex
         'CommonItem.ObjType = ComboBox7.SelectedIndex
-        If ComboBox9.SelectedIndex > 0 Then CommonItem.ScriptID = (ComboBox9.SelectedIndex - 1) + &H3000000 Else CommonItem.ScriptID = &HFFFFFFFF
+        itemObject.FrmID = ComboBox1.SelectedIndex
+        itemObject.InvFID =  If (ComboBox2.SelectedIndex > 0, (ComboBox2.SelectedIndex - 1) + &H7000000, -1)
+        itemObject.MaterialID = ComboBox8.SelectedIndex
+        itemObject.ScriptID = If (ComboBox9.SelectedIndex > 0, (ComboBox9.SelectedIndex - 1) + &H3000000, -1)
+        itemObject.SoundID = GetSoundID(ComboBox3.Text)
 
-        CommonItem.SoundID = GetSoundID(ComboBox3.Text)
-        CommonItem.Cost = NumericUpDown1.Value
-        CommonItem.LightDis = NumericUpDown36.Value
-        CommonItem.LightInt = Math.Round((NumericUpDown37.Value * &HFFFF) / 100)
-        CommonItem.Weight = NumericUpDown38.Value
-        CommonItem.Size = NumericUpDown39.Value
-        CommonItem.DescID = NumericUpDown64.Value
+        itemObject.Cost = CInt(NumericUpDown1.Value)
+        itemObject.LightDis = CInt(NumericUpDown36.Value)
+        itemObject.LightInt = CInt(Math.Round((NumericUpDown37.Value * &HFFFF) / 100))
+        itemObject.Weight = CInt(NumericUpDown38.Value)
+        itemObject.Size = CInt(NumericUpDown39.Value)
+        itemObject.DescID = CInt(NumericUpDown64.Value)
+
         'Flags
-        Dim flags As Integer = CommonItem.Flags
-        If CheckBox1.Checked Then flags = flags Or &H8 Else flags = flags And (Not &H8)
-        If CheckBox2.Checked Then flags = flags Or &H10 Else flags = flags And (Not &H10)
-        If CheckBox3.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
-        If CheckBox4.Checked Then flags = flags Or &H80000000 Else flags = flags And (Not &H80000000)
-        If CheckBox5.Checked Then flags = flags Or &H20000000 Else flags = flags And (Not &H20000000)
-        If CheckBox24.Checked Then flags = flags Or &H1000 Else flags = flags And (Not &H1000)
+        itemObject.IsFlat = CheckBox1.Checked
+        itemObject.IsNoBlock = CheckBox2.Checked
+        itemObject.IsMultiHex = CheckBox3.Checked
+        itemObject.IsShootThru = CheckBox4.Checked
+        itemObject.IsLightThru = CheckBox5.Checked
+        itemObject.IsNoHighlight = CheckBox24.Checked
 
-        flags = flags And &HFFF03FFF
+        ' удаляем взаимозаменяемые флаги TransNone/TransRed/TransWall/TransGlass/TransSteam/TransEnergy
+        itemObject.Flags = itemObject.Flags And &HFFF03FFF
         If CheckBox6.Checked Then
-            flags = flags Or &H8000
+            itemObject.IsTransNone = True
         Else
             If RadioButton1.Checked Then
-                flags = flags Or &H10000
+                itemObject.IsTransWall = True
             ElseIf RadioButton4.Checked Then
-                flags = flags Or &H20000
+                itemObject.IsTransGlass = True
             ElseIf RadioButton2.Checked Then
-                flags = flags Or &H40000
+                itemObject.IsTransSteam = True
             ElseIf RadioButton5.Checked Then
-                flags = flags Or &H80000
+                itemObject.IsTransEnergy = True
             ElseIf RadioButton3.Checked Then
-                flags = flags Or &H4000
+                itemObject.IsTransRed = True
             End If
         End If
-        CommonItem.Flags = flags
 
-        flags = CommonItem.FlagsExt
-        If cbUse.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
-        If cbUseOn.Checked Then flags = flags Or &H1000 Else flags = flags And (Not &H1000)
-        If cbLook.Checked Then flags = flags Or &H2000 Else flags = flags And (Not &H2000)
-        'If CheckBox10.Checked Then flags = flags Or &H4000 Else flags = flags And (Not &H4000)
-        If cbPickup.Checked Then flags = flags Or &H8000 Else flags = flags And (Not &H8000)
-        If cbHiddenItem.Checked Then flags = flags Or FlagsExt.HiddenItem Else flags = flags And Not (FlagsExt.HiddenItem)
-        CommonItem.FlagsExt = flags
+        itemObject.IsUse = cbUse.Checked
+        itemObject.IsUseOn = cbUseOn.Checked
+        itemObject.IsLook = cbLook.Checked
+        itemObject.IsPickUp = cbPickup.Checked
+        itemObject.IsTalk = False ' CheckBox10.Checked
+        itemObject.IsHiddenItem = cbHiddenItem.Checked
 
-        Select Case ComboBox7.SelectedIndex
+        dim iType As ItemType = Ctype(ComboBox7.SelectedIndex, ItemType)
+        Select Case iType
             Case ItemType.Weapon
                 Items_LST(iLST_Index).itemType = ItemType.Weapon
-                WeaponItem.MinDmg = NumericUpDown2.Value
-                WeaponItem.MaxDmg = NumericUpDown3.Value
-                WeaponItem.MaxRangeP = NumericUpDown4.Value
-                WeaponItem.MaxRangeS = NumericUpDown5.Value
-                WeaponItem.MinST = NumericUpDown6.Value
-                WeaponItem.MPCostP = NumericUpDown7.Value
-                WeaponItem.MPCostS = NumericUpDown8.Value
-                WeaponItem.CritFail = NumericUpDown9.Value
-                WeaponItem.Rounds = NumericUpDown10.Value
-                WeaponItem.MaxAmmo = NumericUpDown11.Value
-                WeaponItem.AnimCode = ComboBox4.SelectedIndex
-                WeaponItem.DmgType = ComboBox5.SelectedIndex
-                WeaponItem.wSoundID = GetSoundID(cmbWeaponSoundID.Text)
 
-                If ComboBox10.SelectedIndex > 0 Then WeaponItem.ProjPID = ComboBox10.SelectedIndex + &H5000000 Else WeaponItem.ProjPID = &HFFFFFFFF
-                If ComboBox11.SelectedIndex > 0 Then WeaponItem.Perk = ComboBox11.SelectedIndex - 1 Else WeaponItem.Perk = &HFFFFFFFF
-                WeaponItem.Caliber = ComboBox12.SelectedIndex
-                If ComboBox13.SelectedIndex > 0 Then WeaponItem.AmmoPID = AmmoPID(ComboBox13.SelectedIndex - 1) Else WeaponItem.AmmoPID = &HFFFFFFFF
-                flags = CommonItem.FlagsExt And &HFFFFFF00
-                flags = flags Or ComboBox15.SelectedIndex << 4 Or ComboBox14.SelectedIndex
-                If cbBigGun.Checked Then flags = flags Or WeaponType.Big Else flags = flags And (Not WeaponType.Big)
-                If cbTwoHand.Checked Then flags = flags Or WeaponType.TwoHand Else flags = flags And (Not WeaponType.TwoHand)
-                If cbEnergyGun.Checked Then flags = flags Or WeaponType.Energy Else flags = flags And (Not WeaponType.Energy)
-                CommonItem.FlagsExt = flags
-                'Save
-                SubSave_Pro(ItemType.Weapon)
+                Dim weapon = CType(itemObject, WeaponItemObj)
+                weapon.MinDmg = CInt(NumericUpDown2.Value)
+                weapon.MaxDmg = CInt(NumericUpDown3.Value)
+                weapon.MaxRangeP = CInt(NumericUpDown4.Value)
+                weapon.MaxRangeS = CInt(NumericUpDown5.Value)
+                weapon.MinST = CInt(NumericUpDown6.Value)
+                weapon.MPCostP = CInt(NumericUpDown7.Value)
+                weapon.MPCostS = CInt(NumericUpDown8.Value)
+                weapon.CritFail = CInt(NumericUpDown9.Value)
+                weapon.Rounds = CInt(NumericUpDown10.Value)
+                weapon.MaxAmmo = CInt(NumericUpDown11.Value)
+                weapon.AnimCode = ComboBox4.SelectedIndex
+                weapon.DmgType = CType(ComboBox5.SelectedIndex, WeaponItemObj.DamageType)
+                weapon.wSoundID = GetSoundID(cmbWeaponSoundID.Text)
+
+                weapon.ProjPID = If (ComboBox10.SelectedIndex > 0, ComboBox10.SelectedIndex + &H5000000, -1)
+                weapon.Perk = If (ComboBox11.SelectedIndex > 0, ComboBox11.SelectedIndex - 1, -1)
+                weapon.Caliber = ComboBox12.SelectedIndex
+                weapon.AmmoPID = If (ComboBox13.SelectedIndex > 0, AmmoPID(ComboBox13.SelectedIndex - 1), -1)
+
+                weapon.PrimaryAttackType = ComboBox14.SelectedIndex
+                weapon.SecondaryAttackType =  ComboBox15.SelectedIndex
+
+                weapon.IsTwoHand = cbTwoHand.Checked
+                weapon.IsBigGun = cbBigGun.Checked
+                weapon.IsEnergy = cbEnergyGun.Checked
+
             Case ItemType.Armor
                 Items_LST(iLST_Index).itemType = ItemType.Armor
-                ArmorItem.DTNormal = NumericUpDown56.Value
-                ArmorItem.DTLaser = NumericUpDown57.Value
-                ArmorItem.DTFire = NumericUpDown58.Value
-                ArmorItem.DTPlasma = NumericUpDown59.Value
-                ArmorItem.DTElectrical = NumericUpDown60.Value
-                ArmorItem.DTEMP = NumericUpDown61.Value
-                ArmorItem.DTExplode = NumericUpDown62.Value
-                ArmorItem.DRNormal = NumericUpDown71.Value
-                ArmorItem.DRLaser = NumericUpDown70.Value
-                ArmorItem.DRFire = NumericUpDown69.Value
-                ArmorItem.DRPlasma = NumericUpDown68.Value
-                ArmorItem.DRElectrical = NumericUpDown67.Value
-                ArmorItem.DREMP = NumericUpDown65.Value
-                ArmorItem.DRExplode = NumericUpDown63.Value
-                ArmorItem.AC = NumericUpDown12.Value
-                ArmorItem.MaleFID = ComboBox16.SelectedIndex + &H1000000
-                ArmorItem.FemaleFID = ComboBox17.SelectedIndex + &H1000000
-                If ComboBox18.SelectedIndex > 0 Then ArmorItem.Perk = ComboBox18.SelectedIndex - 1 Else ArmorItem.Perk = &HFFFFFFFF
-                'Save
-                SubSave_Pro(ItemType.Armor)
+
+                Dim armor = CType(itemObject, ArmorItemObj)
+                armor.DTNormal = CInt(NumericUpDown56.Value)
+                armor.DTLaser = CInt(NumericUpDown57.Value)
+                armor.DTFire = CInt(NumericUpDown58.Value)
+                armor.DTPlasma = CInt(NumericUpDown59.Value)
+                armor.DTElectrical = CInt(NumericUpDown60.Value)
+                armor.DTEMP = CInt(NumericUpDown61.Value)
+                armor.DTExplode = CInt(NumericUpDown62.Value)
+                armor.DRNormal = CInt(NumericUpDown71.Value)
+                armor.DRLaser = CInt(NumericUpDown70.Value)
+                armor.DRFire = CInt(NumericUpDown69.Value)
+                armor.DRPlasma = CInt(NumericUpDown68.Value)
+                armor.DRElectrical = CInt(NumericUpDown67.Value)
+                armor.DREMP = CInt(NumericUpDown65.Value)
+                armor.DRExplode = CInt(NumericUpDown63.Value)
+                armor.AC = CInt(NumericUpDown12.Value)
+                armor.MaleFID = ComboBox16.SelectedIndex + &H1000000
+                armor.FemaleFID = ComboBox17.SelectedIndex + &H1000000
+                armor.Perk = If ((ComboBox18.SelectedIndex > 0), ComboBox18.SelectedIndex - 1, -1)
+
             Case ItemType.Drugs
                 Items_LST(iLST_Index).itemType = ItemType.Drugs
-                If ComboBox19.SelectedIndex > 1 Then DrugItem.Stat0 = ComboBox19.SelectedIndex - 2 Else DrugItem.Stat0 = (&HFFFFFFFE + ComboBox19.SelectedIndex)
-                If ComboBox20.SelectedIndex > 1 Then DrugItem.Stat1 = ComboBox20.SelectedIndex - 2 Else DrugItem.Stat1 = (&HFFFFFFFE + ComboBox20.SelectedIndex)
-                If ComboBox21.SelectedIndex > 1 Then DrugItem.Stat2 = ComboBox21.SelectedIndex - 2 Else DrugItem.Stat2 = (&HFFFFFFFE + ComboBox21.SelectedIndex)
-                DrugItem.iAmount0 = NumericUpDown13.Value
-                DrugItem.iAmount1 = NumericUpDown14.Value
-                DrugItem.iAmount2 = NumericUpDown15.Value
-                DrugItem.fAmount0 = NumericUpDown16.Value
-                DrugItem.fAmount1 = NumericUpDown17.Value
-                DrugItem.fAmount2 = NumericUpDown18.Value
-                DrugItem.sAmount0 = NumericUpDown19.Value
-                DrugItem.sAmount1 = NumericUpDown20.Value
-                DrugItem.sAmount2 = NumericUpDown21.Value
-                DrugItem.Duration1 = NumericUpDown22.Value
-                DrugItem.Duration2 = NumericUpDown23.Value
-                If ComboBox22.SelectedIndex > 0 Then DrugItem.W_Effect = ComboBox22.SelectedIndex - 1 Else DrugItem.W_Effect = &HFFFFFFFF
-                DrugItem.AddictionRate = NumericUpDown24.Value
-                DrugItem.W_Onset = NumericUpDown25.Value
-                'Save
-                SubSave_Pro(ItemType.Drugs)
+
+                Dim drugs = CType(itemObject, DrugsItemObj)
+                drugs.Stat0 = If (ComboBox19.SelectedIndex > 1, ComboBox19.SelectedIndex - 2, (&HFFFFFFFE + ComboBox19.SelectedIndex))
+                drugs.Stat1 = If (ComboBox20.SelectedIndex > 1, ComboBox20.SelectedIndex - 2, (&HFFFFFFFE + ComboBox20.SelectedIndex))
+                drugs.Stat2 = If (ComboBox21.SelectedIndex > 1, ComboBox21.SelectedIndex - 2, (&HFFFFFFFE + ComboBox21.SelectedIndex))
+                drugs.iAmount0 = CInt(NumericUpDown13.Value)
+                drugs.iAmount1 = CInt(NumericUpDown14.Value)
+                drugs.iAmount2 = CInt(NumericUpDown15.Value)
+                drugs.fAmount0 = CInt(NumericUpDown16.Value)
+                drugs.fAmount1 = CInt(NumericUpDown17.Value)
+                drugs.fAmount2 = CInt(NumericUpDown18.Value)
+                drugs.sAmount0 = CInt(NumericUpDown19.Value)
+                drugs.sAmount1 = CInt(NumericUpDown20.Value)
+                drugs.sAmount2 = CInt(NumericUpDown21.Value)
+                drugs.Duration1 = CInt(NumericUpDown22.Value)
+                drugs.Duration2 = CInt(NumericUpDown23.Value)
+                drugs.W_Effect = If (ComboBox22.SelectedIndex > 0, ComboBox22.SelectedIndex - 1, -1)
+                drugs.AddictionRate = CInt(NumericUpDown24.Value)
+                drugs.W_Onset = CInt(NumericUpDown25.Value)
+
             Case ItemType.Ammo
                 Items_LST(iLST_Index).itemType = ItemType.Ammo
-                AmmoItem.Caliber = ComboBox23.SelectedIndex
-                AmmoItem.Quantity = NumericUpDown26.Value
-                AmmoItem.ACAdjust = NumericUpDown27.Value
-                AmmoItem.DRAdjust = NumericUpDown28.Value
-                AmmoItem.DamMult = NumericUpDown29.Value
-                AmmoItem.DamDiv = NumericUpDown30.Value
-                'Save
-                SubSave_Pro(ItemType.Ammo)
+
+                Dim ammo = CType(itemObject, AmmoItemObj)
+                ammo.Caliber = ComboBox23.SelectedIndex
+                ammo.Quantity = CInt(NumericUpDown26.Value)
+                ammo.ACAdjust = CInt(NumericUpDown27.Value)
+                ammo.DRAdjust = CInt(NumericUpDown28.Value)
+                ammo.DamMult = CInt(NumericUpDown29.Value)
+                ammo.DamDiv = CInt(NumericUpDown30.Value)
+
             Case ItemType.Misc
                 Items_LST(iLST_Index).itemType = ItemType.Misc
-                If NumericUpDown31.Value <> -1 Then MiscItem.Charges = NumericUpDown31.Value
-                If ComboBox24.SelectedIndex > 0 Then MiscItem.PowerPID = AmmoPID(ComboBox24.SelectedIndex - 1) Else MiscItem.PowerPID = &HFFFFFFFF
-                If ComboBox25.SelectedIndex <> -1 Then MiscItem.PowerType = ComboBox25.SelectedIndex
-                'Save
-                SubSave_Pro(ItemType.Misc)
+
+                Dim item = CType(itemObject, MiscItemObj)
+                If NumericUpDown31.Value <> -1 Then item.Charges = CInt(NumericUpDown31.Value)
+                item.PowerPID = If (ComboBox24.SelectedIndex > 0, AmmoPID(ComboBox24.SelectedIndex - 1), -1)
+                If ComboBox25.SelectedIndex <> -1 Then item.PowerType = ComboBox25.SelectedIndex
+
             Case ItemType.Container
                 Items_LST(iLST_Index).itemType = ItemType.Container
-                ContanerItem.MaxSize = NumericUpDown32.Value
-                If CheckBox15.Checked Then ContanerItem.OpenFlags = &H1 Else ContanerItem.OpenFlags = 0
-                'Save
-                SubSave_Pro(ItemType.Container)
+
+                Dim item = CType(itemObject, ContainerItemObj)
+                item.MaxSize = CInt(NumericUpDown32.Value)
+                item.SetOpenFlag = CheckBox15.Checked
+
             Case Else 'Key
                 Items_LST(iLST_Index).itemType = ItemType.Key
-                'Save
-                SubSave_Pro(ItemType.Key)
         End Select
 
-        Dim indx As UShort = LW_SearhItemIndex(iLST_Index, Main_Form.ListView2)
+        'Save
+        SubSaveProto(iType)
+
+        Dim indx As Integer = LW_SearhItemIndex(iLST_Index, Main_Form.ListView2)
         If indx <> Nothing Then
             If Main_Form.ListView2.Items(indx).SubItems(2).Text <> ComboBox7.Text Then
                 Main_Form.ListView2.Items(indx).SubItems(2).Text = ComboBox7.Text
@@ -622,18 +605,18 @@ Friend Class Items_Form
         btnSave.Enabled = False
     End Sub
 
-    Private Sub SubSave_Pro(ByVal iType As Integer)
-        Dim proFile As String = SaveMOD_Path & PROTO_ITEMS & Items_LST(iLST_Index).proFile
+    Private Sub SubSaveProto(ByVal iType As ItemType)
+        Dim proFile As String = SaveMOD_Path & PROTO_ITEMS
+        If Not Directory.Exists(proFile) Then Directory.CreateDirectory(proFile)
 
-        If Not Directory.Exists(SaveMOD_Path & PROTO_ITEMS) Then Directory.CreateDirectory(SaveMOD_Path & PROTO_ITEMS)
-        ProFiles.SaveItemProData(proFile, iType, CommonItem, WeaponItem, ArmorItem, AmmoItem, DrugItem, MiscItem, ContanerItem, KeyItem)
-
+        proFile += Items_LST(iLST_Index).proFile
+        ProFiles.SaveItemProData(proFile, iType, itemObject)
         'Log
         Main.PrintLog("Save Pro: " & proFile)
     End Sub
 
     Private Sub SaveItemMsg(ByVal str As String, Optional ByRef Desc As Boolean = False)
-        Dim ID As Integer = NumericUpDown64.Value 'DescID
+        Dim ID As Integer = CInt(NumericUpDown64.Value) 'DescID
 
         Messages.GetMsgData("pro_item.msg", False)
         If Messages.AddTextMSG(str, ID, Desc) Then
@@ -666,40 +649,40 @@ Friend Class Items_Form
         End If
     End Sub
 
-    Private Sub SaveEnable(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown2.ValueChanged, NumericUpDown9.ValueChanged, _
-        NumericUpDown8.ValueChanged, NumericUpDown7.ValueChanged, NumericUpDown6.ValueChanged, NumericUpDown5.ValueChanged, NumericUpDown4.ValueChanged, _
-        NumericUpDown3.ValueChanged, NumericUpDown11.ValueChanged, NumericUpDown10.ValueChanged, NumericUpDown71.ValueChanged, NumericUpDown70.ValueChanged, _
-        NumericUpDown69.ValueChanged, NumericUpDown68.ValueChanged, NumericUpDown67.ValueChanged, NumericUpDown65.ValueChanged, NumericUpDown63.ValueChanged, _
-        NumericUpDown62.ValueChanged, NumericUpDown61.ValueChanged, NumericUpDown60.ValueChanged, NumericUpDown59.ValueChanged, NumericUpDown58.ValueChanged, _
-        NumericUpDown57.ValueChanged, NumericUpDown56.ValueChanged, NumericUpDown12.ValueChanged, NumericUpDown64.ValueChanged, NumericUpDown39.ValueChanged, _
-        NumericUpDown38.ValueChanged, NumericUpDown37.ValueChanged, NumericUpDown36.ValueChanged, NumericUpDown32.ValueChanged, NumericUpDown31.ValueChanged, _
-        NumericUpDown30.ValueChanged, NumericUpDown29.ValueChanged, NumericUpDown28.ValueChanged, NumericUpDown27.ValueChanged, NumericUpDown25.ValueChanged, _
-        NumericUpDown24.ValueChanged, NumericUpDown23.ValueChanged, NumericUpDown22.ValueChanged, NumericUpDown21.ValueChanged, NumericUpDown20.ValueChanged, _
-        NumericUpDown19.ValueChanged, NumericUpDown18.ValueChanged, NumericUpDown17.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown15.ValueChanged, _
+    Private Sub SaveEnable(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown2.ValueChanged, NumericUpDown9.ValueChanged,
+        NumericUpDown8.ValueChanged, NumericUpDown7.ValueChanged, NumericUpDown6.ValueChanged, NumericUpDown5.ValueChanged, NumericUpDown4.ValueChanged,
+        NumericUpDown3.ValueChanged, NumericUpDown11.ValueChanged, NumericUpDown10.ValueChanged, NumericUpDown71.ValueChanged, NumericUpDown70.ValueChanged,
+        NumericUpDown69.ValueChanged, NumericUpDown68.ValueChanged, NumericUpDown67.ValueChanged, NumericUpDown65.ValueChanged, NumericUpDown63.ValueChanged,
+        NumericUpDown62.ValueChanged, NumericUpDown61.ValueChanged, NumericUpDown60.ValueChanged, NumericUpDown59.ValueChanged, NumericUpDown58.ValueChanged,
+        NumericUpDown57.ValueChanged, NumericUpDown56.ValueChanged, NumericUpDown12.ValueChanged, NumericUpDown64.ValueChanged, NumericUpDown39.ValueChanged,
+        NumericUpDown38.ValueChanged, NumericUpDown37.ValueChanged, NumericUpDown36.ValueChanged, NumericUpDown32.ValueChanged, NumericUpDown31.ValueChanged,
+        NumericUpDown30.ValueChanged, NumericUpDown29.ValueChanged, NumericUpDown28.ValueChanged, NumericUpDown27.ValueChanged, NumericUpDown25.ValueChanged,
+        NumericUpDown24.ValueChanged, NumericUpDown23.ValueChanged, NumericUpDown22.ValueChanged, NumericUpDown21.ValueChanged, NumericUpDown20.ValueChanged,
+        NumericUpDown19.ValueChanged, NumericUpDown18.ValueChanged, NumericUpDown17.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown15.ValueChanged,
         NumericUpDown14.ValueChanged, NumericUpDown13.ValueChanged, NumericUpDown1.ValueChanged, NumericUpDown26.ValueChanged
         '
         If frmReady Then btnSave.Enabled = True
     End Sub
 
-    Private Sub SaveEnable1(ByVal sender As ComboBox, ByVal e As EventArgs) Handles cmbWeaponSoundID.TextChanged, ComboBox3.TextChanged
+    Private Sub SaveEnable1(ByVal sender As object, ByVal e As EventArgs) Handles cmbWeaponSoundID.TextChanged, ComboBox3.TextChanged
         If frmReady Then
-            If sender.Text <> String.Empty Then
+            If cType(sender, ComboBox).Text <> String.Empty Then
                 btnSave.Enabled = True
             End If
         End If
     End Sub
 
-    Private Sub SaveEnable2(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox5.SelectedIndexChanged, _
-        ComboBox4.SelectedIndexChanged, ComboBox15.SelectedIndexChanged, ComboBox14.SelectedIndexChanged, ComboBox13.SelectedIndexChanged, ComboBox12.SelectedIndexChanged, _
-        ComboBox11.SelectedIndexChanged, ComboBox10.SelectedIndexChanged, ComboBox18.SelectedIndexChanged, ComboBox9.SelectedIndexChanged, ComboBox8.SelectedIndexChanged, _
-        ComboBox25.SelectedIndexChanged, ComboBox24.SelectedIndexChanged, ComboBox23.SelectedIndexChanged, ComboBox22.SelectedIndexChanged, _
+    Private Sub SaveEnable2(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox5.SelectedIndexChanged,
+        ComboBox4.SelectedIndexChanged, ComboBox15.SelectedIndexChanged, ComboBox14.SelectedIndexChanged, ComboBox13.SelectedIndexChanged, ComboBox12.SelectedIndexChanged,
+        ComboBox11.SelectedIndexChanged, ComboBox10.SelectedIndexChanged, ComboBox18.SelectedIndexChanged, ComboBox9.SelectedIndexChanged, ComboBox8.SelectedIndexChanged,
+        ComboBox25.SelectedIndexChanged, ComboBox24.SelectedIndexChanged, ComboBox23.SelectedIndexChanged, ComboBox22.SelectedIndexChanged,
         ComboBox21.SelectedIndexChanged, ComboBox20.SelectedIndexChanged, ComboBox19.SelectedIndexChanged
         '
         If frmReady Then btnSave.Enabled = True
     End Sub
 
-    Private Sub SaveEnable3(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.CheckedChanged, cbEnergyGun.CheckedChanged, cbTwoHand.CheckedChanged, cbLook.CheckedChanged, _
-        cbUseOn.CheckedChanged, cbUse.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox24.CheckedChanged, CheckBox2.CheckedChanged, _
+    Private Sub SaveEnable3(ByVal sender As Object, ByVal e As EventArgs) Handles cbBigGun.CheckedChanged, cbEnergyGun.CheckedChanged, cbTwoHand.CheckedChanged, cbLook.CheckedChanged,
+        cbUseOn.CheckedChanged, cbUse.CheckedChanged, CheckBox5.CheckedChanged, CheckBox4.CheckedChanged, CheckBox3.CheckedChanged, CheckBox24.CheckedChanged, CheckBox2.CheckedChanged,
         CheckBox15.CheckedChanged, cbHiddenItem.CheckedChanged, cbPickup.CheckedChanged, CheckBox1.CheckedChanged
         '
         If frmReady Then btnSave.Enabled = True
@@ -750,36 +733,43 @@ Friend Class Items_Form
 
             Select Case ComboBox7.SelectedIndex
                 Case ItemType.Armor
-                    CommonItem.ObjType = ItemType.Armor
+                    itemObject.ObjType = ItemType.Armor
                     If frmReady Then
-                        If (ArmorItem.FemaleFID = 0) Then ArmorItem.FemaleFID = &H1000000
-                        If (ArmorItem.FemaleFID = 0) Then ArmorItem.MaleFID = &H1000000
+                        Dim armor = CType(itemObject, ArmorItemObj)
+                        If (armor.FemaleFID = 0) Then armor.FemaleFID = &H1000000
+                        If (armor.FemaleFID = 0) Then armor.MaleFID = &H1000000
                     End If
                     TabControl1.TabPages.Insert(0, TabPage2)
+
                 Case ItemType.Drugs
-                    CommonItem.ObjType = ItemType.Drugs
+                    itemObject.ObjType = ItemType.Drugs
                     TabControl1.TabPages.Insert(0, TabPage4)
+
                 Case ItemType.Weapon
-                    CommonItem.ObjType = ItemType.Weapon
+                    itemObject.ObjType = ItemType.Weapon
+                    Dim weapon = CType(itemObject, WeaponItemObj)
                     If frmReady Then
-                        If (WeaponItem.ProjPID = 0) Then WeaponItem.ProjPID = &H5000000
-                        If (WeaponItem.AmmoPID = 0) Then WeaponItem.AmmoPID = -1
+                        If (weapon.ProjPID = 0) Then weapon.ProjPID = &H5000000
+                        If (weapon.AmmoPID = 0) Then weapon.AmmoPID = -1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage1)
-                    If (WeaponItem.wSoundID = 0) Then cmbWeaponSoundID.SelectedIndex = 0
+                    If (weapon.wSoundID = 0) Then cmbWeaponSoundID.SelectedIndex = 0
+
                 Case ItemType.Ammo
-                    CommonItem.ObjType = ItemType.Ammo
+                    itemObject.ObjType = ItemType.Ammo
                     If frmReady Then
-                        If (AmmoItem.DamMult = 0) Then AmmoItem.DamMult = 1
-                        If (AmmoItem.DamDiv = 0) Then AmmoItem.DamDiv = 1
+                        Dim ammo = CType(itemObject, AmmoItemObj)
+                        If (ammo.DamMult = 0) Then ammo.DamMult = 1
+                        If (ammo.DamDiv = 0) Then ammo.DamDiv = 1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage5)
                     GroupBox23.Enabled = True
                     GroupBox24.Enabled = False
+
                 Case ItemType.Misc
                     If frmReady Then
-                        CommonItem.ObjType = ItemType.Misc
-                        If (MiscItem.PowerPID = 0) Then MiscItem.PowerPID = -1
+                        itemObject.ObjType = ItemType.Misc
+                        If (CType(itemObject, MiscItemObj).PowerPID = 0) Then CType(itemObject, MiscItemObj).PowerPID = -1
                     End If
                     TabControl1.TabPages.Insert(0, TabPage5)
                     GroupBox23.Enabled = False
@@ -787,22 +777,9 @@ Friend Class Items_Form
             End Select
 
             If frmReady Then
-                CommonItem.FlagsExt = CommonItem.FlagsExt And &HCFFFFF
+                itemObject.FlagsExt = itemObject.FlagsExt And &HCFFFFF ' default set
                 frmReady = False
-                Select Case ComboBox7.SelectedIndex
-                    Case ItemType.Weapon
-                        SetWeaponValue_Form()
-                    Case ItemType.Armor
-                        SetArmorValue_Form()
-                    Case ItemType.Ammo
-                        SetAmmoValue_Form()
-                    Case ItemType.Container
-                        SetContanerValue_Form()
-                    Case ItemType.Drugs
-                        SetDrugsValue_Form()
-                    Case ItemType.Misc
-                        SetMiscValue_Form()
-                End Select
+                SetFormValues(Ctype(ComboBox7.SelectedIndex, ItemType))
                 frmReady = True
             End If
 
@@ -811,7 +788,7 @@ Friend Class Items_Form
             TabControl1.Visible = True
         ElseIf frmReady Then
             frmReady = False
-            ComboBox7.SelectedIndex = CommonItem.ObjType
+            ComboBox7.SelectedIndex = itemObject.ObjType
             frmReady = True
         End If
     End Sub
@@ -840,7 +817,7 @@ Friend Class Items_Form
         If btnSave.Enabled Then
             Dim btn As MsgBoxResult = MsgBox("Save changes to Pro file?", MsgBoxStyle.YesNoCancel, "Attention!")
             If btn = MsgBoxResult.Yes Then
-                Save_Pro(sender, e)
+                SaveProto(sender, e)
             ElseIf btn = MsgBoxResult.Cancel Then
                 e.Cancel = True
             End If
