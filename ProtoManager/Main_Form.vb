@@ -5,6 +5,7 @@ Imports System.Windows
 Imports System.Drawing
 
 Imports Prototypes
+Imports Enums
 
 Friend Class Main_Form
 
@@ -106,7 +107,7 @@ Friend Class Main_Form
         ListView1.Items.Add("<NoName>")
         ListView1.Items(pCont).SubItems.Add(pName)
         ListView1.Items(pCont).SubItems.Add("N/A")
-        ListView1.Items(pCont).SubItems.Add(&H1000001 + pCont)
+        ListView1.Items(pCont).SubItems.Add((&H1000001 + pCont).ToString)
         ListView1.Items(pCont).Tag = pCont
         ListView1.Items(pCont).Selected = True
         ListView1.EnsureVisible(pCont)
@@ -115,7 +116,7 @@ Friend Class Main_Form
         Main.Create_CritterForm(pCont)
     End Sub
 
-    Private Sub AddItemPro(ByVal iType As Integer)
+    Private Sub AddItemPro(ByVal iType As ItemType)
         Dim pCont As Integer = Items_LST.Length
         Dim pName As String = StrDup(8 - (pCont + 1).ToString.Length, "0") & (pCont + 1).ToString & ".pro"
         Dim ffile As Integer = FreeFile()
@@ -226,7 +227,7 @@ Friend Class Main_Form
 
     Private Sub CreateToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CreateToolStripMenuItem.Click
         If TabControl1.SelectedIndex = 1 Then
-            Dim pIndx As Integer = ListView1.FocusedItem.Tag
+            Dim pIndx As Integer = CInt(ListView1.FocusedItem.Tag)
 
             FileSystem.CopyFile(DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(pIndx).proFile), "template", True)
             File.SetAttributes("template", FileAttributes.Normal Or FileAttributes.Archive)
@@ -310,18 +311,18 @@ Friend Class Main_Form
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
-        Main.Create_CritterForm(ListView1.FocusedItem.Tag)
+        Main.Create_CritterForm(CInt(ListView1.FocusedItem.Tag))
     End Sub
 
     Private Sub ListView2_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView2.MouseDoubleClick
-        Main.Create_ItemsForm(ListView2.FocusedItem.Tag)
+        Main.Create_ItemsForm(CInt(ListView2.FocusedItem.Tag))
     End Sub
 
     Private Sub HToolStripMenuItem_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles HToolStripMenuItem.Click
         If TabControl1.SelectedIndex = 1 Then
-            Main.Create_CritterForm(ListView1.FocusedItem.Tag)
+            Main.Create_CritterForm(CInt(ListView1.FocusedItem.Tag))
         Else
-            Main.Create_ItemsForm(ListView2.FocusedItem.Tag)
+            Main.Create_ItemsForm(CInt(ListView2.FocusedItem.Tag))
         End If
     End Sub
 
@@ -343,9 +344,7 @@ Friend Class Main_Form
                 ListView1.Refresh()
             End If
         Else
-            ClearFilter()
-            fAllToolStripMenuItem1.Checked = True
-            Main.CreateItemsList()
+            Main.CreateItemsList(currentFilter)
             If onlyOnceItem AndAlso ListView2.View = View.Tile Then
                 ThumbnailImage.GetItemsImages()
                 ListView2.Refresh()
@@ -370,6 +369,8 @@ Friend Class Main_Form
         txtLvCp = False
     End Sub
 
+    Private currentFilter As ItemType = ItemType.Unknown
+
     Private Sub ClearFilter()
         fAllToolStripMenuItem1.Checked = False
         fWeaponToolStripMenuItem3.Checked = False
@@ -385,42 +386,49 @@ Friend Class Main_Form
     Private Sub fAllToolStripMenuItem1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fAllToolStripMenuItem1.Click
         ClearFilter()
         fAllToolStripMenuItem1.Checked = True
+        currentFilter = ItemType.Unknown
         Main.FilterCreateItemsList(ItemType.Unknown)
     End Sub
 
     Private Sub fWeaponToolStripMenuItem3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fWeaponToolStripMenuItem3.Click
         ClearFilter()
         fWeaponToolStripMenuItem3.Checked = True
+        currentFilter = ItemType.Weapon
         Main.FilterCreateItemsList(ItemType.Weapon)
     End Sub
 
     Private Sub fAmmoToolStripMenuItem2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fAmmoToolStripMenuItem2.Click
         ClearFilter()
         fAmmoToolStripMenuItem2.Checked = True
+        currentFilter = ItemType.Ammo
         Main.FilterCreateItemsList(ItemType.Ammo)
     End Sub
 
     Private Sub fArmorToolStripMenuItem2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fArmorToolStripMenuItem2.Click
         ClearFilter()
         fArmorToolStripMenuItem2.Checked = True
+        currentFilter = ItemType.Armor
         Main.FilterCreateItemsList(ItemType.Armor)
     End Sub
 
     Private Sub fDrugToolStripMenuItem3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fDrugToolStripMenuItem3.Click
         ClearFilter()
         fDrugToolStripMenuItem3.Checked = True
+        currentFilter = ItemType.Drugs
         Main.FilterCreateItemsList(ItemType.Drugs)
     End Sub
 
     Private Sub fMiscToolStripMenuItem2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fMiscToolStripMenuItem2.Click
         ClearFilter()
         fMiscToolStripMenuItem2.Checked = True
+        currentFilter = ItemType.Misc
         Main.FilterCreateItemsList(ItemType.Misc)
     End Sub
 
     Private Sub fContainerToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles fContainerToolStripMenuItem.Click
         ClearFilter()
         fContainerToolStripMenuItem.Checked = True
+        currentFilter = ItemType.Container
         Main.FilterCreateItemsList(ItemType.Container)
     End Sub
 
@@ -465,12 +473,12 @@ Friend Class Main_Form
     End Sub
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
-        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(e.Item.Tag).proFile, , , False)
+        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(CInt(e.Item.Tag)).proFile, , , False)
         ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + CInt(e.Item.Tag)
     End Sub
 
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
-        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(e.Item.Tag).proFile, , , False)
+        ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(CInt(e.Item.Tag)).proFile, , , False)
         ToolStripStatusLabel2.Text = "Item PID: " & (CInt(e.Item.Tag) + 1).ToString.PadLeft(8, "0"c)
     End Sub
 
@@ -549,7 +557,7 @@ Friend Class Main_Form
 
     Private Sub ListView2_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView2.MouseUp
         If e.Button = Windows.Forms.MouseButtons.Middle Then
-            Create_ItemsForm(ListView2.FocusedItem.Tag)
+            Create_ItemsForm(CInt(ListView2.FocusedItem.Tag))
             ListView2.HoverSelection = Not DontHoverSelectToolStripMenuItem.Checked
         End If
     End Sub
@@ -562,7 +570,7 @@ Friend Class Main_Form
 
     Private Sub ListView1_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseUp
         If e.Button = Windows.Forms.MouseButtons.Middle Then
-            Main.Create_CritterForm(ListView1.FocusedItem.Tag)
+            Main.Create_CritterForm(CInt(ListView1.FocusedItem.Tag))
             ListView1.HoverSelection = Not DontHoverSelectToolStripMenuItem.Checked
         End If
     End Sub
@@ -651,7 +659,7 @@ Friend Class Main_Form
                 .Columns.Add("cFid", "FID", If(ColumnCritterSize(4) > 15, ColumnCritterSize(4), 65), HorizontalAlignment.Center, 0)
             End If
             For Each item As ListViewItem In .Items
-                item.SubItems.Add(GetFID(item.Tag).ToString)
+                item.SubItems.Add(GetFID(CInt(item.Tag)).ToString)
             Next
             .EndUpdate()
         End With

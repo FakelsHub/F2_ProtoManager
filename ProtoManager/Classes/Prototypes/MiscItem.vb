@@ -14,6 +14,13 @@ Public Class MiscItemObj
 
     Private mProto As MiscProto
 
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Misc
+        PowerPID = -1
+    End Sub
+
     Sub New(proFile As String)
         MyBase.New(proFile)
     End Sub

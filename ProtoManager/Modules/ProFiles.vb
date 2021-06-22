@@ -3,6 +3,7 @@ Imports System.IO
 Imports Microsoft.VisualBasic.FileIO
 
 Imports Prototypes
+Imports Enums
 
 Module ProFiles
 
@@ -289,28 +290,27 @@ Module ProFiles
     ''' </summary>
     Friend Sub SaveItemProData(ByVal pathProFile As String, ByVal itemType As ItemType, ByVal item As ItemPrototype)
         If File.Exists(pathProFile) Then
-            File.SetAttributes(pathProFile, FileAttributes.Normal)
-            File.Delete(pathProFile) ' удаляем файл для перезаписи его размера.
+            File.SetAttributes(pathProFile, FileAttributes.Normal Or FileAttributes.NotContentIndexed)
         End If
 
         Select Case itemType
-            Case Prototypes.ItemType.Weapon
+            Case ItemType.Weapon
                 CType(item, WeaponItemObj).Save(pathProFile)
-            Case Prototypes.ItemType.Armor
+            Case ItemType.Armor
                 CType(item, ArmorItemObj).Save(pathProFile)
-            Case Prototypes.ItemType.Drugs
+            Case ItemType.Drugs
                 CType(item, DrugsItemObj).Save(pathProFile)
-            Case Prototypes.ItemType.Ammo
+            Case ItemType.Ammo
                 CType(item, AmmoItemObj).Save(pathProFile)
-            Case Prototypes.ItemType.Misc
+            Case ItemType.Misc
                 CType(item, MiscItemObj).Save(pathProFile)
-            Case Prototypes.ItemType.Container
+            Case ItemType.Container
                 CType(item, ContainerItemObj).Save(pathProFile)
-            Case Prototypes.ItemType.Key
+            Case ItemType.Key
                 CType(item, KeyItemObj).Save(pathProFile)
         End Select
 
-        If proRO Then File.SetAttributes(pathProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+        If proRO Then File.SetAttributes(pathProFile, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
     End Sub
 
     Friend Sub SaveItemProData(ByVal PathProFile As String, ByVal iType As Integer,
@@ -432,7 +432,7 @@ Module ProFiles
         Dim bSize As Integer = Marshal.SizeOf(struct)
         Dim buffer(bSize - 1) As Byte
         ConvertStructToBytes(buffer, bSize, struct)
-        ReverseBytes(buffer, bSize And Not(&H3))
+        ReverseBytes(buffer, bSize And Not (&H3))
         Return buffer
     End Function
 
@@ -451,13 +451,12 @@ Module ProFiles
     ''' <summary>
     ''' Преобразовывает структуру в массив.
     ''' </summary>
-    Private Function ConvertStructToBytes(ByRef bytes() As Byte, ByVal bSize As Integer, ByVal struct As Object) As Byte()
+    Private Sub ConvertStructToBytes(ByRef bytes() As Byte, ByVal bSize As Integer, ByVal struct As Object)
         Dim ptr As IntPtr = Marshal.AllocHGlobal(bSize)
         Marshal.StructureToPtr(struct, ptr, False)
         Marshal.Copy(ptr, bytes, 0, bSize)
         Marshal.FreeHGlobal(ptr)
-        Return bytes
-    End Function
+    End Sub
 
     ''' <summary>
     ''' Преобразовывает массив в структуру.

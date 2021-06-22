@@ -3,6 +3,7 @@ Imports System.Drawing
 Imports System.Globalization
 
 Imports Prototypes
+Imports Enums
 
 Public Class TxtEdit_Form
 

@@ -11,6 +11,13 @@ Public Class KeyItemObj
 
     Private mProto As KeyProto
 
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Key
+        Unknown = -1
+    End Sub
+
     Sub New(proFile As String)
         MyBase.New(proFile)
     End Sub

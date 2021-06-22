@@ -1,7 +1,9 @@
 ﻿Imports System.Drawing
 Imports System.IO
 Imports System.Text
+
 Imports Prototypes
+Imports Enums
 
 Friend Class Critter_Form
 

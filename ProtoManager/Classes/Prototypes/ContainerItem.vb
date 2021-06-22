@@ -9,10 +9,16 @@ Public Class ContainerItemObj
     <StructLayout(LayoutKind.Sequential, Pack:=1)>
     Public Structure ContainerProto
         Friend MaxSize As Integer
-        Friend OpenFlags As Integer
+        Friend Flags As Integer
     End Structure
 
     Private mProto As ContainerProto
+
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Container
+    End Sub
 
     Sub New(proFile As String)
         MyBase.New(proFile)
@@ -22,7 +28,7 @@ Public Class ContainerItemObj
         Dim streamFile As BinaryReader = New BinaryReader(MyBase.DataLoad())
 
         mProto.MaxSize = ProFiles.ReverseBytes(streamFile.ReadInt32)
-        mProto.OpenFlags = ProFiles.ReverseBytes(streamFile.ReadInt32)
+        mProto.Flags = ProFiles.ReverseBytes(streamFile.ReadInt32)
 
         streamFile.Close()
     End Sub
@@ -31,7 +37,7 @@ Public Class ContainerItemObj
         Dim streamFile As BinaryWriter = New BinaryWriter(MyBase.DataSave(savePath))
 
         streamFile.Write(ProFiles.ReverseBytes(mProto.MaxSize))
-        streamFile.Write(ProFiles.ReverseBytes(mProto.OpenFlags))
+        streamFile.Write(ProFiles.ReverseBytes(mProto.Flags))
 
         streamFile.Close()
     End Sub
@@ -61,10 +67,10 @@ Public Class ContainerItemObj
 
     Public Property OpenFlags As Integer
         Set(value As Integer)
-            mProto.OpenFlags = value
+            mProto.Flags = value
         End Set
         Get
-            Return mProto.OpenFlags
+            Return mProto.Flags
         End Get
     End Property
 

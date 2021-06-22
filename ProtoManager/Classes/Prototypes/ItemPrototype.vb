@@ -4,7 +4,7 @@ Imports System.Runtime.InteropServices
 Public Class ItemPrototype
 
     Private ReadOnly Property CommonSize As Integer = 14 * 4
-    Friend Property ProtoIsLoad As Boolean = False
+    'Friend Property ProtoIsLoad As Boolean = False
 
     <StructLayout(LayoutKind.Sequential, Pack:=1)>
     Structure CommonItemProto
@@ -37,13 +37,20 @@ Public Class ItemPrototype
         End Get
     End Property
 
+    Sub New(data As ItemPrototype)
+        mProto = data.mProto
+        proFile = data.proFile
+
+        FlagsExt = FlagsExt And &HCFFFFF ' default set
+    End Sub
+
     Sub New(proFile As String)
         MyClass.proFile = proFile
     End Sub
 
     Public Sub Load()
         DataLoad().Close()
-        ProtoIsLoad = True
+        'ProtoIsLoad = True
     End Sub
 
     Public Sub Save(savePath As String)

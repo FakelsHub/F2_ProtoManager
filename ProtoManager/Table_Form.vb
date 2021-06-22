@@ -3,6 +3,7 @@ Imports System.IO
 Imports Microsoft.VisualBasic.FileIO
 
 Imports Prototypes
+Imports Enums
 
 Public Class Table_Form
 
@@ -37,7 +38,9 @@ Public Class Table_Form
                                                "Radiation Resistance", "Poison Resistance", "Age", "Gender", "Current HP",
                                                "Current Poison Level", "Current Radiation Level"}
 
+    Private itemObject As ItemPrototype
     Private CritterPro As CritPro
+
     Private CommonItem As CmItemPro
     Private WeaponItem As WpItemPro
     Private ArmorItem As ArItemPro
@@ -62,6 +65,7 @@ Public Class Table_Form
             For n = 1 To Table.Count - 1
                 cPath = DatFiles.CheckFile(PROTO_ITEMS & Table(n), False)
                 pathFile = String.Concat(cPath, PROTO_ITEMS, Table(n))
+
                 Dim cmProDataBuf(Prototypes.ItemCommonLen - 1) As Integer
                 fFile = FreeFile()
                 FileOpen(fFile, pathFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)

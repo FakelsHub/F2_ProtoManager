@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Drawing
 
 Imports Prototypes
+Imports Enums
 
 Friend Module Main
 
@@ -41,6 +42,8 @@ Friend Module Main
     Private Teams As List(Of String) = New List(Of String)
     Friend PacketAI As SortedList(Of String, Integer)
 
+    Friend WeaponSoundIDs As List(Of String) = New List(Of String)
+
     'Initialization...
     Friend Sub Main()
         DatFiles.OpenDatFiles()
@@ -62,7 +65,7 @@ Friend Module Main
                 Items_LST(proCount).proFile = list(n)
                 If (cCache) Then pLST(proCount) = "proto\items\" & list(n)
                 proCount += 1
-                End If
+            End If
         Next
         If (proCount - 1 <> listCount) Then ReDim Preserve Items_LST(proCount - 1)
 
@@ -110,8 +113,9 @@ Friend Module Main
 
         File.Create(Cache_Patch & "\cache.id").Close()
 
+        GetWeaponSoundIDs()
         GetCrittersLstFRM()
-        CreateItemsList()
+        CreateItemsList(ItemType.Unknown)
 
         SplashScreen.ProgressBar1.Value = 100
         Application.DoEvents()
@@ -121,6 +125,24 @@ Friend Module Main
             Setting_Form.firstRun = False
             AboutBox.ShowDialog()
         End If
+    End Sub
+
+    Friend Sub GetWeaponSoundIDs()
+        Dim fileContent = File.ReadAllLines(DatFiles.CheckFile(sfxLstPath))
+        For i = 1 To UBound(fileContent) Step 4
+            Dim line = fileContent(i).TrimStart.ToUpperInvariant
+            If (line.StartsWith("WA")) Then
+                If (line.Substring(4, 3) = "XXX") Then
+                    Dim id = line.Substring(2, 1)
+                    If (WeaponSoundIDs.Contains(id) = False) Then WeaponSoundIDs.Add(id)
+                End If
+            End If
+        Next
+        WeaponSoundIDs.Sort()
+
+        For i = 0 To WeaponSoundIDs.Count - 1
+            WeaponSoundIDs(i) = Asc(WeaponSoundIDs(i)).ToString + " """ + WeaponSoundIDs(i) + """"
+        Next
     End Sub
 
     Friend Sub GetScriptLst()
@@ -216,10 +238,11 @@ Friend Module Main
         Progress_Form.Close()
     End Sub
 
-    Friend Sub CreateItemsList()
+    Friend Sub CreateItemsList(ByVal filter As Integer)
         Dim nameList As List(Of String) = New List(Of String)
         Dim pidList As List(Of Integer) = New List(Of Integer)
         Dim n As Integer
+        Dim x As Integer
 
         Dim itemProCount = UBound(Items_LST)
 
@@ -240,15 +263,29 @@ Friend Module Main
 
                 Dim attrLabel As String = String.Empty
                 Dim proAttr As Status = ProtoCheckFile(Items_LST(n).proFile, Prototypes.GetSizeProByType(Items_LST(n).itemType), attrLabel)
-                CreateListItem(n, attrLabel, showPID)
-                .ListView2.Items(n).Tag = n 'запись индекса(pid) итема из item.lst
 
-                If proAttr = Status.IsModFolder Then
-                    .ListView2.Items(n).ForeColor = Color.DarkBlue
-                ElseIf proAttr = Status.IsBadFile Then
-                    .ListView2.Items(n).ForeColor = Color.Red
-                ElseIf proAttr = Status.NotExist Then
-                    .ListView2.Items(n).ForeColor = Color.DarkGray
+                If filter <> ItemType.Unknown Then
+                    If Items_LST(n).itemType = filter OrElse (filter = ItemType.Misc And Items_LST(n).itemType = ItemType.Key) Then
+                        CreateListItem(n, attrLabel, showPID)
+                        .ListView2.Items(x).Tag = n 'указатель индекса(pid) итема в item.lst
+                        If proAttr = Status.IsModFolder Then
+                            .ListView2.Items(x).ForeColor = Color.DarkBlue
+                        ElseIf proAttr = Status.IsBadFile Then
+                            .ListView2.Items(x).ForeColor = Color.Red
+                        End If
+                        x += 1
+                    End If
+                Else
+                    CreateListItem(n, attrLabel, showPID)
+                    .ListView2.Items(n).Tag = n 'запись индекса(pid) итема из item.lst
+
+                    If proAttr = Status.IsModFolder Then
+                        .ListView2.Items(n).ForeColor = Color.DarkBlue
+                    ElseIf proAttr = Status.IsBadFile Then
+                        .ListView2.Items(n).ForeColor = Color.Red
+                    ElseIf proAttr = Status.NotExist Then
+                        .ListView2.Items(n).ForeColor = Color.DarkGray
+                    End If
                 End If
 
                 If Items_LST(n).itemType = ItemType.Ammo Then
@@ -315,7 +352,7 @@ Friend Module Main
             Dim showPID As Boolean = IsShowPID()
             For n As Integer = 0 To UBound(Items_LST)
 
-                Dim attrLabel As String
+                Dim attrLabel As String = String.Empty
                 Dim proAttr As Status = ProtoCheckFile(Items_LST(n).proFile, Prototypes.GetSizeProByType(Items_LST(n).itemType), attrLabel)
                 If (attrLabel = String.Empty AndAlso proAttr = Status.IsModFolder) Then attrLabel = "*" '???
 

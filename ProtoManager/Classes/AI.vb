@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 
-Friend Class AI
+Friend NotInheritable Class AI
 
     Friend Const AIFILE As String = "\data\AI.txt"
 

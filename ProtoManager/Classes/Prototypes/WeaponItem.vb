@@ -45,6 +45,16 @@ Public Class WeaponItemObj
 
     Private mProto As WeaponProto
 
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Weapon
+        ProjPID = &H5000000
+        AmmoPID = -1
+        Perk = -1
+        wSoundID = 48
+    End Sub
+
     Sub New(proFile As String)
         MyBase.New(proFile)
     End Sub
@@ -67,10 +77,16 @@ Public Class WeaponItemObj
         streamFile.Close()
     End Sub
 
-    Public Function WeaponScore() As Integer
-        Dim Score As Integer = CInt(Math.Floor(Math.Abs(mProto.MaxDmg - mProto.MinDmg) / 2))
-        If (mProto.Perk > 0) Then Score *= 5
-        Return Score
+    Public Function WeaponScore(type As Integer) As Integer
+        Dim score As Integer
+        If (type = 0) Then
+            score = CInt(Math.Floor((MaxDmg + MinDmg) / 4))
+            If (Perk <> -1) Then score *= 3
+        Else
+            score = CInt(Math.Floor(Math.Abs(MaxDmg - MinDmg) / 2))
+            If (Perk <> -1) Then score *= 5
+        End If
+        Return score
     End Function
 
 #Region "Prototype propertes"

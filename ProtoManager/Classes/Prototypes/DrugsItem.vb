@@ -29,6 +29,16 @@ Public Class DrugsItemObj
 
     Private mProto As DrugsProto
 
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Drugs
+        W_Effect = -1
+        Stat0 = -1
+        Stat1 = -1
+        Stat2 = -1
+    End Sub
+
     Sub New(proFile As String)
         MyBase.New(proFile)
     End Sub

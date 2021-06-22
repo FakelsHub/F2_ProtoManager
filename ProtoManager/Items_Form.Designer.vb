@@ -26,6 +26,7 @@ Partial Class Items_Form
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Items_Form))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.cmbWScoreType = New System.Windows.Forms.ComboBox()
         Me.lblWeaponScore = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox15 = New System.Windows.Forms.GroupBox()
@@ -193,6 +194,7 @@ Partial Class Items_Form
         Me.Label41 = New System.Windows.Forms.Label()
         Me.ComboBox23 = New System.Windows.Forms.ComboBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.NumericUpDown64 = New System.Windows.Forms.NumericUpDown()
         Me.GroupBox25 = New System.Windows.Forms.GroupBox()
         Me.NumericUpDown32 = New System.Windows.Forms.NumericUpDown()
         Me.Label51 = New System.Windows.Forms.Label()
@@ -200,6 +202,7 @@ Partial Class Items_Form
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.TextBox30 = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
         Me.TextBox29 = New System.Windows.Forms.TextBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.cbPickup = New System.Windows.Forms.CheckBox()
@@ -208,13 +211,11 @@ Partial Class Items_Form
         Me.cbUseOn = New System.Windows.Forms.CheckBox()
         Me.cbUse = New System.Windows.Forms.CheckBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.NumericUpDown64 = New System.Windows.Forms.NumericUpDown()
         Me.Label58 = New System.Windows.Forms.Label()
         Me.ComboBox9 = New System.Windows.Forms.ComboBox()
         Me.Label66 = New System.Windows.Forms.Label()
         Me.ComboBox3 = New System.Windows.Forms.ComboBox()
         Me.ComboBox8 = New System.Windows.Forms.ComboBox()
-        Me.Label23 = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.CheckBox24 = New System.Windows.Forms.CheckBox()
         Me.CheckBox5 = New System.Windows.Forms.CheckBox()
@@ -325,11 +326,11 @@ Partial Class Items_Form
         CType(Me.NumericUpDown27, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown26, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
+        CType(Me.NumericUpDown64, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox25.SuspendLayout()
         CType(Me.NumericUpDown32, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
-        CType(Me.NumericUpDown64, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
@@ -363,6 +364,7 @@ Partial Class Items_Form
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.TabPage1.Controls.Add(Me.cmbWScoreType)
         Me.TabPage1.Controls.Add(Me.lblWeaponScore)
         Me.TabPage1.Controls.Add(Me.Label1)
         Me.TabPage1.Controls.Add(Me.GroupBox15)
@@ -379,6 +381,19 @@ Partial Class Items_Form
         Me.TabPage1.Size = New System.Drawing.Size(425, 315)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Weapon"
+        '
+        'cmbWScoreType
+        '
+        Me.cmbWScoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbWScoreType.DropDownWidth = 149
+        Me.cmbWScoreType.FormattingEnabled = True
+        Me.cmbWScoreType.Items.AddRange(New Object() {"Sfall calc [Fix vanilla]", "Vanilla calc [Obsolette]"})
+        Me.cmbWScoreType.Location = New System.Drawing.Point(270, 287)
+        Me.cmbWScoreType.Name = "cmbWScoreType"
+        Me.cmbWScoreType.Size = New System.Drawing.Size(149, 22)
+        Me.cmbWScoreType.TabIndex = 31
+        Me.ToolTip1.SetToolTip(Me.cmbWScoreType, "Sfall:     (MaxDmg + MinDmg) / 4 [if have perk multiply x3]" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Vanilla: (MaxDmg -  " &
+        "MinDmg) / 2  [if have perk multiply x5]")
         '
         'lblWeaponScore
         '
@@ -401,7 +416,6 @@ Partial Class Items_Form
         Me.Label1.Size = New System.Drawing.Size(134, 14)
         Me.Label1.TabIndex = 20
         Me.Label1.Text = "AI Weapon points priority:"
-        Me.ToolTip1.SetToolTip(Me.Label1, "((MaxDmg - MinDmg) / 2) * 5(if have perk)")
         '
         'GroupBox15
         '
@@ -453,6 +467,7 @@ Partial Class Items_Form
         'ComboBox12
         '
         Me.ComboBox12.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox12.DropDownWidth = 150
         Me.ComboBox12.FormattingEnabled = True
         Me.ComboBox12.Location = New System.Drawing.Point(127, 78)
         Me.ComboBox12.MaxDropDownItems = 20
@@ -463,6 +478,7 @@ Partial Class Items_Form
         'ComboBox5
         '
         Me.ComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox5.DropDownWidth = 125
         Me.ComboBox5.FormattingEnabled = True
         Me.ComboBox5.Items.AddRange(New Object() {"Normal", "Laser", "Fire", "Plasma", "Electrical", "EMP", "Explode"})
         Me.ComboBox5.Location = New System.Drawing.Point(127, 34)
@@ -483,6 +499,7 @@ Partial Class Items_Form
         'ComboBox13
         '
         Me.ComboBox13.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox13.DropDownWidth = 150
         Me.ComboBox13.FormattingEnabled = True
         Me.ComboBox13.Items.AddRange(New Object() {"None"})
         Me.ComboBox13.Location = New System.Drawing.Point(127, 121)
@@ -747,6 +764,7 @@ Partial Class Items_Form
         'ComboBox4
         '
         Me.ComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox4.DropDownWidth = 150
         Me.ComboBox4.FormattingEnabled = True
         Me.ComboBox4.Items.AddRange(New Object() {"None", "Knife (D)", "Club (E)", "2Hnd Club (F)", "Spear (G)", "Pistol (H)", "Uzi (I)", "Rifle (J)", "Laser (K)", "Minigun (L)", "Rocket Launcher (M)", "Custom Anim (S)", "Custom Anim (O)", "Custom Anim (P)", "Custom Anim (Q)", "Custom Anim (T)"})
         Me.ComboBox4.Location = New System.Drawing.Point(6, 78)
@@ -758,6 +776,7 @@ Partial Class Items_Form
         'ComboBox10
         '
         Me.ComboBox10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox10.DropDownWidth = 150
         Me.ComboBox10.FormattingEnabled = True
         Me.ComboBox10.Items.AddRange(New Object() {"None"})
         Me.ComboBox10.Location = New System.Drawing.Point(6, 34)
@@ -787,7 +806,6 @@ Partial Class Items_Form
         'cmbWeaponSoundID
         '
         Me.cmbWeaponSoundID.FormattingEnabled = True
-        Me.cmbWeaponSoundID.Items.AddRange(New Object() {"48 (0)", "49 (1)", "50 (2)", "51 (3)", "52 (4)", "53 (5)", "54 (6)", "55 (7)", "56 (8)", "57 (9)", "65 (A)", "66 (B)", "67 (C)", "68 (D)", "69 (E)", "70 (F)", "71 (G)", "72 (H)", "73 (I)", "74 (J)", "75 (K)", "76 (L)", "77 (M)", "78 (N)", "79 (O)", "80 (P)", "81 (Q)", "82 (R)", "83 (S)", "84 (T)", "85 (U)", "86 (V)", "87 (W)", "88 (X)", "89 (Y)", "90 (Z)", "33 (!)", "64 (@)", "35 (#)", "36 ($)", "95 (_)"})
         Me.cmbWeaponSoundID.Location = New System.Drawing.Point(6, 121)
         Me.cmbWeaponSoundID.MaxDropDownItems = 10
         Me.cmbWeaponSoundID.Name = "cmbWeaponSoundID"
@@ -806,7 +824,7 @@ Partial Class Items_Form
         'ComboBox11
         '
         Me.ComboBox11.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox11.DropDownWidth = 200
+        Me.ComboBox11.DropDownWidth = 250
         Me.ComboBox11.FormattingEnabled = True
         Me.ComboBox11.Items.AddRange(New Object() {"None"})
         Me.ComboBox11.Location = New System.Drawing.Point(270, 256)
@@ -1065,9 +1083,8 @@ Partial Class Items_Form
         '
         'ComboBox18
         '
-        Me.ComboBox18.DropDownHeight = 120
         Me.ComboBox18.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox18.DropDownWidth = 200
+        Me.ComboBox18.DropDownWidth = 250
         Me.ComboBox18.FormattingEnabled = True
         Me.ComboBox18.IntegralHeight = False
         Me.ComboBox18.Items.AddRange(New Object() {"None"})
@@ -1673,6 +1690,7 @@ Partial Class Items_Form
         'ComboBox21
         '
         Me.ComboBox21.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox21.DropDownWidth = 150
         Me.ComboBox21.FormattingEnabled = True
         Me.ComboBox21.Items.AddRange(New Object() {"Drug Stat (Special)", "None", "Strength", "Perception", "Endurance", "Charisma", "Intelligence", "Agility", "Luck", "Max.Healing Point", "Max.Action Point", "Calss Armor", "Unarmed Damage", "Melee Damage", "Max.Weight", "Sequence", "Healing Rate", "Critical Chance", "Better Critical", "Normal Tresholds Damage", "Laser Tresholds Damage", "Fire Tresholds Damage", "Plasma Tresholds Damage", "Electrical Tresholds Damage", "EMP Tresholds Damage", "Explode Tresholds Damage", "Normal Damage Resistance", "Laser Damage Resistance", "Fire Damage Resistance", "Plasma Damage Resistance", "Electrical Damage Resistance", "EMP Damage Resistance", "Explode Damage Resistance", "Radiation Resistance", "Poison Resistance", "Age", "Gender", "Current HP", "Current Poison Level", "Current Radiation Level"})
         Me.ComboBox21.Location = New System.Drawing.Point(6, 118)
@@ -1693,6 +1711,7 @@ Partial Class Items_Form
         'ComboBox20
         '
         Me.ComboBox20.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox20.DropDownWidth = 150
         Me.ComboBox20.FormattingEnabled = True
         Me.ComboBox20.Items.AddRange(New Object() {"Drug Stat (Special)", "None", "Strength", "Perception", "Endurance", "Charisma", "Intelligence", "Agility", "Luck", "Max.Healing Point", "Max.Action Point", "Calss Armor", "Unarmed Damage", "Melee Damage", "Max.Weight", "Sequence", "Healing Rate", "Critical Chance", "Better Critical", "Normal Tresholds Damage", "Laser Tresholds Damage", "Fire Tresholds Damage", "Plasma Tresholds Damage", "Electrical Tresholds Damage", "EMP Tresholds Damage", "Explode Tresholds Damage", "Normal Damage Resistance", "Laser Damage Resistance", "Fire Damage Resistance", "Plasma Damage Resistance", "Electrical Damage Resistance", "EMP Damage Resistance", "Explode Damage Resistance", "Radiation Resistance", "Poison Resistance", "Age", "Gender", "Current HP", "Current Poison Level", "Current Radiation Level"})
         Me.ComboBox20.Location = New System.Drawing.Point(6, 76)
@@ -1722,6 +1741,7 @@ Partial Class Items_Form
         'ComboBox19
         '
         Me.ComboBox19.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox19.DropDownWidth = 150
         Me.ComboBox19.FormattingEnabled = True
         Me.ComboBox19.Items.AddRange(New Object() {"Drug Stat (Special)", "None", "Strength", "Perception", "Endurance", "Charisma", "Intelligence", "Agility", "Luck", "Max.Healing Point", "Max.Action Point", "Calss Armor", "Unarmed Damage", "Melee Damage", "Max.Weight", "Sequence", "Healing Rate", "Critical Chance", "Better Critical", "Normal Tresholds Damage", "Laser Tresholds Damage", "Fire Tresholds Damage", "Plasma Tresholds Damage", "Electrical Tresholds Damage", "EMP Tresholds Damage", "Explode Tresholds Damage", "Normal Damage Resistance", "Laser Damage Resistance", "Fire Damage Resistance", "Plasma Damage Resistance", "Electrical Damage Resistance", "EMP Damage Resistance", "Explode Damage Resistance", "Radiation Resistance", "Poison Resistance", "Age", "Gender", "Current HP", "Current Poison Level", "Current Radiation Level"})
         Me.ComboBox19.Location = New System.Drawing.Point(6, 34)
@@ -2025,6 +2045,7 @@ Partial Class Items_Form
         'ComboBox24
         '
         Me.ComboBox24.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox24.DropDownWidth = 150
         Me.ComboBox24.FormattingEnabled = True
         Me.ComboBox24.Items.AddRange(New Object() {"None"})
         Me.ComboBox24.Location = New System.Drawing.Point(6, 34)
@@ -2198,6 +2219,7 @@ Partial Class Items_Form
         'ComboBox23
         '
         Me.ComboBox23.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox23.DropDownWidth = 150
         Me.ComboBox23.FormattingEnabled = True
         Me.ComboBox23.Location = New System.Drawing.Point(6, 34)
         Me.ComboBox23.MaxDropDownItems = 20
@@ -2208,10 +2230,12 @@ Partial Class Items_Form
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.TabPage3.Controls.Add(Me.NumericUpDown64)
         Me.TabPage3.Controls.Add(Me.GroupBox25)
         Me.TabPage3.Controls.Add(Me.Button5)
         Me.TabPage3.Controls.Add(Me.Button4)
         Me.TabPage3.Controls.Add(Me.TextBox30)
+        Me.TabPage3.Controls.Add(Me.Label23)
         Me.TabPage3.Controls.Add(Me.TextBox29)
         Me.TabPage3.Controls.Add(Me.GroupBox6)
         Me.TabPage3.Controls.Add(Me.GroupBox8)
@@ -2223,6 +2247,16 @@ Partial Class Items_Form
         Me.TabPage3.Size = New System.Drawing.Size(425, 315)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Common"
+        '
+        'NumericUpDown64
+        '
+        Me.NumericUpDown64.Increment = New Decimal(New Integer() {100, 0, 0, 0})
+        Me.NumericUpDown64.Location = New System.Drawing.Point(345, 84)
+        Me.NumericUpDown64.Maximum = New Decimal(New Integer() {400000, 0, 0, 0})
+        Me.NumericUpDown64.Name = "NumericUpDown64"
+        Me.NumericUpDown64.Size = New System.Drawing.Size(68, 20)
+        Me.NumericUpDown64.TabIndex = 17
+        Me.NumericUpDown64.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'GroupBox25
         '
@@ -2271,9 +2305,9 @@ Partial Class Items_Form
         Me.Button5.Enabled = False
         Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button5.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Button5.Location = New System.Drawing.Point(339, 52)
+        Me.Button5.Location = New System.Drawing.Point(339, 35)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(80, 26)
+        Me.Button5.Size = New System.Drawing.Size(80, 24)
         Me.Button5.TabIndex = 13
         Me.Button5.Text = "Save Desc"
         Me.ToolTip1.SetToolTip(Me.Button5, "Save description to MSG file.")
@@ -2284,9 +2318,9 @@ Partial Class Items_Form
         Me.Button4.Enabled = False
         Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Button4.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Button4.Location = New System.Drawing.Point(339, 6)
+        Me.Button4.Location = New System.Drawing.Point(339, 4)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(80, 26)
+        Me.Button4.Size = New System.Drawing.Size(80, 24)
         Me.Button4.TabIndex = 11
         Me.Button4.Text = "Save Name"
         Me.ToolTip1.SetToolTip(Me.Button4, "Save name to MSG.")
@@ -2301,6 +2335,16 @@ Partial Class Items_Form
         Me.TextBox30.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TextBox30.Size = New System.Drawing.Size(327, 68)
         Me.TextBox30.TabIndex = 12
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label23.Location = New System.Drawing.Point(347, 67)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(63, 14)
+        Me.Label23.TabIndex = 1
+        Me.Label23.Text = "Message ID"
         '
         'TextBox29
         '
@@ -2380,13 +2424,11 @@ Partial Class Items_Form
         '
         'GroupBox8
         '
-        Me.GroupBox8.Controls.Add(Me.NumericUpDown64)
         Me.GroupBox8.Controls.Add(Me.Label58)
         Me.GroupBox8.Controls.Add(Me.ComboBox9)
         Me.GroupBox8.Controls.Add(Me.Label66)
         Me.GroupBox8.Controls.Add(Me.ComboBox3)
         Me.GroupBox8.Controls.Add(Me.ComboBox8)
-        Me.GroupBox8.Controls.Add(Me.Label23)
         Me.GroupBox8.Location = New System.Drawing.Point(6, 109)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(413, 51)
@@ -2394,21 +2436,11 @@ Partial Class Items_Form
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Script ID"
         '
-        'NumericUpDown64
-        '
-        Me.NumericUpDown64.Increment = New Decimal(New Integer() {100, 0, 0, 0})
-        Me.NumericUpDown64.Location = New System.Drawing.Point(339, 22)
-        Me.NumericUpDown64.Maximum = New Decimal(New Integer() {400000, 0, 0, 0})
-        Me.NumericUpDown64.Name = "NumericUpDown64"
-        Me.NumericUpDown64.Size = New System.Drawing.Size(68, 20)
-        Me.NumericUpDown64.TabIndex = 17
-        Me.NumericUpDown64.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
         'Label58
         '
         Me.Label58.AutoSize = True
-        Me.Label58.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label58.Location = New System.Drawing.Point(278, 0)
+        Me.Label58.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label58.Location = New System.Drawing.Point(330, 0)
         Me.Label58.Name = "Label58"
         Me.Label58.Size = New System.Drawing.Size(50, 14)
         Me.Label58.TabIndex = 1
@@ -2423,14 +2455,14 @@ Partial Class Items_Form
         Me.ComboBox9.Location = New System.Drawing.Point(6, 19)
         Me.ComboBox9.MaxDropDownItems = 20
         Me.ComboBox9.Name = "ComboBox9"
-        Me.ComboBox9.Size = New System.Drawing.Size(196, 23)
+        Me.ComboBox9.Size = New System.Drawing.Size(200, 23)
         Me.ComboBox9.TabIndex = 14
         '
         'Label66
         '
         Me.Label66.AutoSize = True
-        Me.Label66.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label66.Location = New System.Drawing.Point(208, 0)
+        Me.Label66.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label66.Location = New System.Drawing.Point(219, 0)
         Me.Label66.Name = "Label66"
         Me.Label66.Size = New System.Drawing.Size(56, 14)
         Me.Label66.TabIndex = 1
@@ -2439,11 +2471,11 @@ Partial Class Items_Form
         'ComboBox3
         '
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Items.AddRange(New Object() {"48 (0)", "49 (1)", "50 (2)", "51 (3)", "52 (4)", "53 (5)", "54 (6)", "55 (7)", "56 (8)", "57 (9)", "65 (A)", "66 (B)", "67 (C)", "68 (D)", "69 (E)", "70 (F)", "71 (G)", "72 (H)", "73 (I)", "74 (J)", "75 (K)", "76 (L)", "77 (M)", "78 (N)", "79 (O)", "80 (P)", "81 (Q)", "82 (R)", "83 (S)", "84 (T)", "85 (U)", "86 (V)", "87 (W)", "88 (X)", "89 (Y)", "90 (Z)", "33 (!)", "64 (@)", "35 (#)", "36 ($)", "95 (_)"})
-        Me.ComboBox3.Location = New System.Drawing.Point(272, 20)
+        Me.ComboBox3.Items.AddRange(New Object() {"33 ""!""", "35 ""#""", "36 ""$""", "37 ""%""", "38 ""&""", "39 ""'""", "40 ""(""", "41 "")""", "43 ""+""", "44 "",""", "45 ""-""", "46 "".""", "48 ""0""", "49 ""1""", "50 ""2""", "51 ""3""", "52 ""4""", "53 ""5""", "54 ""6""", "55 ""7""", "56 ""8""", "57 ""9""", "59 "";""", "61 ""=""", "64 ""@""", "65 ""A""", "66 ""B""", "67 ""C""", "68 ""D""", "69 ""E""", "70 ""F""", "71 ""G""", "72 ""H""", "73 ""I""", "74 ""J""", "75 ""K""", "76 ""L""", "77 ""M""", "78 ""N""", "79 ""O""", "80 ""P""", "81 ""Q""", "82 ""R""", "83 ""S""", "84 ""T""", "85 ""U""", "86 ""V""", "87 ""W""", "88 ""X""", "89 ""Y""", "90 ""Z""", "91 ""[""", "93 ""]""", "94 ""^""", "95 ""_""", "96 ""`""", "123 ""{""", "125 ""}""", "126 ""~"""})
+        Me.ComboBox3.Location = New System.Drawing.Point(327, 20)
         Me.ComboBox3.MaxDropDownItems = 10
         Me.ComboBox3.Name = "ComboBox3"
-        Me.ComboBox3.Size = New System.Drawing.Size(61, 22)
+        Me.ComboBox3.Size = New System.Drawing.Size(80, 22)
         Me.ComboBox3.TabIndex = 16
         '
         'ComboBox8
@@ -2451,20 +2483,10 @@ Partial Class Items_Form
         Me.ComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox8.FormattingEnabled = True
         Me.ComboBox8.Items.AddRange(New Object() {"Glass", "Metal", "Plastic", "Wood", "Dirt", "Stone", "Cement", "Leather"})
-        Me.ComboBox8.Location = New System.Drawing.Point(208, 20)
+        Me.ComboBox8.Location = New System.Drawing.Point(220, 20)
         Me.ComboBox8.Name = "ComboBox8"
-        Me.ComboBox8.Size = New System.Drawing.Size(58, 22)
+        Me.ComboBox8.Size = New System.Drawing.Size(72, 22)
         Me.ComboBox8.TabIndex = 15
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label23.Location = New System.Drawing.Point(344, 0)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(63, 14)
-        Me.Label23.TabIndex = 1
-        Me.Label23.Text = "Message ID"
         '
         'GroupBox5
         '
@@ -2486,7 +2508,7 @@ Partial Class Items_Form
         'CheckBox24
         '
         Me.CheckBox24.AutoSize = True
-        Me.CheckBox24.Location = New System.Drawing.Point(106, 100)
+        Me.CheckBox24.Location = New System.Drawing.Point(94, 95)
         Me.CheckBox24.Name = "CheckBox24"
         Me.CheckBox24.Size = New System.Drawing.Size(82, 18)
         Me.CheckBox24.TabIndex = 30
@@ -2507,7 +2529,7 @@ Partial Class Items_Form
         '
         Me.cbHiddenItem.AutoSize = True
         Me.cbHiddenItem.BackColor = System.Drawing.Color.Transparent
-        Me.cbHiddenItem.Location = New System.Drawing.Point(106, 125)
+        Me.cbHiddenItem.Location = New System.Drawing.Point(94, 120)
         Me.cbHiddenItem.Name = "cbHiddenItem"
         Me.cbHiddenItem.Size = New System.Drawing.Size(81, 18)
         Me.cbHiddenItem.TabIndex = 31
@@ -2735,7 +2757,7 @@ Partial Class Items_Form
         'Label68
         '
         Me.Label68.AutoSize = True
-        Me.Label68.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.Label68.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label68.Location = New System.Drawing.Point(79, 0)
         Me.Label68.Name = "Label68"
         Me.Label68.Size = New System.Drawing.Size(28, 14)
@@ -2745,7 +2767,7 @@ Partial Class Items_Form
         'Label69
         '
         Me.Label69.AutoSize = True
-        Me.Label69.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.Label69.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label69.Location = New System.Drawing.Point(129, 0)
         Me.Label69.Name = "Label69"
         Me.Label69.Size = New System.Drawing.Size(40, 14)
@@ -2929,7 +2951,6 @@ Partial Class Items_Form
         Me.Button3.TabIndex = 1
         Me.Button3.Text = "Close"
         Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.ToolTip1.SetToolTip(Me.Button3, "Закрыть.")
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Items_Form
@@ -3042,6 +3063,7 @@ Partial Class Items_Form
         CType(Me.NumericUpDown26, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
+        CType(Me.NumericUpDown64, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox25.ResumeLayout(False)
         Me.GroupBox25.PerformLayout()
         CType(Me.NumericUpDown32, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3049,7 +3071,6 @@ Partial Class Items_Form
         Me.GroupBox6.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
-        CType(Me.NumericUpDown64, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
@@ -3307,4 +3328,5 @@ Partial Class Items_Form
     Friend WithEvents Label54 As System.Windows.Forms.Label
     Friend WithEvents cbEnergyGun As System.Windows.Forms.CheckBox
     Friend WithEvents Button7 As System.Windows.Forms.Button
+    Friend WithEvents cmbWScoreType As ComboBox
 End Class

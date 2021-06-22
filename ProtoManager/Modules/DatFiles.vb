@@ -39,6 +39,8 @@ Module DatFiles
     Friend Const artItemsLstPath As String = "\art\items\items.lst"
     Friend Const artInvenLstPath As String = "\art\inven\inven.lst"
 
+    Friend Const sfxLstPath As String = "\sound\sfx\sndlist.lst"
+
     'Friend Const proCritMsgPath As String = "\Text\English\Game\pro_crit.msg"
     'Friend Const proItemMsgPath As String = "\Text\English\Game\pro_item.msg"
 

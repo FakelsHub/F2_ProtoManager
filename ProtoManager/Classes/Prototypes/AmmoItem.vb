@@ -17,6 +17,14 @@ Public Class AmmoItemObj
 
     Private mProto As AmmoProto
 
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Ammo
+        DamMult = 1
+        DamDiv = 1
+    End Sub
+
     Sub New(proFile As String)
         MyBase.New(proFile)
     End Sub

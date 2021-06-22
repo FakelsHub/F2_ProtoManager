@@ -44,4 +44,12 @@
         Return False
     End Function
 
+    'Возвращает Имя или Описание предмета из msg файла
+    Friend Function GetNameItemMsg(ByVal NameID As Integer, Optional ByVal Desc As Boolean = False) As String
+        If Desc Then NameID += 1
+        Messages.GetMsgData("pro_item.msg")
+
+        Return Messages.GetNameObject(NameID)
+    End Function
+
 End Module

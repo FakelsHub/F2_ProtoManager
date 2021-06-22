@@ -1,34 +1,12 @@
 ﻿NotInheritable Class Prototypes
 
-    Enum ItemType As Integer
-        Armor           '0x0 - Armor (броня)
-        Container       '0x1 - Container (контейнеры)
-        Drugs           '0x2 - Drug (наркотики)
-        Weapon          '0x3 - Weapon (оружие)
-        Ammo            '0x4 - Ammo (патроны)
-        Misc            '0x5 - Misc Item (разное)
-        Key             '0x6 - Key (ключи)
-        Unknown         '0x7...
-    End Enum
-
     Friend Shared ReadOnly ItemTypesName() As String = {"Armor", "Container", "Drug", "Weapon", "Ammo", "Misc", "Key", "Unknown"}
 
     Private Shared ReadOnly ItemTypesProLen() As Integer = {129, 65, 125, 122, 81, 69, 61, 0}
 
-    Friend Shared Function GetSizeProByType(ByVal type As ItemType) As Integer
+    Friend Shared Function GetSizeProByType(ByVal type As Enums.ItemType) As Integer
         Return ItemTypesProLen(type)
     End Function
-
-    'Enum DamageType As Integer
-    '    Normal
-    '    Laser
-    '    Fire
-    '    Plasma
-    '    Electrical
-    '    EMP
-    '    Explode
-    'End Enum
-
 
     'Data offset
     Friend Const offsetFrmID As Byte = &H8

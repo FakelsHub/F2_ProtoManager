@@ -37,7 +37,7 @@ Public Class AI_Form
 
     Friend Sub Initialize(ByVal numPacket As Integer)
         For Each i As ItemsLst In Items_LST
-            If i.itemType = Prototypes.ItemType.Drugs Then
+            If i.itemType = Enums.ItemType.Drugs Then
                 ToolStripComboBox1.Items.Add(String.Format("{0}| {1}", Strings.RSet(i.proFile.Remove(8, 4), 3), i.itemName))
             End If
         Next

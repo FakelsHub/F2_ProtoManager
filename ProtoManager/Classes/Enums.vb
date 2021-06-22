@@ -1,4 +1,15 @@
-﻿Class Enums
+﻿NotInheritable Class Enums
+
+    Enum ItemType As Integer
+        Armor           '0x0 - Armor (броня)
+        Container       '0x1 - Container (контейнеры)
+        Drugs           '0x2 - Drug (наркотики)
+        Weapon          '0x3 - Weapon (оружие)
+        Ammo            '0x4 - Ammo (патроны)
+        Misc            '0x5 - Misc Item (разное)
+        Key             '0x6 - Key (ключи)
+        Unknown         '0x7...
+    End Enum
 
     Enum Flags As Integer
 '       Mouse_3d     = &H00000001

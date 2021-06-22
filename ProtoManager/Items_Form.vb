@@ -7,9 +7,13 @@ Imports Enums
 
 Friend Class Items_Form
 
+    Private Shared weaponScoreType As Integer = 0
+
     Private itemObject As ItemPrototype
+    Private backupItem As ItemPrototype
 
     Private ReadOnly iLST_Index As Integer  'индекс предмета в lst файле
+
     Private frmReady As Boolean
     Private ReloadPro As Boolean
     Private cPath As String = Nothing
@@ -70,6 +74,8 @@ Friend Class Items_Form
         ComboBox1.Items.AddRange(Items_FRM)
         ComboBox2.Items.AddRange(Iven_FRM)
         ComboBox9.Items.AddRange(Scripts_Lst)
+
+        cmbWeaponSoundID.Items.AddRange(WeaponSoundIDs.ToArray)
 
         LoadProData()
         Me.Show()
@@ -137,26 +143,19 @@ Friend Class Items_Form
         End Select
     End Sub
 
-    'Возвращает Имя или Описание предмета из msg файла
-    Private Function GetNameItemMsg(ByVal NameID As Integer, Optional ByVal Desc As Boolean = False) As String
-        If Desc Then NameID += 1
-        Messages.GetMsgData("pro_item.msg")
-
-        Return Messages.GetNameObject(NameID)
-    End Function
-
     Private Sub SetCommonValue_Form(item As ItemPrototype)
+        On Error Resume Next
         ComboBox7.SelectedIndex = item.ObjType
 
-        TextBox29.Text = GetNameItemMsg(item.DescID)
-        TextBox30.Text = GetNameItemMsg(item.DescID, True)
+        TextBox29.Text = Misc.GetNameItemMsg(item.DescID)
+        TextBox30.Text = Misc.GetNameItemMsg(item.DescID, True)
         TextBox33.Text = item.ProtoID.ToString()
         TextBox33.Text = StrDup(8 - Len(TextBox33.Text), "0") & TextBox33.Text
 
         ComboBox1.SelectedIndex = item.FrmID
-        ComboBox2.SelectedIndex = If ((item.InvFID <> -1), 1 + (item.InvFID - &H7000000), 0)
+        ComboBox2.SelectedIndex = If((item.InvFID <> -1), 1 + (item.InvFID - &H7000000), 0)
         ComboBox8.SelectedIndex = item.MaterialID
-        ComboBox9.SelectedIndex = If ((item.ScriptID <> -1), 1 + (item.ScriptID - &H3000000), 0)
+        ComboBox9.SelectedIndex = If((item.ScriptID <> -1), 1 + (item.ScriptID - &H3000000), 0)
         '
         SetSoundID(item.SoundID, ComboBox3)
         '
@@ -194,6 +193,7 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetWeaponValue_Form(weapon As WeaponItemObj)
+        On Error Resume Next
         NumericUpDown2.Value = weapon.MinDmg
         NumericUpDown3.Value = weapon.MaxDmg
         NumericUpDown4.Value = weapon.MaxRangeP
@@ -209,9 +209,6 @@ Friend Class Items_Form
         ComboBox5.SelectedIndex = weapon.DmgType
 
         SetSoundID(weapon.wSoundID, cmbWeaponSoundID)
-        'For n As SByte = 0 To cmbWeaponSoundID.Items.Count - 1
-        '    If CChar(cmbWeaponSoundID.Items(n)) = Chr(weapon.wSoundID) Then cmbWeaponSoundID.SelectedIndex = n
-        'Next
 
         ComboBox10.SelectedIndex = If ((weapon.ProjPID <> -1), weapon.ProjPID - &H5000000, 0)
         ComboBox11.SelectedIndex = If ((weapon.Perk <> -1), weapon.Perk + 1, 0)
@@ -236,10 +233,12 @@ Friend Class Items_Form
         cbTwoHand.Checked = weapon.IsTwoHand
         cbEnergyGun.Checked = weapon.IsEnergy
 
-        lblWeaponScore.Text = weapon.WeaponScore().ToString
+        lblWeaponScore.Text = weapon.WeaponScore(weaponScoreType).ToString
+        cmbWScoreType.SelectedIndex = weaponScoreType
     End Sub
 
     Private Sub SetArmorValue_Form(armor As ArmorItemObj)
+        On Error Resume Next
         NumericUpDown12.Value = armor.AC
 
         NumericUpDown56.Value = armor.DTNormal
@@ -267,6 +266,7 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetAmmoValue_Form(ammo As AmmoItemObj)
+        On Error Resume Next
         ComboBox23.SelectedIndex = ammo.Caliber
         NumericUpDown26.Value = ammo.Quantity
         NumericUpDown27.Value = ammo.ACAdjust
@@ -278,6 +278,7 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetMiscValue_Form(item As MiscItemObj)
+        On Error Resume Next
         If item.PowerPID <> -1 Then
             Dim Pid As Integer = item.PowerPID
             For n = 0 To UBound(AmmoPID)
@@ -301,15 +302,17 @@ Friend Class Items_Form
     End Sub
 
     Private Sub SetContanerValue_Form(item As ContainerItemObj)
+        On Error Resume Next
         NumericUpDown32.Value = item.MaxSize
         CheckBox15.Checked = item.GetOpenFlag
         GroupBox25.Enabled = True
     End Sub
 
     Private Sub SetDrugsValue_Form(drugs As DrugsItemObj)
-        ComboBox19.SelectedIndex = If ((drugs.Stat0 <> -1), 2 + drugs.Stat0, 1)
-        ComboBox20.SelectedIndex = If ((drugs.Stat1 <> -1), 2 + drugs.Stat1, 1)
-        ComboBox21.SelectedIndex = If ((drugs.Stat2 <> -1), 2 + drugs.Stat2, 1)
+        On Error Resume Next
+        ComboBox19.SelectedIndex = If((drugs.Stat0 <> -1), 2 + drugs.Stat0, 1)
+        ComboBox20.SelectedIndex = If((drugs.Stat1 <> -1), 2 + drugs.Stat1, 1)
+        ComboBox21.SelectedIndex = If((drugs.Stat2 <> -1), 2 + drugs.Stat2, 1)
 
         NumericUpDown13.Value = drugs.iAmount0
         NumericUpDown14.Value = drugs.iAmount1
@@ -323,7 +326,7 @@ Friend Class Items_Form
         NumericUpDown22.Value = drugs.Duration1
         NumericUpDown23.Value = drugs.Duration2
 
-        ComboBox22.SelectedIndex = if ((drugs.W_Effect <> -1), 1 + drugs.W_Effect, 0)
+        ComboBox22.SelectedIndex = If((drugs.W_Effect <> -1), 1 + drugs.W_Effect, 0)
 
         NumericUpDown24.Value = drugs.AddictionRate
         NumericUpDown25.Value = drugs.W_Onset
@@ -362,7 +365,8 @@ Friend Class Items_Form
         Dim frm As String = ComboBox2.SelectedItem.ToString
 
         If frm = "None" Then
-            PictureBox4.BackgroundImage.Dispose() ' = Nothing
+            If (PictureBox4.BackgroundImage IsNot Nothing) Then PictureBox4.BackgroundImage.Dispose()
+            PictureBox4.BackgroundImage = Nothing
             If frmReady Then btnSave.Enabled = True
             Exit Sub
         End If
@@ -724,62 +728,89 @@ Friend Class Items_Form
     End Sub
 
     Private Sub ComboBox7_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox7.SelectedIndexChanged
-        If ReloadPro OrElse (frmReady AndAlso MsgBox("Do you want to change the subtype of this object?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes) Then
+        If ReloadPro OrElse (frmReady AndAlso MsgBox("Do you want to change the subtype of this item?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes) Then
             TabControl1.Visible = False
             If TabControl1.TabCount > 1 Then
                 TabControl1.SelectTab(1)
                 TabControl1.TabPages.RemoveAt(0)
             End If
 
+            If (backupItem Is Nothing) Then
+                backupItem = itemObject
+            End If
+
+            GroupBox25.Enabled = False
+
             Select Case ComboBox7.SelectedIndex
                 Case ItemType.Armor
-                    itemObject.ObjType = ItemType.Armor
-                    If frmReady Then
-                        Dim armor = CType(itemObject, ArmorItemObj)
-                        If (armor.FemaleFID = 0) Then armor.FemaleFID = &H1000000
-                        If (armor.FemaleFID = 0) Then armor.MaleFID = &H1000000
+                    If (TypeOf backupItem Is ArmorItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New ArmorItemObj(itemObject)
                     End If
                     TabControl1.TabPages.Insert(0, TabPage2)
 
                 Case ItemType.Drugs
-                    itemObject.ObjType = ItemType.Drugs
+                    If (TypeOf backupItem Is DrugsItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New DrugsItemObj(itemObject)
+                    End If
                     TabControl1.TabPages.Insert(0, TabPage4)
 
                 Case ItemType.Weapon
-                    itemObject.ObjType = ItemType.Weapon
-                    Dim weapon = CType(itemObject, WeaponItemObj)
-                    If frmReady Then
-                        If (weapon.ProjPID = 0) Then weapon.ProjPID = &H5000000
-                        If (weapon.AmmoPID = 0) Then weapon.AmmoPID = -1
+                    If (TypeOf backupItem Is WeaponItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New WeaponItemObj(itemObject)
                     End If
                     TabControl1.TabPages.Insert(0, TabPage1)
-                    If (weapon.wSoundID = 0) Then cmbWeaponSoundID.SelectedIndex = 0
 
                 Case ItemType.Ammo
-                    itemObject.ObjType = ItemType.Ammo
-                    If frmReady Then
-                        Dim ammo = CType(itemObject, AmmoItemObj)
-                        If (ammo.DamMult = 0) Then ammo.DamMult = 1
-                        If (ammo.DamDiv = 0) Then ammo.DamDiv = 1
+                    If (TypeOf backupItem Is AmmoItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New AmmoItemObj(itemObject)
                     End If
                     TabControl1.TabPages.Insert(0, TabPage5)
                     GroupBox23.Enabled = True
                     GroupBox24.Enabled = False
 
                 Case ItemType.Misc
-                    If frmReady Then
-                        itemObject.ObjType = ItemType.Misc
-                        If (CType(itemObject, MiscItemObj).PowerPID = 0) Then CType(itemObject, MiscItemObj).PowerPID = -1
+                    If (TypeOf backupItem Is MiscItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New MiscItemObj(itemObject)
                     End If
                     TabControl1.TabPages.Insert(0, TabPage5)
                     GroupBox23.Enabled = False
                     GroupBox24.Enabled = True
+
+                Case ItemType.Container
+                    If (TypeOf backupItem Is ContainerItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New ContainerItemObj(itemObject)
+                    End If
+
+                Case ItemType.Key
+                    If (TypeOf backupItem Is KeyItemObj) Then
+                        itemObject = backupItem
+                        backupItem = Nothing
+                    Else
+                        itemObject = New KeyItemObj(itemObject)
+                    End If
             End Select
 
             If frmReady Then
-                itemObject.FlagsExt = itemObject.FlagsExt And &HCFFFFF ' default set
                 frmReady = False
-                SetFormValues(Ctype(ComboBox7.SelectedIndex, ItemType))
+                SetFormValues(CType(ComboBox7.SelectedIndex, ItemType))
                 frmReady = True
             End If
 
@@ -859,7 +890,7 @@ Friend Class Items_Form
     'Next
     'End Sub
 
-    Private Sub SetSoundID(ByRef ID As Byte, ByRef control As ComboBox)
+    Private Sub SetSoundID(ByVal ID As Byte, ByRef control As ComboBox)
         For n = 0 To control.Items.Count - 1
             If (control.Items(n).ToString.StartsWith(ID.ToString)) Then
                 control.SelectedIndex = n
@@ -891,9 +922,10 @@ Friend Class Items_Form
     Dim sec As Byte = 1
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        Dim sID As Char = Convert.ToChar(GetSoundID(cmbWeaponSoundID.Text))
+        Dim id = GetSoundID(cmbWeaponSoundID.Text)
+        If id = 0 Then Exit Sub
 
-        Dim fileFormat As String = String.Format("\sound\sfx\WA{0}{1}XXX{2}.acm", sID, If(sec = 1, "1", "2"), If(num = 1, "1", "2"))
+        Dim fileFormat As String = String.Format("\sound\sfx\WA{0}{1}XXX{2}.acm", Convert.ToChar(id), If(sec = 1, "1", "2"), If(num = 1, "1", "2"))
 
         If sec = 2 AndAlso num = 2 Then
             num = 1
@@ -916,4 +948,15 @@ Friend Class Items_Form
         Main.PrintLog("Playing Sound: " & Path.GetFileName(fileFormat))
     End Sub
 
+    Private Sub cmbWeaponSoundID_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbWeaponSoundID.SelectedIndexChanged
+        num = 1
+        sec = 1
+    End Sub
+
+    Private Sub cmbWScoreType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbWScoreType.SelectedIndexChanged
+        If frmReady Then
+            weaponScoreType = cmbWScoreType.SelectedIndex
+            lblWeaponScore.Text = CType(itemObject, WeaponItemObj).WeaponScore(weaponScoreType).ToString
+        End If
+    End Sub
 End Class

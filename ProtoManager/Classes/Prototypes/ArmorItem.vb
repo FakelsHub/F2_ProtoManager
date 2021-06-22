@@ -30,6 +30,16 @@ Public Class ArmorItemObj
 
     Private mProto As ArmorProto
 
+    Sub New(data As ItemPrototype)
+        MyBase.New(data)
+
+        ObjType = Enums.ItemType.Armor
+        DREMP = 500
+        FemaleFID = &H1000000
+        MaleFID = &H1000000
+        Perk = -1
+    End Sub
+
     Sub New(proFile As String)
         MyBase.New(proFile)
     End Sub
