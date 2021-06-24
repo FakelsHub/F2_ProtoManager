@@ -1,8 +1,27 @@
 ﻿NotInheritable Class Prototypes
 
+    Enum PrototypeSize As Integer
+        Weapon = 122
+        Ammo = 81
+        Armor = 129
+        Drug = 125
+        Container = 65
+        Misc = 69
+        Key = 61
+    End Enum
+
     Friend Shared ReadOnly ItemTypesName() As String = {"Armor", "Container", "Drug", "Weapon", "Ammo", "Misc", "Key", "Unknown"}
 
-    Private Shared ReadOnly ItemTypesProLen() As Integer = {129, 65, 125, 122, 81, 69, 61, 0}
+    Private Shared ReadOnly ItemTypesProLen() As Integer = {
+        PrototypeSize.Armor,
+        PrototypeSize.Container,
+        PrototypeSize.Drug,
+        PrototypeSize.Weapon,
+        PrototypeSize.Ammo,
+        PrototypeSize.Misc,
+        PrototypeSize.Key,
+        0
+    }
 
     Friend Shared Function GetSizeProByType(ByVal type As Enums.ItemType) As Integer
         Return ItemTypesProLen(type)

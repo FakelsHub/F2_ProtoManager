@@ -304,7 +304,7 @@ Friend Module Main
         Progress_Form.Close()
     End Sub
 
-    Private Sub GetItemsData()
+    Friend Sub GetItemsData()
         If Misc_NAME IsNot Nothing Then Return
 
         Misc_LST = Misc.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(miscLstPath)))

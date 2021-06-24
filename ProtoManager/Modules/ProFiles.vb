@@ -74,7 +74,7 @@ Module ProFiles
     ''' </summary>
     Friend Function GetProItemsNameID(ByRef ProFile As String, ByVal n As Integer) As Integer
         Dim NameID As Integer
-        Dim TypeID As Integer = -1
+        Dim type As ItemType = ItemType.Unknown
 
         Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
 
@@ -83,19 +83,19 @@ Module ProFiles
                 rFile.BaseStream.Seek(Prototypes.offsetDescID, SeekOrigin.Begin)
                 NameID = rFile.ReadInt32()
                 rFile.BaseStream.Seek(Prototypes.offsetISubType, SeekOrigin.Begin)
-                TypeID = ReverseBytes(rFile.ReadInt32())
+                type = CType(ReverseBytes(rFile.ReadInt32()), ItemType)
             End Using
         Catch ex As EndOfStreamException
             NameID = 0
-            TypeID = ItemType.Unknown
+            type = ItemType.Unknown
             MsgBox("The file is in an incorrect format or damaged." & vbLf & cPath)
         Catch ex As Exception
-            TypeID = ItemType.Unknown
+            type = ItemType.Unknown
         End Try
 
         ' Определяем тип предмета
-        If TypeID >= 0 AndAlso TypeID < ItemType.Unknown Then
-            Items_LST(n).itemType = TypeID
+        If type >= 0 AndAlso type < ItemType.Unknown Then
+            Items_LST(n).itemType = type
         Else
             Items_LST(n).itemType = ItemType.Unknown
         End If
@@ -186,7 +186,7 @@ Module ProFiles
     ''' </summary>
     Friend Function GetProCritNameID(ByRef ProFile As String) As Integer
         Dim NameID As Integer
-        Dim fFile As Byte = FreeFile()
+        Dim fFile As Integer = FreeFile()
         Dim cPath = DatFiles.CheckFile(PROTO_CRITTERS & ProFile)
 
         Try
@@ -215,7 +215,7 @@ Module ProFiles
             File.Delete(proFile) ' удаляем файл для перезаписи его размера.
         End If
 
-        Dim fFile As Byte = FreeFile()
+        Dim fFile As Integer = FreeFile()
         FileOpen(fFile, proFile, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
         FilePut(fFile, sBuff)
         FileClose(fFile)
@@ -227,27 +227,28 @@ Module ProFiles
     ''' Получает данные из pro-файла криттера в структуре.
     ''' </summary>
     Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CritterStruct As CritPro) As Boolean
-        Dim cProData(Prototypes.CritterLen - 1) As Integer  ' read f2 buffer
-        Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
+        Dim critterProData(Prototypes.CritterLen - 1) As Integer  ' read f2 buffer
 
         Dim fFile As Integer = FreeFile()
         Try
             FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
             Dim file As New FileInfo(PathProFile)
+
             If file.Length = 412 Then
-                FileGet(fFile, f1ProData)
-                f1ProData.CopyTo(cProData, 0)
-                cProData(Prototypes.CritterLen - 1) = &H7000000 'this index 7
-                ProFiles.ReverseLoadData(cProData, CritterStruct)
+                Dim proData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
+                FileGet(fFile, proData)
+                proData.CopyTo(critterProData, 0)
+                critterProData(Prototypes.CritterLen - 1) = &H7000000 ' set index 7
+
             ElseIf file.Length = 416 Then
-                FileGet(fFile, cProData)
-                ProFiles.ReverseLoadData(cProData, CritterStruct)
+                FileGet(fFile, critterProData)
             Else
                 Throw New System.Exception
             End If
         Catch
             Return True 'for error
         Finally
+            ProFiles.ReverseLoadData(critterProData, CritterStruct)
             FileClose(fFile)
         End Try
 
@@ -258,7 +259,7 @@ Module ProFiles
     ''' Помещает данные из pro-файла криттера в массив.
     ''' </summary>
     Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CrttrProData As Integer()) As Boolean
-        Dim fFile As Byte = FreeFile()
+        Dim fFile As Integer = FreeFile()
         Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
 
         PathProFile = DatFiles.CheckFile(PROTO_CRITTERS & PathProFile)
@@ -311,90 +312,6 @@ Module ProFiles
         End Select
 
         If proRO Then File.SetAttributes(pathProFile, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
-    End Sub
-
-    Friend Sub SaveItemProData(ByVal PathProFile As String, ByVal iType As Integer,
-                              ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro,
-                              ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro,
-                              Optional ByRef ContanerItem As CnItemPro = Nothing, Optional ByRef KeyItem As kItemPro = Nothing)
-        If File.Exists(PathProFile) Then
-            File.SetAttributes(PathProFile, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
-            File.Delete(PathProFile) ' удаляем файл для перезаписи его размера.
-        End If
-
-        Dim fFile As Integer = FreeFile()
-        FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
-        FilePut(fFile, ProFiles.ReverseSaveData(CommonItem, Prototypes.ItemCommonLen))
-        FilePut(fFile, CommonItem.SoundID)
-        Select Case iType
-            Case ItemType.Weapon
-                FilePut(fFile, ProFiles.ReverseSaveData(WeaponItem, Prototypes.ItemWeaponLen))
-                FilePut(fFile, WeaponItem.wSoundID)
-            Case ItemType.Armor
-                FilePut(fFile, ProFiles.ReverseSaveData(ArmorItem, Prototypes.ItemArmorLen))
-            Case ItemType.Drugs
-                FilePut(fFile, ProFiles.ReverseSaveData(DrugItem, Prototypes.ItemDrugsLen))
-            Case ItemType.Ammo
-                FilePut(fFile, ProFiles.ReverseSaveData(AmmoItem, Prototypes.ItemAmmoLen))
-            Case ItemType.Misc
-                FilePut(fFile, ProFiles.ReverseSaveData(MiscItem, Prototypes.ItemMiscLen))
-            Case ItemType.Container
-                FilePut(fFile, ProFiles.ReverseSaveData(ContanerItem, Prototypes.ItemContLen))
-            Case ItemType.Key
-                FilePut(fFile, ProFiles.ReverseSaveData(KeyItem, Prototypes.ItemKeyLen))
-        End Select
-        FileClose(fFile)
-
-        If proRO Then File.SetAttributes(PathProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
-    End Sub
-
-    ''' <summary>
-    ''' Помещает данные из pro-файла предмета в структуру.
-    ''' </summary>
-    Friend Sub LoadItemProData(ByVal PathProFile As String, ByVal iType As Integer,
-                              ByRef CommonItem As CmItemPro, ByRef WeaponItem As WpItemPro, ByRef ArmorItem As ArItemPro,
-                              ByRef AmmoItem As AmItemPro, ByRef DrugItem As DgItemPro, ByRef MiscItem As McItemPro,
-                              Optional ByRef ContanerItem As CnItemPro = Nothing, Optional ByRef KeyItem As kItemPro = Nothing)
-        Dim cmProDataBuf(Prototypes.ItemCommonLen - 1) As Integer
-        Dim fFile As Integer = FreeFile()
-
-        FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-        FileGet(fFile, cmProDataBuf)
-        ProFiles.ReverseLoadData(cmProDataBuf, CommonItem)
-        FileGet(fFile, CommonItem.SoundID)
-
-        Select Case iType
-            Case ItemType.Weapon
-                Dim wnProDataBuf(Prototypes.ItemWeaponLen - 1) As Integer
-                FileGet(fFile, wnProDataBuf)
-                ProFiles.ReverseLoadData(wnProDataBuf, WeaponItem)
-                FileGet(fFile, WeaponItem.wSoundID)
-            Case ItemType.Armor
-                Dim arProDataBuf(Prototypes.ItemArmorLen - 1) As Integer
-                FileGet(fFile, arProDataBuf)
-                ProFiles.ReverseLoadData(arProDataBuf, ArmorItem)
-            Case ItemType.Ammo
-                Dim amProDataBuf(Prototypes.ItemAmmoLen - 1) As Integer
-                FileGet(fFile, amProDataBuf)
-                ProFiles.ReverseLoadData(amProDataBuf, AmmoItem)
-            Case ItemType.Container
-                FileGet(fFile, ContanerItem)
-                ContanerItem.MaxSize = ProFiles.ReverseBytes(ContanerItem.MaxSize)
-                ContanerItem.OpenFlags = ProFiles.ReverseBytes(ContanerItem.OpenFlags)
-            Case ItemType.Drugs
-                Dim drProDataBuf(Prototypes.ItemDrugsLen - 1) As Integer
-                FileGet(fFile, drProDataBuf)
-                ProFiles.ReverseLoadData(drProDataBuf, DrugItem)
-            Case ItemType.Misc
-                Dim msProDataBuf(Prototypes.ItemMiscLen - 1) As Integer
-                FileGet(fFile, msProDataBuf)
-                ProFiles.ReverseLoadData(msProDataBuf, MiscItem)
-            Case ItemType.Key
-                FileGet(fFile, KeyItem)
-                KeyItem.Unknown = ProFiles.ReverseBytes(KeyItem.Unknown)
-        End Select
-
-        FileClose(fFile)
     End Sub
 
     Friend Sub ReverseLoadData(Of T As Structure)(ByRef buffer() As Integer, ByRef struct As T)
