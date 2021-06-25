@@ -12,12 +12,15 @@ Friend Module Main
         Friend proFile As String
         Friend crtName As String
         Friend crtHP As Integer
+        Friend PID As Integer
+        Friend FID As Integer
     End Structure
 
     Structure ItemsLst
         Friend proFile As String
         Friend itemType As ItemType
         Friend itemName As String
+        Friend PID As Integer
     End Structure
 
     Friend Declare Function SetParent Lib "user32" (ByVal hWndChild As Integer, ByVal hWndNewParent As Integer) As Integer
@@ -209,16 +212,16 @@ Friend Module Main
             Messages.GetMsgData("pro_crit.msg")
 
             For n = 0 To cCount
-                Critter_LST(n).crtName = Messages.GetNameObject(ProFiles.GetProCritNameID(Critter_LST(n).proFile))
+                Critter_LST(n).crtName = Messages.GetNameObject(ProFiles.GetProCritterDataIDs(Critter_LST(n)))
                 If Critter_LST(n).crtName = String.Empty Then Critter_LST(n).crtName = "<NoName>"
 
                 Dim attrLabel As String = String.Empty
                 Dim proAttr As Status = ProtoCheckFile(Critter_LST(n).proFile, 416, attrLabel)
 
                 If showFID Then
-                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, (&H1000001 + n).ToString, GetFID(n).ToString})) 'FID
+                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, Critter_LST(n).PID.ToString, Critter_LST(n).FID.ToString}))
                 Else
-                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, (&H1000001 + n).ToString}))
+                    .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, Critter_LST(n).PID.ToString}))
                 End If
                 .ListView1.Items(n).Tag = n 'запись индекса(pid) криттера в critters.lst
 
@@ -258,7 +261,7 @@ Friend Module Main
 
             Dim showPID As Boolean = IsShowPID()
             For n = 0 To itemProCount
-                Items_LST(n).itemName = Messages.GetNameObject(ProFiles.GetProItemsNameID(Items_LST(n).proFile, n))
+                Items_LST(n).itemName = Messages.GetNameObject(ProFiles.GetProItemsDataIDs(Items_LST(n).proFile, n))
                 If Items_LST(n).itemName = String.Empty Then Items_LST(n).itemName = "<NoName>"
 
                 Dim attrLabel As String = String.Empty
@@ -393,7 +396,7 @@ Friend Module Main
 
     Friend Sub CreateListItem(ByVal n As Integer, ByVal rOnly As String, ByVal showPID As Boolean)
         If showPID Then
-            Dim pid As String = (n + 1).ToString.PadLeft(8, "0"c)
+            Dim pid As String = Items_LST(n).PID.ToString.PadLeft(8, "0"c)
             Main_Form.ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly, pid}))
         Else
             Main_Form.ListView2.Items.Add(New ListViewItem({Items_LST(n).itemName, Items_LST(n).proFile, ItemTypesName(Items_LST(n).itemType), rOnly}))
@@ -417,7 +420,7 @@ Friend Module Main
         If GetCrittersLstFRM() Then Return
         GetScriptLst()
         GetTeams()
-        If PacketAI Is Nothing Then PacketAI = AI.GetAllAIPacketNumber(DatFiles.CheckFile(AI.AIFILE))
+        If PacketAI Is Nothing OrElse PacketAI.Count = 0 Then PacketAI = AI.GetAllAIPacketNumber(DatFiles.CheckFile(AI.AIFILE))
 
         Dim CrttFrm As New Critter_Form(cLST_Index)
         With CrttFrm

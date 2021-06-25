@@ -63,7 +63,7 @@ Public Class Table_Form
             Dim IsRead As Boolean = False
 
             Main.GetItemsData()
-            GetMsgData("pro_item.msg")
+            Messages.GetMsgData("pro_item.msg")
 
             'Dim tableLine As StringBuilder = New StringBuilder()
 

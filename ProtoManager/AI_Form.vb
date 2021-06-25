@@ -1,7 +1,5 @@
-﻿Imports System.Drawing
-Imports System.IO
+﻿Imports System.IO
 Imports Microsoft.VisualBasic.FileIO
-Imports System.Windows.Forms
 
 Public Class AI_Form
 
@@ -11,7 +9,7 @@ Public Class AI_Form
     End Enum
 
     Private aiPath As String                            'текущий путь к AI.txt
-    Private AIPacket As Dictionary(Of String, Integer)  'Список всех имен, и их номера строк в файле 
+    Private AIPacket As Dictionary(Of String, Integer)  'Список всех имен, и их номера строк в файле
 
     Private fReady As Boolean
     Private aiCustom As Boolean
@@ -21,7 +19,6 @@ Public Class AI_Form
 
     Private Const AIGENMSG As String = "\data\aigenmsg.txt"
     Private Const AIBODYMSG As String = "\data\aibdymsg.txt"
-
 
     Friend Sub New()
         InitializeComponent()
@@ -36,9 +33,9 @@ Public Class AI_Form
     End Sub
 
     Friend Sub Initialize(ByVal numPacket As Integer)
-        For Each i As ItemsLst In Items_LST
-            If i.itemType = Enums.ItemType.Drugs Then
-                ToolStripComboBox1.Items.Add(String.Format("{0}| {1}", Strings.RSet(i.proFile.Remove(8, 4), 3), i.itemName))
+        For Each item As ItemsLst In Items_LST
+            If item.itemType = Enums.ItemType.Drugs Then
+                tscmbDrugsPIDs.Items.Add(String.Format("{0}| {1}", item.PID.ToString.PadLeft(4, " "c), item.itemName))
             End If
         Next
 
@@ -89,22 +86,33 @@ Public Class AI_Form
         SetControlValue(Section)
     End Sub
 
-    Private Sub SetControlValue(ByRef Section As String)
+    Private Sub SetControlValue(ByVal section As String)
         fReady = False
-        FormControl(Me, Section)
+        SetToControls(Me, section)
 
         'chem_primary_desire
         ListView1.Items.Clear()
-        Dim drug_lst() As String = Split(INIFile.GetString(Section, "chem_primary_desire", aiPath, AI.Unknown), ",")
-        If drug_lst(0) <> AI.Unknown And drug_lst(0) <> "-1" Then
-            Dim count As Integer = drug_lst.GetLength(0) - 1
+        Dim listDrugs() As String = Split(INIFile.GetString(section, "chem_primary_desire", aiPath, AI.NotSetValue), ",")
+
+        If listDrugs(0) <> AI.NotSetValue AndAlso listDrugs(0) <> "-1" Then
+            Dim count As Integer = listDrugs.Length - 1
             If count > 2 Then count = 2
             For i = 0 To count
-                If drug_lst(i).Length = 0 Then Continue For
-                ListView1.Items.Add(New ListViewItem({drug_lst(i), Items_LST(CInt(drug_lst(i)) - 1).itemName}))
+                Dim pid As Integer
+                If listDrugs(i).Length = 0 OrElse Integer.TryParse(listDrugs(i), pid) = False Then Continue For
+                For Each item In Items_LST
+                    If (item.PID = pid) Then
+                        ListView1.Items.Add(New ListViewItem({listDrugs(i), item.itemName}))
+                        pid = -1
+                        Exit For
+                    End If
+                Next
+                If (pid <> -1) Then
+                    ListView1.Items.Add(New ListViewItem({listDrugs(i), "<Error PID>"}))
+                End If
             Next
-        Else
-            ListView1.Items.Add(New ListViewItem({"-1", drug_lst(0)})) 'Unknown
+        ElseIf (listDrugs(0) = "-1") Then
+            ListView1.Items.Add(New ListViewItem({"-1", String.Empty}))
         End If
 
         SaveButton.Enabled = False
@@ -138,7 +146,7 @@ Public Class AI_Form
         Button1.Enabled = True
     End Sub
 
-    Private Sub ToolStripComboBox1_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripComboBox1.SelectedIndexChanged
+    Private Sub ToolStripComboBox1_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tscmbDrugsPIDs.SelectedIndexChanged
         If ListView1.Items.Count < 3 Then
             AddDrugsToolStripMenuItem.Enabled = True
         End If
@@ -152,10 +160,15 @@ Public Class AI_Form
                 Exit For
             End If
         Next
-        Dim strPid = ToolStripComboBox1.Text.Remove(3)
+        Dim strPid = tscmbDrugsPIDs.Text.Remove(4).TrimStart
         Dim pid As Integer = CInt(strPid)
+        For Each item In Items_LST
+            If (item.PID = pid) Then
+                ListView1.Items.Add(New ListViewItem({strPid, item.itemName}))
+                Exit For
+            End If
+        Next
 
-        ListView1.Items.Add(New ListViewItem({strPid, Items_LST(pid - 1).itemName}))
         If ListView1.Items.Count > 2 Then
             AddDrugsToolStripMenuItem.Enabled = False
         End If
@@ -163,12 +176,19 @@ Public Class AI_Form
     End Sub
 
     Private Sub ListView1_AfterLabelEdit(ByVal sender As Object, ByVal e As LabelEditEventArgs) Handles ListView1.AfterLabelEdit
-        If e.Label = Nothing Or e.CancelEdit Then Exit Sub
-        Try
-            ListView1.Items(e.Item).SubItems(1).Text = Items_LST(CInt(e.Label) - 1).itemName
-        Catch
-            ListView1.Items(e.Item).SubItems(1).Text = "<Error PID>"
-        End Try
+        If e.Label = Nothing OrElse e.CancelEdit Then Exit Sub
+
+        Dim pid As Integer
+        If Integer.TryParse(e.Label, pid) = False Then Exit Sub
+
+        For Each item In Items_LST
+            If (item.PID = pid) Then
+                ListView1.Items(e.Item).SubItems(1).Text = item.itemName
+                Exit Sub
+            End If
+        Next
+
+        ListView1.Items(e.Item).SubItems(1).Text = "<Error PID>"
     End Sub
 
     Private Sub Delete(ByVal sender As Object, ByVal e As EventArgs) Handles DeleteToolStripMenuItem.Click
@@ -238,10 +258,10 @@ Public Class AI_Form
 
         'chem_primary_desire
         Dim List As String = String.Empty
-        For Each ic As ListViewItem In ListView1.Items 'ListView.ListViewItemCollection
-            If ic.Text = "-1" Then Exit For
+        For Each item As ListViewItem In ListView1.Items
+            If item.Text = "-1" Then Exit For
             If List.Length > 0 Then List &= ","
-            List &= ic.Text
+            List &= item.Text
         Next
         If List.Length > 0 Then INIFile.SetValue(Section, "chem_primary_desire", List, aiPath)
 
@@ -249,23 +269,29 @@ Public Class AI_Form
         SaveButton.Enabled = False
 
         'Log
-        Main.PrintLog("Save AI: " & aiPath)
+        Main.PrintLog("Update AI: " & aiPath)
     End Sub
 
     ' Рекурсивный перебор контролов класса формы
-    Private Sub FormControl(ByRef сntr As Control, ByRef Section As String)
-        Dim KeyValue As String
-
+    Private Sub SetToControls(ByRef сontrol As Control, ByVal section As String)
         Try
-            For Each _control As Control In сntr.Controls
-                If TypeOf _control Is NumericUpDown Then
-                    _control.Text = INIFile.GetInt(Section, _control.Tag.ToString, aiPath).ToString
-                ElseIf (TypeOf _control Is ComboBox) And _control.Tag IsNot Nothing Then
-                    KeyValue = INIFile.GetString(Section, _control.Tag.ToString, aiPath, AI.Unknown)
-                    If KeyValue = AI.Unknown Then _control.BackColor = Color.Linen Else _control.BackColor = SystemColors.Window
-                    _control.Text = KeyValue
-                ElseIf TypeOf _control Is GroupBox Then
-                    FormControl(_control, Section)
+            For Each ctrl As Control In сontrol.Controls
+                If TypeOf ctrl Is NumericUpDown Then
+                    ctrl.Text = INIFile.GetInt(section, ctrl.Tag.ToString, aiPath).ToString
+                ElseIf (TypeOf ctrl Is ComboBox) And ctrl.Tag IsNot Nothing Then
+                    If (ctrl.Tag.ToString = "hurt_too_much") Then
+                        ctrl.Text = INIFile.GetString(section, ctrl.Tag.ToString, aiPath, "")
+                    Else
+                        CType(ctrl, ComboBox).SelectedIndex = -1
+                        Dim val = INIFile.GetString(section, ctrl.Tag.ToString, aiPath, AI.NotSetValue).Trim
+                        If (val = "-1") Then
+                            CType(ctrl, ComboBox).SelectedIndex = 0
+                        Else
+                            ctrl.Text = val
+                        End If
+                    End If
+                ElseIf TypeOf ctrl Is GroupBox Then
+                    SetToControls(ctrl, section)
                 End If
             Next
         Catch ex As Exception
@@ -277,19 +303,23 @@ Public Class AI_Form
 
     End Sub
 
-    Private Sub SubSaveControl(ByRef сntr As Control, ByRef Section As String)
-        Dim result As Long
+    Private Sub SubSaveControl(ByRef control As Control, ByVal section As String)
+        For Each ctrl As Control In control.Controls
+            If TypeOf ctrl Is NumericUpDown Then
+                INIFile.SetValue(section, ctrl.Tag.ToString, ctrl.Text, aiPath)
 
-        For Each _control As Control In сntr.Controls
-            If TypeOf _control Is NumericUpDown Then
-                result = INIFile.SetValue(Section, _control.Tag.ToString, _control.Text, aiPath)
+            ElseIf (TypeOf ctrl Is ComboBox) And ctrl.Tag IsNot Nothing Then
+                Dim value = ctrl.Text
+                If value = AI.NotSetValue Then
+                    If (INIFile.GetString(section, ctrl.Tag.ToString, aiPath, AI.NotSetValue) = AI.NotSetValue) Then
+                        Continue For
+                    End If
+                    value = "-1"
+                End If
+                INIFile.SetValue(section, ctrl.Tag.ToString, value, aiPath)
 
-            ElseIf (TypeOf _control Is ComboBox) And _control.Tag IsNot Nothing Then
-                If _control.Text = AI.Unknown Then Continue For
-                result = INIFile.SetValue(Section, _control.Tag.ToString, _control.Text, aiPath)
-
-            ElseIf TypeOf _control Is GroupBox Then
-                SubSaveControl(_control, Section)
+            ElseIf TypeOf ctrl Is GroupBox Then
+                SubSaveControl(ctrl, section)
             End If
         Next
     End Sub
@@ -391,11 +421,14 @@ Public Class AI_Form
             pathAI = SaveMOD_Path & AI.AIFILE
             If Not (File.Exists(pathAI)) Then FileSystem.CopyFile(aiPath, pathAI)
         End If
+
         File.AppendAllText(pathAI, vbCrLf & "[" & name & "]" & vbCrLf)
         File.AppendAllText(pathAI, My.Resources.defaultAI, System.Text.Encoding.Default)
+
         INIFile.SetValue(name, "packet_num", maxNumPacket.ToString, pathAI)
-        'Log
-        Main.PrintLog("Save AI: " & pathAI)
+
+        Main.PrintLog("Update AI: " & pathAI)
+        If (Main.PacketAI IsNot Nothing) Then Main.PacketAI.Clear()
 
         ReloadFile(Me, False)
 
@@ -405,4 +438,50 @@ Public Class AI_Form
             ComboBox0.SelectedItem = name
         End If
     End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Me.Close()
+    End Sub
+
+    Private Sub RemovePacket(sender As Object, e As EventArgs) Handles btnRemovePacket.Click
+        Dim listPackets = AI.GetAllAIPacketNumber(aiPath)
+
+        Dim maxPacket = New KeyValuePair(Of String, Integer)
+        For Each packet In listPackets
+            If (packet.Value > maxPacket.Value) Then maxPacket = packet
+        Next
+        If (maxPacket.Key Is Nothing) Then Exit Sub
+
+        Dim name = maxPacket.Key.Remove(maxPacket.Key.LastIndexOf("(") - 1)
+
+        If (MessageBox.Show("Do you want to delete [" + name + "] packet AI from the file?", "Delete packet AI", MessageBoxButtons.YesNo) = DialogResult.No) Then
+            Exit Sub
+        End If
+
+        Dim startLine = AIPacket.Item(name)
+        Dim endLine = startLine
+
+        Dim buffer As List(Of String) = File.ReadAllLines(aiPath).ToList
+
+        For index = startLine + 1 To buffer.Count - 1
+            If buffer(index).StartsWith("[") Then
+                endLine = index - 1
+                Exit For
+            End If
+        Next
+        If startLine = endLine Then
+            endLine = buffer.Count
+        End If
+        If startLine > 0 AndAlso buffer(startLine - 1).Trim.Length = 0 Then startLine -= 1
+
+        buffer.RemoveRange(startLine, endLine - startLine)
+        File.WriteAllLines(aiPath, buffer)
+
+        Main.PrintLog("Update AI: " & aiPath)
+        If (Main.PacketAI IsNot Nothing) Then Main.PacketAI.Clear()
+
+        ReloadFile(Me, False)
+        ComboBox0.SelectedIndex = 0
+    End Sub
+
 End Class

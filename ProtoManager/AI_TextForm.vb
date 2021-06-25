@@ -23,9 +23,9 @@ Public Class AI_TextForm
         buffer = File.ReadAllLines(path).ToList
         Dim str As String = String.Empty
         For n = sPacketID To ePacketID - 1
-            str &= vbLf & buffer(n)
+            str &= vbCrLf & buffer(n)
         Next
-        RichTextBox1.Text = str.Remove(0, 1)
+        TextBox1.Text = str.Remove(0, 2)
     End Sub
 
     Private Sub AI_TextForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -38,7 +38,7 @@ Public Class AI_TextForm
 
     Private Sub Close_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         If change Then
-            AI_Form.ReloadFile(Me.Owner)
+            AI_Form.ReloadFile(CType(Me.Owner, AI_Form))
             ownerSaveButton = False
         End If
         Me.Close()
@@ -46,7 +46,7 @@ Public Class AI_TextForm
 
     Private Sub Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         buffer.RemoveRange(sPacketID, (ePacketID - sPacketID))
-        buffer.InsertRange(sPacketID, Split(RichTextBox1.Text, vbLf).ToList)
+        buffer.InsertRange(sPacketID, Split(TextBox1.Text, vbCrLf).ToList)
 
         ' save to file
         Dim sFile As String = If(aiCustom, pathAI, SaveMOD_Path & AI.AIFILE)
@@ -57,12 +57,12 @@ Public Class AI_TextForm
         File.WriteAllLines(sFile, buffer)
 
         change = True
-        'Log
-        Main.PrintLog("Save AI: " & sFile)
+        If (Main.PacketAI IsNot Nothing) Then Main.PacketAI.Clear()
+        Main.PrintLog("Update AI: " & sFile)
     End Sub
 
     ' Рекурсивный перебор контролов класса формы
-    Private Sub FormControl(ByRef сntr As Control, Optional ByRef def As Boolean = False)
+    Private Sub FormControl(сntr As Control, Optional def As Boolean = False)
         For Each _control As Control In сntr.Controls
             If (TypeOf _control Is GroupBox) Then
                 FormControl(_control, def)

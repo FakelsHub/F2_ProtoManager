@@ -474,12 +474,12 @@ Friend Class Main_Form
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(CInt(e.Item.Tag)).proFile, , , False)
-        ToolStripStatusLabel2.Text = "Critter PID: " & &H1000001 + CInt(e.Item.Tag)
+        ToolStripStatusLabel2.Text = "Critter FID: " & Critter_LST(CInt(e.Item.Tag)).FID.ToString
     End Sub
 
     Private Sub ListView2_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView2.ItemSelectionChanged
         ToolStripStatusLabel1.Text = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(CInt(e.Item.Tag)).proFile, , , False)
-        ToolStripStatusLabel2.Text = "Item PID: " & (CInt(e.Item.Tag) + 1).ToString.PadLeft(8, "0"c)
+        ToolStripStatusLabel2.Text = "Item PID: " & Items_LST(CInt(e.Item.Tag)).PID.ToString.PadLeft(8, "0"c)
     End Sub
 
     Private Sub TypeCrittersToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TypeCrittersToolStripMenuItem.Click
@@ -651,6 +651,7 @@ Friend Class Main_Form
 
     Private Sub ShowFIDToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowFIDToolStripMenuItem.Click
         With Me.ListView1
+            If (.Items.Count = 0) Then Return
             If .Columns.ContainsKey("cFid") Then
                 .Columns.RemoveByKey("cFid")
                 Return

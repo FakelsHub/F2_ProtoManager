@@ -72,18 +72,18 @@ Module ProFiles
     ''' <summary>
     ''' Возвращает номер Description ID из про-файла предмета, и его тип.
     ''' </summary>
-    Friend Function GetProItemsNameID(ByRef ProFile As String, ByVal n As Integer) As Integer
-        Dim NameID As Integer
+    Friend Function GetProItemsDataIDs(ByRef ProFile As String, ByVal n As Integer) As Integer
+        Dim NameID, pID As Integer
         Dim type As ItemType = ItemType.Unknown
 
         Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
 
         Try
-            Using rFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                rFile.BaseStream.Seek(Prototypes.offsetDescID, SeekOrigin.Begin)
-                NameID = rFile.ReadInt32()
-                rFile.BaseStream.Seek(Prototypes.offsetISubType, SeekOrigin.Begin)
-                type = CType(ReverseBytes(rFile.ReadInt32()), ItemType)
+            Using brFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                pID = brFile.ReadInt32()
+                NameID = brFile.ReadInt32()
+                brFile.BaseStream.Seek(Prototypes.offsetISubType, SeekOrigin.Begin)
+                type = CType(ReverseBytes(brFile.ReadInt32()), ItemType)
             End Using
         Catch ex As EndOfStreamException
             NameID = 0
@@ -93,9 +93,9 @@ Module ProFiles
             type = ItemType.Unknown
         End Try
 
-        ' Определяем тип предмета
         If type >= 0 AndAlso type < ItemType.Unknown Then
             Items_LST(n).itemType = type
+            Items_LST(n).PID = ReverseBytes(pID)
         Else
             Items_LST(n).itemType = ItemType.Unknown
         End If
@@ -149,6 +149,7 @@ Module ProFiles
             Return Nothing
         End Try
 
+        Critter_LST(nPro).FID = FID
         Return If(FID = -1, 0, FID)
     End Function
 
@@ -174,6 +175,7 @@ Module ProFiles
         End Try
 
         Critter_LST(nPro).crtHP = hp + bhp
+        Critter_LST(nPro).FID = FID
 
         If FID = -1 Then Return Nothing
         FID -= &H1000000I
@@ -184,21 +186,25 @@ Module ProFiles
     ''' <summary>
     ''' Возвращает номер Description ID из про-файла криттера.
     ''' </summary>
-    Friend Function GetProCritNameID(ByRef ProFile As String) As Integer
-        Dim NameID As Integer
-        Dim fFile As Integer = FreeFile()
-        Dim cPath = DatFiles.CheckFile(PROTO_CRITTERS & ProFile)
+    Friend Function GetProCritterDataIDs(ByRef crtList As CrittersLst) As Integer
+        Dim nameID, pID, fID As Integer
+        Dim cPath = DatFiles.CheckFile(PROTO_CRITTERS & crtList.proFile)
 
+        Dim fFile As Integer = FreeFile()
         Try
             FileOpen(fFile, cPath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            FileGet(fFile, NameID, 5)
+            FileGet(fFile, pID)
+            FileGet(fFile, nameID)
+            FileGet(fFile, fID)
         Catch
             Return 0
         Finally
             FileClose(fFile)
+            crtList.PID = ReverseBytes(pID)
+            crtList.FID = ReverseBytes(fID)
         End Try
 
-        Return ReverseBytes(NameID)
+        Return ReverseBytes(nameID)
     End Function
 
     ''' <summary>
@@ -365,26 +371,6 @@ Module ProFiles
                (value >> 24) And &HFF
     End Function
 
-    ''' <summary>
-    ''' Преобразовывает структуру в массив.
-    ''' </summary>
-    Private Sub ConvertStructToBytes(ByRef bytes() As Byte, ByVal bSize As Integer, ByVal struct As Object)
-        Dim ptr As IntPtr = Marshal.AllocHGlobal(bSize)
-        Marshal.StructureToPtr(struct, ptr, False)
-        Marshal.Copy(ptr, bytes, 0, bSize)
-        Marshal.FreeHGlobal(ptr)
-    End Sub
-
-    ''' <summary>
-    ''' Преобразовывает массив в структуру.
-    ''' </summary>
-    Private Function ConvertBytesToStruct(ByVal Buff() As Integer, ByVal strcType As Type) As Object
-        Dim mGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)
-        Dim obj As Object = Marshal.PtrToStructure(mGC.AddrOfPinnedObject, strcType)
-        mGC.Free()
-        Return obj
-    End Function
-
     Private Sub ReverseBytes(ByRef bytes() As Byte, ByVal length As Integer)
         While (length > 0)
             length -= 4
@@ -405,5 +391,25 @@ Module ProFiles
         '    n += 2              ' n = 4
         'Loop While (n < count)
     End Sub
+
+    ''' <summary>
+    ''' Преобразовывает структуру в массив.
+    ''' </summary>
+    Private Sub ConvertStructToBytes(ByRef bytes() As Byte, ByVal bSize As Integer, ByVal struct As Object)
+        Dim ptr As IntPtr = Marshal.AllocHGlobal(bSize)
+        Marshal.StructureToPtr(struct, ptr, False)
+        Marshal.Copy(ptr, bytes, 0, bSize)
+        Marshal.FreeHGlobal(ptr)
+    End Sub
+
+    ''' <summary>
+    ''' Преобразовывает массив в структуру.
+    ''' </summary>
+    Private Function ConvertBytesToStruct(ByVal Buff() As Integer, ByVal strcType As Type) As Object
+        Dim mGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)
+        Dim obj As Object = Marshal.PtrToStructure(mGC.AddrOfPinnedObject, strcType)
+        mGC.Free()
+        Return obj
+    End Function
 
 End Module
