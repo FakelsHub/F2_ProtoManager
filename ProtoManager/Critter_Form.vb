@@ -45,23 +45,25 @@ Friend Class Critter_Form
                 e.Cancel = True
             End If
         End If
+
+        If e.Cancel = False Then
+            Main_Form.Focus()
+        End If
     End Sub
 
     Private Sub Critter_Form_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
         If pbCritterFID.Image IsNot Nothing Then pbCritterFID.Image.Dispose()
         If PictureBox2.Image IsNot Nothing Then PictureBox2.Image.Dispose()
         Me.Dispose()
-        Main_Form.Focus()
     End Sub
 
     Private Sub Critter_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Dim x As Byte = 1
-
+        Dim i As Integer = 1
         For n = 0 To UBound(Items_LST)
             If Items_LST(n).itemType = ItemType.Armor Then
                 ListView1.Items.Add(Items_LST(n).itemName)
-                ListView1.Items(x).Tag = Items_LST(n).proFile
-                x += 1
+                ListView1.Items(i).Tag = Items_LST(n).proFile
+                i += 1
             End If
         Next
 
@@ -91,7 +93,7 @@ Friend Class Critter_Form
         TextBox29.Text = GetNameCritterMsg(CritterPro.DescID)
         Me.Text = TextBox29.Text & " [" & Critter_LST(cLST_Index).proFile & "]"
 
-        TextBox33.Text = CritterPro.ProtoID
+        TextBox33.Text = CritterPro.ProtoID.ToString
         ComboBox1.SelectedIndex = CritterPro.FrmID - &H1000000I
         'special
         NumericUpDown1.Value = CritterPro.Strength
@@ -387,13 +389,20 @@ Friend Class Critter_Form
         CritterPro.DescID = NumericUpDown64.Value
         If ComboBox9.SelectedIndex <> 0 Then CritterPro.ScriptID = (ComboBox9.SelectedIndex - 1) + &H4000000I Else CritterPro.ScriptID = &HFFFFFFFF
         CritterPro.Gender = ComboBox8.SelectedIndex
-        CritterPro.AIPacket = PacketAI.Item(ComboBox2.SelectedItem.ToString)
+
+        If (PacketAI.Count = 0) Then
+            Dim packet = ComboBox2.SelectedItem.ToString
+            Dim n = packet.LastIndexOf("("c) + 1
+            CritterPro.AIPacket = CInt(packet.Substring(n, packet.Length - n - 1))
+        Else
+            CritterPro.AIPacket = PacketAI.Item(ComboBox2.SelectedItem.ToString)
+        End If
         CritterPro.TeamNum = ComboBox3.SelectedIndex
         CritterPro.BodyType = ComboBox4.SelectedIndex
         CritterPro.DamageType = ComboBox5.SelectedIndex
         CritterPro.KillType = ComboBox6.SelectedIndex
 
-        CritterPro.LightDis = NumericUpDown36.Value
+        CritterPro.LightDis = CInt(NumericUpDown36.Value)
         CritterPro.LightInt = Math.Round((NumericUpDown37.Value * &HFFFF) / 100)
         CritterPro.ExpVal = NumericUpDown38.Value
         CritterPro.Age = NumericUpDown39.Value
@@ -459,7 +468,7 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SaveCritterMsg(ByVal str As String, Optional ByRef Desc As Boolean = False)
-        Dim ID As Integer = NumericUpDown64.Value 'fCritterPro.DescID 
+        Dim ID As Integer = NumericUpDown64.Value 'fCritterPro.DescID
 
         Messages.GetMsgData("pro_crit.msg", False)
         If Messages.AddTextMSG(str, ID, Desc) Then
@@ -738,7 +747,7 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub Button8_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button8.Click
-        Main.Create_AIEditForm(CritterPro.AIPacket)
+        Main.CreateAIEditForm(CritterPro.AIPacket)
     End Sub
 
     Private Sub NumericUpDown_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles NumericUpDown71.KeyPress, NumericUpDown70.KeyPress, NumericUpDown69.KeyPress,

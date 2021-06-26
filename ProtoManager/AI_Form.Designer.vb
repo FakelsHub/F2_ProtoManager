@@ -49,8 +49,10 @@ Partial Class AI_Form
         Me.MoveDownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnRemovePacket = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
         Me.NumericUpDown11 = New System.Windows.Forms.NumericUpDown()
         Me.NumericUpDown4 = New System.Windows.Forms.NumericUpDown()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
@@ -123,7 +125,7 @@ Partial Class AI_Form
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
-        Me.ComboBox0 = New System.Windows.Forms.ComboBox()
+        Me.cmbAIPacket = New System.Windows.Forms.ComboBox()
         Me.ContextMenuStrip2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.SortedListMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
@@ -133,11 +135,9 @@ Partial Class AI_Form
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.ToolTipEng = New System.Windows.Forms.ToolTip(Me.components)
-        Me.btnRemovePacket = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Button2 = New System.Windows.Forms.Button()
-        Me.Label20 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -354,7 +354,7 @@ Partial Class AI_Form
         'ComboBox9
         '
         Me.ComboBox9.FormattingEnabled = True
-        Me.ComboBox9.Items.AddRange(New Object() {"", "blind", "crippled", "crippled_arms", "crippled_legs"})
+        Me.ComboBox9.Items.AddRange(New Object() {"blind", "crippled", "crippled_arms", "crippled_legs"})
         Me.ComboBox9.Location = New System.Drawing.Point(9, 72)
         Me.ComboBox9.Name = "ComboBox9"
         Me.ComboBox9.Size = New System.Drawing.Size(133, 21)
@@ -448,6 +448,16 @@ Partial Class AI_Form
         Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
+        'btnRemovePacket
+        '
+        Me.btnRemovePacket.Location = New System.Drawing.Point(290, 262)
+        Me.btnRemovePacket.Name = "btnRemovePacket"
+        Me.btnRemovePacket.Size = New System.Drawing.Size(146, 23)
+        Me.btnRemovePacket.TabIndex = 7
+        Me.btnRemovePacket.Text = "Delete Packet"
+        Me.ToolTipEng.SetToolTip(Me.btnRemovePacket, "Deletes the AI packet with the last number.")
+        Me.btnRemovePacket.UseVisualStyleBackColor = True
+        '
         'Label6
         '
         Me.Label6.AutoSize = True
@@ -467,6 +477,16 @@ Partial Class AI_Form
         Me.Label5.TabIndex = 6
         Me.Label5.Text = "Attack Who:"
         Me.ToolTipEng.SetToolTip(Me.Label5, "Who the NPC must attack.")
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(290, 192)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(79, 13)
+        Me.Label20.TabIndex = 5
+        Me.Label20.Text = "AI num packet:"
+        Me.ToolTipEng.SetToolTip(Me.Label20, "Unique number of this AI package.")
         '
         'NumericUpDown11
         '
@@ -684,7 +704,7 @@ Partial Class AI_Form
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(462, 10)
+        Me.Label9.Location = New System.Drawing.Point(465, 10)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(93, 13)
         Me.Label9.TabIndex = 2
@@ -809,7 +829,7 @@ Partial Class AI_Form
         Me.GroupBox2.Size = New System.Drawing.Size(280, 331)
         Me.GroupBox2.TabIndex = 2
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Combat Messages"
+        Me.GroupBox2.Text = "Message numbers"
         '
         'NumericUpDown21
         '
@@ -1273,18 +1293,18 @@ Partial Class AI_Form
         Me.Label24.TabIndex = 4
         Me.Label24.Text = "Hit Groin End:"
         '
-        'ComboBox0
+        'cmbAIPacket
         '
-        Me.ComboBox0.ContextMenuStrip = Me.ContextMenuStrip2
-        Me.ComboBox0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox0.DropDownWidth = 300
-        Me.ComboBox0.Font = New System.Drawing.Font("Courier New", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.ComboBox0.FormattingEnabled = True
-        Me.ComboBox0.Location = New System.Drawing.Point(103, 4)
-        Me.ComboBox0.MaxDropDownItems = 30
-        Me.ComboBox0.Name = "ComboBox0"
-        Me.ComboBox0.Size = New System.Drawing.Size(278, 24)
-        Me.ComboBox0.TabIndex = 3
+        Me.cmbAIPacket.ContextMenuStrip = Me.ContextMenuStrip2
+        Me.cmbAIPacket.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbAIPacket.DropDownWidth = 300
+        Me.cmbAIPacket.Font = New System.Drawing.Font("Courier New", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.cmbAIPacket.FormattingEnabled = True
+        Me.cmbAIPacket.Location = New System.Drawing.Point(103, 4)
+        Me.cmbAIPacket.MaxDropDownItems = 30
+        Me.cmbAIPacket.Name = "cmbAIPacket"
+        Me.cmbAIPacket.Size = New System.Drawing.Size(278, 24)
+        Me.cmbAIPacket.TabIndex = 3
         '
         'ContextMenuStrip2
         '
@@ -1362,16 +1382,6 @@ Partial Class AI_Form
         Me.ToolTipEng.SetToolTip(Me.Button3, "Open custom AI file.")
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'btnRemovePacket
-        '
-        Me.btnRemovePacket.Location = New System.Drawing.Point(290, 262)
-        Me.btnRemovePacket.Name = "btnRemovePacket"
-        Me.btnRemovePacket.Size = New System.Drawing.Size(146, 23)
-        Me.btnRemovePacket.TabIndex = 7
-        Me.btnRemovePacket.Text = "Delete Packet"
-        Me.ToolTipEng.SetToolTip(Me.btnRemovePacket, "Deletes the AI packet with the last number.")
-        Me.btnRemovePacket.UseVisualStyleBackColor = True
-        '
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
@@ -1391,23 +1401,13 @@ Partial Class AI_Form
         Me.Button2.Text = "Close"
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(290, 192)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(79, 13)
-        Me.Label20.TabIndex = 5
-        Me.Label20.Text = "AI num packet:"
-        Me.ToolTipEng.SetToolTip(Me.Label20, "Unique number of this AI package.")
-        '
         'AI_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(749, 375)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.ComboBox0)
+        Me.Controls.Add(Me.cmbAIPacket)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.NumericUpDown5)
         Me.Controls.Add(Me.Button1)
@@ -1558,7 +1558,7 @@ Partial Class AI_Form
     Friend WithEvents Label36 As System.Windows.Forms.Label
     Friend WithEvents Label38 As System.Windows.Forms.Label
     Friend WithEvents Label22 As System.Windows.Forms.Label
-    Friend WithEvents ComboBox0 As System.Windows.Forms.ComboBox
+    Friend WithEvents cmbAIPacket As System.Windows.Forms.ComboBox
     Friend WithEvents Label44 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents SaveButton As System.Windows.Forms.Button

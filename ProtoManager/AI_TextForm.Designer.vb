@@ -52,7 +52,7 @@ Partial Class AI_TextForm
         Me.TextBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me.TextBox1.Font = New System.Drawing.Font("Courier New", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.TextBox1.Location = New System.Drawing.Point(4, 3)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
@@ -75,7 +75,7 @@ Partial Class AI_TextForm
         Me.Name = "AI_TextForm"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Text AI Packet: "
+        Me.Text = "AI Packet: "
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

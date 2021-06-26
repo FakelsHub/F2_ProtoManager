@@ -20,19 +20,39 @@ Public Class AI_Form
     Private Const AIGENMSG As String = "\data\aigenmsg.txt"
     Private Const AIBODYMSG As String = "\data\aibdymsg.txt"
 
-    Friend Sub New()
+    Friend Sub New(ByVal numPacket As Integer)
         InitializeComponent()
 
         ShowPacketIDMenuItem.Checked = ShowAIPacket
         SortedListMenuItem.Checked = SortedAIPacket
-        ComboBox0.Sorted = SortedAIPacket
+        cmbAIPacket.Sorted = SortedAIPacket
 
         aiPath = DatFiles.CheckFile(AI.AIFILE)
         AIPacket = AI.GetAllAIPackets(aiPath)
         aiCustom = False
+
+        Initialize(numPacket)
     End Sub
 
-    Friend Sub Initialize(ByVal numPacket As Integer)
+    Private Sub Initialize(ByVal numPacket As Integer)
+        PacketList(Me) 'ComboBox0.Items.AddRange((From t In AI_Packet Take (AI_Packet.GetLength(1))).ToArray)
+
+        If numPacket <> -1 Then
+            For Each packet As String In AIPacket.Keys
+                If INIFile.GetInt(packet, "packet_num", aiPath) = numPacket Then
+                    cmbAIPacket.SelectedItem = If(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket.ToString, 3), packet), packet)
+                    Exit For
+                End If
+            Next
+            If cmbAIPacket.SelectedIndex = -1 Then
+                MessageBox.Show("AI Packet with this number does not exist.", "Error")
+                Me.Dispose()
+                Exit Sub
+            End If
+        Else
+            cmbAIPacket.SelectedIndex = 0
+        End If
+
         For Each item As ItemsLst In Items_LST
             If item.itemType = Enums.ItemType.Drugs Then
                 tscmbDrugsPIDs.Items.Add(String.Format("{0}| {1}", item.PID.ToString.PadLeft(4, " "c), item.itemName))
@@ -47,23 +67,13 @@ Public Class AI_Form
         ComboBox4.Items.AddRange(AI.GetAllAIPackets(tmpPath).Keys.ToArray)
         ComboBox4.Items.RemoveAt(ComboBox4.Items.Count - 1)
 
-        PacketList(Me) 'ComboBox0.Items.AddRange((From t In AI_Packet Take (AI_Packet.GetLength(1))).ToArray)
-
-        If numPacket <> -1 Then
-            For Each packet As String In AIPacket.Keys
-                If INIFile.GetInt(packet, "packet_num", aiPath) = numPacket Then
-                    ComboBox0.SelectedItem = If(ShowPacketIDMenuItem.Checked, String.Format("{0}| {1}", Strings.RSet(numPacket.ToString, 3), packet), packet)
-                    Exit For
-                End If
-            Next
-        Else
-            ComboBox0.SelectedIndex = 0
-        End If
-
-        Dim packetName As String = AI.GetPacketName(ComboBox0.SelectedItem.ToString)
+        Dim packetName As String = AI.GetPacketName(cmbAIPacket.SelectedItem.ToString)
         Me.Text = "[" & packetName & _capform
         Me.Width -= _width
+
         SetControlValue(packetName)
+
+        Main.SetParent(Me.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
         Me.Show()
     End Sub
 
@@ -79,8 +89,8 @@ Public Class AI_Form
         End If
     End Sub
 
-    Private Sub Select_AI_Packet(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox0.SelectedIndexChanged
-        Dim Section As String = AI.GetPacketName(ComboBox0.Text)
+    Private Sub Select_AI_Packet(ByVal sender As Object, ByVal e As EventArgs) Handles cmbAIPacket.SelectedIndexChanged
+        Dim Section As String = AI.GetPacketName(cmbAIPacket.Text)
         If Not (fReady) OrElse Section = String.Empty Then Exit Sub
         Me.Text = "[" & Section & _capform
         SetControlValue(Section)
@@ -120,7 +130,7 @@ Public Class AI_Form
     End Sub
 
     Private Sub TextView(ByVal sender As Object, ByVal e As EventArgs) Handles Button6.Click
-        Dim sKey As String = AI.GetPacketName(ComboBox0.SelectedItem.ToString)
+        Dim sKey As String = AI.GetPacketName(cmbAIPacket.SelectedItem.ToString)
         Dim eKey As String = String.Empty
         If SortedListMenuItem.Checked Then
             Dim keys() As String = AIPacket.Keys.ToArray
@@ -131,11 +141,11 @@ Public Class AI_Form
                 End If
             Next
         Else
-            Dim sIndx As Integer = ComboBox0.SelectedIndex + 1
-            If sIndx >= ComboBox0.Items.Count Then
+            Dim sIndx As Integer = cmbAIPacket.SelectedIndex + 1
+            If sIndx >= cmbAIPacket.Items.Count Then
                 eKey = AI.endPackedID
             Else
-                eKey = AI.GetPacketName(ComboBox0.Items(sIndx).ToString)
+                eKey = AI.GetPacketName(cmbAIPacket.Items(sIndx).ToString)
             End If
         End If
         Dim AITxtfrm As New AI_TextForm(AIPacket.Item(sKey), AIPacket.Item(eKey), aiPath, SaveButton.Enabled, aiCustom)
@@ -220,7 +230,7 @@ Public Class AI_Form
         Try
             AIPacket = AI.GetAllAIPackets(aiPath)
             PacketList(Me)
-            ComboBox0.SelectedIndex = 0
+            cmbAIPacket.SelectedIndex = 0
         Catch ex As Exception
             MsgBox("This file does not contain PacketAI information, or has an incorrect format.", MsgBoxStyle.Critical, "Wrong file format")
             Exit Sub
@@ -250,7 +260,7 @@ Public Class AI_Form
     End Sub
 
     Private Sub SaveAI(ByVal sender As Object, ByVal e As EventArgs) Handles SaveButton.Click
-        Dim Section As String = AI.GetPacketName(ComboBox0.Text)
+        Dim Section As String = AI.GetPacketName(cmbAIPacket.Text)
         If Not aiCustom Then
             If Not (File.Exists(SaveMOD_Path & AI.AIFILE)) Then FileSystem.CopyFile(aiPath, SaveMOD_Path & AI.AIFILE)
             aiPath = SaveMOD_Path & AI.AIFILE
@@ -298,7 +308,7 @@ Public Class AI_Form
             MsgBox("An error occurred while reading of AI block parameters.")
             ReloadFile(Me, False)
             fReady = True
-            ComboBox0.SelectedIndex = 0
+            cmbAIPacket.SelectedIndex = 0
         End Try
 
     End Sub
@@ -341,43 +351,43 @@ Public Class AI_Form
         owner.AIPacket.Clear()
         owner.AIPacket = AI.GetAllAIPackets(owner.aiPath)
 
-        Dim indx = owner.ComboBox0.SelectedIndex
+        Dim indx = owner.cmbAIPacket.SelectedIndex
         PacketList(owner)
-        If ready Then owner.ComboBox0.SelectedIndex = indx
+        If ready Then owner.cmbAIPacket.SelectedIndex = indx
     End Sub
 
     Private Sub Sorted_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SortedListMenuItem.Click
-        Dim key As String = ComboBox0.SelectedItem.ToString
+        Dim key As String = cmbAIPacket.SelectedItem.ToString
         fReady = False
         If SortedListMenuItem.Checked Then
-            ComboBox0.Sorted = True
+            cmbAIPacket.Sorted = True
         Else
-            ComboBox0.Sorted = False
+            cmbAIPacket.Sorted = False
             PacketList(Me)
         End If
-        ComboBox0.SelectedItem = key
+        cmbAIPacket.SelectedItem = key
         fReady = True
     End Sub
 
     Private Sub ShowPacketID(ByVal sender As Object, ByVal e As EventArgs) Handles ShowPacketIDMenuItem.Click
-        Dim packet As String = AI.GetPacketName(ComboBox0.SelectedItem.ToString)
+        Dim packet As String = AI.GetPacketName(cmbAIPacket.SelectedItem.ToString)
         fReady = False
         PacketList(Me)
         If ShowPacketIDMenuItem.Checked Then
-            For n = 0 To ComboBox0.Items.Count
-                If AI.GetPacketName(ComboBox0.Items.Item(n).ToString) = packet Then
-                    ComboBox0.SelectedIndex = n
+            For n = 0 To cmbAIPacket.Items.Count
+                If AI.GetPacketName(cmbAIPacket.Items.Item(n).ToString) = packet Then
+                    cmbAIPacket.SelectedIndex = n
                     Exit For
                 End If
             Next
         Else
-            ComboBox0.SelectedItem = packet
+            cmbAIPacket.SelectedItem = packet
         End If
         fReady = True
     End Sub
 
     Private Shared Sub PacketList(ByVal frm As AI_Form)
-        If frm.ComboBox0.Items.Count > 0 Then frm.ComboBox0.Items.Clear()
+        If frm.cmbAIPacket.Items.Count > 0 Then frm.cmbAIPacket.Items.Clear()
         Dim keys() As String = frm.AIPacket.Keys.ToArray
         Array.Resize(keys, keys.Count - 1)
         If frm.ShowPacketIDMenuItem.Checked Then
@@ -385,7 +395,7 @@ Public Class AI_Form
                 keys(n) = String.Format("{0}| {1}", Strings.RSet(INIFile.GetInt(keys(n), "packet_num", frm.aiPath).ToString, 3), keys(n).ToString)
             Next
         End If
-        frm.ComboBox0.Items.AddRange(keys)
+        frm.cmbAIPacket.Items.AddRange(keys)
     End Sub
 
     Private Sub MoveItem(ByVal Direction As MoveDir)
@@ -433,9 +443,9 @@ Public Class AI_Form
         ReloadFile(Me, False)
 
         If ShowPacketIDMenuItem.Checked Then
-            ComboBox0.SelectedItem = String.Format("{0}| {1}", Strings.RSet(maxNumPacket.ToString, 3), name)
+            cmbAIPacket.SelectedItem = String.Format("{0}| {1}", Strings.RSet(maxNumPacket.ToString, 3), name)
         Else
-            ComboBox0.SelectedItem = name
+            cmbAIPacket.SelectedItem = name
         End If
     End Sub
 
@@ -481,7 +491,7 @@ Public Class AI_Form
         If (Main.PacketAI IsNot Nothing) Then Main.PacketAI.Clear()
 
         ReloadFile(Me, False)
-        ComboBox0.SelectedIndex = 0
+        cmbAIPacket.SelectedIndex = 0
     End Sub
 
 End Class

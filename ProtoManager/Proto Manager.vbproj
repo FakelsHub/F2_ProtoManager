@@ -91,7 +91,7 @@
     <ManifestKeyFile>Proto Manager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -160,7 +160,7 @@
     <Compile Include="AI_Form.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Classes\AI.vb" />
+    <Compile Include="Modules\AI.vb" />
     <Compile Include="AI_TextForm.Designer.vb">
       <DependentUpon>AI_TextForm.vb</DependentUpon>
     </Compile>

@@ -629,7 +629,7 @@ Friend Class Main_Form
     End Sub
 
     Private Sub AIPacketToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AIPacketToolStripMenuItem.Click
-        Main.Create_AIEditForm()
+        Main.CreateAIEditForm()
     End Sub
 
     Private Sub DontHoverSelectToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles DontHoverSelectToolStripMenuItem.Click

@@ -450,7 +450,7 @@ Friend Module Main
         GetScriptLst()
 
         Dim ItmsFrm As New Items_Form(iLST_Index)
-        SetParent(ItmsFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32) 'ItmsFrm.MdiParent = Main_Form
+        SetParent(ItmsFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
         ItmsFrm.IniItemsForm()
     End Sub
 
@@ -468,11 +468,8 @@ Friend Module Main
         TxtFrm.Init_Data()
     End Sub
 
-    Friend Sub Create_AIEditForm(Optional ByRef AIPacket As Integer = -1)
-        Dim AIFrm As New AI_Form
-
-        SetParent(AIFrm.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32)
-        AIFrm.Initialize(AIPacket)
+    Friend Sub CreateAIEditForm(Optional ByRef aiPacket As Integer = -1)
+        Dim aiEditForm As New AI_Form(aiPacket)
     End Sub
 
     Private Sub GetTeams()

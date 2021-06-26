@@ -1,6 +1,5 @@
 ﻿Imports System.Drawing
 Imports System.IO
-Imports System.Text
 
 Imports Prototypes
 Imports Enums
@@ -853,6 +852,10 @@ Friend Class Items_Form
                 e.Cancel = True
             End If
         End If
+
+        If e.Cancel = False Then
+            Main_Form.Focus()
+        End If
     End Sub
 
     Private Sub Items_Form_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
@@ -861,7 +864,6 @@ Friend Class Items_Form
         If PictureBox2.Image IsNot Nothing Then PictureBox2.Image.Dispose()
         If PictureBox3.Image IsNot Nothing Then PictureBox3.Image.Dispose()
         Me.Dispose()
-        Main_Form.Focus()
     End Sub
 
     Private Sub Items_Form_Activated(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Activated

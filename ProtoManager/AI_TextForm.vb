@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Text
 
 Public Class AI_TextForm
 
@@ -21,11 +22,13 @@ Public Class AI_TextForm
         Me.pathAI = path
 
         buffer = File.ReadAllLines(path).ToList
-        Dim str As String = String.Empty
+        Dim str As StringBuilder = New StringBuilder
         For n = sPacketID To ePacketID - 1
-            str &= vbCrLf & buffer(n)
+            If (buffer(n).Length = 0) Then Continue For
+            str.Append(buffer(n))
+            str.AppendLine()
         Next
-        TextBox1.Text = str.Remove(0, 2)
+        TextBox1.Text = str.ToString
     End Sub
 
     Private Sub AI_TextForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -46,7 +49,7 @@ Public Class AI_TextForm
 
     Private Sub Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         buffer.RemoveRange(sPacketID, (ePacketID - sPacketID))
-        buffer.InsertRange(sPacketID, Split(TextBox1.Text, vbCrLf).ToList)
+        buffer.InsertRange(sPacketID, Split(TextBox1.Text.Trim + vbCrLf, vbCrLf).ToList)
 
         ' save to file
         Dim sFile As String = If(aiCustom, pathAI, SaveMOD_Path & AI.AIFILE)
@@ -57,20 +60,21 @@ Public Class AI_TextForm
         File.WriteAllLines(sFile, buffer)
 
         change = True
+
         If (Main.PacketAI IsNot Nothing) Then Main.PacketAI.Clear()
         Main.PrintLog("Update AI: " & sFile)
     End Sub
 
     ' Рекурсивный перебор контролов класса формы
-    Private Sub FormControl(сntr As Control, Optional def As Boolean = False)
-        For Each _control As Control In сntr.Controls
-            If (TypeOf _control Is GroupBox) Then
-                FormControl(_control, def)
-            ElseIf Not (TypeOf _control Is Label) Then
-                If _control.Name = "SaveButton" Then
-                    _control.Enabled = ownerSaveButton
+    Private Sub FormControl(сontrol As Control, Optional state As Boolean = False)
+        For Each ctrl As Control In сontrol.Controls
+            If (TypeOf ctrl Is GroupBox) Then
+                FormControl(ctrl, state)
+            ElseIf Not (TypeOf ctrl Is Label) Then
+                If ctrl.Name = "SaveButton" Then
+                    ctrl.Enabled = ownerSaveButton
                 Else
-                    _control.Enabled = def
+                    ctrl.Enabled = state
                 End If
             End If
         Next
