@@ -39,13 +39,13 @@ Public Class Table_Form
 
 
     Private Sub CreateTable()
-        Dim critterPro As CritPro
-        Dim commonItem As CmItemPro
-        Dim weaponItem As WpItemPro
-        Dim armorItem As ArItemPro
-        Dim ammoItem As AmItemPro
-        Dim drugItem As DgItemPro
-        Dim miscItem As McItemPro
+        Dim critterPro As CritterProto
+        Dim commonItem As CommonItemProto
+        Dim weaponItem As WeaponItemProto
+        Dim armorItem As ArmorItemProto
+        Dim ammoItem As AmmoItemProto
+        Dim drugItem As DrugsItemProto
+        Dim miscItem As MiscItemProto
 
         Dim fFile As Integer, iType As Integer = TabControl1.SelectedIndex
         Dim cPath, pathFile As String
@@ -53,7 +53,7 @@ Public Class Table_Form
         Dim table As List(Of String) = New List(Of String)
         table.Add("Import" & spr & "ProFILE" & spr & "NAME")
 
-        If iType > TabType.Critter Then
+        If iType <> TabType.Critter Then
             For n = 0 To UBound(Items_LST)
                 If Items_LST(n).itemType = Array.IndexOf(ItemTypesName, TabControl1.SelectedTab.Text) Then
                     table.Add(Items_LST(n).proFile)
@@ -67,8 +67,22 @@ Public Class Table_Form
 
             'Dim tableLine As StringBuilder = New StringBuilder()
 
-            Dim dataBuffer As Integer()
-            Dim cmDataBuffer(Prototypes.ItemCommonLen - 1) As Integer
+            Dim count As Integer
+            Select Case iType
+                Case TabType.Weapon
+                    count = ProtoMemberCount.Weapon
+                Case TabType.Ammo
+                    count = ProtoMemberCount.Ammo
+                Case TabType.Armor
+                    count = ProtoMemberCount.Armor
+                Case TabType.Drugs
+                    count = ProtoMemberCount.Drugs
+                Case TabType.Misc
+                    count = ProtoMemberCount.Misc
+            End Select
+
+            Dim dataBuffer(count - 1) As Integer
+            Dim cmDataBuffer(ProtoMemberCount.Common - 1) As Integer
 
             For n = 1 To table.Count - 1
                 cPath = DatFiles.CheckFile(PROTO_ITEMS & table(n), False)
@@ -99,9 +113,6 @@ Public Class Table_Form
                     Select Case iType
                         Case TabType.Weapon
                             If Not IsRead Then
-                                If dataBuffer Is Nothing Then
-                                    ReDim dataBuffer(Prototypes.ItemWeaponLen - 1)
-                                End If
                                 FileGet(fFile, dataBuffer)
                                 ProFiles.ReverseLoadData(dataBuffer, weaponItem)
                                 FileGet(fFile, weaponItem.wSoundID)
@@ -111,9 +122,6 @@ Public Class Table_Form
                             CreateTable_Weapon(table(n), CheckedList.Item(m).ToString, weaponItem)
                         Case TabType.Ammo
                             If Not IsRead Then
-                                If dataBuffer Is Nothing Then
-                                    ReDim dataBuffer(Prototypes.ItemAmmoLen - 1)
-                                End If
                                 FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
                                 ProFiles.ReverseLoadData(dataBuffer, ammoItem)
@@ -122,9 +130,6 @@ Public Class Table_Form
                             CreateTable_Ammo(table(n), CheckedList.Item(m).ToString, ammoItem)
                         Case TabType.Armor
                             If Not IsRead Then
-                                If dataBuffer Is Nothing Then
-                                    ReDim dataBuffer(Prototypes.ItemArmorLen - 1)
-                                End If
                                 FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
                                 ProFiles.ReverseLoadData(dataBuffer, armorItem)
@@ -133,9 +138,6 @@ Public Class Table_Form
                             CreateTable_Armor(table(n), CheckedList.Item(m).ToString, armorItem)
                         Case TabType.Drugs
                             If Not IsRead Then
-                                If dataBuffer Is Nothing Then
-                                    ReDim dataBuffer(Prototypes.ItemDrugsLen - 1)
-                                End If
                                 FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
                                 ProFiles.ReverseLoadData(dataBuffer, drugItem)
@@ -144,9 +146,6 @@ Public Class Table_Form
                             CreateTable_Drugs(table(n), CheckedList.Item(m).ToString, drugItem)
                         Case Else ' misc
                             If Not IsRead Then
-                                If dataBuffer Is Nothing Then
-                                    ReDim dataBuffer(Prototypes.ItemMiscLen - 1)
-                                End If
                                 FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
                                 ProFiles.ReverseLoadData(dataBuffer, miscItem)
@@ -218,7 +217,7 @@ SaveRetry:
         If MsgBox("Open saved table file?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then Process.Start(SaveFileDialog1.FileName)
     End Sub
 
-    Private Function CreateTable_Common(ByRef tableLine As String, param As String, ByRef item As CmItemPro) As Boolean
+    Private Function CreateTable_Common(ByRef tableLine As String, param As String, ByRef item As CommonItemProto) As Boolean
         Select Case param
             Case "Cost"
                 tableLine &= spr & item.Cost
@@ -236,7 +235,7 @@ SaveRetry:
         Return True
     End Function
 
-    Private Sub CreateTable_Weapon(ByRef tableLine As String, param As String, ByRef item As WpItemPro)
+    Private Sub CreateTable_Weapon(ByRef tableLine As String, param As String, ByRef item As WeaponItemProto)
         Select Case param
             Case "Min Strength"
                 tableLine &= spr & item.MinST
@@ -281,7 +280,7 @@ SaveRetry:
         End Select
     End Sub
 
-    Private Sub CreateTable_Ammo(ByRef tableLine As String, param As String, ByRef item As AmItemPro)
+    Private Sub CreateTable_Ammo(ByRef tableLine As String, param As String, ByRef item As AmmoItemProto)
         Select Case param
             Case "Dam Div"
                 tableLine &= spr & item.DamDiv
@@ -302,7 +301,7 @@ SaveRetry:
         End Select
     End Sub
 
-    Private Sub CreateTable_Armor(ByRef tableLine As String, param As String, ByRef item As ArItemPro)
+    Private Sub CreateTable_Armor(ByRef tableLine As String, param As String, ByRef item As ArmorItemProto)
         Select Case param
             Case "Armor Class"
                 tableLine &= spr & item.AC
@@ -329,7 +328,7 @@ SaveRetry:
         End Select
     End Sub
 
-    Private Sub CreateTable_Drugs(ByRef tableLine As String, param As String, ByRef item As DgItemPro)
+    Private Sub CreateTable_Drugs(ByRef tableLine As String, param As String, ByRef item As DrugsItemProto)
         Select Case param
             Case "Modify Stat 0"
                 If item.Stat0 <> &HFFFFFFFF Then
@@ -384,7 +383,7 @@ SaveRetry:
         End Select
     End Sub
 
-    Private Sub CreateTable_Misc(ByRef tableLine As String, param As String, ByRef item As McItemPro)
+    Private Sub CreateTable_Misc(ByRef tableLine As String, param As String, ByRef item As MiscItemProto)
         Select Case param
             Case "Power PID"
                 If item.PowerPID <> &HFFFFFFFF Then
@@ -403,7 +402,7 @@ SaveRetry:
         End Select
     End Sub
 
-    Private Sub CreateTable_Critter(ByRef tableLine As String, param As String, ByRef critter As CritPro)
+    Private Sub CreateTable_Critter(ByRef tableLine As String, param As String, ByRef critter As CritterProto)
         Select Case param
             Case "Strength"
                 tableLine &= spr & critter.Strength
@@ -777,7 +776,7 @@ SaveRetry:
     End Sub
 
     Friend Sub Critters_ImportTable(ByVal tableFile As String)
-        Dim critter As CritPro
+        Dim critter As CritterProto
 
         Dim n As Integer, m As Integer
         Dim ProFile As String

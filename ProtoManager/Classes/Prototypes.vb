@@ -1,4 +1,18 @@
-﻿NotInheritable Class Prototypes
+﻿Imports System.Runtime.InteropServices
+
+NotInheritable Class Prototypes
+
+    Enum ProtoMemberCount As Integer
+        Critter = 104
+        Common = 14
+        Armor = 18
+        Ammo = 6
+        Weapon = 16
+        Container = 2
+        Drugs = 17
+        Misc = 3
+        Key = 1
+    End Enum
 
     Enum PrototypeSize As Integer
         Weapon = 122
@@ -27,25 +41,25 @@
         Return ItemTypesProLen(type)
     End Function
 
-    'Data offset
-    Friend Const offsetFrmID As Byte = &H8
-    Friend Const offsetInvenFID As Byte = &H34
-    Friend Const offsetDescID As Byte = &H4
-    Friend Const offsetISubType As Byte = &H20
+    Enum DataOffset As Integer
+        FrmID = &H8
+        InvenFID = &H34
+        DescID = &H4
+        ItemSubType = &H20
+        CritterHP = &H4C
+        CritteBonusHP = &HD8
 
-    Friend Const offsetHP As Byte = &H4C
-    Friend Const offsetbHP As Byte = &HD8
-
-    'Begin data offset
-    Friend Shared ItemSubType As Byte = (offsetISubType / &H4) 'index
-    Friend Const ArmorBlock As Byte = &H3A
+        ItemSubTypeIndex = CInt((ItemSubType / 4))
+        ArmorBlock = &H3A
+    End Enum
 
     '
     ' Описание структур для файлов прототипов
     '
-    Friend Const CritterLen As Integer = 104
+
     'Cтруктура для файла типа Critters
-    Structure CritPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure CritterProto
         'Comon
         Public ProtoID As Integer
         Public DescID As Integer
@@ -162,10 +176,10 @@
         Public DamageType As Integer
     End Structure
 
-    'Cтруктура для файла типа Items
+    'Cтруктуры для файла типа Items
     'Common
-    Friend Const ItemCommonLen As Integer = 14
-    Structure CmItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure CommonItemProto
         Public ProtoID As Integer
         Public DescID As Integer
         Public FrmID As Integer
@@ -184,8 +198,8 @@
     End Structure
 
     'Weapon
-    Friend Const ItemWeaponLen As Integer = 16
-    Structure WpItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure WeaponItemProto
         Public AnimCode As Integer
         Public MinDmg As Integer
         Public MaxDmg As Integer
@@ -206,8 +220,8 @@
     End Structure
 
     'Armor
-    Friend Const ItemArmorLen As Integer = 18
-    Structure ArItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure ArmorItemProto
         Public AC As Integer
         Public DRNormal As Integer
         Public DRLaser As Integer
@@ -229,8 +243,8 @@
     End Structure
 
     'Ammo
-    Friend Const ItemAmmoLen As Integer = 6
-    Structure AmItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure AmmoItemProto
         Public Caliber As Integer
         Public Quantity As Integer
         Public ACAdjust As Integer
@@ -240,29 +254,28 @@
     End Structure
 
     'Key
-    Friend Const ItemKeyLen As Integer = 1
-    Structure kItemPro
+    Structure KeyItemProto
         Public Unknown As Integer
     End Structure
 
     'Misc
-    Friend Const ItemMiscLen As Integer = 3
-    Structure McItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure MiscItemProto
         Public PowerPID As Integer
         Public PowerType As Integer
         Public Charges As Integer
     End Structure
 
     'Container
-    Friend Const ItemContLen As Integer = 2
-    Structure CnItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure ContainerItemProto
         Public MaxSize As Integer
-        Public OpenFlags As Integer
+        Public Flags As Integer
     End Structure
 
     'Drugs
-    Friend Const ItemDrugsLen As Integer = 17
-    Structure DgItemPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure DrugsItemProto
         Public Stat0 As Integer
         Public Stat1 As Integer
         Public Stat2 As Integer
@@ -282,13 +295,15 @@
         Public W_Onset As Integer
     End Structure
 
-    Structure CommonPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure CommonProto
         Public ProtoID As Integer
         Public DescID As Integer
         Public FrmID As Integer
     End Structure
 
-    Structure WallsPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure WallsProto
         Public LightDis As Integer
         Public LightInt As Integer
         Public Falgs As Integer
@@ -297,7 +312,8 @@
         Public MaterialID As Integer
     End Structure
 
-    Structure TilesPro
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure TilesProto
         Public Falgs As Integer
         Public FalgsExt As Integer
         Public Unknown As Integer

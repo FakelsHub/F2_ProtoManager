@@ -6,11 +6,7 @@ Public Class KeyItemObj
 
     Private ReadOnly Property ProtoSize As Integer = 1 * 4
 
-    Public Structure KeyProto
-        Friend Unknown As Integer
-    End Structure
-
-    Private mProto As KeyProto
+    Private mProto As Prototypes.KeyItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

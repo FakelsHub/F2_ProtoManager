@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Runtime.InteropServices
 
 Public Class ContainerItemObj
     Inherits ItemPrototype
@@ -7,13 +6,7 @@ Public Class ContainerItemObj
 
     Private ReadOnly Property ProtoSize As Integer = 2 * 4
 
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Public Structure ContainerProto
-        Friend MaxSize As Integer
-        Friend Flags As Integer
-    End Structure
-
-    Private mProto As ContainerProto
+    Private mProto As Prototypes.ContainerItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

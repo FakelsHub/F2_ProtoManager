@@ -28,8 +28,8 @@ Public Class TxtEdit_Form
     Private ReadOnly index As Integer
     Private ReadOnly type As ProType
 
-    Private critterData(Prototypes.CritterLen - 1) As Integer
-    Private itemData(Prototypes.ItemCommonLen - 1) As Integer '1+byte
+    Private critterData(ProtoMemberCount.Critter - 1) As Integer
+    Private itemData(ProtoMemberCount.Common - 1) As Integer '1+byte
     Private itemSubTypeData() As Integer
     Private itemKeyData As Integer
     Private itemSoundData As Byte
@@ -273,32 +273,32 @@ Public Class TxtEdit_Form
             ListView1.Items(14).Group = ListView1.Groups.Item(GroupsType.Common)
 
             Const count As Integer = 15
-            Select Case itemData(Prototypes.ItemSubType)
+            Select Case itemData(Prototypes.DataOffset.ItemSubTypeIndex)
                 Case ItemType.Weapon
-                    ReDim itemSubTypeData(Prototypes.ItemWeaponLen - 1) '1+byte
+                    ReDim itemSubTypeData(ProtoMemberCount.Weapon - 1) '1+byte
                     GetProData(WpnNamePro, itemSubTypeData, fFile, count, GroupsType.Weapon)
                     FileGet(fFile, itemwSoundData)
                     ListView1.Items.Add(New ListViewItem({wSndNamePro, itemwSoundData.ToString, "0x" + Hex(itemwSoundData)}))
                     ListView1.Items(count + 16).Group = ListView1.Groups.Item(GroupsType.Weapon)
 
                 Case ItemType.Armor
-                    ReDim itemSubTypeData(Prototypes.ItemArmorLen - 1)
+                    ReDim itemSubTypeData(ProtoMemberCount.Armor - 1)
                     GetProData(ArmNamePro, itemSubTypeData, fFile, count, GroupsType.Armor)
 
                 Case ItemType.Ammo
-                    ReDim itemSubTypeData(Prototypes.ItemAmmoLen - 1)
+                    ReDim itemSubTypeData(ProtoMemberCount.Ammo - 1)
                     GetProData(AmmNamePro, itemSubTypeData, fFile, count, GroupsType.Ammo)
 
                 Case ItemType.Container
-                    ReDim itemSubTypeData(Prototypes.ItemContLen - 1)
+                    ReDim itemSubTypeData(ProtoMemberCount.Container - 1)
                     GetProData(CntNamePro, itemSubTypeData, fFile, count, GroupsType.Misc)
 
                 Case ItemType.Drugs
-                    ReDim itemSubTypeData(Prototypes.ItemDrugsLen - 1)
+                    ReDim itemSubTypeData(ProtoMemberCount.Drugs - 1)
                     GetProData(DrgNamePro, itemSubTypeData, fFile, count, GroupsType.Drugs)
 
                 Case ItemType.Misc
-                    ReDim itemSubTypeData(Prototypes.ItemMiscLen - 1)
+                    ReDim itemSubTypeData(ProtoMemberCount.Misc - 1)
                     GetProData(MscNamePro, itemSubTypeData, fFile, count, GroupsType.Misc)
 
                 Case Else 'ItemType.Key
@@ -400,7 +400,7 @@ BadFormat:
                         itemSoundData = CByte(value)
                     Else
                         LocIndex -= 15
-                        Select Case itemData(Prototypes.ItemSubType)
+                        Select Case itemData(Prototypes.DataOffset.ItemSubTypeIndex)
                             Case ItemType.Key
                                 itemKeyData = value
                             Case ItemType.Weapon
@@ -442,7 +442,7 @@ BadFormat:
             End If
 
             ' for Falout 1 format
-            If critterData(Prototypes.CritterLen - 1) = -1 Then ' DamageType = -1
+            If critterData(ProtoMemberCount.Critter - 1) = -1 Then ' DamageType = -1
                 f1Format = True
                 File.Delete(filePath) ' удаляем файл для перезаписи его размера
             End If
@@ -463,7 +463,7 @@ BadFormat:
             PutDataToPro(itemData, fFile)
             FilePut(fFile, itemSoundData)
 
-            Select Case itemData(Prototypes.ItemSubType)
+            Select Case itemData(Prototypes.DataOffset.ItemSubTypeIndex)
                 Case ItemType.Weapon
                     PutDataToPro(itemSubTypeData, fFile)
                     FilePut(fFile, itemwSoundData)
@@ -487,7 +487,7 @@ BadFormat:
 
     ' isF1Format - сохраняет в формат F2
     Private Sub PutDataToPro(ByRef data() As Integer, ByVal fFile As Integer, Optional ByVal isF1Format As Boolean = False)
-        Dim len = If(isF1Format, Prototypes.CritterLen, data.Length) - 1
+        Dim len = If(isF1Format, ProtoMemberCount.Critter, data.Length) - 1
         Dim saveData(len) As Integer
         For n = 0 To len - 1
             saveData(n) = ProFiles.ReverseBytes(data(n))

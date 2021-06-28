@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Runtime.InteropServices
 
 Public Class ItemPrototype
     Implements IPrototype
@@ -7,26 +6,7 @@ Public Class ItemPrototype
     Private ReadOnly Property CommonSize As Integer = 14 * 4
     'Friend Property ProtoIsLoad As Boolean = False
 
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Structure CommonItemProto
-        Friend ProtoID As Integer
-        Friend DescID As Integer
-        Friend FrmID As Integer
-        Friend LightDis As Integer
-        Friend LightInt As Integer
-        Friend Flags As Integer
-        Friend FlagsExt As Integer
-        Friend ScriptID As Integer
-        Friend ObjType As Integer
-        Friend MaterialID As Integer
-        Friend Size As Integer
-        Friend Weight As Integer
-        Friend Cost As Integer
-        Friend InvFID As Integer
-        Friend SoundID As Byte
-    End Structure
-
-    Private mProto As CommonItemProto
+    Private mProto As Prototypes.CommonItemProto
     Private proFile As String
 
     Public Property PrototypeFile As String

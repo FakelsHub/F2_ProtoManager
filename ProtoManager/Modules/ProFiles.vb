@@ -24,9 +24,9 @@ Module ProFiles
         Dim cPath As String = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(nPro).proFile)
         Try
             Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                readFile.BaseStream.Seek(Prototypes.offsetFrmID, SeekOrigin.Begin)
+                readFile.BaseStream.Seek(Prototypes.DataOffset.FrmID, SeekOrigin.Begin)
                 FID = ReverseBytes(readFile.ReadInt32())
-                readFile.BaseStream.Seek(Prototypes.offsetInvenFID, SeekOrigin.Begin)
+                readFile.BaseStream.Seek(Prototypes.DataOffset.InvenFID, SeekOrigin.Begin)
                 iFID = ReverseBytes(readFile.ReadInt32())
             End Using
         Catch ex As Exception
@@ -82,7 +82,7 @@ Module ProFiles
             Using brFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 pID = brFile.ReadInt32()
                 NameID = brFile.ReadInt32()
-                brFile.BaseStream.Seek(Prototypes.offsetISubType, SeekOrigin.Begin)
+                brFile.BaseStream.Seek(Prototypes.DataOffset.ItemSubType, SeekOrigin.Begin)
                 type = CType(ReverseBytes(brFile.ReadInt32()), ItemType)
             End Using
         Catch ex As EndOfStreamException
@@ -142,7 +142,7 @@ Module ProFiles
         Dim cPath As String = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(nPro).proFile)
         Try
             Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                readFile.BaseStream.Seek(Prototypes.offsetFrmID, SeekOrigin.Begin)
+                readFile.BaseStream.Seek(Prototypes.DataOffset.FrmID, SeekOrigin.Begin)
                 FID = ReverseBytes(readFile.ReadInt32())
             End Using
         Catch ex As Exception
@@ -163,11 +163,11 @@ Module ProFiles
         Dim cPath As String = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(nPro).proFile)
         Try
             Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                readFile.BaseStream.Seek(Prototypes.offsetFrmID, SeekOrigin.Begin)
+                readFile.BaseStream.Seek(Prototypes.DataOffset.FrmID, SeekOrigin.Begin)
                 FID = ReverseBytes(readFile.ReadInt32())
-                readFile.BaseStream.Seek(Prototypes.offsetHP, SeekOrigin.Begin)
+                readFile.BaseStream.Seek(Prototypes.DataOffset.CritterHP, SeekOrigin.Begin)
                 hp = ReverseBytes(readFile.ReadInt32())
-                readFile.BaseStream.Seek(Prototypes.offsetbHP, SeekOrigin.Begin)
+                readFile.BaseStream.Seek(Prototypes.DataOffset.CritteBonusHP, SeekOrigin.Begin)
                 bhp = ReverseBytes(readFile.ReadInt32())
             End Using
         Catch ex As Exception
@@ -210,15 +210,15 @@ Module ProFiles
     ''' <summary>
     ''' Сохраняет структуру криттера в pro-файл.
     ''' </summary>
-    Friend Sub SaveCritterProData(ByVal proFile As String, ByRef CritterStruct As CritPro)
+    Friend Sub SaveCritterProData(ByVal proFile As String, ByRef CritterStruct As CritterProto)
         If File.Exists(proFile) Then
             File.SetAttributes(proFile, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
         End If
 
-        Dim sBuff As Integer() = ReverseSaveData(CritterStruct, Prototypes.CritterLen)
+        Dim sBuff As Integer() = ReverseSaveData(CritterStruct, ProtoMemberCount.Critter)
         If CritterStruct.DamageType > 6 Then
-            Array.Resize(sBuff, Prototypes.CritterLen - 1)
-            File.Delete(proFile) ' удаляем файл для перезаписи его размера.
+            Array.Resize(sBuff, ProtoMemberCount.Critter - 1)
+            File.Delete(proFile) ' удаляем файл для перезаписи его размера
         End If
 
         Dim fFile As Integer = FreeFile()
@@ -232,8 +232,8 @@ Module ProFiles
     ''' <summary>
     ''' Получает данные из pro-файла криттера в структуре.
     ''' </summary>
-    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CritterStruct As CritPro) As Boolean
-        Dim critterProData(Prototypes.CritterLen - 1) As Integer  ' read f2 buffer
+    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CritterStruct As CritterProto) As Boolean
+        Dim critterProData(ProtoMemberCount.Critter - 1) As Integer  ' read f2 buffer
 
         Dim fFile As Integer = FreeFile()
         Try
@@ -241,10 +241,10 @@ Module ProFiles
             Dim file As New FileInfo(PathProFile)
 
             If file.Length = 412 Then
-                Dim proData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
+                Dim proData(ProtoMemberCount.Critter - 2) As Integer ' read f1 buffer
                 FileGet(fFile, proData)
                 proData.CopyTo(critterProData, 0)
-                critterProData(Prototypes.CritterLen - 1) = &H7000000 ' set index 7
+                critterProData(ProtoMemberCount.Critter - 1) = &H7000000 ' set index 7
 
             ElseIf file.Length = 416 Then
                 FileGet(fFile, critterProData)
@@ -272,10 +272,10 @@ Module ProFiles
         Try
             FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
             If FileSystem.GetFileInfo(PathProFile).Length = 412 Then
-                Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
+                Dim f1ProData(ProtoMemberCount.Critter - 2) As Integer ' read f1 buffer
                 FileGet(fFile, f1ProData)
                 f1ProData.CopyTo(crtProData, 0)
-                crtProData(Prototypes.CritterLen - 1) = -1
+                crtProData(ProtoMemberCount.Critter - 1) = -1
             Else
                 FileGet(fFile, crtProData)
             End If
@@ -390,8 +390,8 @@ Module ProFiles
     ''' <summary>
     ''' Преобразовывает массив в структуру.
     ''' </summary>
-    Private Function ConvertBytesToStruct(ByVal Buff() As Integer, ByVal strcType As Type) As Object
-        Dim mGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)
+    Private Function ConvertBytesToStruct(ByVal data() As Integer, ByVal strcType As Type) As Object
+        Dim mGC As GCHandle = GCHandle.Alloc(data, GCHandleType.Pinned)
         Dim obj As Object = Marshal.PtrToStructure(mGC.AddrOfPinnedObject, strcType)
         mGC.Free()
         Return obj

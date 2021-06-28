@@ -1,5 +1,4 @@
-﻿Imports System.IO
-Imports System.Runtime.InteropServices
+﻿
 
 Public Class ArmorItemObj
     Inherits ItemPrototype
@@ -7,29 +6,7 @@ Public Class ArmorItemObj
 
     Private ReadOnly Property ProtoSize As Integer = 18 * 4
 
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Public Structure ArmorProto
-        Friend AC As Integer
-        Friend DRNormal As Integer
-        Friend DRLaser As Integer
-        Friend DRFire As Integer
-        Friend DRPlasma As Integer
-        Friend DRElectrical As Integer
-        Friend DREMP As Integer
-        Friend DRExplode As Integer
-        Friend DTNormal As Integer
-        Friend DTLaser As Integer
-        Friend DTFire As Integer
-        Friend DTPlasma As Integer
-        Friend DTElectrical As Integer
-        Friend DTEMP As Integer
-        Friend DTExplode As Integer
-        Friend Perk As Integer
-        Friend MaleFID As Integer
-        Friend FemaleFID As Integer
-    End Structure
-
-    Private mProto As ArmorProto
+    Private mProto As Prototypes.ArmorItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

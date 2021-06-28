@@ -1,6 +1,4 @@
-﻿Imports System.IO
-Imports System.Runtime.InteropServices
-
+﻿
 Public Class WeaponItemObj
     Inherits ItemPrototype
     Implements IPrototype
@@ -23,28 +21,7 @@ Public Class WeaponItemObj
 
     Private ReadOnly Property ProtoSize As Integer = 16 * 4
 
-    <StructLayout(LayoutKind.Sequential, Pack := 1)>
-    Public Structure WeaponProto
-        Friend AnimCode As Integer
-        Friend MinDmg As Integer
-        Friend MaxDmg As Integer
-        Friend DmgType As Integer
-        Friend MaxRangeP As Integer
-        Friend MaxRangeS As Integer
-        Friend ProjPID As Integer
-        Friend MinST As Integer
-        Friend MPCostP As Integer
-        Friend MPCostS As Integer
-        Friend CritFail As Integer
-        Friend Perk As Integer
-        Friend Rounds As Integer
-        Friend Caliber As Integer
-        Friend AmmoPID As Integer
-        Friend MaxAmmo As Integer
-        Friend wSoundID As Byte
-    End Structure
-
-    Private mProto As WeaponProto
+    Private mProto As Prototypes.WeaponItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

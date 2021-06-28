@@ -1,22 +1,11 @@
-﻿Imports System.Runtime.InteropServices
-
+﻿
 Public Class AmmoItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
     Private ReadOnly Property ProtoSize As Integer = 6 * 4
 
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Public Structure AmmoProto
-        Friend Caliber As Integer
-        Friend Quantity As Integer
-        Friend ACAdjust As Integer
-        Friend DRAdjust As Integer
-        Friend DamMult As Integer
-        Friend DamDiv As Integer
-    End Structure
-
-    Private mProto As AmmoProto
+    Private mProto As Prototypes.AmmoItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

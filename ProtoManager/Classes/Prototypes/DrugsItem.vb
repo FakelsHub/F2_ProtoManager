@@ -1,34 +1,11 @@
-﻿Imports System.IO
-Imports System.Runtime.InteropServices
-
+﻿
 Public Class DrugsItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
     Private ReadOnly Property ProtoSize As Integer = 17 * 4
 
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Public Structure DrugsProto
-        Friend Stat0 As Integer
-        Friend Stat1 As Integer
-        Friend Stat2 As Integer
-        Friend iAmount0 As Integer
-        Friend iAmount1 As Integer
-        Friend iAmount2 As Integer
-        Friend Duration1 As Integer
-        Friend fAmount0 As Integer
-        Friend fAmount1 As Integer
-        Friend fAmount2 As Integer
-        Friend Duration2 As Integer
-        Friend sAmount0 As Integer
-        Friend sAmount1 As Integer
-        Friend sAmount2 As Integer
-        Friend AddictionRate As Integer
-        Friend W_Effect As Integer
-        Friend W_Onset As Integer
-    End Structure
-
-    Private mProto As DrugsProto
+    Private mProto As Prototypes.DrugsItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

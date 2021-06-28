@@ -1,19 +1,11 @@
-﻿Imports System.Runtime.InteropServices
-
+﻿
 Public Class MiscItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
     Private ReadOnly Property ProtoSize As Integer = 3 * 4
 
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Public Structure MiscProto
-        Friend PowerPID As Integer
-        Friend PowerType As Integer
-        Friend Charges As Integer
-    End Structure
-
-    Private mProto As MiscProto
+    Private mProto As Prototypes.MiscItemProto
 
     Sub New(data As ItemPrototype)
         MyBase.New(data)

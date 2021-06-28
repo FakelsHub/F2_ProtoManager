@@ -85,7 +85,7 @@ Friend Module Settings
         If (appConfig.TryGetValue("ClearCache", strValue)) Then cCache = CBool(strValue)
         If (appConfig.TryGetValue("ClearArtCache", strValue)) Then cArtCache = CBool(strValue)
         If (appConfig.TryGetValue("HoverSelect", strValue)) Then HoverSelect = CBool(strValue)
-        If (appConfig.TryGetValue("StatFormula", strValue)) Then CalcStats.SetFormula(Convert.ToInt32(strValue))
+        If (appConfig.TryGetValue("StatFormula", strValue)) Then CalcStats.SetFormula(CType(Convert.ToInt32(strValue), CalcStats.FormulaType))
 
         If (appConfig.TryGetValue("SplitSize", strValue)) Then SplitSize = CInt(strValue)
         Dim i As Integer = 0

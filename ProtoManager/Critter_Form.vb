@@ -7,7 +7,7 @@ Imports Enums
 
 Friend Class Critter_Form
 
-    Private CritterPro As CritPro
+    Private CritterPro As CritterProto
 
     Private TabStatsView, TabDefenceView, TabMiscView As Boolean
     Private cPath As String = Nothing
@@ -579,15 +579,15 @@ Friend Class Critter_Form
     Private Sub ListView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ListView1.SelectedIndexChanged
         If ListView1.FocusedItem IsNot Nothing Then
             If ListView1.FocusedItem.Index > 0 Then
-                Dim aItem As ArItemPro
+                Dim aItem As ArmorItemProto
                 Dim InvFID As Integer
                 Dim fFile As Integer = FreeFile()
                 Dim ProFile As String = ListView1.FocusedItem.Tag
 
                 Dim filePath = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
                 FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-                FileGet(fFile, InvFID, Prototypes.offsetInvenFID + 1)
-                FileGet(fFile, aItem, Prototypes.ArmorBlock)
+                FileGet(fFile, InvFID, Prototypes.DataOffset.InvenFID + 1)
+                FileGet(fFile, aItem, Prototypes.DataOffset.ArmorBlock)
                 FileClose(fFile)
 
                 If ListView1.FocusedItem.ToolTipText IsNot Nothing Then
@@ -622,14 +622,14 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub ArmorApply(ByVal sender As Object, ByVal e As EventArgs) Handles Button7.Click
-        Dim aItem As ArItemPro
+        Dim aItem As ArmorItemProto
         Dim proFile As String = ListView1.FocusedItem.Tag
 
         If proFile IsNot Nothing Then
             Dim fFile As Integer = FreeFile()
             proFile = DatFiles.CheckFile(PROTO_ITEMS & proFile)
             FileOpen(fFile, proFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            FileGet(fFile, aItem, Prototypes.ArmorBlock)
+            FileGet(fFile, aItem, Prototypes.DataOffset.ArmorBlock)
             FileClose(fFile)
         Else
             SetBonusDefenceValue()
