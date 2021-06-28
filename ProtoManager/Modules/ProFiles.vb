@@ -264,24 +264,24 @@ Module ProFiles
     ''' <summary>
     ''' Помещает данные из pro-файла криттера в массив.
     ''' </summary>
-    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CrttrProData As Integer()) As Boolean
+    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef crtProData As Integer()) As Boolean
         Dim fFile As Integer = FreeFile()
-        Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
 
         PathProFile = DatFiles.CheckFile(PROTO_CRITTERS & PathProFile)
 
         Try
             FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
             If FileSystem.GetFileInfo(PathProFile).Length = 412 Then
+                Dim f1ProData(Prototypes.CritterLen - 2) As Integer ' read f1 buffer
                 FileGet(fFile, f1ProData)
-                f1ProData.CopyTo(CrttrProData, 0)
-                CrttrProData(Prototypes.CritterLen - 1) = -1
+                f1ProData.CopyTo(crtProData, 0)
+                crtProData(Prototypes.CritterLen - 1) = -1
             Else
-                FileGet(fFile, CrttrProData)
+                FileGet(fFile, crtProData)
             End If
 
-            For n = 0 To CrttrProData.Length - 1
-                CrttrProData(n) = ProFiles.ReverseBytes(CrttrProData(n))
+            For n = 0 To crtProData.Length - 1
+                crtProData(n) = ProFiles.ReverseBytes(crtProData(n))
             Next
         Catch ex As Exception
             Return True
@@ -295,27 +295,12 @@ Module ProFiles
     ''' <summary>
     ''' Сохраняет структуру предмета в pro-файл.
     ''' </summary>
-    Friend Sub SaveItemProData(ByVal pathProFile As String, ByVal itemType As ItemType, ByVal item As ItemPrototype)
+    Friend Sub SaveItemProData(ByVal pathProFile As String, ByVal item As IPrototype)
         If File.Exists(pathProFile) Then
             File.SetAttributes(pathProFile, FileAttributes.Normal Or FileAttributes.NotContentIndexed)
         End If
 
-        Select Case itemType
-            Case ItemType.Weapon
-                CType(item, WeaponItemObj).Save(pathProFile)
-            Case ItemType.Armor
-                CType(item, ArmorItemObj).Save(pathProFile)
-            Case ItemType.Drugs
-                CType(item, DrugsItemObj).Save(pathProFile)
-            Case ItemType.Ammo
-                CType(item, AmmoItemObj).Save(pathProFile)
-            Case ItemType.Misc
-                CType(item, MiscItemObj).Save(pathProFile)
-            Case ItemType.Container
-                CType(item, ContainerItemObj).Save(pathProFile)
-            Case ItemType.Key
-                CType(item, KeyItemObj).Save(pathProFile)
-        End Select
+        item.Save(pathProFile)
 
         If proRO Then File.SetAttributes(pathProFile, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
     End Sub

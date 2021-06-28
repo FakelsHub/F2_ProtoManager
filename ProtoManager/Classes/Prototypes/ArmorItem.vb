@@ -3,6 +3,7 @@ Imports System.Runtime.InteropServices
 
 Public Class ArmorItemObj
     Inherits ItemPrototype
+    Implements IPrototype
 
     Private ReadOnly Property ProtoSize As Integer = 18 * 4
 
@@ -44,7 +45,7 @@ Public Class ArmorItemObj
         MyBase.New(proFile)
     End Sub
 
-    Public Overloads Sub Load()
+    Public Overloads Sub Load() Implements IPrototype.Load
         Dim streamFile = MyBase.DataLoad()
 
         Dim data(ProtoSize - 1) As Byte
@@ -55,7 +56,7 @@ Public Class ArmorItemObj
         ProFiles.ReverseLoadData(data, mProto)
     End Sub
 
-    Public Overloads Sub Save(savePath As String)
+    Public Overloads Sub Save(savePath As String) Implements IPrototype.Save
         Dim streamFile = MyBase.DataSave(savePath)
 
         streamFile.Write(ProFiles.SaveDataReverse(mProto), 0, ProtoSize)

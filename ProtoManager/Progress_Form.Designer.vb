@@ -30,7 +30,7 @@ Partial Class Progress_Form
         '
         Me.ProgressBar1.Location = New System.Drawing.Point(4, 22)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(350, 12)
+        Me.ProgressBar1.Size = New System.Drawing.Size(345, 12)
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar1.TabIndex = 0
         Me.ProgressBar1.UseWaitCursor = True
@@ -41,16 +41,16 @@ Partial Class Progress_Form
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.Label1.Location = New System.Drawing.Point(12, 5)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(314, 16)
+        Me.Label1.Size = New System.Drawing.Size(89, 16)
         Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Reading data from the prototype files. Please, wait..."
+        Me.Label1.Text = "Please, wait..."
         Me.Label1.UseWaitCursor = True
         '
         'Progress_Form
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(359, 39)
+        Me.ClientSize = New System.Drawing.Size(355, 35)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ProgressBar1)

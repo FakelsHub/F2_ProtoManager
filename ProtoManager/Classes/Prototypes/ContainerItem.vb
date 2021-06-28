@@ -3,6 +3,7 @@ Imports System.Runtime.InteropServices
 
 Public Class ContainerItemObj
     Inherits ItemPrototype
+    Implements IPrototype
 
     Private ReadOnly Property ProtoSize As Integer = 2 * 4
 
@@ -24,7 +25,7 @@ Public Class ContainerItemObj
         MyBase.New(proFile)
     End Sub
 
-    Public Overloads Sub Load()
+    Public Overloads Sub Load() Implements IPrototype.Load
         Dim streamFile As BinaryReader = New BinaryReader(MyBase.DataLoad())
 
         mProto.MaxSize = ProFiles.ReverseBytes(streamFile.ReadInt32)
@@ -33,7 +34,7 @@ Public Class ContainerItemObj
         streamFile.Close()
     End Sub
 
-    Public Overloads Sub Save(savePath As String)
+    Public Overloads Sub Save(savePath As String) Implements IPrototype.Save
         Dim streamFile As BinaryWriter = New BinaryWriter(MyBase.DataSave(savePath))
 
         streamFile.Write(ProFiles.ReverseBytes(mProto.MaxSize))

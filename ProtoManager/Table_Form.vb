@@ -67,17 +67,18 @@ Public Class Table_Form
 
             'Dim tableLine As StringBuilder = New StringBuilder()
 
+            Dim dataBuffer As Integer()
+            Dim cmDataBuffer(Prototypes.ItemCommonLen - 1) As Integer
+
             For n = 1 To table.Count - 1
                 cPath = DatFiles.CheckFile(PROTO_ITEMS & table(n), False)
                 pathFile = String.Concat(cPath, PROTO_ITEMS, table(n))
 
-                Dim cmProDataBuf(Prototypes.ItemCommonLen - 1) As Integer
-
                 fFile = FreeFile()
                 FileOpen(fFile, pathFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
 
-                FileGet(fFile, cmProDataBuf)
-                ProFiles.ReverseLoadData(cmProDataBuf, commonItem)
+                FileGet(fFile, cmDataBuffer)
+                ProFiles.ReverseLoadData(cmDataBuffer, commonItem)
                 FileGet(fFile, commonItem.SoundID)
 
                 'tableLine.Clear()
@@ -98,9 +99,11 @@ Public Class Table_Form
                     Select Case iType
                         Case TabType.Weapon
                             If Not IsRead Then
-                                Dim wnProDataBuf(Prototypes.ItemWeaponLen - 1) As Integer
-                                FileGet(fFile, wnProDataBuf)
-                                ProFiles.ReverseLoadData(wnProDataBuf, weaponItem)
+                                If dataBuffer Is Nothing Then
+                                    ReDim dataBuffer(Prototypes.ItemWeaponLen - 1)
+                                End If
+                                FileGet(fFile, dataBuffer)
+                                ProFiles.ReverseLoadData(dataBuffer, weaponItem)
                                 FileGet(fFile, weaponItem.wSoundID)
                                 FileClose(fFile)
                                 IsRead = True
@@ -108,37 +111,45 @@ Public Class Table_Form
                             CreateTable_Weapon(table(n), CheckedList.Item(m).ToString, weaponItem)
                         Case TabType.Ammo
                             If Not IsRead Then
-                                Dim amProDataBuf(Prototypes.ItemAmmoLen - 1) As Integer
-                                FileGet(fFile, amProDataBuf)
+                                If dataBuffer Is Nothing Then
+                                    ReDim dataBuffer(Prototypes.ItemAmmoLen - 1)
+                                End If
+                                FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
-                                ProFiles.ReverseLoadData(amProDataBuf, ammoItem)
+                                ProFiles.ReverseLoadData(dataBuffer, ammoItem)
                                 IsRead = True
                             End If
                             CreateTable_Ammo(table(n), CheckedList.Item(m).ToString, ammoItem)
                         Case TabType.Armor
                             If Not IsRead Then
-                                Dim arProDataBuf(Prototypes.ItemArmorLen - 1) As Integer
-                                FileGet(fFile, arProDataBuf)
+                                If dataBuffer Is Nothing Then
+                                    ReDim dataBuffer(Prototypes.ItemArmorLen - 1)
+                                End If
+                                FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
-                                ProFiles.ReverseLoadData(arProDataBuf, armorItem)
+                                ProFiles.ReverseLoadData(dataBuffer, armorItem)
                                 IsRead = True
                             End If
                             CreateTable_Armor(table(n), CheckedList.Item(m).ToString, armorItem)
                         Case TabType.Drugs
                             If Not IsRead Then
-                                Dim drProDataBuf(Prototypes.ItemDrugsLen - 1) As Integer
-                                FileGet(fFile, drProDataBuf)
+                                If dataBuffer Is Nothing Then
+                                    ReDim dataBuffer(Prototypes.ItemDrugsLen - 1)
+                                End If
+                                FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
-                                ProFiles.ReverseLoadData(drProDataBuf, drugItem)
+                                ProFiles.ReverseLoadData(dataBuffer, drugItem)
                                 IsRead = True
                             End If
                             CreateTable_Drugs(table(n), CheckedList.Item(m).ToString, drugItem)
                         Case Else ' misc
                             If Not IsRead Then
-                                Dim msProDataBuf(Prototypes.ItemMiscLen - 1) As Integer
-                                FileGet(fFile, msProDataBuf)
+                                If dataBuffer Is Nothing Then
+                                    ReDim dataBuffer(Prototypes.ItemMiscLen - 1)
+                                End If
+                                FileGet(fFile, dataBuffer)
                                 FileClose(fFile)
-                                ProFiles.ReverseLoadData(msProDataBuf, miscItem)
+                                ProFiles.ReverseLoadData(dataBuffer, miscItem)
                                 IsRead = True
                             End If
                             CreateTable_Misc(table(n), CheckedList.Item(m).ToString, miscItem)
@@ -154,6 +165,7 @@ Public Class Table_Form
             Progress_Form.ShowProgressBar(CInt(UBound(Critter_LST) / 2))
 
             GetMsgData("pro_crit.msg")
+
             For n = 1 To UBound(Critter_LST) + 1
 
                 Dim proFile As String = Critter_LST(n - 1).proFile
@@ -523,27 +535,24 @@ SaveRetry:
                 Case PrototypeSize.Misc 'Misc
                     iType = ItemType.Misc
                     item = New MiscItemObj(pPath)
-                    CType(item, MiscItemObj).Load()
                 Case PrototypeSize.Weapon 'Оружие
                     iType = ItemType.Weapon
                     item = New WeaponItemObj(pPath)
-                    CType(item, WeaponItemObj).Load()
                 Case PrototypeSize.Drug 'Наркотик
                     iType = ItemType.Drugs
                     item = New DrugsItemObj(pPath)
-                    CType(item, DrugsItemObj).Load()
                 Case PrototypeSize.Ammo 'Патрон
                     iType = ItemType.Ammo
                     item = New AmmoItemObj(pPath)
-                    CType(item, AmmoItemObj).Load()
                 Case PrototypeSize.Armor 'Броня
                     iType = ItemType.Armor
                     item = New ArmorItemObj(pPath)
-                    CType(item, ArmorItemObj).Load()
                 Case Else
                     TableLog_Form.ListBox1.Items.Add("Error: Pro file '" & ProFile & "' item type does not match the file size.")
                     Continue For
             End Select
+
+            CType(item, IPrototype).Load()
 
             Try
                 'изменить значения
@@ -589,7 +598,7 @@ SaveRetry:
             End Try
 
             'save profile and goto next profile
-            ProFiles.SaveItemProData(pPath, iType, item)
+            ProFiles.SaveItemProData(pPath, item)
         Next
         If TableLog_Form.ListBox1.Items.Count > 0 Then TableLog_Form.Show()
         MsgBox("Successfully!", MsgBoxStyle.Information, "Import table")

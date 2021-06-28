@@ -48,7 +48,7 @@ Module GameConfig
                 If (file.EndsWith(".dat") = False) Then Continue For
                 list.Add(New ExtraModData(file, False))
             Next
-            list.Sort(New ExtraModComparer())
+            list.Sort(New Comparer.ExtraModComparer())
             list.Reverse()
         End If
 
@@ -83,7 +83,7 @@ Module GameConfig
             If (String.Equals(name, critterDatName, StringComparison.OrdinalIgnoreCase)) Then Continue For
             list.Add(New ExtraModData(item, False))
         Next
-        list.Sort(New ExtraModComparer())
+        list.Sort(New Comparer.ExtraModComparer())
         list.Reverse()
         gcExtraMods.AddRange(list)
     End Sub

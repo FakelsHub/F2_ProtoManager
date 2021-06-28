@@ -89,32 +89,20 @@ Friend Class Items_Form
         Select Case Items_LST(iLST_Index).itemType
             Case ItemType.Armor
                 itemObject = New ArmorItemObj(ProFile)
-                cType(itemObject, ArmorItemObj).Load()
-
             Case ItemType.Container
                 itemObject = New ContainerItemObj(ProFile)
-                cType(itemObject, ContainerItemObj).Load()
-
             Case ItemType.Drugs
                 itemObject = New DrugsItemObj(ProFile)
-                cType(itemObject, DrugsItemObj).Load()
-
             Case ItemType.Weapon
                 itemObject = New WeaponItemObj(ProFile)
-                cType(itemObject, WeaponItemObj).Load()
-
             Case ItemType.Ammo
                 itemObject = New AmmoItemObj(ProFile)
-                cType(itemObject, AmmoItemObj).Load()
-
             Case ItemType.Misc
                 itemObject = New MiscItemObj(ProFile)
-                cType(itemObject, MiscItemObj).Load()
-
             Case ItemType.Key
                 itemObject = New KeyItemObj(ProFile)
-                cType(itemObject, KeyItemObj).Load()
         End Select
+        CType(itemObject, IPrototype).Load()
     End Sub
 
     Private Sub Items_Form_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -144,6 +132,7 @@ Friend Class Items_Form
 
     Private Sub SetCommonValue_Form(item As ItemPrototype)
         On Error Resume Next
+
         ComboBox7.SelectedIndex = item.ObjType
 
         TextBox29.Text = Misc.GetNameItemMsg(item.DescID)
@@ -193,6 +182,7 @@ Friend Class Items_Form
 
     Private Sub SetWeaponValue_Form(weapon As WeaponItemObj)
         On Error Resume Next
+
         NumericUpDown2.Value = weapon.MinDmg
         NumericUpDown3.Value = weapon.MaxDmg
         NumericUpDown4.Value = weapon.MaxRangeP
@@ -238,6 +228,7 @@ Friend Class Items_Form
 
     Private Sub SetArmorValue_Form(armor As ArmorItemObj)
         On Error Resume Next
+
         NumericUpDown12.Value = armor.AC
 
         NumericUpDown56.Value = armor.DTNormal
@@ -266,6 +257,7 @@ Friend Class Items_Form
 
     Private Sub SetAmmoValue_Form(ammo As AmmoItemObj)
         On Error Resume Next
+
         ComboBox23.SelectedIndex = ammo.Caliber
         NumericUpDown26.Value = ammo.Quantity
         NumericUpDown27.Value = ammo.ACAdjust
@@ -278,6 +270,7 @@ Friend Class Items_Form
 
     Private Sub SetMiscValue_Form(item As MiscItemObj)
         On Error Resume Next
+
         If item.PowerPID <> -1 Then
             Dim Pid As Integer = item.PowerPID
             For n = 0 To UBound(AmmoPID)
@@ -302,6 +295,7 @@ Friend Class Items_Form
 
     Private Sub SetContanerValue_Form(item As ContainerItemObj)
         On Error Resume Next
+
         NumericUpDown32.Value = item.MaxSize
         CheckBox15.Checked = item.GetOpenFlag
         GroupBox25.Enabled = True
@@ -309,6 +303,7 @@ Friend Class Items_Form
 
     Private Sub SetDrugsValue_Form(drugs As DrugsItemObj)
         On Error Resume Next
+
         ComboBox19.SelectedIndex = If((drugs.Stat0 <> -1), 2 + drugs.Stat0, 1)
         ComboBox20.SelectedIndex = If((drugs.Stat1 <> -1), 2 + drugs.Stat1, 1)
         ComboBox21.SelectedIndex = If((drugs.Stat2 <> -1), 2 + drugs.Stat2, 1)
@@ -593,7 +588,7 @@ Friend Class Items_Form
         End Select
 
         'Save
-        SubSaveProto(iType)
+        SubSaveProto()
 
         Dim indx As Integer = LW_SearhItemIndex(iLST_Index, Main_Form.ListView2)
         If indx <> Nothing Then
@@ -608,12 +603,12 @@ Friend Class Items_Form
         btnSave.Enabled = False
     End Sub
 
-    Private Sub SubSaveProto(ByVal iType As ItemType)
+    Private Sub SubSaveProto()
         Dim proFile As String = SaveMOD_Path & PROTO_ITEMS
         If Not Directory.Exists(proFile) Then Directory.CreateDirectory(proFile)
 
         proFile += Items_LST(iLST_Index).proFile
-        ProFiles.SaveItemProData(proFile, iType, itemObject)
+        ProFiles.SaveItemProData(proFile, itemObject)
         'Log
         Main.PrintLog("Save Pro: " & proFile)
     End Sub

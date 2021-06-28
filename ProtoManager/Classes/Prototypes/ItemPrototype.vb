@@ -2,6 +2,7 @@
 Imports System.Runtime.InteropServices
 
 Public Class ItemPrototype
+    Implements IPrototype
 
     Private ReadOnly Property CommonSize As Integer = 14 * 4
     'Friend Property ProtoIsLoad As Boolean = False
@@ -48,12 +49,12 @@ Public Class ItemPrototype
         MyClass.proFile = proFile
     End Sub
 
-    Public Sub Load()
+    Public Sub Load() Implements IPrototype.Load
         DataLoad().Close()
         'ProtoIsLoad = True
     End Sub
 
-    Public Sub Save(savePath As String)
+    Public Sub Save(savePath As String) Implements IPrototype.Save
         DataSave(savePath).Close()
     End Sub
 

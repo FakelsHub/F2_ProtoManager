@@ -26,11 +26,3 @@
 
 End Class
 
-Public Class ExtraModComparer
-    Implements IComparer(Of ExtraModData)
-
-    Public Function Compare(a As ExtraModData, b As ExtraModData) As Integer Implements IComparer(Of ExtraModData).Compare
-        Return String.Compare(a.filePath, b.filePath)
-    End Function
-End Class
-

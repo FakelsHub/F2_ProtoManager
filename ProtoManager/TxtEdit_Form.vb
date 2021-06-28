@@ -28,17 +28,12 @@ Public Class TxtEdit_Form
     Private ReadOnly index As Integer
     Private ReadOnly type As ProType
 
-    Private CrttrProData(Prototypes.CritterLen - 1) As Integer
-    Private ItemProData(Prototypes.ItemCommonLen - 1) As Integer '1+byte
-    Private ArmItmProData(Prototypes.ItemArmorLen - 1) As Integer
-    Private DrgItmProData(Prototypes.ItemDrugsLen - 1) As Integer
-    Private WpnItmProData(Prototypes.ItemWeaponLen - 1) As Integer '1+byte
-    Private AmmItmProData(Prototypes.ItemAmmoLen - 1) As Integer
-    Private MscItmProData(Prototypes.ItemMiscLen - 1) As Integer
-    Private CntItmProData(Prototypes.ItemContLen - 1) As Integer
-    Private KeyItmProData As Integer
-    Private SndProData As Byte
-    Private wSndProData As Byte
+    Private critterData(Prototypes.CritterLen - 1) As Integer
+    Private itemData(Prototypes.ItemCommonLen - 1) As Integer '1+byte
+    Private itemSubTypeData() As Integer
+    Private itemKeyData As Integer
+    Private itemSoundData As Byte
+    Private itemwSoundData As Byte
 
 #Region "Массивы параметров"
     Private ReadOnly CrtNamePro As List(Of String) = New List(Of String)() From {
@@ -250,10 +245,10 @@ Public Class TxtEdit_Form
 
     Friend Sub Init_Data()
         If type = ProType.Critter Then
-            If ProFiles.LoadCritterProData(Critter_LST(index).proFile, CrttrProData) Then GoTo BadFormat
+            If ProFiles.LoadCritterProData(Critter_LST(index).proFile, critterData) Then GoTo BadFormat
 
-            For n = 0 To CrttrProData.Length - 1    'collumn param           value                   hex
-                ListView1.Items.Add(New ListViewItem({CrtNamePro(n), CrttrProData(n), "0x" + Hex(CrttrProData(n))}))
+            For n = 0 To critterData.Length - 1      ' collumn param           value             hex
+                ListView1.Items.Add(New ListViewItem({CrtNamePro(n), critterData(n).ToString, "0x" + Hex(critterData(n))}))
                 ' Groups
                 If (n > 63 And n < 80) OrElse (n > 28 And n < 45) Then
                     ListView1.Items(n).Group = ListView1.Groups.Item(GroupsType.Defence)
@@ -266,38 +261,50 @@ Public Class TxtEdit_Form
                 End If
             Next
         Else
-            Dim fFile As Byte = FreeFile()
+            Dim fFile As Integer = FreeFile()
             Dim filePath As String = DatFiles.CheckFile(PROTO_ITEMS & Items_LST(index).proFile)
 
             On Error GoTo BadFormat
 
             FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            GetProData(ItmNamePro, ItemProData, fFile, 0, GroupsType.Common)
-            FileGet(fFile, SndProData)
-            ListView1.Items.Add(New ListViewItem({SndNamePro, SndProData, "0x" + Hex(SndProData)}))
+            GetProData(ItmNamePro, itemData, fFile, 0, GroupsType.Common)
+            FileGet(fFile, itemSoundData)
+            ListView1.Items.Add(New ListViewItem({SndNamePro, itemSoundData.ToString, "0x" + Hex(itemSoundData)}))
             ListView1.Items(14).Group = ListView1.Groups.Item(GroupsType.Common)
 
             Const count As Integer = 15
-            Select Case ItemProData(Prototypes.ItemSubType)
+            Select Case itemData(Prototypes.ItemSubType)
                 Case ItemType.Weapon
-                    GetProData(WpnNamePro, WpnItmProData, fFile, count, GroupsType.Weapon)
-                    FileGet(fFile, wSndProData)
-                    ListView1.Items.Add(New ListViewItem({wSndNamePro, wSndProData, "0x" + Hex(wSndProData)}))
+                    ReDim itemSubTypeData(Prototypes.ItemWeaponLen - 1) '1+byte
+                    GetProData(WpnNamePro, itemSubTypeData, fFile, count, GroupsType.Weapon)
+                    FileGet(fFile, itemwSoundData)
+                    ListView1.Items.Add(New ListViewItem({wSndNamePro, itemwSoundData.ToString, "0x" + Hex(itemwSoundData)}))
                     ListView1.Items(count + 16).Group = ListView1.Groups.Item(GroupsType.Weapon)
+
                 Case ItemType.Armor
-                    GetProData(ArmNamePro, ArmItmProData, fFile, count, GroupsType.Armor)
+                    ReDim itemSubTypeData(Prototypes.ItemArmorLen - 1)
+                    GetProData(ArmNamePro, itemSubTypeData, fFile, count, GroupsType.Armor)
+
                 Case ItemType.Ammo
-                    GetProData(AmmNamePro, AmmItmProData, fFile, count, GroupsType.Ammo)
+                    ReDim itemSubTypeData(Prototypes.ItemAmmoLen - 1)
+                    GetProData(AmmNamePro, itemSubTypeData, fFile, count, GroupsType.Ammo)
+
                 Case ItemType.Container
-                    GetProData(CntNamePro, CntItmProData, fFile, count, GroupsType.Misc)
+                    ReDim itemSubTypeData(Prototypes.ItemContLen - 1)
+                    GetProData(CntNamePro, itemSubTypeData, fFile, count, GroupsType.Misc)
+
                 Case ItemType.Drugs
-                    GetProData(DrgNamePro, DrgItmProData, fFile, count, GroupsType.Drugs)
+                    ReDim itemSubTypeData(Prototypes.ItemDrugsLen - 1)
+                    GetProData(DrgNamePro, itemSubTypeData, fFile, count, GroupsType.Drugs)
+
                 Case ItemType.Misc
-                    GetProData(MscNamePro, MscItmProData, fFile, count, GroupsType.Misc)
+                    ReDim itemSubTypeData(Prototypes.ItemMiscLen - 1)
+                    GetProData(MscNamePro, itemSubTypeData, fFile, count, GroupsType.Misc)
+
                 Case Else 'ItemType.Key
-                    FileGet(fFile, KeyItmProData)
-                    KeyItmProData = ProFiles.ReverseBytes(KeyItmProData)
-                    ListView1.Items.Add(New ListViewItem({KeyNamePro, KeyItmProData, "0x" + Hex(KeyItmProData)}))
+                    FileGet(fFile, itemKeyData)
+                    itemKeyData = ProFiles.ReverseBytes(itemKeyData)
+                    ListView1.Items.Add(New ListViewItem({KeyNamePro, itemKeyData.ToString, "0x" + Hex(itemKeyData)}))
                     ListView1.Items(count).Group = ListView1.Groups.Item(GroupsType.Misc)
             End Select
             FileClose(fFile)
@@ -321,7 +328,7 @@ BadFormat:
         FileGet(fFile, data)
         For n = 0 To data.Length - 1
             data(n) = ProFiles.ReverseBytes(data(n))
-            ListView1.Items.Add(New ListViewItem({name(n), data(n), "0x" + Hex(data(n))}))
+            ListView1.Items.Add(New ListViewItem({name(n), data(n).ToString, "0x" + Hex(data(n))}))
             ListView1.Items(count + n).Group = ListView1.Groups.Item(groups)
         Next
     End Sub
@@ -330,10 +337,10 @@ BadFormat:
         Dim msg As String, NameID As Integer
 
         If type = ProType.Critter Then
-            NameID = CrttrProData(1)
+            NameID = critterData(1)
             msg = "pro_crit.msg"
         Else
-            NameID = ItemProData(1)
+            NameID = itemData(1)
             msg = "pro_item.msg"
         End If
         GetMsgData(msg)
@@ -384,34 +391,26 @@ BadFormat:
             ListView1.Items.Item(LocIndex).SubItems(2).Text = "0x" & Convert.ToString(value, 16).ToUpper
 
             If type = ProType.Critter Then
-                CrttrProData(LocIndex) = value
+                critterData(LocIndex) = value
             Else
                 If LocIndex <= 13 Then
-                    ItemProData(LocIndex) = value
+                    itemData(LocIndex) = value
                 Else
                     If LocIndex = 14 Then
-                        SndProData = CByte(value)
+                        itemSoundData = CByte(value)
                     Else
                         LocIndex -= 15
-                        Select Case ItemProData(Prototypes.ItemSubType)
+                        Select Case itemData(Prototypes.ItemSubType)
+                            Case ItemType.Key
+                                itemKeyData = value
                             Case ItemType.Weapon
                                 If LocIndex > 14 Then
-                                    wSndProData = CByte(value)
+                                    itemwSoundData = CByte(value)
                                 Else
-                                    WpnItmProData(LocIndex) = value
+                                    itemSubTypeData(LocIndex) = value
                                 End If
-                            Case ItemType.Armor
-                                ArmItmProData(LocIndex) = value
-                            Case ItemType.Ammo
-                                AmmItmProData(LocIndex) = value
-                            Case ItemType.Container
-                                CntItmProData(LocIndex) = value
-                            Case ItemType.Drugs
-                                DrgItmProData(LocIndex) = value
-                            Case ItemType.Misc
-                                MscItmProData(LocIndex) = value
-                            Case Else 'ItemType.Key
-                                KeyItmProData = value
+                            Case Else 'ItemType.Armor, ItemType.Ammo, ItemType.Container, ItemType.Drugs, ItemType.Misc
+                                itemSubTypeData(LocIndex) = value
                         End Select
                     End If
                 End If
@@ -430,7 +429,7 @@ BadFormat:
 
     Private Sub SavePro(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         Dim filePath As String
-        Dim fFile As Byte = FreeFile()
+        Dim fFile As Integer = FreeFile()
         Dim f1Format As Boolean = False
 
         If type = ProType.Critter Then
@@ -439,64 +438,61 @@ BadFormat:
             filePath &= Critter_LST(index).proFile
 
             If File.Exists(filePath) Then
-                File.SetAttributes(filePath, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+                File.SetAttributes(filePath, FileAttributes.Normal Or FileAttributes.NotContentIndexed)
             End If
+
             ' for Falout 1 format
-            If CrttrProData(Prototypes.CritterLen - 1) = -1 Then
+            If critterData(Prototypes.CritterLen - 1) = -1 Then ' DamageType = -1
                 f1Format = True
-                File.Delete(filePath) ' удаляем файл для перезаписи его размера.
+                File.Delete(filePath) ' удаляем файл для перезаписи его размера
             End If
 
             'Save to Pro critter
             FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
-            PutProData(CrttrProData.Clone, fFile, f1Format)
+            PutDataToPro(critterData, fFile, f1Format)
         Else
             filePath = SaveMOD_Path & PROTO_ITEMS
             If Not Directory.Exists(filePath) Then Directory.CreateDirectory(filePath)
             filePath &= Items_LST(index).proFile
             If File.Exists(filePath) Then
-                File.SetAttributes(filePath, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+                File.SetAttributes(filePath, FileAttributes.Normal Or FileAttributes.NotContentIndexed)
             End If
+
             'Save to Pro item
             FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
-            PutProData(ItemProData.Clone, fFile)
-            FilePut(fFile, SndProData)
+            PutDataToPro(itemData, fFile)
+            FilePut(fFile, itemSoundData)
 
-            Select Case ItemProData(Prototypes.ItemSubType)
+            Select Case itemData(Prototypes.ItemSubType)
                 Case ItemType.Weapon
-                    PutProData(WpnItmProData.Clone, fFile)
-                    FilePut(fFile, wSndProData)
-                Case ItemType.Armor
-                    PutProData(ArmItmProData.Clone, fFile)
-                Case ItemType.Ammo
-                    PutProData(AmmItmProData.Clone, fFile)
-                Case ItemType.Container
-                    PutProData(CntItmProData.Clone, fFile)
-                Case ItemType.Drugs
-                    PutProData(DrgItmProData.Clone, fFile)
-                Case ItemType.Misc
-                    PutProData(MscItmProData.Clone, fFile)
+                    PutDataToPro(itemSubTypeData, fFile)
+                    FilePut(fFile, itemwSoundData)
+                Case ItemType.Armor, ItemType.Ammo, ItemType.Container, ItemType.Drugs, ItemType.Misc
+                    PutDataToPro(itemSubTypeData, fFile)
                 Case ItemType.Key
-                    FilePut(fFile, ProFiles.ReverseBytes(KeyItmProData))
+                    FilePut(fFile, ProFiles.ReverseBytes(itemKeyData))
                 Case Else
                     MsgBox("Invalid object type item. Check pro file data format.", MsgBoxStyle.Critical, "Error pro data")
                     FileClose(fFile)
                     Exit Sub
             End Select
         End If
+
         FileClose(fFile)
-        If proRO Then File.SetAttributes(filePath, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+        If proRO Then File.SetAttributes(filePath, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
 
         'log
         Main.PrintLog("Save Pro: " & filePath)
     End Sub
 
-    Private Sub PutProData(ByVal data() As Integer, ByVal fFile As Integer, Optional ByVal f1Format As Boolean = False)
-        If f1Format Then Array.Resize(data, Prototypes.CritterLen - 1)
-        For n = 0 To data.Length - 1
-            data(n) = ProFiles.ReverseBytes(data(n))
+    ' isF1Format - сохраняет в формат F2
+    Private Sub PutDataToPro(ByRef data() As Integer, ByVal fFile As Integer, Optional ByVal isF1Format As Boolean = False)
+        Dim len = If(isF1Format, Prototypes.CritterLen, data.Length) - 1
+        Dim saveData(len) As Integer
+        For n = 0 To len - 1
+            saveData(n) = ProFiles.ReverseBytes(data(n))
         Next
-        FilePut(fFile, data)
+        FilePut(fFile, saveData)
     End Sub
 
     Private Sub ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView1.ColumnClick
@@ -507,7 +503,7 @@ BadFormat:
         If e.KeyCode = Keys.Enter Then
             ListView1.Focus()
         ElseIf e.KeyCode = Keys.Escape Then
-            TextBox1.Text = TextBox1.Tag
+            TextBox1.Text = TextBox1.Tag.ToString
             ListView1.Focus()
         End If
     End Sub
@@ -522,4 +518,18 @@ BadFormat:
             End If
         End If
     End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        'Dim value As Integer
+        'Dim valueText = TextBox1.Text.Trim
+        'If (valueText <> String.Empty) Then
+        '    If (CheckBox1.Checked) Then ' dec > hex
+        '        TextBox1.Text = Hex(valueText)
+        '    Else ' hex > dec
+        '        value = Integer.Parse(valueText, NumberStyles.AllowHexSpecifier)
+        '        TextBox1.Text = value.ToString()
+        '    End If
+        'End If
+    End Sub
+
 End Class
