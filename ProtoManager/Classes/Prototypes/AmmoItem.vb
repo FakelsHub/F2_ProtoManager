@@ -3,7 +3,7 @@ Public Class AmmoItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property ProtoSize As Integer = 6 * 4
+    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Ammo * 4
 
     Private mProto As Prototypes.AmmoItemProto
 

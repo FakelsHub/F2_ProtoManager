@@ -479,17 +479,16 @@ BadFormat:
         End If
 
         FileClose(fFile)
-        If proRO Then File.SetAttributes(filePath, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
+        SetReadOnly(filePath)
 
-        'log
         Main.PrintLog("Save Pro: " & filePath)
     End Sub
 
-    ' isF1Format - сохраняет в формат F2
+    ' isF1Format - сохраняет в формате F1
     Private Sub PutDataToPro(ByRef data() As Integer, ByVal fFile As Integer, Optional ByVal isF1Format As Boolean = False)
-        Dim len = If(isF1Format, ProtoMemberCount.Critter, data.Length) - 1
+        Dim len = If(isF1Format, ProtoMemberCount.Critter - 1, data.Length) - 1
         Dim saveData(len) As Integer
-        For n = 0 To len - 1
+        For n = 0 To len
             saveData(n) = ProFiles.ReverseBytes(data(n))
         Next
         FilePut(fFile, saveData)

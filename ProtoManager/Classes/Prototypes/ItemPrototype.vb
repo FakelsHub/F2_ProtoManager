@@ -3,7 +3,7 @@
 Public Class ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property CommonSize As Integer = 14 * 4
+    Protected Friend ReadOnly Property CommonSize As Integer = Prototypes.ProtoMemberCount.Common * 4
     'Friend Property ProtoIsLoad As Boolean = False
 
     Private mProto As Prototypes.CommonItemProto

@@ -14,6 +14,7 @@ Friend Module Main
         Friend crtHP As Integer
         Friend PID As Integer
         Friend FID As Integer
+        Friend formatF1 As Boolean
     End Structure
 
     Structure ItemsLst
@@ -23,29 +24,29 @@ Friend Module Main
         Friend PID As Integer
     End Structure
 
-    Friend Declare Function SetParent Lib "user32" (ByVal hWndChild As Integer, ByVal hWndNewParent As Integer) As Integer
-
     Friend Critter_LST() As CrittersLst
     Friend Items_LST() As ItemsLst
-    '
+
     Friend Critters_FRM() As String
     Friend Items_FRM() As String
     Friend Iven_FRM() As String
-    '
+
     Private Misc_LST() As String
     Friend Misc_NAME() As String
-    '
+
     Friend Scripts_Lst() As String
-    '
+
     Friend AmmoPID() As Integer
     Friend AmmoNAME() As String
     Friend CaliberNAME() As String
     Friend Perk_NAME() As String
-    '
+
     Private Teams As List(Of String) = New List(Of String)
     Friend PacketAI As SortedList(Of String, Integer)
 
     Friend WeaponSoundIDs As List(Of String) = New List(Of String)
+
+    Friend Declare Function SetParent Lib "user32" (ByVal hWndChild As Integer, ByVal hWndNewParent As Integer) As Integer
 
     'Initialization...
     Friend Sub Main()
@@ -192,11 +193,44 @@ Friend Module Main
         Iven_FRM = Misc.ClearEmptyLines(File.ReadAllLines(DatFiles.CheckFile(artInvenLstPath)))
     End Sub
 
+    Friend Sub GetItemsLst()
+        Dim list = File.ReadAllLines(DatFiles.CheckFile(itemsLstPath))
+        Dim listCount = UBound(list)
+        ReDim Items_LST(listCount)
+
+        Dim count = 0
+        For n = 0 To listCount
+            Dim proFile = list(n).Trim
+            If (proFile.Length > 0) Then
+                Items_LST(count).proFile = proFile
+                count += 1
+            End If
+        Next
+        count -= 1
+        If (count <> listCount) Then Array.Resize(Items_LST, count)
+    End Sub
+
+    Friend Sub GetCrittersLst()
+        Dim lst = File.ReadAllLines(DatFiles.CheckFile(crittersLstPath))
+        Dim listCount = UBound(lst)
+        ReDim Critter_LST(listCount)
+
+        Dim count = 0
+        For n = 0 To UBound(lst)
+            Dim proFile = lst(n).Trim
+            If (proFile.Length > 0) Then
+                Critter_LST(count).proFile = proFile
+                count += 1
+            End If
+        Next
+        count -= 1
+        If (count <> listCount) Then Array.Resize(Critter_LST, count)
+    End Sub
+
     Friend Sub CreateCritterList()
         Dim cCount As Integer = UBound(Critter_LST)
 
-        Progress_Form.ShowProgressBar(0)
-        Progress_Form.ProgressBar1.Maximum = CInt(cCount / 2) + 1
+        Progress_Form.ShowProgressBar(CInt(cCount / 2) + 1)
 
         With Main_Form
             .ListView1.BeginUpdate()
@@ -217,6 +251,10 @@ Friend Module Main
 
                 Dim attrLabel As String = String.Empty
                 Dim proAttr As Status = ProtoCheckFile(Critter_LST(n).proFile, 416, attrLabel)
+
+                If (Critter_LST(n).formatF1) Then
+                    attrLabel += If(attrLabel = "", "[F1]", " [F1]")
+                End If
 
                 If showFID Then
                     .ListView1.Items.Add(New ListViewItem({Critter_LST(n).crtName, Critter_LST(n).proFile, attrLabel, Critter_LST(n).PID.ToString, Critter_LST(n).FID.ToString}))
@@ -249,9 +287,7 @@ Friend Module Main
 
         Dim itemProCount = UBound(Items_LST)
 
-        Progress_Form.ShowProgressBar(0)
-        Progress_Form.ProgressBar1.Maximum = CInt(itemProCount / 2) + 1
-        'Application.DoEvents()
+        Progress_Form.ShowProgressBar(CInt(itemProCount / 2) + 1)
 
         Messages.GetMsgData("pro_item.msg")
 
@@ -424,7 +460,6 @@ Friend Module Main
 
         Dim CrttFrm As New Critter_Form(cLST_Index)
         With CrttFrm
-            SetParent(.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32) 'CrttFrm.MdiParent = Main_Form
             .ComboBox1.Items.AddRange(Critters_FRM)
             .ComboBox2.Items.AddRange(PacketAI.Keys.ToArray)
             .ComboBox3.Items.AddRange(Teams.ToArray)
@@ -432,6 +467,7 @@ Friend Module Main
             If .LoadProData() Then
                 .Dispose()
             Else
+                SetParent(.Handle.ToInt32, Main_Form.SplitContainer1.Handle.ToInt32) 'CrttFrm.MdiParent = Main_Form
                 .Show()
             End If
         End With

@@ -3,7 +3,7 @@ Public Class MiscItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property ProtoSize As Integer = 3 * 4
+    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Misc * 4
 
     Private mProto As Prototypes.MiscItemProto
 

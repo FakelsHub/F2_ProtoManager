@@ -4,7 +4,7 @@ Public Class ContainerItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property ProtoSize As Integer = 2 * 4
+    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Container * 4
 
     Private mProto As Prototypes.ContainerItemProto
 

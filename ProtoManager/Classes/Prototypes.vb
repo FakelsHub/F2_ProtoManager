@@ -66,10 +66,10 @@ NotInheritable Class Prototypes
         Public FrmID As Integer
         Public LightDis As Integer
         Public LightInt As Integer
-        'Critter
-        Public Falgs As Integer
-        Public FalgsExt As Integer
+        Public Flags As Integer
+        Public FlagsExt As Integer
         Public ScriptID As Integer
+        'Critter
         Public HeadFID As Integer
         Public AIPacket As Integer
         Public TeamNum As Integer
@@ -253,26 +253,6 @@ NotInheritable Class Prototypes
         Public DamDiv As Integer
     End Structure
 
-    'Key
-    Structure KeyItemProto
-        Public Unknown As Integer
-    End Structure
-
-    'Misc
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Structure MiscItemProto
-        Public PowerPID As Integer
-        Public PowerType As Integer
-        Public Charges As Integer
-    End Structure
-
-    'Container
-    <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Structure ContainerItemProto
-        Public MaxSize As Integer
-        Public Flags As Integer
-    End Structure
-
     'Drugs
     <StructLayout(LayoutKind.Sequential, Pack:=1)>
     Structure DrugsItemProto
@@ -293,6 +273,26 @@ NotInheritable Class Prototypes
         Public AddictionRate As Integer
         Public W_Effect As Integer
         Public W_Onset As Integer
+    End Structure
+
+    'Container
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure ContainerItemProto
+        Public MaxSize As Integer
+        Public Flags As Integer
+    End Structure
+
+    'Misc
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure MiscItemProto
+        Public PowerPID As Integer
+        Public PowerType As Integer
+        Public Charges As Integer
+    End Structure
+
+    'Key
+    Structure KeyItemProto
+        Public Unknown As Integer
     End Structure
 
     <StructLayout(LayoutKind.Sequential, Pack:=1)>

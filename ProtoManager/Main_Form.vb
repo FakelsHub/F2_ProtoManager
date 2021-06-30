@@ -338,12 +338,14 @@ Friend Class Main_Form
 
     Private Sub ToolStripButton9_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton9.Click
         If TabControl1.SelectedIndex = 1 Then
+            Main.GetCrittersLst()
             Main.CreateCritterList()
             If onlyOnceCritter AndAlso ListView1.View = View.Tile Then
                 ThumbnailImage.GetCrittersImages()
                 ListView1.Refresh()
             End If
         Else
+            Main.GetItemsLst()
             Main.CreateItemsList(currentFilter)
             If onlyOnceItem AndAlso ListView2.View = View.Tile Then
                 ThumbnailImage.GetItemsImages()

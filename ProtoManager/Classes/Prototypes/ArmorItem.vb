@@ -1,10 +1,10 @@
-﻿
+﻿Imports System.IO
 
 Public Class ArmorItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property ProtoSize As Integer = 18 * 4
+    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Armor * 4
 
     Private mProto As Prototypes.ArmorItemProto
 
@@ -38,6 +38,18 @@ Public Class ArmorItemObj
 
         streamFile.Write(ProFiles.SaveDataReverse(mProto), 0, ProtoSize)
         streamFile.Close()
+    End Sub
+
+    Public Sub LoadArmorStat()
+        Dim streamFile = File.Open(MyBase.PrototypeFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+
+        Dim data(ProtoSize - 1) As Byte
+
+        streamFile.Position = Prototypes.DataOffset.ArmorBlock + 4 'MyBase.CommonSize + 5
+        streamFile.Read(data, 4, ProtoSize - (3 * 4))
+        streamFile.Close()
+
+        ProFiles.ReverseLoadData(data, mProto)
     End Sub
 
     Public Function ArmorScore() As Integer

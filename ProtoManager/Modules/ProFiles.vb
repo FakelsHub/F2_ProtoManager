@@ -14,6 +14,10 @@ Module ProFiles
         IsBadFile
     End Enum
 
+    Friend Sub SetReadOnly(proFile As String)
+        If proRO Then File.SetAttributes(proFile, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
+    End Sub
+
     ''' <summary>
     ''' Возвращает имя Frm файла для инвентаря(ivent), или имя FID предмета, если файл для инвентаря не определен.
     ''' </summary>
@@ -57,15 +61,16 @@ Module ProFiles
         path = SaveMOD_Path & path
         Dim nProFile As String = path & pName
 
-        If File.Exists(nProFile) Then
+        If Not (Directory.Exists(path)) Then
+            Directory.CreateDirectory(path)
+        ElseIf File.Exists(nProFile) Then
             File.SetAttributes(nProFile, FileAttributes.Normal)
             File.Delete(nProFile)
         End If
-        If Not (Directory.Exists(path)) Then Directory.CreateDirectory(path)
         File.Move("template", nProFile)
-        If proRO Then File.SetAttributes(nProFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
 
-        'Log
+        SetReadOnly(nProFile)
+
         Main.PrintLog("Create Pro: " & nProFile)
     End Sub
 
@@ -112,24 +117,25 @@ Module ProFiles
     ''' <returns>Возвращает результат проверки</returns>
     Friend Function ProtoCheckFile(ByVal proFile As String, ByVal size As Integer, ByRef fileAttr As String) As Status
         Dim cPath As String
-        If size <> 416 Then '415
+        If size <> 416 Then
             cPath = DatFiles.CheckFile(PROTO_ITEMS & proFile, unpack:=False)
         Else
             cPath = DatFiles.CheckFile(PROTO_CRITTERS & proFile, unpack:=False)
-            If CalcStats.GetFormula = CalcStats.FormulaType.Fallout1 Then size -= 4
         End If
         If cPath = Nothing Then Return Status.NotExist
 
         Dim pro As New FileInfo(cPath)
-        'If pro.Exists = False Then Return Status.NotExist
-
         If pro.Length <> size Then ' check valid size
-            fileAttr = "BAD!"
-            Return Status.IsBadFile
-        ElseIf pro.DirectoryName.StartsWith(SaveMOD_Path) Then
+            If size <> 416 OrElse pro.Length <> 412 Then
+                fileAttr = "BAD!"
+                Return Status.IsBadFile
+            End If
+        End If
+        If pro.DirectoryName.StartsWith(SaveMOD_Path) Then
             If (pro.IsReadOnly) Then fileAttr = "R/O"
             Return Status.IsModFolder
         End If
+
         Return Status.IsNormal
     End Function
 
@@ -157,25 +163,24 @@ Module ProFiles
     ''' Возвращает имя FID из про-файла криттера.
     ''' </summary>
     Friend Function GetCritterFID(ByVal nPro As Integer) As String
-        Dim hp, bhp As Integer
-        Dim FID As Integer = -1
+        Dim HP, bonusHP As Integer, FID As Integer = -1
 
         Dim cPath As String = DatFiles.CheckFile(PROTO_CRITTERS & Critter_LST(nPro).proFile)
         Try
             Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 readFile.BaseStream.Seek(Prototypes.DataOffset.FrmID, SeekOrigin.Begin)
-                FID = ReverseBytes(readFile.ReadInt32())
+                FID = readFile.ReadInt32()
                 readFile.BaseStream.Seek(Prototypes.DataOffset.CritterHP, SeekOrigin.Begin)
-                hp = ReverseBytes(readFile.ReadInt32())
+                HP = readFile.ReadInt32()
                 readFile.BaseStream.Seek(Prototypes.DataOffset.CritteBonusHP, SeekOrigin.Begin)
-                bhp = ReverseBytes(readFile.ReadInt32())
+                bonusHP = readFile.ReadInt32()
             End Using
         Catch ex As Exception
             Return Nothing
         End Try
 
-        Critter_LST(nPro).crtHP = hp + bhp
-        Critter_LST(nPro).FID = FID
+        Critter_LST(nPro).crtHP = ReverseBytes(HP) + ReverseBytes(bonusHP)
+        Critter_LST(nPro).FID = ReverseBytes(FID)
 
         If FID = -1 Then Return Nothing
         FID -= &H1000000I
@@ -188,112 +193,121 @@ Module ProFiles
     ''' </summary>
     Friend Function GetProCritterDataIDs(ByRef crtList As CrittersLst) As Integer
         Dim nameID, pID, fID As Integer
-        Dim cPath = DatFiles.CheckFile(PROTO_CRITTERS & crtList.proFile)
 
-        Dim fFile As Integer = FreeFile()
+        Dim cPath = DatFiles.CheckFile(PROTO_CRITTERS & crtList.proFile)
         Try
-            FileOpen(fFile, cPath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            FileGet(fFile, pID)
-            FileGet(fFile, nameID)
-            FileGet(fFile, fID)
-        Catch
+            Using readFile = New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                pID = readFile.ReadInt32()
+                nameID = readFile.ReadInt32()
+                fID = readFile.ReadInt32()
+
+                If (readFile.BaseStream.Length = 412) Then crtList.formatF1 = True
+            End Using
+        Catch ex As Exception
             Return 0
-        Finally
-            FileClose(fFile)
-            crtList.PID = ReverseBytes(pID)
-            crtList.FID = ReverseBytes(fID)
         End Try
+
+        crtList.PID = ReverseBytes(pID)
+        crtList.FID = ReverseBytes(fID)
 
         Return ReverseBytes(nameID)
     End Function
 
     ''' <summary>
-    ''' Сохраняет структуру криттера в pro-файл.
+    ''' Сохраняет структуру криттера в pro файл.
     ''' </summary>
-    Friend Sub SaveCritterProData(ByVal proFile As String, ByRef CritterStruct As CritterProto)
+    Friend Sub SaveCritterProData(ByVal proFile As String, ByRef critter As CritterProto)
         If File.Exists(proFile) Then
-            File.SetAttributes(proFile, FileAttributes.Normal Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+            File.SetAttributes(proFile, FileAttributes.Normal Or FileAttributes.NotContentIndexed)
         End If
 
-        Dim sBuff As Integer() = ReverseSaveData(CritterStruct, ProtoMemberCount.Critter)
-        If CritterStruct.DamageType > 6 Then
-            Array.Resize(sBuff, ProtoMemberCount.Critter - 1)
+        Dim data As Integer() = ReverseSaveData(critter, ProtoMemberCount.Critter)
+        If critter.DamageType = 7 Then
+            Array.Resize(data, ProtoMemberCount.Critter - 1)
             File.Delete(proFile) ' удаляем файл для перезаписи его размера
         End If
 
         Dim fFile As Integer = FreeFile()
         FileOpen(fFile, proFile, OpenMode.Binary, OpenAccess.Write, OpenShare.Shared)
-        FilePut(fFile, sBuff)
+        FilePut(fFile, data)
         FileClose(fFile)
 
-        If proRO Then File.SetAttributes(proFile, FileAttributes.ReadOnly Or FileAttributes.Archive Or FileAttributes.NotContentIndexed)
+        SetReadOnly(proFile)
     End Sub
 
     ''' <summary>
-    ''' Получает данные из pro-файла криттера в структуре.
+    ''' Сохраняет класс-структуру криттера в pro файл.
     ''' </summary>
-    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef CritterStruct As CritterProto) As Boolean
-        Dim critterProData(ProtoMemberCount.Critter - 1) As Integer  ' read f2 buffer
+    Friend Sub SaveCritterProData(ByVal proFile As String, ByVal critter As CritterObj)
+        If File.Exists(proFile) Then
+            File.SetAttributes(proFile, FileAttributes.Normal Or FileAttributes.NotContentIndexed)
+        End If
 
-        Dim fFile As Integer = FreeFile()
-        Try
-            FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            Dim file As New FileInfo(PathProFile)
+        critter.Save(proFile)
 
-            If file.Length = 412 Then
-                Dim proData(ProtoMemberCount.Critter - 2) As Integer ' read f1 buffer
-                FileGet(fFile, proData)
-                proData.CopyTo(critterProData, 0)
-                critterProData(ProtoMemberCount.Critter - 1) = &H7000000 ' set index 7
+        SetReadOnly(proFile)
+    End Sub
 
-            ElseIf file.Length = 416 Then
-                FileGet(fFile, critterProData)
-            Else
-                Throw New System.Exception
-            End If
-        Catch
-            Return True 'for error
-        Finally
-            ProFiles.ReverseLoadData(critterProData, CritterStruct)
-            FileClose(fFile)
-        End Try
+    ''' <summary>
+    ''' Считывает данные из pro файла криттера в структуру.
+    ''' </summary>
+    Friend Function LoadCritterProData(ByVal pathProFile As String, ByRef critter As CritterProto) As Boolean
+        If (File.Exists(pathProFile) = False) Then Return False
 
-        Return False
+        Dim count = ProtoMemberCount.Critter - 1
+        Dim critterData(count) As Integer
+
+        Dim readFile = New BinaryReader(File.Open(pathProFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        If readFile.BaseStream.Length = 412 Then
+            critterData(count) = &H7000000 ' set DamageType = 7
+            count -= 1
+        ElseIf readFile.BaseStream.Length <> 416 Then
+            readFile.Close()
+            Return False
+        End If
+
+        For i = 0 To count
+            critterData(i) = readFile.ReadInt32()
+        Next
+        readFile.Close()
+
+        ProFiles.ReverseLoadData(critterData, critter)
+
+        Return True
     End Function
 
     ''' <summary>
-    ''' Помещает данные из pro-файла криттера в массив.
+    ''' Считывает данные из pro файла криттера в массив.
     ''' </summary>
-    Friend Function LoadCritterProData(ByVal PathProFile As String, ByRef crtProData As Integer()) As Boolean
+    Friend Function LoadCritterProData(ByVal pathProFile As String, ByRef critterData As Integer()) As Boolean
         Dim fFile As Integer = FreeFile()
 
-        PathProFile = DatFiles.CheckFile(PROTO_CRITTERS & PathProFile)
-
+        pathProFile = DatFiles.CheckFile(PROTO_CRITTERS & pathProFile)
         Try
-            FileOpen(fFile, PathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-            If FileSystem.GetFileInfo(PathProFile).Length = 412 Then
-                Dim f1ProData(ProtoMemberCount.Critter - 2) As Integer ' read f1 buffer
-                FileGet(fFile, f1ProData)
-                f1ProData.CopyTo(crtProData, 0)
-                crtProData(ProtoMemberCount.Critter - 1) = -1
+            FileOpen(fFile, pathProFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
+            If FileSystem.GetFileInfo(pathProFile).Length = 412 Then
+                Dim data(ProtoMemberCount.Critter - 2) As Integer ' read F1 buffer
+                FileGet(fFile, data)
+                data.CopyTo(critterData, 0)
+                critterData(ProtoMemberCount.Critter - 1) = -1
             Else
-                FileGet(fFile, crtProData)
+                FileGet(fFile, critterData)
             End If
-
-            For n = 0 To crtProData.Length - 1
-                crtProData(n) = ProFiles.ReverseBytes(crtProData(n))
-            Next
         Catch ex As Exception
             Return True
         Finally
             FileClose(fFile)
         End Try
 
+        For n = 0 To critterData.Length - 1
+            critterData(n) = ProFiles.ReverseBytes(critterData(n))
+        Next
+
         Return False
     End Function
 
     ''' <summary>
-    ''' Сохраняет структуру предмета в pro-файл.
+    ''' Сохраняет структуру предмета в pro файл.
     ''' </summary>
     Friend Sub SaveItemProData(ByVal pathProFile As String, ByVal item As IPrototype)
         If File.Exists(pathProFile) Then
@@ -302,7 +316,7 @@ Module ProFiles
 
         item.Save(pathProFile)
 
-        If proRO Then File.SetAttributes(pathProFile, FileAttributes.ReadOnly Or FileAttributes.NotContentIndexed)
+        SetReadOnly(pathProFile)
     End Sub
 
     Friend Sub ReverseLoadData(Of T As Structure)(ByRef buffer() As Integer, ByRef struct As T)
@@ -320,10 +334,10 @@ Module ProFiles
         mGC.Free()
     End Sub
 
-    Friend Function ReverseSaveData(ByVal struct As Object, ByVal isize As Integer) As Integer()
+    Friend Function ReverseSaveData(ByVal struct As Object, ByVal size As Integer) As Integer()
         Dim bSize As Integer = Marshal.SizeOf(struct)
         Dim bytes(bSize - 1) As Byte
-        Dim buffer(isize - 1) As Integer
+        Dim buffer(size - 1) As Integer
 
         ConvertStructToBytes(bytes, bSize, struct)
         Array.Reverse(bytes)
