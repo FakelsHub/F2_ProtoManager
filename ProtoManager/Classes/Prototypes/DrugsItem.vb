@@ -3,7 +3,7 @@ Public Class DrugsItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Drugs * 4
+    Private Const ProtoSize As Integer = Prototypes.ProtoMemberCount.Drugs * 4
 
     Private mProto As Prototypes.DrugsItemProto
 

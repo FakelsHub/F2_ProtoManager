@@ -531,9 +531,9 @@ Friend Class Items_Form
                 armor.DREMP = CInt(NumericUpDown65.Value)
                 armor.DRExplode = CInt(NumericUpDown63.Value)
                 armor.AC = CInt(NumericUpDown12.Value)
-                armor.MaleFID = ComboBox16.SelectedIndex + &H1000000
-                armor.FemaleFID = ComboBox17.SelectedIndex + &H1000000
-                armor.Perk = If ((ComboBox18.SelectedIndex > 0), ComboBox18.SelectedIndex - 1, -1)
+                If (ComboBox16.SelectedIndex <> -1) Then armor.MaleFID = ComboBox16.SelectedIndex + &H1000000
+                If (ComboBox17.SelectedIndex <> -1) Then armor.FemaleFID = ComboBox17.SelectedIndex + &H1000000
+                If (ComboBox18.SelectedIndex <> -1) Then armor.Perk = If((ComboBox18.SelectedIndex > 0), ComboBox18.SelectedIndex - 1, -1)
 
             Case ItemType.Drugs
                 Items_LST(iLST_Index).itemType = ItemType.Drugs

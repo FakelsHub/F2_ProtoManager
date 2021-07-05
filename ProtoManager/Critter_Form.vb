@@ -90,19 +90,21 @@ Friend Class Critter_Form
     Private Sub SetStatsValue_Tab()
         On Error Resume Next
 
-        TextBox29.Text = GetNameCritterMsg(critter.DescID)
-        Me.Text = TextBox29.Text & " [" & Critter_LST(cLST_Index).proFile & "]"
+        tbCritterName.Text = GetNameCritterMsg(critter.DescID)
+        Me.Text = tbCritterName.Text & " [" & Critter_LST(cLST_Index).proFile & "]"
 
         TextBox33.Text = critter.ProtoID.ToString
         ComboBox1.SelectedIndex = critter.FrmID - &H1000000I
-        'special
-        NumericUpDown1.Value = critter.proto.Strength
-        NumericUpDown2.Value = critter.proto.Perception
-        NumericUpDown3.Value = critter.proto.Endurance
-        NumericUpDown4.Value = critter.proto.Charisma
-        NumericUpDown5.Value = critter.proto.Intelligence
-        NumericUpDown6.Value = critter.proto.Agility
-        NumericUpDown7.Value = critter.proto.Luck
+
+        'SPECIAL
+        numStrength.Value = critter.proto.Strength
+        numPerception.Value = critter.proto.Perception
+        numEndurance.Value = critter.proto.Endurance
+        numCharisma.Value = critter.proto.Charisma
+        numIntelligence.Value = critter.proto.Intelligence
+        numAgility.Value = critter.proto.Agility
+        numLuck.Value = critter.proto.Luck
+
         'Skills
         NumericUpDown8.Value = critter.proto.SmallGuns
         NumericUpDown9.Value = critter.proto.BigGuns
@@ -134,20 +136,9 @@ Friend Class Critter_Form
         NumericUpDown34.Value = critter.proto.b_Better
         NumericUpDown35.Value = critter.proto.b_UnarmedDmg
 
-        'TextBox19.Text = fCritterPro.HP
-        'TextBox20.Text = fCritterPro.AC
-        'TextBox21.Text = fCritterPro.AP
-        'TextBox22.Text = fCritterPro.Weight
-        'TextBox23.Text = fCritterPro.MeleeDmg
-        'TextBox24.Text = fCritterPro.Sequence
-        'TextBox25.Text = fCritterPro.Healing
-        'TextBox26.Text = fCritterPro.Critical
-
         TextBox27.Text = critter.proto.Better.ToString
-        TextBox28.Text = critter.proto.UnarmedDmg.ToString
+        NumericUpDown1.Value = critter.proto.UnarmedDmg 'TextBox28.Text
 
-        'TextBox31.Text = fCritterPro.DRPoison
-        'TextBox32.Text = fCritterPro.DRRadiation
         NumericUpDown55.Value = critter.proto.b_DRPoison
         NumericUpDown54.Value = critter.proto.b_DRRadiation
 
@@ -157,37 +148,38 @@ Friend Class Critter_Form
     Private Sub CalcSpecialParam()
         On Error Resume Next
 
-        tbSmallGun.Text = CalcStats.SmallGun_Skill(NumericUpDown6.Value) + NumericUpDown8.Value
-        TextBox2.Text = CalcStats.BigEnergyGun_Skill(NumericUpDown6.Value) + NumericUpDown9.Value
-        TextBox3.Text = CalcStats.EnergyGun_Skill(NumericUpDown6.Value) + NumericUpDown10.Value
-        TextBox5.Text = CalcStats.Unarmed_Skill(NumericUpDown6.Value, NumericUpDown1.Value) + NumericUpDown12.Value
-        TextBox4.Text = CalcStats.Melee_Skill(NumericUpDown6.Value, NumericUpDown1.Value) + NumericUpDown11.Value
-        TextBox6.Text = CalcStats.Throwing_Skill(NumericUpDown6.Value) + NumericUpDown13.Value
-        TextBox7.Text = CalcStats.FirstAid_Skill(NumericUpDown2.Value, NumericUpDown5.Value) + NumericUpDown14.Value
-        TextBox8.Text = CalcStats.Doctor_Skill(NumericUpDown2.Value, NumericUpDown5.Value) + NumericUpDown15.Value
-        TextBox9.Text = CalcStats.Outdoorsman_Skill(NumericUpDown3.Value, NumericUpDown5.Value) + NumericUpDown16.Value
-        TextBox10.Text = CalcStats.Sneak_Skill(NumericUpDown6.Value) + NumericUpDown17.Value
-        TextBox11.Text = CalcStats.Lockpick_Skill(NumericUpDown2.Value, NumericUpDown6.Value) + NumericUpDown18.Value
-        TextBox12.Text = CalcStats.Steal_Skill(NumericUpDown6.Value) + NumericUpDown19.Value
-        TextBox13.Text = CalcStats.Trap_Skill(NumericUpDown2.Value, NumericUpDown6.Value) + NumericUpDown20.Value
-        TextBox14.Text = CalcStats.Science_Skill(NumericUpDown5.Value) + NumericUpDown21.Value
-        TextBox15.Text = CalcStats.Repair_Skill(NumericUpDown5.Value) + NumericUpDown22.Value
-        TextBox16.Text = CalcStats.Speech_Skill(NumericUpDown4.Value) + NumericUpDown23.Value
-        TextBox17.Text = CalcStats.Barter_Skill(NumericUpDown4.Value) + NumericUpDown24.Value
-        TextBox18.Text = CalcStats.Gamblings_Skill(NumericUpDown7.Value) + NumericUpDown25.Value
+        tbSmallGun.Text = (CalcStats.SmallGun_Skill(numAgility.Value) + NumericUpDown8.Value).ToString
+        TextBox2.Text = (CalcStats.BigEnergyGun_Skill(numAgility.Value) + NumericUpDown9.Value).ToString
+        TextBox3.Text = (CalcStats.EnergyGun_Skill(numAgility.Value) + NumericUpDown10.Value).ToString
+        TextBox5.Text = (CalcStats.Unarmed_Skill(numAgility.Value, numStrength.Value) + NumericUpDown12.Value).ToString
+        TextBox4.Text = (CalcStats.Melee_Skill(numAgility.Value, numStrength.Value) + NumericUpDown11.Value).ToString
+        TextBox6.Text = (CalcStats.Throwing_Skill(numAgility.Value) + NumericUpDown13.Value).ToString
+        TextBox7.Text = (CalcStats.FirstAid_Skill(numPerception.Value, numIntelligence.Value) + NumericUpDown14.Value).ToString
+        TextBox8.Text = (CalcStats.Doctor_Skill(numPerception.Value, numIntelligence.Value) + NumericUpDown15.Value).ToString
+        TextBox9.Text = (CalcStats.Outdoorsman_Skill(numEndurance.Value, numIntelligence.Value) + NumericUpDown16.Value).ToString
+        TextBox10.Text = (CalcStats.Sneak_Skill(numAgility.Value) + NumericUpDown17.Value).ToString
+        TextBox11.Text = (CalcStats.Lockpick_Skill(numPerception.Value, numAgility.Value) + NumericUpDown18.Value).ToString
+        TextBox12.Text = (CalcStats.Steal_Skill(numAgility.Value) + NumericUpDown19.Value).ToString
+        TextBox13.Text = (CalcStats.Trap_Skill(numPerception.Value, numAgility.Value) + NumericUpDown20.Value).ToString
+        TextBox14.Text = (CalcStats.Science_Skill(numIntelligence.Value) + NumericUpDown21.Value).ToString
+        TextBox15.Text = (CalcStats.Repair_Skill(numIntelligence.Value) + NumericUpDown22.Value).ToString
+        TextBox16.Text = (CalcStats.Speech_Skill(numCharisma.Value) + NumericUpDown23.Value).ToString
+        TextBox17.Text = (CalcStats.Barter_Skill(numCharisma.Value) + NumericUpDown24.Value).ToString
+        TextBox18.Text = (CalcStats.Gamblings_Skill(numLuck.Value) + NumericUpDown25.Value).ToString
 
-        TextBox19.Text = CalcStats.Health_Point(NumericUpDown1.Value, NumericUpDown3.Value) + NumericUpDown26.Value
-        TextBox20.Text = NumericUpDown6.Value + NumericUpDown27.Value
-        TextBox21.Text = CalcStats.Action_Point(NumericUpDown6.Value) + NumericUpDown28.Value
-        TextBox22.Text = CalcStats.Carry_Weight(NumericUpDown1.Value) + NumericUpDown29.Value
-        TextBox23.Text = CalcStats.Melee_Damage(NumericUpDown1.Value) + NumericUpDown30.Value
-        TextBox24.Text = CalcStats.Sequence(NumericUpDown2.Value) + NumericUpDown31.Value
-        TextBox25.Text = CalcStats.Healing_Rate(NumericUpDown3.Value) + NumericUpDown32.Value
-        TextBox26.Text = NumericUpDown7.Value + NumericUpDown33.Value
-        TextBox27.Text = critter.proto.Better + NumericUpDown34.Value
+        TextBox19.Text = (CalcStats.Health_Point(numStrength.Value, numEndurance.Value) + NumericUpDown26.Value).ToString
+        TextBox20.Text = (numAgility.Value + NumericUpDown27.Value).ToString
+        TextBox21.Text = (CalcStats.Action_Point(numAgility.Value) + NumericUpDown28.Value).ToString
+        TextBox22.Text = (CalcStats.Carry_Weight(numStrength.Value) + NumericUpDown29.Value).ToString
+        TextBox23.Text = (CalcStats.Melee_Damage(numStrength.Value) + NumericUpDown30.Value).ToString
+        TextBox24.Text = (CalcStats.Sequence(numPerception.Value) + NumericUpDown31.Value).ToString
+        TextBox25.Text = (CalcStats.Healing_Rate(numEndurance.Value) + NumericUpDown32.Value).ToString
 
-        TextBox31.Text = CalcStats.Poison(NumericUpDown3.Value) + NumericUpDown55.Value 'DRPoison
-        TextBox32.Text = CalcStats.Radiation(NumericUpDown3.Value) + NumericUpDown54.Value 'DRRadiation
+        TextBox26.Text = (numLuck.Value + NumericUpDown33.Value).ToString
+        TextBox27.Text = (critter.proto.Better + NumericUpDown34.Value).ToString
+
+        tbPoison.Text = (CalcStats.Poison(numEndurance.Value) + NumericUpDown55.Value).ToString  'DRPoison
+        tbRadiation.Text = (CalcStats.Radiation(numEndurance.Value) + NumericUpDown54.Value).ToString  'DRRadiation
     End Sub
 
     Private Sub SetDefenceValue_Tab()
@@ -210,10 +202,11 @@ Friend Class Critter_Form
         NumericUpDown63.Value = critter.proto.DRExplode
 
         SetBonusDefenceValue()
+        TabDefenceView = True
     End Sub
 
     Private Sub SetBonusDefenceValue()
-        On Error Resume Next
+        'On Error Resume Next
 
         NumericUpDown40.Value = critter.proto.b_DTNormal
         NumericUpDown41.Value = critter.proto.b_DTLaser
@@ -230,8 +223,6 @@ Friend Class Critter_Form
         NumericUpDown51.Value = critter.proto.b_DRElectrical
         NumericUpDown52.Value = critter.proto.b_DREMP
         NumericUpDown53.Value = critter.proto.b_DRExplode
-
-        TabDefenceView = True
     End Sub
 
     Private Sub SetMiscValue_Tab()
@@ -255,56 +246,57 @@ Friend Class Critter_Form
         ComboBox6.SelectedIndex = critter.proto.KillType
 
         NumericUpDown36.Value = critter.LightDis
-        NumericUpDown37.Value = Math.Round((critter.LightInt * 100) / &HFFFF)
+        NumericUpDown37.Value = critter.LightIntensity
         NumericUpDown38.Value = critter.proto.ExpVal
         NumericUpDown39.Value = critter.proto.Age
+
         'Flags
-        CheckBox1.Checked = critter.Flags And &H8
-        CheckBox2.Checked = critter.Flags And &H10
-        CheckBox3.Checked = critter.Flags And &H800
-        CheckBox4.Checked = critter.Flags And &H80000000
-        CheckBox5.Checked = critter.Flags And &H20000000
+        CheckBox1.Checked = critter.IsFlat
+        CheckBox2.Checked = critter.IsNoBlock
+        CheckBox3.Checked = critter.IsMultiHex
+        CheckBox4.Checked = critter.IsShootThru
+        CheckBox5.Checked = critter.IsLightThru
         'CheckBox12.Checked = fCritterPro.Falgs And &H20
 
-        CheckBox6.Checked = critter.Flags And &H8000
-        If Not CheckBox6.Checked Then
-            RadioButton1.Checked = critter.Flags And &H10000
-            RadioButton4.Checked = critter.Flags And &H20000
-            RadioButton2.Checked = critter.Flags And &H40000
-            RadioButton5.Checked = critter.Flags And &H80000
-            RadioButton3.Checked = critter.Flags And &H4000
+        CheckBox6.Checked = critter.IsTransNone
+        If Not critter.IsTransNone Then
+            RadioButton1.Checked = critter.IsTransWall
+            RadioButton4.Checked = critter.IsTransGlass
+            RadioButton2.Checked = critter.IsTransSteam
+            RadioButton5.Checked = critter.IsTransEnergy
+            RadioButton3.Checked = critter.IsTransRed
         End If
 
         'CheckBox7.Checked = fCritterPro.FalgsExt And &H800
         'CheckBox8.Checked = fCritterPro.FalgsExt And &H1000
-        CheckBox9.Checked = critter.FlagsExt And &H2000
-        CheckBox10.Checked = critter.FlagsExt And &H4000
+        CheckBox9.Checked = critter.IsLook
+        CheckBox10.Checked = critter.IsTalk
         'CheckBox11.Checked = fCritterPro.FalgsExt And &H8000
 
-        CheckBox13.Checked = critter.CritterFlags And &H20
-        CheckBox14.Checked = critter.CritterFlags And &H40
-        CheckBox15.Checked = critter.CritterFlags And &H80
-        CheckBox16.Checked = critter.CritterFlags And &H2000
-        CheckBox17.Checked = critter.CritterFlags And &H200
-        CheckBox18.Checked = critter.CritterFlags And &H100
-        CheckBox19.Checked = critter.CritterFlags And &H800
-        CheckBox20.Checked = critter.CritterFlags And &H1000
-        CheckBox21.Checked = critter.CritterFlags And &H4000
-        CheckBox22.Checked = critter.CritterFlags And &H400
-        CheckBox23.Checked = critter.CritterFlags And &H2
+        CheckBox13.Checked = critter.IsNoSteal
+        CheckBox14.Checked = critter.IsNoDrop
+        CheckBox15.Checked = critter.IsNoLimbs
+        CheckBox16.Checked = critter.IsRangeHtH
+        CheckBox17.Checked = critter.IsNoHeal
+        CheckBox18.Checked = critter.IsAges
+        CheckBox19.Checked = critter.IsNoFlatten
+        CheckBox20.Checked = critter.IsSpecialDeath
+        CheckBox21.Checked = critter.IsNoKnockBack
+        CheckBox22.Checked = critter.IsInvulnerable
+        CheckBox23.Checked = critter.IsBarter
 
         TabMiscView = True
     End Sub
 
     Private Sub Save_CritterPro()
         'Tab Special
-        critter.proto.Strength = CInt(NumericUpDown1.Value)
-        critter.proto.Perception = CInt(NumericUpDown2.Value)
-        critter.proto.Endurance = CInt(NumericUpDown3.Value)
-        critter.proto.Charisma = CInt(NumericUpDown4.Value)
-        critter.proto.Intelligence = CInt(NumericUpDown5.Value)
-        critter.proto.Agility = CInt(NumericUpDown6.Value)
-        critter.proto.Luck = CInt(NumericUpDown7.Value)
+        critter.proto.Strength = CInt(numStrength.Value)
+        critter.proto.Perception = CInt(numPerception.Value)
+        critter.proto.Endurance = CInt(numEndurance.Value)
+        critter.proto.Charisma = CInt(numCharisma.Value)
+        critter.proto.Intelligence = CInt(numIntelligence.Value)
+        critter.proto.Agility = CInt(numAgility.Value)
+        critter.proto.Luck = CInt(numLuck.Value)
         'Skills
         critter.proto.SmallGuns = CInt(NumericUpDown8.Value)
         critter.proto.BigGuns = CInt(NumericUpDown9.Value)
@@ -346,8 +338,8 @@ Friend Class Critter_Form
         critter.proto.Critical = CInt(TextBox26.Text) - critter.proto.b_Critical
 
         '*************
-        critter.proto.Better = Val(TextBox27.Text) - critter.proto.b_Better
-        'fCritterPro.UnarmedDmg = TextBox28.Text
+        critter.proto.Better = CInt(TextBox27.Text) - critter.proto.b_Better
+        critter.proto.UnarmedDmg = CInt(NumericUpDown1.Value) ' TextBox28.Text
         '*************
 
         'Tab Defence
@@ -384,12 +376,12 @@ Friend Class Critter_Form
         critter.proto.DRElectrical = CInt(NumericUpDown67.Value)
         critter.proto.DREMP = CInt(NumericUpDown65.Value)
         critter.proto.DRExplode = CInt(NumericUpDown63.Value)
-        critter.proto.DRPoison = Val(TextBox31.Text) - critter.proto.b_DRPoison
-        critter.proto.DRRadiation = Val(TextBox32.Text) - critter.proto.b_DRRadiation
+        critter.proto.DRPoison = CInt(tbPoison.Text) - critter.proto.b_DRPoison
+        critter.proto.DRRadiation = CInt(tbRadiation.Text) - critter.proto.b_DRRadiation
 
         'Tab Misc
         critter.DescID = CInt(NumericUpDown64.Value)
-        If ComboBox9.SelectedIndex <> 0 Then critter.ScriptID = (ComboBox9.SelectedIndex - 1) + &H4000000I Else critter.ScriptID = &HFFFFFFFF
+        critter.ScriptID = If(ComboBox9.SelectedIndex <> 0, (ComboBox9.SelectedIndex - 1) + &H4000000, -1)
         critter.proto.Gender = ComboBox8.SelectedIndex
 
         If ComboBox2.SelectedItem IsNot Nothing Then
@@ -408,57 +400,55 @@ Friend Class Critter_Form
         critter.proto.KillType = ComboBox6.SelectedIndex
 
         critter.LightDis = CInt(NumericUpDown36.Value)
-        critter.LightInt = CInt(Math.Round((NumericUpDown37.Value * &HFFFF) / 100))
+        critter.LightIntensity = CInt(NumericUpDown37.Value)
         critter.proto.ExpVal = CInt(NumericUpDown38.Value)
         critter.proto.Age = CInt(NumericUpDown39.Value)
 
-        Dim flags As Integer = critter.Flags
-        If CheckBox1.Checked Then flags = flags Or &H8 Else flags = flags And (Not &H8)
-        If CheckBox2.Checked Then flags = flags Or &H10 Else flags = flags And (Not &H10)
-        If CheckBox3.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
-        If CheckBox4.Checked Then flags = flags Or &H80000000 Else flags = flags And (Not &H80000000)
-        If CheckBox5.Checked Then flags = flags Or &H20000000 Else flags = flags And (Not &H20000000)
+        'Flags
+        critter.IsFlat = CheckBox1.Checked
+        critter.IsNoBlock = CheckBox2.Checked
+        critter.IsMultiHex = CheckBox3.Checked
+        critter.IsShootThru = CheckBox4.Checked
+        critter.IsLightThru = CheckBox5.Checked
         'CheckBox12.Checked = And &H20
 
-        flags = flags And &HFFF0BFFF
+        ' удаляем взаимозаменяемые флаги TransNone/TransRed/TransWall/TransGlass/TransSteam/TransEnergy
+        critter.Flags = critter.Flags And &HFFF03FFF
         If CheckBox6.Checked Then
-            flags = flags Or &H8000
+            critter.IsTransNone = True
         Else
             If RadioButton1.Checked Then
-                flags = flags Or &H10000
+                critter.IsTransWall = True
             ElseIf RadioButton4.Checked Then
-                flags = flags Or &H20000
+                critter.IsTransGlass = True
             ElseIf RadioButton2.Checked Then
-                flags = flags Or &H40000
+                critter.IsTransSteam = True
             ElseIf RadioButton5.Checked Then
-                flags = flags Or &H80000
+                critter.IsTransEnergy = True
             ElseIf RadioButton3.Checked Then
-                flags = flags Or &H4000
+                critter.IsTransRed = True
             End If
         End If
-        critter.Flags = flags
 
-        flags = critter.FlagsExt
+        'Flags Ext
         'CheckBox7.Checked =  And &H800
         'CheckBox8.Checked =  And &H1000
-        If CheckBox9.Checked Then flags = flags Or &H2000 Else flags = flags And (Not &H2000)
-        If CheckBox10.Checked Then flags = flags Or &H4000 Else flags = flags And (Not &H4000)
+        critter.IsLook = CheckBox9.Checked
+        critter.IsTalk = CheckBox10.Checked
         'CheckBox11.Checked = And &H8000
-        critter.FlagsExt = flags
 
-        flags = critter.CritterFlags
-        If CheckBox13.Checked Then flags = flags Or &H20 Else flags = flags And (Not &H20)
-        If CheckBox14.Checked Then flags = flags Or &H40 Else flags = flags And (Not &H40)
-        If CheckBox15.Checked Then flags = flags Or &H80 Else flags = flags And (Not &H80)
-        If CheckBox16.Checked Then flags = flags Or &H2000 Else flags = flags And (Not &H2000)
-        If CheckBox17.Checked Then flags = flags Or &H200 Else flags = flags And (Not &H200)
-        If CheckBox18.Checked Then flags = flags Or &H100 Else flags = flags And (Not &H100)
-        If CheckBox19.Checked Then flags = flags Or &H800 Else flags = flags And (Not &H800)
-        If CheckBox20.Checked Then flags = flags Or &H1000 Else flags = flags And (Not &H1000)
-        If CheckBox21.Checked Then flags = flags Or &H4000 Else flags = flags And (Not &H4000)
-        If CheckBox22.Checked Then flags = flags Or &H400 Else flags = flags And (Not &H400)
-        If CheckBox23.Checked Then flags = flags Or &H2 Else flags = flags And (Not &H2)
-        critter.CritterFlags = flags
+        'Flags Critter
+        critter.IsNoSteal = CheckBox13.Checked
+        critter.IsNoDrop = CheckBox14.Checked
+        critter.IsNoLimbs = CheckBox15.Checked
+        critter.IsRangeHtH = CheckBox16.Checked
+        critter.IsNoHeal = CheckBox17.Checked
+        critter.IsAges = CheckBox18.Checked
+        critter.IsNoFlatten = CheckBox19.Checked
+        critter.IsSpecialDeath = CheckBox20.Checked
+        critter.IsNoKnockBack = CheckBox21.Checked
+        critter.IsInvulnerable = CheckBox22.Checked
+        critter.IsBarter = CheckBox23.Checked
 
         critter.FrmID = ComboBox1.SelectedIndex + &H1000000I
 
@@ -499,8 +489,8 @@ Friend Class Critter_Form
         End If
     End Sub
 
-    Private Sub ValueChanged_Tab1(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown1.ValueChanged, NumericUpDown2.ValueChanged,
-    NumericUpDown3.ValueChanged, NumericUpDown4.ValueChanged, NumericUpDown5.ValueChanged, NumericUpDown6.ValueChanged, NumericUpDown7.ValueChanged,
+    Private Sub ValueChanged_Tab1(ByVal sender As Object, ByVal e As EventArgs) Handles numStrength.ValueChanged, numPerception.ValueChanged,
+    numEndurance.ValueChanged, numCharisma.ValueChanged, numIntelligence.ValueChanged, numAgility.ValueChanged, numLuck.ValueChanged,
     NumericUpDown8.ValueChanged, NumericUpDown9.ValueChanged, NumericUpDown10.ValueChanged, NumericUpDown11.ValueChanged, NumericUpDown12.ValueChanged,
     NumericUpDown13.ValueChanged, NumericUpDown14.ValueChanged, NumericUpDown15.ValueChanged, NumericUpDown16.ValueChanged, NumericUpDown17.ValueChanged,
     NumericUpDown18.ValueChanged, NumericUpDown19.ValueChanged, NumericUpDown20.ValueChanged, NumericUpDown21.ValueChanged, NumericUpDown22.ValueChanged,
@@ -512,22 +502,31 @@ Friend Class Critter_Form
             CalcSpecialParam()
             Button6.Enabled = True
         Else
-            Dim cntl As NumericUpDown = sender
-            If cntl.Value <> -100 AndAlso cntl.BackColor <> Color.Black Then
-                cntl.BackColor = Color.White
+            Dim nudControl As NumericUpDown = CType(sender, NumericUpDown)
+            If nudControl.Value <> -999 AndAlso nudControl.BackColor <> Color.Black Then
+                nudControl.BackColor = Color.White
             End If
         End If
     End Sub
 
-    Private Sub ValueChanged_Tab2a(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown54.ValueChanged, NumericUpDown55.ValueChanged
+    Private Sub ValueChanged_Tab1a(ByVal sender As Object, ByVal e As EventArgs) Handles NumericUpDown54.ValueChanged, NumericUpDown55.ValueChanged
         If TabStatsView = True Then
-            TextBox31.Text = (5 * NumericUpDown3.Value) + NumericUpDown55.Value 'DRPoison
-            TextBox32.Text = (2 * NumericUpDown3.Value) + NumericUpDown54.Value 'DRRadiation
+            tbPoison.Text = (CalcStats.Poison(numEndurance.Value) + NumericUpDown55.Value).ToString 'DRPoison
+            tbRadiation.Text = (CalcStats.Radiation(numEndurance.Value) + NumericUpDown54.Value).ToString 'DRRadiation
             Button6.Enabled = True
         Else
-            Dim cntl As NumericUpDown = sender
-            If cntl.Value <> -100 Then
-                cntl.BackColor = Color.White
+            If CType(sender, NumericUpDown).Value <> -200 Then
+                CType(sender, NumericUpDown).BackColor = Color.White
+            End If
+        End If
+    End Sub
+
+    Private Sub ValueChanged_Tab1b(sender As Object, e As EventArgs) Handles NumericUpDown1.ValueChanged, NumericUpDown35.ValueChanged
+        If TabStatsView = True Then
+            Button6.Enabled = True
+        Else
+            If CType(sender, NumericUpDown).Value <> -999 Then
+                CType(sender, NumericUpDown).BackColor = Color.White
             End If
         End If
     End Sub
@@ -542,9 +541,8 @@ Friend Class Critter_Form
         If TabDefenceView Then
             Button6.Enabled = True
         Else
-            Dim cntl As NumericUpDown = sender
-            If cntl.Value <> -999 Then
-                cntl.BackColor = Color.White
+            If CType(sender, NumericUpDown).Value <> -999 Then
+                CType(sender, NumericUpDown).BackColor = Color.White
             End If
         End If
     End Sub
@@ -582,81 +580,70 @@ Friend Class Critter_Form
         End If
     End Sub
 
+    Dim armorItem As ArmorItemObj
+
     Private Sub ListView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ListView1.SelectedIndexChanged
         If ListView1.FocusedItem IsNot Nothing Then
             If ListView1.FocusedItem.Index > 0 Then
-                Dim aItem As ArmorItemProto
-                Dim InvFID As Integer
-                Dim fFile As Integer = FreeFile()
-                Dim ProFile As String = ListView1.FocusedItem.Tag
+                Dim proFile As String = ListView1.FocusedItem.Tag.ToString
+                Dim filePath = DatFiles.CheckFile(PROTO_ITEMS & proFile)
 
-                Dim filePath = DatFiles.CheckFile(PROTO_ITEMS & ProFile)
-                FileOpen(fFile, filePath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-                FileGet(fFile, InvFID, Prototypes.DataOffset.InvenFID + 1)
-                FileGet(fFile, aItem, Prototypes.DataOffset.ArmorBlock)
-                FileClose(fFile)
+                armorItem = New ArmorItemObj(filePath)
+                armorItem.LoadArmorData()
 
                 If ListView1.FocusedItem.ToolTipText IsNot Nothing Then
-                    Dim tip As StringBuilder = New StringBuilder("Armor characteristic:")
+                    Dim tip As StringBuilder = New StringBuilder("Armor stats:")
                     tip.AppendLine()
-                    tip.AppendLine("Normal DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTNormal), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DRNormal))
-                    tip.AppendLine(" Laser DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTLaser), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DRLaser))
-                    tip.AppendLine("  Fire DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTFire), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DRFire))
-                    tip.AppendLine("Plasma DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTPlasma), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DRPlasma))
-                    tip.AppendLine("Electr DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTElectrical), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DRElectrical))
-                    tip.AppendLine("   Emp DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTEMP), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DREMP))
-                    tip.Append("  Expl DT:" & Strings.RSet(ProFiles.ReverseBytes(aItem.DTExplode), 3) & " | DR: " & ProFiles.ReverseBytes(aItem.DRExplode))
+                    tip.AppendLine("Normal DT:" & Strings.RSet(armorItem.DTNormal.ToString, 3) & " | DR: " & armorItem.DRNormal)
+                    tip.AppendLine(" Laser DT:" & Strings.RSet(armorItem.DTLaser.ToString, 3) & " | DR: " & armorItem.DRLaser)
+                    tip.AppendLine("  Fire DT:" & Strings.RSet(armorItem.DTFire.ToString, 3) & " | DR: " & armorItem.DRFire)
+                    tip.AppendLine("Plasma DT:" & Strings.RSet(armorItem.DTPlasma.ToString, 3) & " | DR: " & armorItem.DRPlasma)
+                    tip.AppendLine("Electr DT:" & Strings.RSet(armorItem.DTElectrical.ToString, 3) & " | DR: " & armorItem.DRElectrical)
+                    tip.AppendLine("   Emp DT:" & Strings.RSet(armorItem.DTEMP.ToString, 3) & " | DR: " & armorItem.DREMP)
+                    tip.Append("  Expl DT:" & Strings.RSet(armorItem.DTExplode.ToString, 3) & " | DR: " & armorItem.DRExplode)
                     ListView1.FocusedItem.ToolTipText = tip.ToString
                 End If
 
-                If InvFID = -1 Then
+                If armorItem.InventoryFID = -1 Then
                     PictureBox2.Image = Nothing
                 Else
                     Main.GetItemsLstFRM()
-                    InvFID = ProFiles.ReverseBytes(InvFID) - &H7000000
-                    ProFile = Strings.Left(Iven_FRM(InvFID), RTrim(Iven_FRM(InvFID)).Length - 4)
-                    If Not File.Exists(Cache_Patch & ART_INVEN & ProFile & ".gif") Then
-                        DatFiles.ItemFrmToGif("inven\", ProFile)
+                    Dim fidIndex = armorItem.InventoryFID - &H7000000
+                    proFile = Strings.Left(Iven_FRM(fidIndex), RTrim(Iven_FRM(fidIndex)).Length - 4)
+                    If Not File.Exists(Cache_Patch & ART_INVEN & proFile & ".gif") Then
+                        DatFiles.ItemFrmToGif("inven\", proFile)
                     End If
-                    PictureBox2.Image = Image.FromFile(Cache_Patch & ART_INVEN & ProFile & ".gif")
+                    PictureBox2.Image = Image.FromFile(Cache_Patch & ART_INVEN & proFile & ".gif")
                 End If
             Else
                 PictureBox2.Image = Nothing
+                armorItem = Nothing
             End If
             Button7.Enabled = True
         End If
     End Sub
 
     Private Sub ArmorApply(ByVal sender As Object, ByVal e As EventArgs) Handles Button7.Click
-        Dim proFile As String = CType(ListView1.FocusedItem.Tag, String)
-        If proFile Is Nothing Then
+        If armorItem Is Nothing Then
             SetBonusDefenceValue()
             Exit Sub
         End If
 
-        Dim armor As ArmorItemProto
+        NumericUpDown40.Value = armorItem.DTNormal
+        NumericUpDown41.Value = armorItem.DTLaser
+        NumericUpDown42.Value = armorItem.DTFire
+        NumericUpDown43.Value = armorItem.DTPlasma
+        NumericUpDown44.Value = armorItem.DTElectrical
+        NumericUpDown45.Value = armorItem.DTEMP
+        NumericUpDown46.Value = armorItem.DTExplode
 
-        Dim fFile As Integer = FreeFile()
-        proFile = DatFiles.CheckFile(PROTO_ITEMS & proFile)
-        FileOpen(fFile, proFile, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
-        FileGet(fFile, armor, Prototypes.DataOffset.ArmorBlock)
-        FileClose(fFile)
-
-        NumericUpDown40.Value = ProFiles.ReverseBytes(armor.DTNormal)
-        NumericUpDown41.Value = ProFiles.ReverseBytes(armor.DTLaser)
-        NumericUpDown42.Value = ProFiles.ReverseBytes(armor.DTFire)
-        NumericUpDown43.Value = ProFiles.ReverseBytes(armor.DTPlasma)
-        NumericUpDown44.Value = ProFiles.ReverseBytes(armor.DTElectrical)
-        NumericUpDown45.Value = ProFiles.ReverseBytes(armor.DTEMP)
-        NumericUpDown46.Value = ProFiles.ReverseBytes(armor.DTExplode)
-
-        NumericUpDown47.Value = ProFiles.ReverseBytes(armor.DRNormal)
-        NumericUpDown48.Value = ProFiles.ReverseBytes(armor.DRLaser)
-        NumericUpDown49.Value = ProFiles.ReverseBytes(armor.DRFire)
-        NumericUpDown50.Value = ProFiles.ReverseBytes(armor.DRPlasma)
-        NumericUpDown51.Value = ProFiles.ReverseBytes(armor.DRElectrical)
-        NumericUpDown52.Value = ProFiles.ReverseBytes(armor.DREMP)
-        NumericUpDown53.Value = ProFiles.ReverseBytes(armor.DRExplode)
+        NumericUpDown47.Value = armorItem.DRNormal
+        NumericUpDown48.Value = armorItem.DRLaser
+        NumericUpDown49.Value = armorItem.DRFire
+        NumericUpDown50.Value = armorItem.DRPlasma
+        NumericUpDown51.Value = armorItem.DRElectrical
+        NumericUpDown52.Value = armorItem.DREMP
+        NumericUpDown53.Value = armorItem.DRExplode
     End Sub
 
     Private Sub ComboBox1_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBox1.SelectedIndexChanged
@@ -702,12 +689,13 @@ Friend Class Critter_Form
     Private Sub Restore(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         Dim tempPath As String = cPath
 
-        If DatFiles.UnDatFile(PROTO_CRITTERS & Critter_LST(cLST_Index).proFile, 416) Then
+        Dim size = If(Critter_LST(cLST_Index).formatF1, 412, 416)
+        If DatFiles.UnDatFile(PROTO_CRITTERS & Critter_LST(cLST_Index).proFile, size) Then
             cPath = Cache_Patch
             InitFormData()
             Button6.Enabled = True
         Else
-            MsgBox("The prototype this number does not exist in Master.dat.", MsgBoxStyle.Exclamation)
+            MsgBox("The prototype file does not exist in Master.dat.", MsgBoxStyle.Exclamation)
         End If
 
         cPath = tempPath
@@ -735,7 +723,7 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub Button4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button4.Click
-        SaveCritterMsg(TextBox29.Text)
+        SaveCritterMsg(tbCritterName.Text)
     End Sub
 
     Private Sub Button5_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button5.Click
@@ -746,7 +734,7 @@ Friend Class Critter_Form
         Me.Close()
     End Sub
 
-    Private Sub TextBox29_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBox29.TextChanged
+    Private Sub TextBox29_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles tbCritterName.TextChanged
         Button4.Enabled = True
     End Sub
 
@@ -769,7 +757,7 @@ Friend Class Critter_Form
         NumericUpDown47.KeyPress, NumericUpDown46.KeyPress, NumericUpDown45.KeyPress, NumericUpDown44.KeyPress, NumericUpDown43.KeyPress, NumericUpDown42.KeyPress,
         NumericUpDown41.KeyPress, NumericUpDown40.KeyPress, NumericUpDown39.KeyPress, NumericUpDown38.KeyPress, NumericUpDown37.KeyPress, NumericUpDown36.KeyPress
         '
-        If Char.IsDigit(e.KeyChar) Then Button6.Enabled = True
+        'If Char.IsDigit(e.KeyChar) Then Button6.Enabled = True
     End Sub
 
 End Class

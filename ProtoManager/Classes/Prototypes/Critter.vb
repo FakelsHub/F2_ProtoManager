@@ -2,7 +2,7 @@
 
 Public Class CritterObj
 
-    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Critter * 4
+    Private Const ProtoSize As Integer = Prototypes.ProtoMemberCount.Critter * 4
 
     Friend proto As Prototypes.CritterProto
     Private proFile As String
@@ -25,7 +25,7 @@ Public Class CritterObj
 
         Dim data(ProtoSize - 1) As Byte
 
-        Dim streamFile = File.Open(proFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+        Dim streamFile = File.Open(proFile, FileMode.Open, FileAccess.Read, FileShare.Read)
         If (streamFile.Length = 412) Then
             streamFile.Read(data, 0, ProtoSize - 4)
             isFallout1 = True
@@ -73,6 +73,18 @@ Public Class CritterObj
     End Function
 
 #Region "Prototype propertes"
+
+    ''' <summary>
+    '''  Устанавливает или возвращает интенсивность в процентах 0..100
+    ''' </summary>
+    Public Property LightIntensity As Integer
+        Get
+            Return CInt(Math.Round((proto.LightInt * 100) / 65535))
+        End Get
+        Set(value As Integer)
+            proto.LightInt = CInt(Math.Round((value * 65535) / 100))
+        End Set
+    End Property
 
 #Region "Flags"
 
@@ -207,6 +219,106 @@ Public Class CritterObj
 #End Region
 
 #Region "Critter Flags"
+
+    Public Property IsBarter As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.Barter, proto.CritterFlags And Not (Enums.CritterFlags.Barter))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.Barter) <> 0
+        End Get
+    End Property
+
+    Public Property IsNoSteal As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.NoSteal, proto.CritterFlags And Not (Enums.CritterFlags.NoSteal))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.NoSteal) <> 0
+        End Get
+    End Property
+
+    Public Property IsNoDrop As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.NoDrop, proto.CritterFlags And Not (Enums.CritterFlags.NoDrop))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.NoDrop) <> 0
+        End Get
+    End Property
+
+
+    Public Property IsNoLimbs As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.NoLimbs, proto.CritterFlags And Not (Enums.CritterFlags.NoLimbs))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.NoLimbs) <> 0
+        End Get
+    End Property
+
+    Public Property IsAges As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.Ages, proto.CritterFlags And Not (Enums.CritterFlags.Ages))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.Ages) <> 0
+        End Get
+    End Property
+
+    Public Property IsNoHeal As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.NoHeal, proto.CritterFlags And Not (Enums.CritterFlags.NoHeal))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.NoHeal) <> 0
+        End Get
+    End Property
+
+    Public Property IsInvulnerable As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.Invulnerable, proto.CritterFlags And Not (Enums.CritterFlags.Invulnerable))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.Invulnerable) <> 0
+        End Get
+    End Property
+
+    Public Property IsNoFlatten As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.NoFlatten, proto.CritterFlags And Not (Enums.CritterFlags.NoFlatten))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.NoFlatten) <> 0
+        End Get
+    End Property
+
+    Public Property IsSpecialDeath As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.SpecialDeath, proto.CritterFlags And Not (Enums.CritterFlags.SpecialDeath))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.SpecialDeath) <> 0
+        End Get
+    End Property
+
+    Public Property IsRangeHtH As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.RangeHtH, proto.CritterFlags And Not (Enums.CritterFlags.RangeHtH))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.RangeHtH) <> 0
+        End Get
+    End Property
+
+    Public Property IsNoKnockBack As Boolean
+        Set(value As Boolean)
+            proto.CritterFlags = If(value, proto.CritterFlags Or Enums.CritterFlags.NoKnockBack, proto.CritterFlags And Not (Enums.CritterFlags.NoKnockBack))
+        End Set
+        Get
+            Return (proto.CritterFlags And Enums.CritterFlags.NoKnockBack) <> 0
+        End Get
+    End Property
 
 #End Region
 

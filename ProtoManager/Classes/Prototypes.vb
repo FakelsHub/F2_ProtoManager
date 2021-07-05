@@ -50,7 +50,7 @@ NotInheritable Class Prototypes
         CritteBonusHP = &HD8
 
         ItemSubTypeIndex = CInt((ItemSubType / 4))
-        ArmorBlock = &H3A
+        ArmorBlock = &H39
     End Enum
 
     '

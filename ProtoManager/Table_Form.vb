@@ -841,7 +841,7 @@ SaveRetry:
                             critter.Agility = CInt(tableValue(n, m))
                         Case "luck"
                             critter.Luck = CInt(tableValue(n, m))
-                        Case "exp Value"
+                        Case "exp value"
                             critter.ExpVal = CInt(tableValue(n, m))
                         Case "damage type"
                             critter.DamageType = 0

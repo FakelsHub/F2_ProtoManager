@@ -52,6 +52,23 @@
         HiddenItem = &H08000000
     End Enum
 
+    Enum CritterFlags As Integer
+        'Sneak = &H1           ' Can sneak ?
+        Barter = &H2          ' Can trade With
+        'Level = &H4           ' Level received ?
+        'Addict = &H8          ' Drug addiction ?
+        NoSteal = &H20        ' Can't be stolen from
+        NoDrop = &H40         ' Doesn't drop items
+        NoLimbs = &H80        ' Can't lose limbs
+        Ages = &H100          ' Dead body does Not disappear
+        NoHeal = &H200        ' Damage Is Not healed With time
+        Invulnerable = &H400  ' Is Invulnerable (cannot be hurt)
+        NoFlatten = &H800     ' Doesn't flatten on death (leaves no dead body)
+        SpecialDeath = &H1000 ' Has a special type Of death
+        RangeHtH = &H2000     ' Has extra hand-To-hand range
+        NoKnockBack = &H4000  ' Can't be knocked back
+    End Enum
+
     Enum Gender As Integer
         Female = 0
         Male   = 1

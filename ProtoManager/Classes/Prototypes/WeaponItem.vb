@@ -19,7 +19,7 @@ Public Class WeaponItemObj
         Explode
     End Enum
 
-    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Weapon * 4
+    Private Const ProtoSize As Integer = Prototypes.ProtoMemberCount.Weapon * 4
 
     Private mProto As Prototypes.WeaponItemProto
 

@@ -4,7 +4,7 @@ Public Class KeyItemObj
     Inherits ItemPrototype
     Implements IPrototype
 
-    Private ReadOnly Property ProtoSize As Integer = Prototypes.ProtoMemberCount.Key * 4
+    Private Const ProtoSize As Integer = Prototypes.ProtoMemberCount.Key * 4
 
     Private mProto As Prototypes.KeyItemProto
 

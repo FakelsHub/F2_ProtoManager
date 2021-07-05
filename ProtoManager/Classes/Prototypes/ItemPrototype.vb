@@ -3,7 +3,7 @@
 Public Class ItemPrototype
     Implements IPrototype
 
-    Protected Friend ReadOnly Property CommonSize As Integer = Prototypes.ProtoMemberCount.Common * 4
+    Protected Friend Const CommonSize As Integer = Prototypes.ProtoMemberCount.Common * 4
     'Friend Property ProtoIsLoad As Boolean = False
 
     Private mProto As Prototypes.CommonItemProto
@@ -58,6 +58,18 @@ Public Class ItemPrototype
     End Function
 
 #Region "Prototype propertes"
+
+    ''' <summary>
+    '''  Устанавливает или возвращает интенсивность в процентах 0..100
+    ''' </summary>
+    Public Property LightIntensity As Integer
+        Get
+            Return CInt(Math.Round((mProto.LightInt * 100) / 65535))
+        End Get
+        Set(value As Integer)
+            mProto.LightInt = CInt(Math.Round((value * 65535) / 100))
+        End Set
+    End Property
 
 #Region "Flags"
     Public Property IsFlat As Boolean

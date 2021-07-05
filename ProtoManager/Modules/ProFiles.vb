@@ -179,8 +179,9 @@ Module ProFiles
             Return Nothing
         End Try
 
+        FID = ReverseBytes(FID)
+        Critter_LST(nPro).FID = FID
         Critter_LST(nPro).crtHP = ReverseBytes(HP) + ReverseBytes(bonusHP)
-        Critter_LST(nPro).FID = ReverseBytes(FID)
 
         If FID = -1 Then Return Nothing
         FID -= &H1000000I

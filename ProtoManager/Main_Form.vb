@@ -336,7 +336,7 @@ Friend Class Main_Form
         SetFormSettings()
     End Sub
 
-    Private Sub ToolStripButton9_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolStripButton9.Click
+    Private Sub UpdateList(ByVal sender As Object, ByVal e As EventArgs) Handles tsbtnUpdateList.Click
         If TabControl1.SelectedIndex = 1 Then
             Main.GetCrittersLst()
             Main.CreateCritterList()
@@ -352,7 +352,7 @@ Friend Class Main_Form
                 ListView2.Refresh()
             End If
         End If
-
+        Scripts_Lst = Nothing
         Main.GetScriptLst()
     End Sub
 
