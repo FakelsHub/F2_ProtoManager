@@ -183,7 +183,7 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SetDefenceValue_Tab()
-        'On Error Resume Next
+        On Error Resume Next
 
         NumericUpDown56.Value = critter.proto.DTNormal
         NumericUpDown57.Value = critter.proto.DTLaser
@@ -206,7 +206,7 @@ Friend Class Critter_Form
     End Sub
 
     Private Sub SetBonusDefenceValue()
-        'On Error Resume Next
+        On Error Resume Next
 
         NumericUpDown40.Value = critter.proto.b_DTNormal
         NumericUpDown41.Value = critter.proto.b_DTLaser
@@ -251,12 +251,19 @@ Friend Class Critter_Form
         NumericUpDown39.Value = critter.proto.Age
 
         'Flags
+        SetFlags()
+        SetFlagsExt()
+        SetFlagsCritter()
+
+        TabMiscView = True
+    End Sub
+
+    Private Sub SetFlags()
         CheckBox1.Checked = critter.IsFlat
         CheckBox2.Checked = critter.IsNoBlock
         CheckBox3.Checked = critter.IsMultiHex
         CheckBox4.Checked = critter.IsShootThru
         CheckBox5.Checked = critter.IsLightThru
-        'CheckBox12.Checked = fCritterPro.Falgs And &H20
 
         CheckBox6.Checked = critter.IsTransNone
         If Not critter.IsTransNone Then
@@ -266,13 +273,17 @@ Friend Class Critter_Form
             RadioButton5.Checked = critter.IsTransEnergy
             RadioButton3.Checked = critter.IsTransRed
         End If
+    End Sub
 
-        'CheckBox7.Checked = fCritterPro.FalgsExt And &H800
-        'CheckBox8.Checked = fCritterPro.FalgsExt And &H1000
+    Private Sub SetFlagsExt()
+        CheckBox7.Checked = critter.IsUse
+        CheckBox8.Checked = critter.IsUseOn
         CheckBox9.Checked = critter.IsLook
         CheckBox10.Checked = critter.IsTalk
-        'CheckBox11.Checked = fCritterPro.FalgsExt And &H8000
+        CheckBox11.Checked = critter.IsPickUp
+    End Sub
 
+    Private Sub SetFlagsCritter()
         CheckBox13.Checked = critter.IsNoSteal
         CheckBox14.Checked = critter.IsNoDrop
         CheckBox15.Checked = critter.IsNoLimbs
@@ -284,8 +295,6 @@ Friend Class Critter_Form
         CheckBox21.Checked = critter.IsNoKnockBack
         CheckBox22.Checked = critter.IsInvulnerable
         CheckBox23.Checked = critter.IsBarter
-
-        TabMiscView = True
     End Sub
 
     Private Sub Save_CritterPro()
@@ -339,7 +348,7 @@ Friend Class Critter_Form
 
         '*************
         critter.proto.Better = CInt(TextBox27.Text) - critter.proto.b_Better
-        critter.proto.UnarmedDmg = CInt(NumericUpDown1.Value) ' TextBox28.Text
+        critter.proto.UnarmedDmg = CInt(NumericUpDown1.Value)
         '*************
 
         'Tab Defence
@@ -381,7 +390,7 @@ Friend Class Critter_Form
 
         'Tab Misc
         critter.DescID = CInt(NumericUpDown64.Value)
-        critter.ScriptID = If(ComboBox9.SelectedIndex <> 0, (ComboBox9.SelectedIndex - 1) + &H4000000, -1)
+        critter.ScriptID = If(ComboBox9.SelectedIndex > 0, (ComboBox9.SelectedIndex - 1) + &H4000000, -1)
         critter.proto.Gender = ComboBox8.SelectedIndex
 
         If ComboBox2.SelectedItem IsNot Nothing Then
@@ -410,7 +419,6 @@ Friend Class Critter_Form
         critter.IsMultiHex = CheckBox3.Checked
         critter.IsShootThru = CheckBox4.Checked
         critter.IsLightThru = CheckBox5.Checked
-        'CheckBox12.Checked = And &H20
 
         ' удаляем взаимозаменяемые флаги TransNone/TransRed/TransWall/TransGlass/TransSteam/TransEnergy
         critter.Flags = critter.Flags And &HFFF03FFF
@@ -430,12 +438,9 @@ Friend Class Critter_Form
             End If
         End If
 
-        'Flags Ext
-        'CheckBox7.Checked =  And &H800
-        'CheckBox8.Checked =  And &H1000
+        ' Flags Ext
         critter.IsLook = CheckBox9.Checked
         critter.IsTalk = CheckBox10.Checked
-        'CheckBox11.Checked = And &H8000
 
         'Flags Critter
         critter.IsNoSteal = CheckBox13.Checked
@@ -744,6 +749,33 @@ Friend Class Critter_Form
 
     Private Sub Button6_EnabledChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Button6.EnabledChanged
         If Button6.Enabled Then Button2.Enabled = True
+    End Sub
+
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Dim sf = New SetFlagsForm(critter)
+        sf.ShowDialog(Me)
+        If (sf.sets.flags <> critter.Flags) Then
+            critter.Flags = sf.sets.flags
+            TabMiscView = False
+            SetFlags()
+            TabMiscView = True
+            Button6.Enabled = True
+        End If
+        If (sf.sets.flagsExt <> critter.FlagsExt) Then
+            critter.FlagsExt = sf.sets.flagsExt
+            TabMiscView = False
+            SetFlagsExt()
+            TabMiscView = True
+            Button6.Enabled = True
+        End If
+        If (sf.sets.flagsCrt <> critter.CritterFlags) Then
+            critter.CritterFlags = sf.sets.flagsCrt
+            TabMiscView = False
+            SetFlagsCritter()
+            TabMiscView = True
+            Button6.Enabled = True
+        End If
+        sf.Dispose()
     End Sub
 
     Private Sub Button8_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button8.Click

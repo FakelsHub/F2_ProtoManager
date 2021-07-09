@@ -3,7 +3,7 @@ Imports Prototypes
 
 Public Class MassCreate
 
-    Private common As CommonProto
+    Private common As CommonData
     Private wall As WallsProto
     Private tile As TilesProto
 

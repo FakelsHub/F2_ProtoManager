@@ -56,11 +56,8 @@ NotInheritable Class Prototypes
     '
     ' Описание структур для файлов прототипов
     '
-
-    'Cтруктура для файла типа Critters
     <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Structure CritterProto
-        'Comon
+    Structure CommonProtoData
         Public ProtoID As Integer
         Public DescID As Integer
         Public FrmID As Integer
@@ -69,6 +66,11 @@ NotInheritable Class Prototypes
         Public Flags As Integer
         Public FlagsExt As Integer
         Public ScriptID As Integer
+    End Structure
+
+    'Cтруктура для файла типа Critters
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure CritterProtoData
         'Critter
         Public HeadFID As Integer
         Public AIPacket As Integer
@@ -176,18 +178,16 @@ NotInheritable Class Prototypes
         Public DamageType As Integer
     End Structure
 
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure CritterProto
+        Public common As CommonProtoData
+        Public data As CritterProtoData
+    End Structure
+
     'Cтруктуры для файла типа Items
     'Common
     <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Structure CommonItemProto
-        Public ProtoID As Integer
-        Public DescID As Integer
-        Public FrmID As Integer
-        Public LightDis As Integer
-        Public LightInt As Integer
-        Public Flags As Integer
-        Public FlagsExt As Integer
-        Public ScriptID As Integer
+    Structure ItemProtoData
         Public ObjType As Integer
         Public MaterialID As Integer
         Public Size As Integer
@@ -195,6 +195,12 @@ NotInheritable Class Prototypes
         Public Cost As Integer
         Public InvFID As Integer
         Public SoundID As Byte
+    End Structure
+
+    <StructLayout(LayoutKind.Sequential, Pack:=1)>
+    Structure CommonItemProto
+        Public common As CommonProtoData
+        Public data As ItemProtoData
     End Structure
 
     'Weapon
@@ -296,7 +302,7 @@ NotInheritable Class Prototypes
     End Structure
 
     <StructLayout(LayoutKind.Sequential, Pack:=1)>
-    Structure CommonProto
+    Structure CommonData
         Public ProtoID As Integer
         Public DescID As Integer
         Public FrmID As Integer

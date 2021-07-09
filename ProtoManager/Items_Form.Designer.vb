@@ -259,6 +259,7 @@ Partial Class Items_Form
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.btnSave = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
+        Me.Button6 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
@@ -2490,6 +2491,7 @@ Partial Class Items_Form
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Button6)
         Me.GroupBox5.Controls.Add(Me.CheckBox24)
         Me.GroupBox5.Controls.Add(Me.CheckBox5)
         Me.GroupBox5.Controls.Add(Me.cbHiddenItem)
@@ -2953,6 +2955,15 @@ Partial Class Items_Form
         Me.Button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button3.UseVisualStyleBackColor = True
         '
+        'Button6
+        '
+        Me.Button6.Location = New System.Drawing.Point(188, 117)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(20, 20)
+        Me.Button6.TabIndex = 32
+        Me.Button6.Text = "F"
+        Me.Button6.UseVisualStyleBackColor = True
+        '
         'Items_Form
         '
         Me.AcceptButton = Me.btnSave
@@ -3329,4 +3340,5 @@ Partial Class Items_Form
     Friend WithEvents cbEnergyGun As System.Windows.Forms.CheckBox
     Friend WithEvents Button7 As System.Windows.Forms.Button
     Friend WithEvents cmbWScoreType As ComboBox
+    Friend WithEvents Button6 As Button
 End Class

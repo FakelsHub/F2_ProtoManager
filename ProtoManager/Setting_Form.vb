@@ -128,14 +128,16 @@ Friend Class Setting_Form
 
         For i As Integer = 0 To lstCheckMods.Items.Count - 1
             If (DatFiles.extraMods(i).filePath.Equals(lstCheckMods.Items(i).ToString, StringComparison.OrdinalIgnoreCase) = False) Then
-                ' найти положение sfall 
+                ' найти положение
                 For n = 0 To DatFiles.extraMods.Count - 1
                     If (DatFiles.extraMods(i).filePath.Equals(lstCheckMods.Items(n).ToString, StringComparison.OrdinalIgnoreCase)) Then
+
                         Dim temp = DatFiles.extraMods(i)
                         temp.isEnabled = lstCheckMods.GetItemChecked(n)
                         DatFiles.extraMods.RemoveAt(i)
                         DatFiles.extraMods.Insert(n, temp)
                         Exit For
+
                     End If
                 Next
             Else
@@ -166,6 +168,7 @@ Friend Class Setting_Form
             For Each item In GameConfig.gcExtraMods
                 lstCheckMods.Items.Add(item.filePath)
             Next
+            updateList = True
         End If
     End Sub
 

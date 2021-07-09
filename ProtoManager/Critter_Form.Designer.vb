@@ -126,7 +126,6 @@ Partial Class Critter_Form
         Me.tbPoison = New System.Windows.Forms.TextBox()
         Me.Label84 = New System.Windows.Forms.Label()
         Me.NumericUpDown54 = New System.Windows.Forms.NumericUpDown()
-        Me.TextBox28 = New System.Windows.Forms.TextBox()
         Me.Label54 = New System.Windows.Forms.Label()
         Me.Label53 = New System.Windows.Forms.Label()
         Me.Label52 = New System.Windows.Forms.Label()
@@ -302,7 +301,6 @@ Partial Class Critter_Form
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.Button9 = New System.Windows.Forms.Button()
-        Me.CheckBox12 = New System.Windows.Forms.CheckBox()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.RadioButton5 = New System.Windows.Forms.RadioButton()
         Me.RadioButton4 = New System.Windows.Forms.RadioButton()
@@ -1651,7 +1649,6 @@ Partial Class Critter_Form
         Me.GroupBox17.Controls.Add(Me.tbPoison)
         Me.GroupBox17.Controls.Add(Me.Label84)
         Me.GroupBox17.Controls.Add(Me.NumericUpDown54)
-        Me.GroupBox17.Controls.Add(Me.TextBox28)
         Me.GroupBox17.Location = New System.Drawing.Point(414, 0)
         Me.GroupBox17.Name = "GroupBox17"
         Me.GroupBox17.Size = New System.Drawing.Size(111, 149)
@@ -1756,22 +1753,6 @@ Partial Class Critter_Form
         Me.NumericUpDown54.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ToolTip1.SetToolTip(Me.NumericUpDown54, "Bonus Stat")
         Me.NumericUpDown54.Value = New Decimal(New Integer() {200, 0, 0, -2147483648})
-        '
-        'TextBox28
-        '
-        Me.TextBox28.BackColor = System.Drawing.Color.Black
-        Me.TextBox28.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.TextBox28.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.TextBox28.ForeColor = System.Drawing.Color.Chartreuse
-        Me.TextBox28.Location = New System.Drawing.Point(58, 123)
-        Me.TextBox28.Name = "TextBox28"
-        Me.TextBox28.ReadOnly = True
-        Me.TextBox28.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.TextBox28.Size = New System.Drawing.Size(31, 20)
-        Me.TextBox28.TabIndex = 1
-        Me.TextBox28.TabStop = False
-        Me.TextBox28.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ToolTip1.SetToolTip(Me.TextBox28, "Base Stat")
         '
         'Label54
         '
@@ -3626,6 +3607,8 @@ Partial Class Critter_Form
         'CheckBox11
         '
         Me.CheckBox11.AutoSize = True
+        Me.CheckBox11.Checked = True
+        Me.CheckBox11.CheckState = System.Windows.Forms.CheckState.Indeterminate
         Me.CheckBox11.Enabled = False
         Me.CheckBox11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.CheckBox11.Location = New System.Drawing.Point(6, 110)
@@ -3660,6 +3643,8 @@ Partial Class Critter_Form
         'CheckBox8
         '
         Me.CheckBox8.AutoSize = True
+        Me.CheckBox8.Checked = True
+        Me.CheckBox8.CheckState = System.Windows.Forms.CheckState.Indeterminate
         Me.CheckBox8.Enabled = False
         Me.CheckBox8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.CheckBox8.Location = New System.Drawing.Point(6, 41)
@@ -3672,6 +3657,8 @@ Partial Class Critter_Form
         'CheckBox7
         '
         Me.CheckBox7.AutoSize = True
+        Me.CheckBox7.Checked = True
+        Me.CheckBox7.CheckState = System.Windows.Forms.CheckState.Indeterminate
         Me.CheckBox7.Enabled = False
         Me.CheckBox7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me.CheckBox7.Location = New System.Drawing.Point(6, 18)
@@ -3926,7 +3913,6 @@ Partial Class Critter_Form
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.Button9)
-        Me.GroupBox5.Controls.Add(Me.CheckBox12)
         Me.GroupBox5.Controls.Add(Me.GroupBox12)
         Me.GroupBox5.Controls.Add(Me.CheckBox5)
         Me.GroupBox5.Controls.Add(Me.CheckBox4)
@@ -3943,24 +3929,14 @@ Partial Class Critter_Form
         '
         'Button9
         '
-        Me.Button9.Location = New System.Drawing.Point(202, 97)
+        Me.Button9.AutoSize = True
+        Me.Button9.Location = New System.Drawing.Point(165, 108)
         Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(21, 21)
+        Me.Button9.Size = New System.Drawing.Size(58, 24)
         Me.Button9.TabIndex = 1
-        Me.Button9.Text = "F"
+        Me.Button9.Text = "All Flags"
         Me.ToolTip1.SetToolTip(Me.Button9, "All Flags")
         Me.Button9.UseVisualStyleBackColor = True
-        '
-        'CheckBox12
-        '
-        Me.CheckBox12.AutoSize = True
-        Me.CheckBox12.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
-        Me.CheckBox12.Location = New System.Drawing.Point(109, 111)
-        Me.CheckBox12.Name = "CheckBox12"
-        Me.CheckBox12.Size = New System.Drawing.Size(63, 18)
-        Me.CheckBox12.TabIndex = 0
-        Me.CheckBox12.Text = "Lighting"
-        Me.CheckBox12.UseVisualStyleBackColor = True
         '
         'GroupBox12
         '
@@ -4516,7 +4492,6 @@ Partial Class Critter_Form
     Friend WithEvents NumericUpDown35 As System.Windows.Forms.NumericUpDown
     Friend WithEvents NumericUpDown34 As System.Windows.Forms.NumericUpDown
     Friend WithEvents NumericUpDown33 As System.Windows.Forms.NumericUpDown
-    Friend WithEvents TextBox28 As System.Windows.Forms.TextBox
     Friend WithEvents NumericUpDown32 As System.Windows.Forms.NumericUpDown
     Friend WithEvents TextBox27 As System.Windows.Forms.TextBox
     Friend WithEvents NumericUpDown31 As System.Windows.Forms.NumericUpDown
@@ -4537,7 +4512,6 @@ Partial Class Critter_Form
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
-    Friend WithEvents CheckBox12 As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox12 As System.Windows.Forms.GroupBox
     Friend WithEvents RadioButton5 As System.Windows.Forms.RadioButton
     Friend WithEvents RadioButton4 As System.Windows.Forms.RadioButton

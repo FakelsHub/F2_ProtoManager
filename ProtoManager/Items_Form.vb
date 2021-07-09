@@ -160,7 +160,6 @@ Friend Class Items_Form
         CheckBox3.Checked = item.IsMultiHex
         CheckBox4.Checked = item.IsShootThru
         CheckBox5.Checked = item.IsLightThru
-        'CheckBox12.Checked = item.IsLighting
         CheckBox24.Checked = item.IsNoHighlight
 
         CheckBox6.Checked = item.IsTransNone
@@ -175,7 +174,7 @@ Friend Class Items_Form
         cbUse.Checked = item.IsUse
         cbUseOn.Checked = item.IsUseOn
         cbLook.Checked = item.IsLook
-        'CheckBox10.Checked = item.IsTalk
+        CheckBox10.Checked = item.IsTalk
         cbPickup.Checked = item.IsPickUp
         cbHiddenItem.Checked = item.IsHiddenItem
     End Sub
@@ -477,7 +476,7 @@ Friend Class Items_Form
         itemObject.IsUseOn = cbUseOn.Checked
         itemObject.IsLook = cbLook.Checked
         itemObject.IsPickUp = cbPickup.Checked
-        itemObject.IsTalk = False ' CheckBox10.Checked
+        itemObject.IsTalk = CheckBox10.Checked
         itemObject.IsHiddenItem = cbHiddenItem.Checked
 
         dim iType As ItemType = Ctype(ComboBox7.SelectedIndex, ItemType)

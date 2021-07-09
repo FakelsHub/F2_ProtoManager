@@ -131,7 +131,7 @@ Module ProFiles
                 Return Status.IsBadFile
             End If
         End If
-        If pro.DirectoryName.StartsWith(SaveMOD_Path) Then
+        If pro.DirectoryName.StartsWith(SaveMOD_Path, StringComparison.OrdinalIgnoreCase) Then
             If (pro.IsReadOnly) Then fileAttr = "R/O"
             Return Status.IsModFolder
         End If
@@ -149,13 +149,15 @@ Module ProFiles
         Try
             Using readFile As New BinaryReader(File.Open(cPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 readFile.BaseStream.Seek(Prototypes.DataOffset.FrmID, SeekOrigin.Begin)
-                FID = ReverseBytes(readFile.ReadInt32())
+                FID = readFile.ReadInt32()
             End Using
         Catch ex As Exception
             Return Nothing
         End Try
 
+        FID = ReverseBytes(FID)
         Critter_LST(nPro).FID = FID
+
         Return If(FID = -1, 0, FID)
     End Function
 
@@ -223,7 +225,7 @@ Module ProFiles
         End If
 
         Dim data As Integer() = ReverseSaveData(critter, ProtoMemberCount.Critter)
-        If critter.DamageType = 7 Then
+        If critter.data.DamageType = 7 Then
             Array.Resize(data, ProtoMemberCount.Critter - 1)
             File.Delete(proFile) ' удаляем файл для перезаписи его размера
         End If

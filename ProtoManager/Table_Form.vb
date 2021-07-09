@@ -93,7 +93,7 @@ Public Class Table_Form
 
                 FileGet(fFile, cmDataBuffer)
                 ProFiles.ReverseLoadData(cmDataBuffer, commonItem)
-                FileGet(fFile, commonItem.SoundID)
+                FileGet(fFile, commonItem.data.SoundID)
 
                 'tableLine.Clear()
 
@@ -103,7 +103,7 @@ Public Class Table_Form
                     table(n) = "#" & spr & table(n) ' # - ignore mark
                 End If
 
-                table(n) &= (spr & Messages.GetNameObject(commonItem.DescID)) ' get name
+                table(n) &= (spr & Messages.GetNameObject(commonItem.common.DescID)) ' get name
 
                 For m = 0 To CheckedList.Count - 1
                     If n = 1 Then table(0) &= spr & CheckedList.Item(m).ToString
@@ -185,11 +185,11 @@ Public Class Table_Form
                     table.Add("#" & spr & proFile) ' # - ignore mark
                 End If
 
-                table(n) &= spr & Messages.GetNameObject(critterPro.DescID)
+                table(n) &= spr & Messages.GetNameObject(critterPro.common.DescID)
                 For m = 0 To CheckedList.Count - 1
                     'создаем строку с параметрами
                     If n = 1 Then table(0) &= spr & CheckedList.Item(m).ToString
-                    CreateTable_Critter(table(n), CheckedList.Item(m).ToString, critterPro)
+                    CreateTable_Critter(table(n), CheckedList.Item(m).ToString, critterPro.data)
                 Next
                 If ((n Mod 2) <> 0) Then Progress_Form.ProgressBar1.Value += 1
             Next
@@ -218,15 +218,15 @@ SaveRetry:
     Private Function CreateTable_Common(ByRef tableLine As String, param As String, ByRef item As CommonItemProto) As Boolean
         Select Case param
             Case "Cost"
-                tableLine &= spr & item.Cost
+                tableLine &= spr & item.data.Cost
             Case "Weight"
-                tableLine &= spr & item.Weight
+                tableLine &= spr & item.data.Weight
             Case "Size"
-                tableLine &= spr & item.Size
+                tableLine &= spr & item.data.Size
             Case "Shoot Thru [Flag]"
-                tableLine &= spr & CBool(item.Flags And Flags.ShootThru)
+                tableLine &= spr & CBool(item.common.Flags And Flags.ShootThru)
             Case "Light Thru [Flag]"
-                tableLine &= spr & CBool(item.Flags And Flags.LightThru)
+                tableLine &= spr & CBool(item.common.Flags And Flags.LightThru)
             Case Else
                 Return False
         End Select
@@ -400,7 +400,7 @@ SaveRetry:
         End Select
     End Sub
 
-    Private Sub CreateTable_Critter(ByRef tableLine As String, param As String, ByRef critter As CritterProto)
+    Private Sub CreateTable_Critter(ByRef tableLine As String, param As String, ByRef critter As CritterProtoData)
         Select Case param
             Case "Strength"
                 tableLine &= spr & critter.Strength
@@ -777,10 +777,7 @@ SaveRetry:
     Friend Sub Critters_ImportTable(ByVal tableFile As String)
         Dim critter As CritterProto
 
-        Dim n As Integer, m As Integer
         Dim ProFile As String
-        Dim strSplit() As String
-
         Dim table() As String
         Try
             table = File.ReadAllLines(tableFile, Encoding.Default)
@@ -823,151 +820,159 @@ SaveRetry:
             End If
 
             'Changed values
-            Try
-                'Common pass 1
-                For m = 3 To UBound(tableParam)
-                    Select Case tableParam(m).ToLowerInvariant
-                        Case "strength"
-                            critter.Strength = CInt(tableValue(n, m))
-                        Case "perception"
-                            critter.Perception = CInt(tableValue(n, m))
-                        Case "endurance"
-                            critter.Endurance = CInt(tableValue(n, m))
-                        Case "charisma"
-                            critter.Charisma = CInt(tableValue(n, m))
-                        Case "intelligence"
-                            critter.Intelligence = CInt(tableValue(n, m))
-                        Case "agility"
-                            critter.Agility = CInt(tableValue(n, m))
-                        Case "luck"
-                            critter.Luck = CInt(tableValue(n, m))
-                        Case "exp value"
-                            critter.ExpVal = CInt(tableValue(n, m))
-                        Case "damage type"
-                            critter.DamageType = 0
-                            For z = 0 To UBound(DmgType)
-                                If (String.Equals(tableValue(n, m), DmgType(z), StringComparison.OrdinalIgnoreCase)) Then
-                                    critter.DamageType = z
-                                    Exit For
-                                End If
-                            Next
-                            'Armor
-                        Case "normal dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTNormal = CInt(strSplit(0))
-                            critter.b_DRNormal = CInt(strSplit(1))
-                        Case "laser dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTLaser = CInt(strSplit(0))
-                            critter.b_DRLaser = CInt(strSplit(1))
-                        Case "fire dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTFire = CInt(strSplit(0))
-                            critter.b_DRFire = CInt(strSplit(1))
-                        Case "plasma dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTPlasma = CInt(strSplit(0))
-                            critter.b_DRPlasma = CInt(strSplit(1))
-                        Case "electrical dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTElectrical = CInt(strSplit(0))
-                            critter.b_DRElectrical = CInt(strSplit(1))
-                        Case "emp dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTEMP = CInt(strSplit(0))
-                            critter.b_DREMP = CInt(strSplit(1))
-                        Case "explosion dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.b_DTExplode = CInt(strSplit(0))
-                            critter.b_DRExplode = CInt(strSplit(1))
-                            '
-                        Case "base normal dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTNormal = CInt(strSplit(0))
-                            critter.DRNormal = CInt(strSplit(1))
-                        Case "base laser dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTLaser = CInt(strSplit(0))
-                            critter.DRLaser = CInt(strSplit(1))
-                        Case "base fire dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTFire = CInt(strSplit(0))
-                            critter.DRFire = CInt(strSplit(1))
-                        Case "base plasma dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTPlasma = CInt(strSplit(0))
-                            critter.DRPlasma = CInt(strSplit(1))
-                        Case "base electrical dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTElectrical = CInt(strSplit(0))
-                            critter.DRElectrical = CInt(strSplit(1))
-                        Case "base emp dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTEMP = CInt(strSplit(0))
-                            critter.DREMP = CInt(strSplit(1))
-                        Case "base explosion dt|dr"
-                            strSplit = tableValue(n, m).Split(splt)
-                            critter.DTExplode = CInt(strSplit(0))
-                            critter.DRExplode = CInt(strSplit(1))
-                    End Select
-                Next
-                'Calculate pass 2
-                For m = 3 To UBound(tableParam)
-                    Select Case tableParam(m).ToLowerInvariant
-                        Case "action point"
-                            critter.AP = CalcStats.Action_Point(critter.Agility)
-                            critter.b_AP = CInt(tableValue(n, m)) - critter.AP
-                        Case "armor class"
-                            critter.AC = critter.Agility
-                            critter.b_AC = CInt(tableValue(n, m)) - critter.Agility
-                        Case "health point"
-                            critter.HP = CalcStats.Health_Point(critter.Strength, critter.Endurance)
-                            critter.b_HP = CInt(tableValue(n, m)) - critter.HP
-                        Case "healing rate"
-                            critter.Healing = CalcStats.Healing_Rate(critter.Endurance)
-                            critter.b_Healing = CInt(tableValue(n, m)) - critter.Healing
-                        Case "melee damage"
-                            critter.MeleeDmg = CalcStats.Melee_Damage(critter.Strength)
-                            critter.b_MeleeDmg = CInt(tableValue(n, m)) - critter.MeleeDmg
-                        Case "critical chance"
-                            critter.Critical = critter.Luck
-                            critter.b_Critical = CInt(tableValue(n, m)) - critter.Luck
-                        Case "sequence"
-                            critter.Sequence = CalcStats.Sequence(critter.Perception)
-                            critter.b_Sequence = CInt(tableValue(n, m)) - critter.Sequence
-                        Case "resistance radiation"
-                            critter.DRRadiation = CalcStats.Radiation(critter.Endurance)
-                            critter.b_DRRadiation = CInt(tableValue(n, m)) - critter.DRRadiation
-                        Case "resistance poison"
-                            critter.DRPoison = CalcStats.Poison(critter.Endurance)
-                            critter.b_DRPoison = CInt(tableValue(n, m)) - critter.DRPoison
-                            'Skill
-                        Case "small guns [skill]"
-                            critter.SmallGuns = CInt(tableValue(n, m)) - CalcStats.SmallGun_Skill(critter.Agility)
-                        Case "big guns [skill]"
-                            critter.BigGuns = CInt(tableValue(n, m)) - CalcStats.BigEnergyGun_Skill(critter.Agility)
-                        Case "energy weapons [skill]"
-                            critter.EnergyGun = CInt(tableValue(n, m)) - CalcStats.BigEnergyGun_Skill(critter.Agility)
-                        Case "unarmed [skill]"
-                            critter.Unarmed = CInt(tableValue(n, m)) - CalcStats.Unarmed_Skill(critter.Agility, critter.Strength)
-                        Case "melee [skill]"
-                            critter.Melee = CInt(tableValue(n, m)) - CalcStats.Melee_Skill(critter.Agility, critter.Strength)
-                        Case "throwing [skill]"
-                            critter.Throwing = CInt(tableValue(n, m)) - CalcStats.Throwing_Skill(critter.Agility)
-                    End Select
-                Next
-            Catch
-                MsgBox("Error: Param " & tableParam(m).ToUpper & " PRO Line: " & tableValue(n, 0), MsgBoxStyle.Critical, "Error Import")
-                TableLog_Form.ListBox1.Items.Add("Error Line #" & (n + 1) & " : Error in value param (" & tableParam(m) & ")")
-                Continue For
-            End Try
+            If (SetParams(critter.data, n, tableParam, tableValue) = False) Then Continue For
 
             'Save the profile and goto next pro file
             ProFiles.SaveCritterProData(filePath, critter)
         Next
+
         If TableLog_Form.ListBox1.Items.Count > 0 Then TableLog_Form.Show()
         MsgBox("Successfully!", MsgBoxStyle.Information, "Import table")
     End Sub
+
+    Private Function SetParams(ByRef critter As CritterProtoData, ByVal n As Integer, ByRef tableParam() As String, ByRef tableValue(,) As String) As Boolean
+        Dim m As Integer
+        Dim strSplit() As String
+        Try
+            'Common pass 1
+            For m = 3 To UBound(tableParam)
+                Select Case tableParam(m).ToLowerInvariant
+                    Case "strength"
+                        critter.Strength = CInt(tableValue(n, m))
+                    Case "perception"
+                        critter.Perception = CInt(tableValue(n, m))
+                    Case "endurance"
+                        critter.Endurance = CInt(tableValue(n, m))
+                    Case "charisma"
+                        critter.Charisma = CInt(tableValue(n, m))
+                    Case "intelligence"
+                        critter.Intelligence = CInt(tableValue(n, m))
+                    Case "agility"
+                        critter.Agility = CInt(tableValue(n, m))
+                    Case "luck"
+                        critter.Luck = CInt(tableValue(n, m))
+                    Case "exp value"
+                        critter.ExpVal = CInt(tableValue(n, m))
+                    Case "damage type"
+                        critter.DamageType = 0
+                        For z = 0 To UBound(DmgType)
+                            If (String.Equals(tableValue(n, m), DmgType(z), StringComparison.OrdinalIgnoreCase)) Then
+                                critter.DamageType = z
+                                Exit For
+                            End If
+                        Next
+                    'Armor
+                    Case "normal dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTNormal = CInt(strSplit(0))
+                        critter.b_DRNormal = CInt(strSplit(1))
+                    Case "laser dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTLaser = CInt(strSplit(0))
+                        critter.b_DRLaser = CInt(strSplit(1))
+                    Case "fire dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTFire = CInt(strSplit(0))
+                        critter.b_DRFire = CInt(strSplit(1))
+                    Case "plasma dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTPlasma = CInt(strSplit(0))
+                        critter.b_DRPlasma = CInt(strSplit(1))
+                    Case "electrical dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTElectrical = CInt(strSplit(0))
+                        critter.b_DRElectrical = CInt(strSplit(1))
+                    Case "emp dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTEMP = CInt(strSplit(0))
+                        critter.b_DREMP = CInt(strSplit(1))
+                    Case "explosion dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.b_DTExplode = CInt(strSplit(0))
+                        critter.b_DRExplode = CInt(strSplit(1))
+                            '
+                    Case "base normal dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTNormal = CInt(strSplit(0))
+                        critter.DRNormal = CInt(strSplit(1))
+                    Case "base laser dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTLaser = CInt(strSplit(0))
+                        critter.DRLaser = CInt(strSplit(1))
+                    Case "base fire dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTFire = CInt(strSplit(0))
+                        critter.DRFire = CInt(strSplit(1))
+                    Case "base plasma dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTPlasma = CInt(strSplit(0))
+                        critter.DRPlasma = CInt(strSplit(1))
+                    Case "base electrical dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTElectrical = CInt(strSplit(0))
+                        critter.DRElectrical = CInt(strSplit(1))
+                    Case "base emp dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTEMP = CInt(strSplit(0))
+                        critter.DREMP = CInt(strSplit(1))
+                    Case "base explosion dt|dr"
+                        strSplit = tableValue(n, m).Split(splt)
+                        critter.DTExplode = CInt(strSplit(0))
+                        critter.DRExplode = CInt(strSplit(1))
+                End Select
+            Next
+            'Calculate pass 2
+            For m = 3 To UBound(tableParam)
+                Select Case tableParam(m).ToLowerInvariant
+                    Case "action point"
+                        critter.AP = CalcStats.Action_Point(critter.Agility)
+                        critter.b_AP = CInt(tableValue(n, m)) - critter.AP
+                    Case "armor class"
+                        critter.AC = critter.Agility
+                        critter.b_AC = CInt(tableValue(n, m)) - critter.Agility
+                    Case "health point"
+                        critter.HP = CalcStats.Health_Point(critter.Strength, critter.Endurance)
+                        critter.b_HP = CInt(tableValue(n, m)) - critter.HP
+                    Case "healing rate"
+                        critter.Healing = CalcStats.Healing_Rate(critter.Endurance)
+                        critter.b_Healing = CInt(tableValue(n, m)) - critter.Healing
+                    Case "melee damage"
+                        critter.MeleeDmg = CalcStats.Melee_Damage(critter.Strength)
+                        critter.b_MeleeDmg = CInt(tableValue(n, m)) - critter.MeleeDmg
+                    Case "critical chance"
+                        critter.Critical = critter.Luck
+                        critter.b_Critical = CInt(tableValue(n, m)) - critter.Luck
+                    Case "sequence"
+                        critter.Sequence = CalcStats.Sequence(critter.Perception)
+                        critter.b_Sequence = CInt(tableValue(n, m)) - critter.Sequence
+                    Case "resistance radiation"
+                        critter.DRRadiation = CalcStats.Radiation(critter.Endurance)
+                        critter.b_DRRadiation = CInt(tableValue(n, m)) - critter.DRRadiation
+                    Case "resistance poison"
+                        critter.DRPoison = CalcStats.Poison(critter.Endurance)
+                        critter.b_DRPoison = CInt(tableValue(n, m)) - critter.DRPoison
+                    'Skill
+                    Case "small guns [skill]"
+                        critter.SmallGuns = CInt(tableValue(n, m)) - CalcStats.SmallGun_Skill(critter.Agility)
+                    Case "big guns [skill]"
+                        critter.BigGuns = CInt(tableValue(n, m)) - CalcStats.BigEnergyGun_Skill(critter.Agility)
+                    Case "energy weapons [skill]"
+                        critter.EnergyGun = CInt(tableValue(n, m)) - CalcStats.BigEnergyGun_Skill(critter.Agility)
+                    Case "unarmed [skill]"
+                        critter.Unarmed = CInt(tableValue(n, m)) - CalcStats.Unarmed_Skill(critter.Agility, critter.Strength)
+                    Case "melee [skill]"
+                        critter.Melee = CInt(tableValue(n, m)) - CalcStats.Melee_Skill(critter.Agility, critter.Strength)
+                    Case "throwing [skill]"
+                        critter.Throwing = CInt(tableValue(n, m)) - CalcStats.Throwing_Skill(critter.Agility)
+                End Select
+            Next
+        Catch
+            MsgBox("Error: Param " & tableParam(m).ToUpper & " PRO Line: " & tableValue(n, 0), MsgBoxStyle.Critical, "Error Import")
+            TableLog_Form.ListBox1.Items.Add("Error Line #" & (n + 1) & " : Error in value param (" & tableParam(m) & ")")
+            Return False
+        End Try
+        Return True
+    End Function
 
     Private Sub CheckAllToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CheckAllToolStripMenuItem.Click
         CheckedItemsAll(True)
